@@ -1,7 +1,7 @@
 {
-  "option_tvos_display_name": "Made in GameMaker",
-  "option_tvos_bundle_name": "com.company.game",
-  "option_tvos_version": "1.0.0.0",
+  "option_tvos_display_name": "NBS",
+  "option_tvos_bundle_name": "org.opennbs.onbs",
+  "option_tvos_version": "3.12.0",
   "option_tvos_output_dir": "~/GameMakerStudio2/tvOS",
   "option_tvos_team_id": "",
   "option_tvos_icon_400": "${base_options_dir}/tvos/icons/400.png",

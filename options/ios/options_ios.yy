@@ -1,7 +1,7 @@
 {
   "option_ios_display_name": "NBS",
   "option_ios_bundle_name": "org.opennbs.onbs",
-  "option_ios_version": "3.10.1",
+  "option_ios_version": "3.12.0",
   "option_ios_output_dir": "~/gamemakerstudio2",
   "option_ios_team_id": "",
   "option_ios_orientation_portrait": false,
