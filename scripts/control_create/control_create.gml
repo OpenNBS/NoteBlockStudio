@@ -50,6 +50,7 @@ function control_create() {
 	window_set_focus()
 	window_set_min_width(800)
 	window_set_min_height(500)
+	if (os_browser != browser_not_a_browser) window_set_size(browser_width - 5, browser_height - 5)
 	window_scale = get_default_window_scale()
 	if (window_scale > 2 && is_mobile()) window_scale = 2
 	var temp_font_size = floor(15 * window_scale * (1 + (os_type != os_macosx || window_scale = 1)))
@@ -384,6 +385,13 @@ function control_create() {
 	show_notechart = 0
 	show_outofrange = 1
 	editline = 0
+	for (i = 0; i < 88; i++) {
+		piano_key[i] = 0
+		key_press[i] = 0
+		key_midipress[i] = 0
+		key_click[i] = 0
+		key_played[i] = 0
+	}
 	piano_key[87] = 0
 	key_press[87] = 0
 	key_midipress[87] = 0
