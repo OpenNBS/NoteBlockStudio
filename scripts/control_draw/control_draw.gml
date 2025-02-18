@@ -75,7 +75,7 @@ function control_draw() {
 	if (fullscreen) {
 		rhval = 32
 	}
-	totalrows = floor((rh - rhval) / 32)
+	totalrows = floor((rh - rhval) / 32) - (current_song.reference_audio >= 0 && !fullscreen)
 	if (fullscreen) totalrows += 1
 	if (min(keysmax, floor((rw - 32) / 39)) != keysshow) {
 	    if (!isplayer) startkey = 27 - floor(min(keysmax, floor((rw - 32) / 39)) / 2)
@@ -353,13 +353,16 @@ function control_draw() {
 	draw_set_halign(fa_left)
 
 	if (checkplaying > 0) {
-		if (reference_option > 0 && !audio_is_playing(reference_sound)) {
-			reference_sound = audio_play_sound(reference_audio, 1, 0)
-			audio_sound_set_track_position(reference_sound, current_song.marker_pos / current_song.tempo + reference_offset / 1000)
+		if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
+			current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
+			audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
+			audio_sound_set_track_position(current_song.reference_sound, current_song.marker_pos / current_song.tempo + current_song.reference_offset / 1000)
 		}
 	}
 	if (checkplaying < 0) {
-		if (audio_is_playing(reference_sound)) audio_stop_sound(reference_sound)
+		for (var i = 0; i < array_length(songs); i++) {
+			if (audio_is_playing(songs[i].reference_sound)) audio_stop_sound(songs[i].reference_sound)
+		}
 	}
 
 	if (current_song.tempo < 0.25) current_song.tempo = 0.25
@@ -837,27 +840,29 @@ function control_draw() {
 	if (!isplayer) {
 		
 	if (keyboard_check_pressed(vk_numpad1)) {
-		reference_option = 0; 
+		current_song.reference_option = 0; 
 		set_msg("Reference mute"); 
-		if (audio_is_playing(reference_sound)) audio_stop_sound(reference_sound)
+		if (audio_is_playing(current_song.reference_sound)) audio_stop_sound(current_song.reference_sound)
 	}
 	if (keyboard_check_pressed(vk_numpad2)) {
-		reference_option = 1; 
+		current_song.reference_option = 1; 
 		set_msg("Reference solo"); 
 		if (playing) {
-			if (reference_option > 0 && !audio_is_playing(reference_sound)) {
-				reference_sound = audio_play_sound(reference_audio, 1, 0)
-				audio_sound_set_track_position(reference_sound, current_song.marker_pos / current_song.tempo + reference_offset / 1000)
+			if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
+				current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
+				audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
+				audio_sound_set_track_position(current_song.reference_sound, current_song.marker_pos / current_song.tempo + current_song.reference_offset / 1000)
 			}
 		}
 	}
 	if (keyboard_check_pressed(vk_numpad3)) {
-		reference_option = 2; 
+		current_song.reference_option = 2; 
 		set_msg("Reference mix")
 		if (playing) {
-			if (reference_option > 0 && !audio_is_playing(reference_sound)) {
-				reference_sound = audio_play_sound(reference_audio, 1, 0)
-				audio_sound_set_track_position(reference_sound, current_song.marker_pos / current_song.tempo + reference_offset / 1000)
+			if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
+				current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
+				audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
+				audio_sound_set_track_position(current_song.reference_sound, current_song.marker_pos / current_song.tempo + current_song.reference_offset / 1000)
 			}
 		}
 	}
@@ -1126,15 +1131,15 @@ function control_draw() {
 		draw_rectangle(x1 + 2, y1 + totalrows * 32 + 50, rw, rh, 0)
 		draw_rectangle(x1 + totalcols * 32 + 18, y1 + 3, rw, y1 + totalrows * 32 + 49, 0)
 		draw_rectangle(x1 + totalcols * 32 + 2, y1 + totalrows * 32 + 32, x1 + totalcols * 32 + 2 + 17, y1 + totalrows * 32 + 32 + 18, 0)
-		draw_area(x1, y1, x1 + totalcols * 32 + 20, y1 + totalrows * 32 + 52)
+		draw_area(x1, y1, x1 + totalcols * 32 + 20, y1 + (totalrows + (current_song.reference_audio >= 0)) * 32 + 52)
 		draw_set_alpha(1)
 	}
 	draw_theme_color()
 
 	// Scrollbars
 	if (!fullscreen) {
-		current_song.starta = draw_scrollbar(scrollbarh, x1, y1 + totalrows * 32 + 34, 32, totalcols - 1, current_song.enda + totalcols - 1, (exist && changepitch) || mousewheel > 0, 0)
-		current_song.startb = draw_scrollbar(scrollbarv, x1 + totalcols * 32 + 2, y1 + 34, 32, totalrows - 1, current_song.endb + totalrows - 1, (exist && changepitch) || mousewheel > 0, 0)
+		current_song.starta = draw_scrollbar(scrollbarh, x1, y1 + (totalrows + (current_song.reference_audio >= 0)) * 32 + 34, 32, totalcols - 1, current_song.enda + totalcols - 1, (exist && changepitch) || mousewheel > 0, 0)
+		current_song.startb = draw_scrollbar(scrollbarv, x1 + totalcols * 32 + 2, y1 + 34, 32, totalrows - 1 + (current_song.reference_audio >= 0), current_song.endb + totalrows - 1, (exist && changepitch) || mousewheel > 0, 0)
 	} else {
 		// horizontal rise animation
 		if (mouse_rectangle(0, rh - 25, rw, rh)) {
@@ -1159,7 +1164,7 @@ function control_draw() {
 		yy = rh - 16
 	} else {
 		xx = x1 + totalcols * 32
-		yy = y1 + totalrows * 32 + 34
+		yy = y1 + (totalrows + (current_song.reference_audio >= 0)) * 32 + 34
 	}
 	if (theme = 0) draw_set_color(15790320)
 	if (theme = 1) draw_set_color(13160660)
@@ -1354,32 +1359,183 @@ function control_draw() {
 			}
 		}
 	}
-	if (window = w_dragvol) {
-		prev = current_song.layervol[dragvolb]
-		dragvol += (mouse_yprev - mouse_y)
-		dragvol = median(0, dragvol, 100)
-		if (!keyboard_check(vk_shift)) {
-			current_song.layervol[dragvolb] = floor(dragvol / 10) * 10
+	if (current_song.reference_audio >= 0 && !fullscreen && show_layers) {
+		b = totalrows
+		x1 = 4
+		y1 = 54 + 32 + b * 32 - 1 + song_tab_offset
+		draw_sprite(spr_layerbox, 0 + (theme = 2) + (2 + fdark) * (theme = 3), x1, y1)
+		draw_theme_color()
+		draw_line(x1 + 262, y1, x1 + 262 + totalcols * 32, y1)
+		// Name
+		m = mouse_rectangle(x1 + 10, y1 + 10, 75, 13)
+		draw_theme_color()
+		if (language != 1) draw_text_dynamic(x1 + 11, y1 + 10, "Reference")
+		else draw_text_dynamic(x1 + 11, y1 + 10, "参考音频")
+		draw_theme_color()
+		// Vol
+		c = ((dragvolb = -2 && window = w_dragvol) || (mouse_rectangle(x1 + 88, y1 + 5, 16, 25) && window = 0))
+		a = current_song.reference_volume
+		if(theme != 3) {
+		draw_sprite_ext(spr_volume, a / 30, x1 + 91, y1 + 11 - c * 5, 1, 1, 0, iconcolor, 0.7)
 		} else {
-			current_song.layervol[dragvolb] = dragvol
+		if (!hires || theme != 3) {
+			draw_sprite_ext(spr_volume_f, !fdark, x1 + 91, y1 + 11 - c * 5, 1, 1, 0, iconcolor, 1)
+			draw_sprite_ext(spr_volume_f, a / 30 + 2, x1 + 91, y1 + 11 - c * 5, 1, 1, 0, accent[6 - 2 * !fdark], 1)
+		} else {
+			draw_sprite_ext(spr_volume_f_hires, !fdark, x1 + 91, y1 + 11 - c * 5, 0.25, 0.25, 0, iconcolor, 1)
+			draw_sprite_ext(spr_volume_f_hires, a / 30 + 2, x1 + 91, y1 + 11 - c * 5, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
 		}
-		if (current_song.layervol[dragvolb] != prev) current_song.changed = 1
-		if (!mouse_check_button(mb_left)) {
-		    window = w_releasemouse
+		}
+		if (language != 1) popup_set(x1 + 90, y1 + 5, 12, 17, "Volume of reference audio: " + string(a) + "%\n(Click and drag to change)")
+		else popup_set(x1 + 90, y1 + 5, 12, 17, "参考音频的音量: " + string(a) + "%\n（拖拽来修改）")
+		if (c) {
+		draw_theme_font(font_small)
+		    draw_set_halign(fa_center)
+		    draw_text_dynamic(x1 + 98, y1 + 18, string(a) + "%")
+		    draw_set_halign(fa_left)
+		    draw_theme_font(font_main)
+		    curs = cr_size_ns
+		    if (mouse_check_button_pressed(mb_left)) {
+		        window = w_dragvol
+		        dragvolb = -2
+		        dragvol = current_song.reference_volume
+		    }
+		}
+		// Stereo
+		c = ((dragstereob = -2 && window = w_dragstereo) || (mouse_rectangle(x1 + 108, y1 + 5, 16, 25) && window = 0))
+		a = current_song.reference_offset
+		if (theme != 3) {
+		draw_sprite_ext(spr_stereo, (median(-2000, a, 2000) + 500) / 1000 + 2, x1 + 110, y1 + 11 - c * 5, 1, 1, 0, iconcolor, 0.7)
+		} else {
+		if (!hires || theme != 3) {
+			draw_sprite_ext(spr_stereo_f, !fdark, x1 + 110, y1 + 11 - c * 5, 1, 1, 0, iconcolor, 1)
+			draw_sprite_ext(spr_stereo_f, (median(-2000, a, 2000) + 500) / 1000 + 4, x1 + 110, y1 + 11 - c * 5, 1, 1, 0, accent[6 - 2 * !fdark], 1)
+		} else {
+			draw_sprite_ext(spr_stereo_f_hires, !fdark, x1 + 110, y1 + 11 - c * 5, 0.25, 0.25, 0, iconcolor, 1)
+			draw_sprite_ext(spr_stereo_f_hires, (median(-2000, a, 2000) + 500) / 1000 + 4, x1 + 110, y1 + 11 - c * 5, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
+		}
+		}
+		var stereostr = string(a)
+		if (language != 1) popup_set(x1 + 110, y1 + 5, 12, 17, "Reference offset: " + stereostr + " ms\n(Click and drag to change)")
+		else popup_set(x1 + 110, y1 + 5, 12, 17, "参考音频偏移: " + stereostr + " 毫秒\n（拖拽来修改）")
+		if (c) {
+		    draw_theme_font(font_small)
+		    draw_set_halign(fa_center)
+			draw_text_dynamic(x1 + 116, y1 + 18, string(a) + " ms")
+		    draw_set_halign(fa_left)
+		    draw_theme_font(font_small)
+		    curs = cr_size_ns
+		    if (mouse_check_button_pressed(mb_left)) {
+		        window = w_dragstereo
+		        dragstereob = -2
+		        dragstereo = current_song.reference_offset
+		    }
+		}
+		// Lock button
+		p = (current_song.reference_option = 0)
+		if (draw_layericon(0, x1 + 126 - !realvolume-realstereo * 10, y1 + 8, condstr(language != 1, "Mute reference audio", "静音参考音频"), 0, p)) {
+		    if (p) {
+				current_song.reference_option = 2; 
+				if (playing) {
+					if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
+						current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
+						audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
+						audio_sound_set_track_position(current_song.reference_sound, current_song.marker_pos / current_song.tempo + current_song.reference_offset / 1000)
+					}
+				}
+		    } else {
+				current_song.reference_option = 0; 
+				if (audio_is_playing(current_song.reference_sound)) audio_stop_sound(current_song.reference_sound)
+		    }
+		}
+		// Solo button
+		p = (current_song.reference_option = 1)
+		if (draw_layericon(1, x1 + 144 - !realvolume-realstereo * 10, y1 + 8, condstr(language != 1, "Solo reference audio", "独奏参考音频"), 0, p)) {
+		    if (p) {
+				current_song.reference_option = 2; 
+				if (playing) {
+					if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
+						current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
+						audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
+						audio_sound_set_track_position(current_song.reference_sound, current_song.marker_pos / current_song.tempo + current_song.reference_offset / 1000)
+					}
+				}
+		    } else {
+				current_song.reference_option = 1; 
+				if (playing) {
+					if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
+						current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
+						audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
+						audio_sound_set_track_position(current_song.reference_sound, current_song.marker_pos / current_song.tempo + current_song.reference_offset / 1000)
+					}
+				}
+		    }
+		}
+		// Remove layer
+		if (draw_layericon(4, x1 + 162 - !realvolume-realstereo * 10, y1 + 8, condstr(language != 1, "Remove reference audio\n(Click and drag to remove multiple layers)", "删除参考音频\n（拖拽可批量删除层）"), 0, 0)) {
+		    playing = 0
+			current_song.reference_option = 0; 
+			if (audio_is_playing(current_song.reference_sound)) audio_stop_sound(current_song.reference_sound)
+			audio_destroy_stream(current_song.reference_audio)
+			current_song.reference_audio_file = ""
+			current_song.reference_audio = -1
+			current_song.reference_option = 2
+			current_song.reference_offset = 0
+			current_song.reference_sound = -1
+			current_song.reference_volume = 100
+		}
+		draw_theme_color()
+		draw_theme_font(font_main)
+		draw_text_dynamic(x1 + 275, y1 + 10, condstr(language != 1, "Loaded file: ", "已加载音频: ") + current_song.reference_audio_file)
+	}
+	if (window = w_dragvol) {
+		if (dragvolb != -2) {
+			prev = current_song.layervol[dragvolb]
+			dragvol += (mouse_yprev - mouse_y)
+			dragvol = median(0, dragvol, 100)
+			if (!keyboard_check(vk_shift)) {
+				current_song.layervol[dragvolb] = floor(dragvol / 10) * 10
+			} else {
+				current_song.layervol[dragvolb] = dragvol
+			}
+			if (current_song.layervol[dragvolb] != prev) current_song.changed = 1
+			if (!mouse_check_button(mb_left)) {
+			    window = w_releasemouse
+			}
+		} else {
+			dragvol += (mouse_yprev - mouse_y)
+			dragvol = median(0, dragvol, 100)
+			if (!keyboard_check(vk_shift)) {
+				current_song.reference_volume = floor(dragvol / 10) * 10
+			} else {
+				current_song.reference_volume = dragvol
+			}
+			if (audio_is_playing(current_song.reference_audio)) audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
+			if (!mouse_check_button(mb_left)) {
+			    window = w_releasemouse
+			}
 		}
 	}
 	if (window = w_dragstereo) {
-		prev = current_song.layerstereo[dragstereob]
-		dragstereo += (mouse_yprev - mouse_y)
-		dragstereo = median(0, dragstereo, 200)
-		if (!keyboard_check(vk_shift)) {
-			current_song.layerstereo[dragstereob] = floor(dragstereo / 10) * 10
+		if (dragstereob != -2) {
+			prev = current_song.layerstereo[dragstereob]
+			dragstereo += (mouse_yprev - mouse_y)
+			dragstereo = median(0, dragstereo, 200)
+			if (!keyboard_check(vk_shift)) {
+				current_song.layerstereo[dragstereob] = floor(dragstereo / 10) * 10
+			} else {
+				current_song.layerstereo[dragstereob] = dragstereo
+			}
+			if (current_song.layerstereo[dragstereob] != prev) current_song.changed = 1
+			if (!mouse_check_button(mb_left)) {
+			    window = w_releasemouse
+			}
 		} else {
-			current_song.layerstereo[dragstereob] = dragstereo
-		}
-		if (current_song.layerstereo[dragstereob] != prev) current_song.changed = 1
-		if (!mouse_check_button(mb_left)) {
-		    window = w_releasemouse
+			dragstereo += (mouse_yprev - mouse_y)
+			current_song.reference_offset = dragstereo
+			if (!mouse_check_button(mb_left)) {
+			    window = w_releasemouse
+			}
 		}
 	}
 	// Macro Bar
@@ -1464,14 +1620,20 @@ function control_draw() {
 			                             icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+
 			                             icon(icons.SAVE)+get_hotkey("save_song") + "$Save song|"+
 			                             icon(icons.SAVE_AS)+"Save song as a new file...|"+
-										 inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "Save song with custom sounds...|Save options...|Restore unsaved files...|-|"+
-			                             inactive(current_song.selected != 0)+"Import pattern...|"+
-										 inactive(current_song.selected = 0)+"Export pattern...|"+"Import from MIDI...|"+inactive(os_type != os_windows)+"Import from schematic...|-|"+
-			                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Export as audio track...|"+
-			                             inactive(current_song.totalblocks = 0) + "Export as schematic...|"+
-			                             inactive(current_song.totalblocks = 0) + "Export as track schematic...|"+
-			                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Export as branch schematic...|"+
-										 inactive(current_song.totalblocks = 0) + "Export as data pack...|-|" + 
+										 "Save options...|Restore unsaved files...|-|"+
+										 "Import...|\\|" + 
+											inactive(current_song.selected != 0)+"Pattern...|"+
+											"MIDI...|"+
+											inactive(os_type != os_windows)+"Schematic...|"+
+											"Reference audio...|/|"+
+										 "Export...|\\|" +
+											inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "Song with custom sounds...|" +
+											inactive(current_song.selected = 0)+"Pattern...|" +
+											inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Audio track...|"+
+											inactive(current_song.totalblocks = 0) + "Schematic...|"+
+											inactive(current_song.totalblocks = 0) + "Track schematic...|"+
+											inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Branch schematic...|"+
+											inactive(current_song.totalblocks = 0) + "Data pack...|/|-|" + 
 			                             get_hotkey("exit") + "$Exit")
 				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import from schematic...|-|" + get_hotkey("exit") + "$Exit")
 							
@@ -1553,14 +1715,20 @@ function control_draw() {
 			                             icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+
 			                             icon(icons.SAVE)+get_hotkey("save_song") + "$保存歌曲|"+
 			                             icon(icons.SAVE_AS)+"另存为|"+
-										 inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + "连带自定义音色一起导出......|保存选项......|恢复未保存的歌曲......|-|" +
-			                             inactive(current_song.selected != 0)+"导入片段......|"+
-	                                     inactive(current_song.selected = 0)+"导出片段......|"+"从 MIDI 文件导入......|"+inactive(os_type != os_windows)+"从 Schematic 文件导入......|-|"+
-			                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "导出音频文件......|"+
-			                             inactive(current_song.totalblocks = 0) + "导出为 schematic......|"+
-			                             inactive(current_song.totalblocks = 0) + "导出为直轨 schematic......|"+
-			                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "导出为分支 schematic......|"+
-										 inactive(current_song.totalblocks = 0) + "导出为数据包......|-|" +
+										 "保存选项......|恢复未保存的歌曲......|-|" +
+										 "导入......|\\|"+
+											inactive(current_song.selected != 0)+"片段......|"+
+											"MIDI 文件......|"+
+											inactive(os_type != os_windows)+"Schematic 文件......|"+
+											"参考音频......|/|"+
+										 "导出......|\\|"+
+											inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "带自定义音色的歌曲......|"+
+											inactive(current_song.selected = 0)+"片段......|"+
+											inactive(current_song.totalblocks = 0 || os_type != os_windows) + "音频文件......|"+
+											inactive(current_song.totalblocks = 0) + "结构......|"+
+											inactive(current_song.totalblocks = 0) + "直轨结构......|"+
+											inactive(current_song.totalblocks = 0 || os_type != os_windows) + "分支结构......|"+
+											inactive(current_song.totalblocks = 0) + "数据包......|/|-|" +
 			                             get_hotkey("exit") + "$退出")
 				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|从 Schematic 文件导入......|-|" + get_hotkey("exit") + "$退出")
 							
@@ -1825,35 +1993,37 @@ function control_draw() {
 			play_sound(soundding, 45, 100, 100, 0)
 		}
 		xx += 8
+		var mastervolprev = mastervol
 		mastervol = floor(draw_dragbar(mastervol, 1, xx, yy + 10, 100, 2, clamp(mouse_x - xx, 0, 100), condstr(language != 1, "Master Volume: ", "主音量：") + string(floor(mastervol * 100)), 0) * 100 + 0.5) / 100
+		if (mastervolprev != mastervol && audio_is_playing(current_song.reference_audio)) audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
 		if (mouse_rectangle(xx - 11, yy, 122, 22) && window = 0) {
 			volume_scroll = 1
-			if (mouse_wheel_up() && mastervol + 0.02 <= 1) mastervol += 0.02
-			if (mouse_wheel_down() && mastervol - 0.02 >= 0) mastervol -= 0.02
+			if (mouse_wheel_up() && mastervol + 0.02 <= 1) {mastervol += 0.02; if (audio_is_playing(current_song.reference_audio)) audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)}
+			if (mouse_wheel_down() && mastervol - 0.02 >= 0) {mastervol -= 0.02; if (audio_is_playing(current_song.reference_audio)) audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)}
 		} else {
 			volume_scroll = 0
 		}
 		draw_set_alpha(1)
-		if (!isplayer) {
-			xx += 120
-			if (draw_button2(xx, yy, 90, condstr(language != 1, "Reference audio", "参考音频"))) {
-				reference_audio_file = string(get_open_filename_ext("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
-				reference_audio = audio_create_stream(reference_audio_file)
-				if (reference_audio < 0) {
-				    if (language != 1) message("Couldn't load the file", "Error")
-				    else message("找不到文件", "错误")
-					reference_audio_file = ""
-					reference_audio = -1
-				}
-			}
-			draw_theme_color()
-			xx += 100
-			if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Offset (ms): ", "偏移量（毫秒）: "))
-			xx += 90
-			if (reference_audio >= 0) reference_offset = median(0, draw_dragvalue(13, xx, yy + 5, reference_offset, 0.5), 1000000)
-			xx += 30
-			if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Loaded file: ", "已加载音频: ") + reference_audio_file)
-		}
+		//if (!isplayer) {
+		//	xx += 120
+		//	if (draw_button2(xx, yy, 90, condstr(language != 1, "Reference audio", "参考音频"))) {
+		//		reference_audio_file = string(get_open_filename_ext("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
+		//		reference_audio = audio_create_stream(reference_audio_file)
+		//		if (reference_audio < 0) {
+		//		    if (language != 1) message("Couldn't load the file", "Error")
+		//		    else message("找不到文件", "错误")
+		//			reference_audio_file = ""
+		//			reference_audio = -1
+		//		}
+		//	}
+		//	draw_theme_color()
+		//	xx += 100
+		//	if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Offset (ms): ", "偏移量（毫秒）: "))
+		//	xx += 90
+		//	if (reference_audio >= 0) reference_offset = median(0, draw_dragvalue(13, xx, yy + 5, reference_offset, 0.5), 1000000)
+		//	xx += 30
+		//	if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Loaded file: ", "已加载音频: ") + reference_audio_file)
+		//}
 
 		// Compatible
 		if (!isplayer) {

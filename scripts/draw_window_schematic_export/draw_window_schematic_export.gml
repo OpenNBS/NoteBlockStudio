@@ -16,7 +16,7 @@ function draw_window_schematic_export() {
 	}
 	draw_theme_font(font_main_bold)
 	if (language != 1) draw_text_dynamic(x1 + 8, y1 + 8, "Schematic Export")
-	else draw_text_dynamic(x1 + 8, y1 + 8, "导出 Schematic")
+	else draw_text_dynamic(x1 + 8, y1 + 8, "导出结构")
 	draw_theme_font(font_main)
 
 	b = 8
@@ -30,7 +30,7 @@ function draw_window_schematic_export() {
 	nsel = -1
 	menun = -1
 	if (language != 1) {if (draw_checkbox(x1 + 12, y1 + 374, sch_exp_remember, "Remember changes", "Whether to use these settings the\nnext time you export a Schematic.", false, true) && wmenu = 0) sch_exp_remember=!sch_exp_remember}
-	else {if (draw_checkbox(x1 + 12, y1 + 374, sch_exp_remember, "记住我的更改", "下次导出 Schematic 时是否使用同样的设定。", false, true) && wmenu = 0) sch_exp_remember=!sch_exp_remember}
+	else {if (draw_checkbox(x1 + 12, y1 + 374, sch_exp_remember, "记住我的更改", "下次导出结构时是否使用同样的设定。", false, true) && wmenu = 0) sch_exp_remember=!sch_exp_remember}
 
 	if (theme = 1) draw_window(x1 + 4, y1 + 45, x1 + 496 + 50, y1 + 364)
 	for (a = 0; a < 2; a += 1) {
@@ -146,8 +146,8 @@ function draw_window_schematic_export() {
 		draw_text_dynamic(x1 + 170, y1 + 220, "每行中继器个数:")
 	    sch_exp_notesperrow = median(5, draw_dragvalue(5, x1 + 300, y1 + 220, sch_exp_notesperrow, 1), 100)
 	    sch_exp_notesperrow = max(5, sch_exp_notesperrow)
-	    popup_set_window(x1 + 170, y1 + 220, 150, 16, "Schematic 里每行中继器的个数。拖拽来更改。")
-		if (draw_checkbox(x1 + 170, y1 + 240, sch_exp_includelocked, "包括已静音的层", "是否在 Schematic 内包括已静音的层。", false, true)) sch_exp_includelocked=!sch_exp_includelocked
+	    popup_set_window(x1 + 170, y1 + 220, 150, 16, "结构里每行中继器的个数。拖拽来更改。")
+		if (draw_checkbox(x1 + 170, y1 + 240, sch_exp_includelocked, "包括已静音的层", "是否在结构内包括已静音的层。", false, true)) sch_exp_includelocked=!sch_exp_includelocked
 	    if (draw_checkbox(x1 + 170, y1 + 260, sch_exp_compress, "压缩每层", "压缩每层以节省竖向空间。", false, true)) sch_exp_compress=!sch_exp_compress
 		if (sch_exp_layout = 0 || sch_exp_layout = 1) {
 	        if (draw_checkbox(x1 + 170, y1 + 280, sch_exp_minecart, "包括矿车轨道", "包括一个跟随歌曲进度的矿车轨道。", false, true)) sch_exp_minecart=!sch_exp_minecart
@@ -305,9 +305,9 @@ function draw_window_schematic_export() {
 	} else {
 	if (draw_button2(x1 + 470, y1 + 368, 72, "导出") && wmenu = 0) {
 	    if (sch_exp_totalblocks[sch_exp_includelocked] <= 0) {
-	        message("没有方块可以导出！", "导出 Schematic")
+	        message("没有方块可以导出！", "导出结构")
 	    } else if (schematic_length() >= 2000 || schematic_width() >= 2000 || schematic_height() >= 256) {
-	        message("这个 Schematic 太大了。大小限制为 2000x2000x256。\n可以更改“每行中继器个数”来减小大小。", "错误")
+	        message("这个结构太大了。大小限制为 2000x2000x256。\n可以更改“每行中继器个数”来减小大小。", "错误")
 	    } else {
 	        schematic_export()
 	    }

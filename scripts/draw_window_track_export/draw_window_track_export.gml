@@ -30,7 +30,7 @@ function draw_window_track_export() {
 	nsel = -1
 	menun = -1
 	if (language != 1) {if (draw_checkbox(x1 + 12, y1 + 374, sch_exp_remember, "Remember changes", "Whether to use these settings the\nnext time you export a Schematic.", false, true) && wmenu = 0) sch_exp_remember=!sch_exp_remember}
-	else {if (draw_checkbox(x1 + 12, y1 + 374, sch_exp_remember, "记住我的更改", "下次导出 Schematic 时是否使用同样的设定。", false, true) && wmenu = 0) sch_exp_remember=!sch_exp_remember}
+	else {if (draw_checkbox(x1 + 12, y1 + 374, sch_exp_remember, "记住我的更改", "下次导出结构时是否使用同样的设定。", false, true) && wmenu = 0) sch_exp_remember=!sch_exp_remember}
 
 	if (theme = 1) draw_window(x1 + 4, y1 + 45, x1 + 496 + 50, y1 + 364)
 	for (a = 0; a < 2; a += 1) {
@@ -116,7 +116,7 @@ function draw_window_track_export() {
 	    draw_radiobox(x1 + 32, y1 + 240, 1, "普通过道", "生成过道延伸到歌曲末尾。", 1)
 	    draw_text_dynamic(x1 + 16, y1 + 280, "导出为 Minecraft 版本:")
 	    draw_radiobox(x1 + 32, y1 + 300, 1, "1.13+", "创建一个兼容 1.13+ 的结构方块文件。", 1)
-		if (draw_checkbox(x1 + 170, y1 + 240, sch_exp_includelocked, "包括已静音的层", "是否在 Schematic 内包括已静音的层。", false, true)) sch_exp_includelocked=!sch_exp_includelocked
+		if (draw_checkbox(x1 + 170, y1 + 240, sch_exp_includelocked, "包括已静音的层", "是否在结构内包括已静音的层。", false, true)) sch_exp_includelocked=!sch_exp_includelocked
 		if (draw_checkbox(x1 + 170, y1 + 260, command_block, "使用命令方块", "是否使用命令方块代替音符盒以获得更广音域。\n（需要更多音符资源包）", false, true)) command_block=!command_block
 	    draw_text_dynamic(x1 + 380, y1 + 220, "音符盒:")
 	    draw_text_dynamic(x1 + 380, y1 + 220 + 16 * 1, "中继器:")
@@ -244,7 +244,7 @@ function draw_window_track_export() {
 	} else {
 	if (draw_button2(x1 + 470, y1 + 368, 72, "导出") && wmenu = 0) {
 	    if (sch_exp_totalblocks[sch_exp_includelocked] <= 0) {
-	        message("没有方块可以导出！", "导出 Schematic")
+	        message("没有方块可以导出！", "导出结构")
 	    } else {
 	        track_export()
 	    }

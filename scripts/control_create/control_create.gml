@@ -326,12 +326,6 @@ function control_create() {
 	for (a = 0; a < 10000; a += 1) text_exists[a] = 0
 	currspeed = 0
 	taskbar = 1
-	
-	reference_audio_file = ""
-	reference_audio = -1
-	reference_option = 0
-	reference_offset = 0
-	reference_sound = -1
 
 	// Note blocks
 	midi_devices = 0

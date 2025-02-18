@@ -111,3 +111,10 @@ for (var i = 0; i < obj_controller.first_custom_index; i++) ds_list_add(instrume
 instrument = instrument_list[| 0]
 insbox_start = 0
 user_instruments = 0
+
+reference_audio_file = ""
+reference_audio = -1
+reference_option = 2
+reference_offset = 0
+reference_sound = -1
+reference_volume = 100

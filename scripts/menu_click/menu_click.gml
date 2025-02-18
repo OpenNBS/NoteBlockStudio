@@ -43,25 +43,42 @@ function menu_click(argument0) {
 	        }
 	        if (sel = b + 4) save_song(songs[song].filename)
 	        if (sel = b + 5) save_song("")
-			if (sel = b + 6) save_song_zip("")
-			if (sel = b + 7) window = w_saveoptions
-			if (sel = b + 8) open_url(backup_directory)
+			if (sel = b + 6) window = w_saveoptions
+			if (sel = b + 7) open_url(backup_directory)
 	        if (sel = b + 9) pattern_import("")
-	        if (sel = b + 10) pattern_export("")
-	        if (sel = b + 11) open_midi("")
-	        if (sel = b + 12) open_schematic("")
-	        if (sel = b + 13) window = w_mp3_export
-	        if (sel = b + 14) {
+	        if (sel = b + 10) open_midi("")
+	        if (sel = b + 11) open_schematic("")
+	        if (sel = b + 12) {
+				audio_destroy_stream(songs[song].reference_audio)
+				songs[song].reference_audio_file = ""
+				songs[song].reference_audio = -1
+				songs[song].reference_option = 2
+				songs[song].reference_offset = 0
+				songs[song].reference_sound = -1
+				songs[song].reference_volume = 100
+				songs[song].reference_audio_file = string(get_open_filename_ext("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
+				songs[song].reference_audio = audio_create_stream(songs[song].reference_audio_file)
+				if (songs[song].reference_audio < 0) {
+				    if (language != 1) message("Couldn't load the file", "Error")
+				    else message("文件加载失败", "错误")
+					songs[song].reference_audio_file = ""
+					songs[song].reference_audio = -1
+				}
+			}
+			if (sel = b + 14) save_song_zip("")
+	        if (sel = b + 15) pattern_export("")
+	        if (sel = b + 16) window = w_mp3_export
+	        if (sel = b + 17) {
 	            if (calculate_size()) window = w_schematic_export
 	        }
-	        if (sel = b + 15) {
+	        if (sel = b + 18) {
 	            if (calculate_size()) window = w_track_export
 	        }
-	        if (sel = b + 16) {
+	        if (sel = b + 19) {
 	            if (calculate_size()) window = w_branch_export
 	        }
-			if(sel = b + 17) window = w_datapack_export
-	        if (sel = b + 18) game_end()
+			if(sel = b + 20) window = w_datapack_export
+	        if (sel = b + 21) game_end()
 	        break
 	    }
 	    case "edit": {
