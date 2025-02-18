@@ -572,6 +572,8 @@ function control_create() {
 		can_draw_mica = 0
 		if (language != 1) message("Note Block Studio encountered an error creating the background sprite. Transparency effects will be disabled.\nThis usually happens when your desktop wallpaper is either too tall or too long.", "Note Block Studio")
 		else message("Note Block Studio 在创建背景贴图时遇到错误，透明效果将被关闭。\n这种情况一般是由于您的桌面壁纸图片过高或过长。", "Note Block Studio")
+		acrylic_successful = 1
+		save_settings()
 	}
 	if (show_welcome) window = w_greeting
 	draw_accent_init()
@@ -638,7 +640,7 @@ function control_create() {
 	}
 	
 	// Register as nbs:// url protocol handler
-	register_url_protocol()
+	if (os_type = os_windows) register_url_protocol()
 	
 	// Init wallpaper
 	change_theme()
