@@ -792,9 +792,8 @@
     {"CopyToMask":-1,"filePath":"datafiles/Data","resourceVersion":"1.0","name":"7zzs","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles/Data","resourceVersion":"1.0","name":"7zz","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles/Data","resourceVersion":"1.0","name":"entitlements.plist","resourceType":"GMIncludedFile",},
-    {"CopyToMask":-1,"filePath":"datafiles/Data/Sounds","resourceVersion":"1.0","name":".DS_Store","resourceType":"GMIncludedFile",},
-    {"CopyToMask":-1,"filePath":"datafiles/Data","resourceVersion":"1.0","name":".DS_Store","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":".DS_Store","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles/Fonts","resourceVersion":"1.0","name":".DS_Store","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
     "IDEVersion": "2022.6.1.26",

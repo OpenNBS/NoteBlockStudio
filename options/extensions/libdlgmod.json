@@ -1,0 +1,9 @@
+{
+  "extensionId": {
+    "name": "libdlgmod",
+    "path": "extensions/libdlgmod/libdlgmod.yy"
+  },
+  "resourceVersion": "1.0",
+  "resourceType": "GMExtensionConfigSet",
+  "configurables": null
+}

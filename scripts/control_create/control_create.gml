@@ -52,6 +52,10 @@ function control_create() {
 	window_set_min_height(500)
 	if (os_browser != browser_not_a_browser) window_set_size(browser_width - 5, browser_height - 5)
 	window_scale = get_default_window_scale()
+	if (os_type = os_macosx){
+		if (window_scale > 1.1) window_scale = 2
+	    else window_scale = 1
+	}
 	if (window_scale > 2 && is_mobile()) window_scale = 2
 	var temp_font_size = floor(15 * window_scale * (1 + (os_type != os_macosx || window_scale = 1)))
 	if (temp_font_size > 40) temp_font_size = 40
@@ -91,7 +95,6 @@ function control_create() {
 	last_icon = -1
 	icon_display = 1
 	hires = (window_scale > 1.25)
-	if (os_type = os_macosx) hires = 0
 	surface_depth_disable(true)
 	donate_banner = 1
 	donate_banner_time = -1
@@ -574,6 +577,17 @@ function control_create() {
 		else message("Note Block Studio 在创建背景贴图时遇到错误，透明效果将被关闭。\n这种情况一般是由于您的桌面壁纸图片过高或过长。", "Note Block Studio")
 		acrylic_successful = 1
 		save_settings()
+	}
+	if (window_scale = 0) {
+		if (language != 1) message("Note Block Studio detected that the window scale has been set to 0. It has been reverted to default.\nYou may need to restart Note Block Studio for a smooth experience.", "Note Block Studio")
+		else message("Note Block Studio 检测到窗口缩放设置为0，该设置已经被还原。您可能需要重新打开 Note Block Studio 来获得流畅体验。", "Note Block Studio")
+		window_scale = get_default_window_scale()
+		if (os_type = os_macosx){
+			if (window_scale > 1.1) window_scale = 2
+		    else window_scale = 1
+		}
+		if (window_scale > 2 && is_mobile()) window_scale = 2
+		hires = (window_scale > 1.25)
 	}
 	if (show_welcome) window = w_greeting
 	draw_accent_init()

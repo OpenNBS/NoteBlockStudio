@@ -146,7 +146,7 @@ function control_draw() {
 	        }
 	        if (mouse_check_button_released(mb_left) && aa = 0) {
 	            current_song.marker_pos = current_song.starta + (mouse_x - (x1 + 2)) / 32
-	        }
+	        } 
 	        if (mouse_check_button(mb_left)) {
 	            if (current_song.starta + floor((mouse_x - (x1 + 2)) / 32)<>timeline_pressa && timeline_pressa > -1) {
 	                window = w_dragsection_end

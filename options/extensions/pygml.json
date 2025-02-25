@@ -1,0 +1,9 @@
+{
+  "extensionId": {
+    "name": "pygml",
+    "path": "extensions/pygml/pygml.yy"
+  },
+  "resourceVersion": "1.0",
+  "resourceType": "GMExtensionConfigSet",
+  "configurables": null
+}
