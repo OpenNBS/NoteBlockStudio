@@ -318,6 +318,11 @@ function draw_window_schematic_export() {
 	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "使用默认值") && wmenu = 0) {
 	    if (question("你确定吗？", "确定")) reset_schematic_export(1)
 	}
+	if (structure = true) {
+		if (draw_button2(x1 + 470 - 80 * 4, y1 + 368, 152, "保存更多音符资源包", !command_block)) {
+			datapack_getextranotes()
+		}
+	}
 	}
 	if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
 
