@@ -2540,7 +2540,7 @@ function control_draw() {
 				draw_set_alpha(0.5)
 				draw_separator(7 + (tabwidth - 1) + tab * (tabwidth - 1) + 1, 24 + 8)
 				draw_set_alpha(1)
-				draw_sprite_ext(spr_closetab, 2, 7 + (tabwidth - 1) + tab * (tabwidth - 1) - 35 + 12, 24 + 5 + 7, 1, 1, 0, -1 + (!fdark), 1)
+				draw_sprite_ext(spr_closetab, 2 + (songs[tab].changed), 7 + (tabwidth - 1) + tab * (tabwidth - 1) - 35 + 12, 24 + 5 + 7, 1, 1, 0, -1 + (!fdark), 1)
 			}
 			if (taba = 1 && mouse_check_button_released(mb_right)) {
 				menutab = tab
@@ -2550,13 +2550,22 @@ function control_draw() {
 			draw_theme_color()
 			draw_theme_font(font_main)
 			tab_str = songs[tab].song_title
-			if (string_width_dynamic(tab_str) > (tabwidth - 1) - 20 - 20 - 15 * (theme = 3)) {
-				while (tab_str != "" && string_width_dynamic(tab_str) > (tabwidth - 1) - 20 - 15 * (theme = 3) - 20 - string_width_dynamic("...") - string_width_dynamic("*") * (songs[tab].changed && songs[tab].filename != "" && songs[tab].filename != "-player")) {
-					tab_str = string_delete(tab_str, string_length(tab_str), 1)
+			if (theme != 3) {
+				if (string_width_dynamic(tab_str) > (tabwidth - 1) - 20 - 20 - 15 * (theme = 3)) {
+					while (tab_str != "" && string_width_dynamic(tab_str) > (tabwidth - 1) - 20 - 15 * (theme = 3) - 20 - string_width_dynamic("...") - string_width_dynamic("*") * (songs[tab].changed && songs[tab].filename != "" && songs[tab].filename != "-player")) {
+						tab_str = string_delete(tab_str, string_length(tab_str), 1)
+					}
+					tab_str += "..."
 				}
-				tab_str += "..."
+				tab_str += condstr(songs[tab].changed && songs[tab].filename != "" && songs[tab].filename != "-player", "*")
+			} else {
+				if (string_width_dynamic(tab_str) > (tabwidth - 1) - 20 - 20 - 15 * (theme = 3)) {
+					while (tab_str != "" && string_width_dynamic(tab_str) > (tabwidth - 1) - 20 - 15 * (theme = 3) - 20 - string_width_dynamic("...")) {
+						tab_str = string_delete(tab_str, string_length(tab_str), 1)
+					}
+					tab_str += "..."
+				}
 			}
-			tab_str += condstr(songs[tab].changed && songs[tab].filename != "" && songs[tab].filename != "-player", "*")
 			draw_text_dynamic(16 + tab * (tabwidth - 1) - 1, song_tab_texty, tab_str)
 			
 			if (taba = 2 && (mouse_x != mouse_xprev || mouse_y != mouse_yprev)) {
