@@ -1,6 +1,6 @@
 function draw_window_instruments() {
 	// draw_window_instruments()
-	var x1, y1, a, b, c, str, menun, menua, menub, prev;
+	var x1, y1, a, b, c, str, menun, menua, menub, prev, tempo_changer_exists;
 	var cursong = songs[song]
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
@@ -26,6 +26,14 @@ function draw_window_instruments() {
 	    if (theme != 3) draw_area(x1 + 11, y1 + 65, x1 + 535, y1 + 312)
 	    else draw_area(x1 + 11, y1 + 67, x1 + 535, y1 + 312)
 	}
+	tempo_changer_exists = 0
+	for (a = 0; a < ds_list_size(songs[song].instrument_list); a++) {
+		if (songs[song].instrument_list[| a].name == "Tempo Changer") {
+			tempo_changer_exists = 1
+			break
+		}
+	}
+	if (mouse_rectangle(x1 + 11, y1 + 67, 524, 245) && mouse_check_button_released(mb_right)) show_menu_ext("add_tempo_changer", mouse_x, mouse_y, inactive(tempo_changer_exists) + condstr(language != 1, "Add tempo changer", "添加变速器"))
 	if (language != 1) {
 	if (draw_button2(x1 + 455, y1 + 9, 80, "Import", 0, 1)) load_instruments("")
 	if (draw_button2(x1 + 455, y1 + 36, 80, "Open Folder", 0, 1)) open_url(sounds_directory)

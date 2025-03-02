@@ -110,6 +110,7 @@ function macros() {
 #macro w_track_export 46
 #macro w_dragtab 47
 #macro w_sound_import 48
+#macro w_edit_tempo_changer 49
 
 #macro br "\r\n"
 

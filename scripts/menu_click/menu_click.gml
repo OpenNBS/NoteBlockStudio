@@ -456,6 +456,10 @@ function menu_click(argument0) {
 			update_asset_index_menu();
 			break;
 		}
+		case "add_tempo_changer": {
+			songs[song].changed = true
+		    ds_list_add(songs[song].instrument_list, new_instrument("Tempo Changer", "", true))
+		}
 	}
 	mouse_clear(mb_left)
 	io_clear()

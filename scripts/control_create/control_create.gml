@@ -363,6 +363,11 @@ function control_create() {
 	select_pressb = -1
 
 	selection_copied = ""
+	
+	tempo_changer_sel_x = -1
+	tempo_changer_sel_y = -1
+	tempo_changer_set_tempo = -1
+	tempo_changer_sel_ins = -1
 
 	// Layers
 	show_layers = 1
