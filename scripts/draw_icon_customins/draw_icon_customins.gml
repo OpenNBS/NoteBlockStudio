@@ -1,5 +1,5 @@
 function draw_icon_customins(xx, yy, ins, alpha, large, scale) {
-	var display, num1, num2, color1, color2;
+	var display, num1, num2, color1, color2, ee;
 	display = (ins + 1) % 100
 	num1 = floor(display / 10)
 	num2 = display % 10
@@ -8,15 +8,18 @@ function draw_icon_customins(xx, yy, ins, alpha, large, scale) {
 	if (large) {
 		if (hires && theme = 3) gpu_set_texfilter(false)
 		draw_sprite_ext(spr_instrumenticons, first_custom_index, xx, yy, 1, 1, 0, color1, alpha)
-		if (songs[song].instrument_list[| ins + first_custom_index].name == "Tempo Changer") {
-			draw_sprite_ext(spr_tempo_changer_label_mc, 0, xx + 3, yy + 3, 1, 1, 0, color2, alpha)
-			draw_sprite_ext(spr_tempo_changer_label_mc, 0, xx + 2, yy + 2, 1, 1, 0, -1, alpha)
-		} else {
-			draw_sprite_ext(spr_numbers_mc, num1, xx + 3, yy + 5, 1, 1, 0, color2, alpha)
-			draw_sprite_ext(spr_numbers_mc, num2, xx + 9, yy + 5, 1, 1, 0, color2, alpha)
-			draw_sprite_ext(spr_numbers_mc, num1, xx + 2, yy + 4, 1, 1, 0, -1, alpha)
-			draw_sprite_ext(spr_numbers_mc, num2, xx + 8, yy + 4, 1, 1, 0, -1, alpha)
+		try {
+			if (songs[song].instrument_list[| ins + first_custom_index].name == "Tempo Changer") {
+				draw_sprite_ext(spr_tempo_changer_label_mc, 0, xx + 3, yy + 3, 1, 1, 0, color2, alpha)
+				draw_sprite_ext(spr_tempo_changer_label_mc, 0, xx + 2, yy + 2, 1, 1, 0, -1, alpha)
+			} else {
+				draw_sprite_ext(spr_numbers_mc, num1, xx + 3, yy + 5, 1, 1, 0, color2, alpha)
+				draw_sprite_ext(spr_numbers_mc, num2, xx + 9, yy + 5, 1, 1, 0, color2, alpha)
+				draw_sprite_ext(spr_numbers_mc, num1, xx + 2, yy + 4, 1, 1, 0, -1, alpha)
+				draw_sprite_ext(spr_numbers_mc, num2, xx + 8, yy + 4, 1, 1, 0, -1, alpha)
+			}
 		}
+		catch (ee) {}
 		if (hires && theme = 3) gpu_set_texfilter(true)
 	} else {
 		if(theme != 3) {
@@ -31,15 +34,18 @@ function draw_icon_customins(xx, yy, ins, alpha, large, scale) {
 			}
 		}
 		if (hires && theme = 3) gpu_set_texfilter(false)
-		if (songs[song].instrument_list[| ins + first_custom_index].name == "Tempo Changer") {
-			draw_sprite_ext(spr_tempo_changer_label, 0, xx + 12, yy + 12, 1, 1, 0, color2, 1)
-			draw_sprite(spr_tempo_changer_label, 0, xx + 11, yy + 11)
-		} else {
-			draw_sprite_ext(spr_numbers, num1, xx + 12, yy + 13, 1, 1, 0, color2, 1)
-			draw_sprite_ext(spr_numbers, num2, xx + 16, yy + 13, 1, 1, 0, color2, 1)
-			draw_sprite(spr_numbers, num1, xx + 11, yy + 12)
-			draw_sprite(spr_numbers, num2, xx + 15, yy + 12)
+		try {
+			if (songs[song].instrument_list[| ins + first_custom_index].name == "Tempo Changer") {
+				draw_sprite_ext(spr_tempo_changer_label, 0, xx + 12, yy + 12, 1, 1, 0, color2, 1)
+				draw_sprite(spr_tempo_changer_label, 0, xx + 11, yy + 11)
+			} else {
+				draw_sprite_ext(spr_numbers, num1, xx + 12, yy + 13, 1, 1, 0, color2, 1)
+				draw_sprite_ext(spr_numbers, num2, xx + 16, yy + 13, 1, 1, 0, color2, 1)
+				draw_sprite(spr_numbers, num1, xx + 11, yy + 12)
+				draw_sprite(spr_numbers, num2, xx + 15, yy + 12)
+			}
 		}
+		catch (ee) {}
 		if (hires && theme = 3) gpu_set_texfilter(true)
 	}
 }
