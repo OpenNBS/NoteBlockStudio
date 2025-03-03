@@ -1128,7 +1128,7 @@ function control_draw() {
 		if (theme = 3 && acrylic && wpaperexist && can_draw_mica) draw_set_alpha(0.875)
 		draw_rectangle(0, y1 + 3, x1 + 1, rh, 0)
 		draw_rectangle(0, 0, rw, y1 + 2, 0)
-		draw_rectangle(x1 + 2, y1 + totalrows * 32 + 50, rw, rh, 0)
+		draw_rectangle(x1 + 2, y1 + totalrows * 32 + 50 - 15 * (current_song.reference_audio >= 0), rw, rh, 0)
 		draw_rectangle(x1 + totalcols * 32 + 18, y1 + 3, rw, y1 + totalrows * 32 + 49, 0)
 		draw_rectangle(x1 + totalcols * 32 + 2, y1 + totalrows * 32 + 32, x1 + totalcols * 32 + 2 + 17, y1 + totalrows * 32 + 32 + 18, 0)
 		draw_area(x1, y1, x1 + totalcols * 32 + 20, y1 + (totalrows + (current_song.reference_audio >= 0)) * 32 + 52)
