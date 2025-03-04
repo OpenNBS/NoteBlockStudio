@@ -302,6 +302,11 @@ function draw_window_schematic_export() {
 	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "Use default") && wmenu = 0) {
 	    if (question("Are you sure?", "Confirm")) reset_schematic_export(1)
 	}
+	if (structure = true) {
+		if (draw_button2(x1 + 470 - 80 * 4, y1 + 368, 152, "Get extra notes pack", !command_block)) {
+			datapack_getextranotes()
+		}
+	}
 	} else {
 	if (draw_button2(x1 + 470, y1 + 368, 72, "导出") && wmenu = 0) {
 	    if (sch_exp_totalblocks[sch_exp_includelocked] <= 0) {

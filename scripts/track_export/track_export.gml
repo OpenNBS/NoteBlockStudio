@@ -4,6 +4,7 @@ function track_export() {
 	var REPEATER, TORCHON, TORCHOFF, WIRE, LADDER, RAIL, POWEREDRAIL, SLAB, noteblocks, noteblockx, noteblocky, noteblockz, noteblocknote, noteblockins, noteblockpit;
 	fn = string(get_save_filename_ext("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(songs[song].filename), " ", "_"), "") + ".nbt", "", "Export Track"))
 	if (fn = "") return 0
+	fn = enforce_extension(fn, ".nbt")
 	o = obj_controller
 	window = -1
 	with (create(obj_dummy2)) {

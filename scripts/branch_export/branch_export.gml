@@ -3,6 +3,7 @@ function branch_export() {
 	var a, b, c, o
 	var fn = string(get_save_filename_ext("Minecraft Schematics (*.schematic)|*.schematic", filename_new_ext(songs[song].filename, "") + ".schematic", "", "Export Branch Schematic"))
 	if (fn = "") return 0
+	fn = enforce_extension(fn, ".schematic")
 	o = obj_controller
 	window = -1
 	// Start the schematic

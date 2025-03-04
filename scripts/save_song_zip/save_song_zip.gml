@@ -4,6 +4,7 @@ function save_song_zip() {
 	if (language != 1) fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(songs[song].filename == "", "", filename_change_ext(songs[song].filename, ".zip")), "", "Save song with custom sounds"));
 	else fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(songs[song].filename == "", "", filename_change_ext(songs[song].filename, ".zip")), "", "连带自定义音色一起导出"));
 	if (fn = "") return 0;
+	fn = enforce_extension(fn, ".zip")
 	
 	tempdir = data_directory + "temp" + condstr(os_type = os_windows, "\\", "/");
 	if (directory_exists_lib(tempdir)) {

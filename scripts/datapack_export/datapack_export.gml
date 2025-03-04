@@ -12,6 +12,7 @@ function datapack_export() {
 	else fn = string(get_save_filename_ext("数据包目录", dat_name, "", "导出数据包"))
 	}
 	if (fn = "") return 0
+	fn = enforce_extension(fn, ".zip")
 
 	window = -1
 	calculate_locked_layers()

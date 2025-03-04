@@ -5,6 +5,8 @@ function schematic_export() {
 	if (!structure) fn = string(get_save_filename_ext("Minecraft Schematics (*.schematic)|*.schematic", filename_new_ext(songs[song].filename, "") + ".schematic", "", "Export Schematic"))
 	else fn = string(get_save_filename_ext("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(songs[song].filename), " ", "_"), "") + ".nbt", "", "Export Schematic"))
 	if (fn = "") return 0
+	if (!structure) fn = enforce_extension(fn, ".schematic")
+	else fn = enforce_extension(fn, ".nbt")
 	//fn = string_replace_all(fn, ".schematic", "")
 	//fn += ".schematic"
 	o = obj_controller

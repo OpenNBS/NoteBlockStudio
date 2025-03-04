@@ -6,6 +6,7 @@ function pack_instruments() {
 	if (language != 1) fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(songs[song].filename == "", "", filename_change_ext(songs[song].filename, "") + " - ") + "Instruments.zip", "", "Pack instruments to ZIP file"));
 	else fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(songs[song].filename == "", "", filename_change_ext(songs[song].filename, "") + " - ") + "Instruments.zip", "", "导出音色至 ZIP 文件"));
 	if (fn = "") return 0;
+	fn = enforce_extension(fn, ".zip")
 	
 	tempdir = data_directory + "temp" + condstr(os_type = os_windows, "\\", "/");
 	if (directory_exists_lib(tempdir)) {
