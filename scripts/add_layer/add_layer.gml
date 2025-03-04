@@ -23,15 +23,19 @@ function add_layer() {
 
 	// Update solo
 	solonum = ""
-	solostrnew = songs[song].solostr
+	solostrnew = ""
 	if (songs[song].solostr != "") {
 		for (i = 1; i <= string_length(songs[song].solostr); i++) {
 			char = string_char_at(songs[song].solostr, i)
 			if (char = string_digits(char)) {
 				solonum += char
-			} else if ((char = "|") && (solonum != "") && (real(solonum) > num)) {
-				// if number is greater than the layer being added, add one to it
-				solostrnew = string_replace_all(solostrnew, "|" + solonum + "|", "|" + string(real(solonum) + 1) + "|")
+			} else if ((char = "|") && (solonum != "")) {
+				if (real(solonum) > num) {
+					// if number is greater than the layer being added, add one to it
+					solostrnew += "|" + string(real(solonum) + 1) + "|"
+				} else {
+					solostrnew += "|" + solonum + "|"
+				}
 				solonum = ""
 			}
 		}
