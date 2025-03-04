@@ -56,7 +56,7 @@
       ],"constants":[],"ProxyFiles":[
         {"TargetMask":1,"resourceVersion":"1.0","name":"libGMSSimpleMIDI.dylib","tags":[],"resourceType":"GMProxyFile",},
         {"TargetMask":7,"resourceVersion":"1.0","name":"libmidistuff.so","tags":[],"resourceType":"GMProxyFile",},
-      ],"copyToTargets":66,"order":[
+      ],"copyToTargets":194,"order":[
         {"name":"rtmidi_init","path":"extensions/GMSSimpleMIDI/GMSSimpleMIDI.yy",},
         {"name":"rtmidi_probe_outs","path":"extensions/GMSSimpleMIDI/GMSSimpleMIDI.yy",},
         {"name":"rtmidi_probe_ins","path":"extensions/GMSSimpleMIDI/GMSSimpleMIDI.yy",},
@@ -101,7 +101,7 @@
   "tvosThirdPartyFrameworkEntries": [],
   "IncludedResources": [],
   "androidPermissions": [],
-  "copyToTargets": 66,
+  "copyToTargets": 194,
   "iosCocoaPods": "",
   "tvosCocoaPods": "",
   "iosCocoaPodDependencies": "",
