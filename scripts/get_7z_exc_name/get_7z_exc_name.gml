@@ -4,6 +4,6 @@ function get_7z_exc_name(){
 	} else if (os_type = os_macosx) {
 		return data_directory + "7zz"
 	} else {
-		return data_directory + "7zzs"
+		return "7z"
 	}
 }
