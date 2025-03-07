@@ -7,10 +7,10 @@ function set_resourcepack(pack_name){
 	if (pack_name != "Vanilla") {
 		for (var i = 1; i < array_length(resourcepacks); i++) {
 			if (resourcepacks[i].filename = pack_name) pack_obj = i
+			log("need " + resourcepacks[i].filename + " found " + pack_name)
 		}
-		if (pack_obj = -1) {current_resource = "Vanilla"; return 0;}
+		if (pack_obj = -1) {current_resource = "Vanilla"; return set_resourcepack("Vanilla");}
 		if (resourcepacks[pack_obj].type = 1) {
-			return 0 // doesn't support zip packs for now
 			if (directory_exists(sounds_directory + "pack_temp/")) directory_destroy(sounds_directory + "pack_temp/")
 			log("unzip" + string(zip_unzip(resource_directory + pack_name, sounds_directory + "pack_temp/")))
 			//ExecuteShell("7za e \"" + resource_directory + pack_name + "\" -o \"" + sounds_directory + "pack_temp/\"")

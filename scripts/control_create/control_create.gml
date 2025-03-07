@@ -205,22 +205,9 @@ function control_create() {
 	if (directory_exists(temp_directory_included)) directory_destroy(temp_directory_included)
 
 	// Instruments
-	//current_resource = "Vanilla"
 	current_resource = "Vanilla"
 	resourcepacks = []
-	array_push(resourcepacks, new_resourcepack(0, "Vanilla"))
-	pack_to_push = file_find_first(resource_directory + "*", fa_directory)
-	var pack_ext = 0
-	while (pack_to_push != "") {
-		//if (filename_ext(pack_to_push) = ".zip") pack_ext = 1
-		if (filename_ext(pack_to_push) = ".zip") pack_ext = 0 // disable zip for now
-		else if (filename_ext(pack_to_push) = "") pack_ext = 2
-		else if (directory_exists(resource_directory + pack_to_push)) pack_ext = 2
-	    if (pack_ext != 0) array_push(resourcepacks, new_resourcepack(pack_ext, pack_to_push))
-		log("Pushing resource pack " + pack_to_push)
-	    pack_to_push = file_find_next()
-	}
-	file_find_close()
+	refresh_resourcepacks()
 	
 	original_instruments = []
 	array_push(original_instruments, new_instrument("Harp",          "harp.ogg",     false, true))

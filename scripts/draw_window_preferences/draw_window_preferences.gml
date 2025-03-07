@@ -568,7 +568,7 @@ function draw_window_preferences() {
 		if (draw_radiobox(x1 + 233 + 32, y1 + 244 + 16 + (theme = 3) * 22, !use_bpm, "Ticks per second (t/s)", "Display song tempos in ticks per second.")) use_bpm = 0
 		if (draw_radiobox(x1 + 233 + 32, y1 + 264 + 16 + (theme = 3) * 22, use_bpm, "Beats per minute (BPM)", "Display song tempos in beats per minute.")) use_bpm = 1
 		if (theme = 3) draw_theme_font(font_info_med)
-		draw_areaheader(x1 + 233 + 22, y1 + 329 + (theme = 3) * 22, 223, 55, "Resource pack")
+		draw_areaheader(x1 + 233 + 22, y1 + 329 + (theme = 3) * 22, 223, 55 + 23 + 20, "Resource pack")
 		if (theme = 3) draw_theme_font(font_main)
 		draw_area(x1 + 233 + 22 + 18, y1 + 329 + (theme = 3) * 22 + 16 + 5, x1 + 233 + 22 + 18 + 100, y1 + 329 + (theme = 3) * 22 + 16 + 5 + 20)
 		var rp_str = ""
@@ -589,6 +589,7 @@ function draw_window_preferences() {
 		}
 		draw_text_dynamic(x1 + 233 + 22 + 18 + 3, y1 + 329 + (theme = 3) * 22 + 19 + 5, display_resource)
 		if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+		if (draw_button2(x1 + 233 + 22 + 18, y1 + 359 + (theme = 3) * 22 + 19 + 5, 150, "Refresh Resource Packs", 0, 1)) refresh_resourcepacks()
 		} else {
 		if (theme = 3) draw_theme_font(font_info_med)
 	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 145, "进度条")
@@ -614,7 +615,7 @@ function draw_window_preferences() {
 		if (draw_radiobox(x1 + 233 + 32, y1 + 244 + 16 + (theme = 3) * 22, !use_bpm, "红石刻 / 秒 (t/s)", "使用每秒几刻显示速度。")) use_bpm = 0
 		if (draw_radiobox(x1 + 233 + 32, y1 + 264 + 16 + (theme = 3) * 22, use_bpm, "拍数 / 分钟 (BPM)", "使用每分钟多少拍显示速度。")) use_bpm = 1
 		if (theme = 3) draw_theme_font(font_info_med)
-		draw_areaheader(x1 + 233 + 22, y1 + 329 + (theme = 3) * 22, 223, 55, "资源包")
+		draw_areaheader(x1 + 233 + 22, y1 + 329 + (theme = 3) * 22, 223, 55 + 23 + 20, "资源包")
 		if (theme = 3) draw_theme_font(font_main)
 		draw_area(x1 + 233 + 22 + 18, y1 + 329 + (theme = 3) * 22 + 16 + 5, x1 + 233 + 22 + 18 + 100, y1 + 329 + (theme = 3) * 22 + 16 + 5 + 20)
 		var rp_str = ""
@@ -635,6 +636,7 @@ function draw_window_preferences() {
 		}
 		draw_text_dynamic(x1 + 233 + 22 + 18 + 3, y1 + 329 + (theme = 3) * 22 + 19 + 5, display_resource)
 		if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+		if (draw_button2(x1 + 233 + 22 + 18, y1 + 359 + (theme = 3) * 22 + 19 + 5, 150, "刷新资源包列表", 0, 1)) refresh_resourcepacks()
 		}
 	}
 	
