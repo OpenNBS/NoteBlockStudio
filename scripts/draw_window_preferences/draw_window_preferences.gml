@@ -574,7 +574,7 @@ function draw_window_preferences() {
 		var rp_str = ""
 		var display_resource = current_resource
 		if (string_width_dynamic(display_resource) > 82) {
-			while (display_resource != "" && string_width_dynamic(display_resource) > 82 - string_width("...")) {
+			while (display_resource != "" && string_width_dynamic(display_resource) > 82 - string_width_dynamic("...")) {
 				display_resource = string_delete(display_resource, string_length(display_resource), 1)
 			}
 			display_resource += "..."
@@ -621,7 +621,7 @@ function draw_window_preferences() {
 		var rp_str = ""
 		var display_resource = current_resource
 		if (string_width_dynamic(display_resource) > 82) {
-			while (display_resource != "" && string_width_dynamic(display_resource) > 82 - string_width("...")) {
+			while (display_resource != "" && string_width_dynamic(display_resource) > 82 - string_width_dynamic("...")) {
 				display_resource = string_delete(display_resource, string_length(display_resource), 1)
 			}
 			display_resource += "..."
