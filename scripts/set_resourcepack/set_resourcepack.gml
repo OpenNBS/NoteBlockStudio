@@ -11,14 +11,14 @@ function set_resourcepack(pack_name){
 		}
 		if (pack_obj = -1) {current_resource = "Vanilla"; return set_resourcepack("Vanilla");}
 		if (resourcepacks[pack_obj].type = 1) {
-			if (directory_exists(sounds_directory + "pack_temp/")) directory_destroy(sounds_directory + "pack_temp/")
-			log("unzip" + string(zip_unzip(resource_directory + pack_name, sounds_directory + "pack_temp/")))
+			if (directory_exists(sounds_directory + "pack_temp" + condstr(os_type = os_windows, "\\", "/"))) directory_destroy(sounds_directory + "pack_temp" + condstr(os_type = os_windows, "\\", "/"))
+			log("unzip" + string(zip_unzip(resource_directory + pack_name, sounds_directory + "pack_temp" + condstr(os_type = os_windows, "\\", "/"))))
 			//ExecuteShell("7za e \"" + resource_directory + pack_name + "\" -o \"" + sounds_directory + "pack_temp/\"")
-			dir = sounds_directory + "pack_temp/"
-			dir_no_path = "pack_temp/"
+			dir = sounds_directory + "pack_temp" + condstr(os_type = os_windows, "\\", "/")
+			dir_no_path = "pack_temp" + condstr(os_type = os_windows, "\\", "/")
 		} else {
-			dir = resource_directory + pack_name + "/"
-			dir_no_path = "ResourcePacks/" + pack_name + "/"
+			dir = resource_directory + pack_name + condstr(os_type = os_windows, "\\", "/")
+			dir_no_path = "ResourcePacks" + condstr(os_type = os_windows, "\\", "/") + pack_name + condstr(os_type = os_windows, "\\", "/")
 		}
 	} else {
 		dir_no_path = "idkjustloadvanilla"
