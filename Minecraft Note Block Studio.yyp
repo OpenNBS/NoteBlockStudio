@@ -1,5 +1,6 @@
 {
   "resources": [
+    {"id":{"name":"message_cond","path":"scripts/message_cond/message_cond.yy",},"order":2,},
     {"id":{"name":"spr_Fclef","path":"sprites/spr_Fclef/spr_Fclef.yy",},"order":0,},
     {"id":{"name":"spr_Gclef","path":"sprites/spr_Gclef/spr_Gclef.yy",},"order":1,},
     {"id":{"name":"spr_icons_d_hires","path":"sprites/spr_icons_d_hires/spr_icons_d_hires.yy",},"order":11,},
@@ -365,6 +366,7 @@
     {"id":{"name":"file_rename_lib","path":"scripts/file_rename_lib/file_rename_lib.yy",},"order":5,},
     {"id":{"name":"spr_scrollbar_v_bar_down_hires","path":"sprites/spr_scrollbar_v_bar_down_hires/spr_scrollbar_v_bar_down_hires.yy",},"order":5,},
     {"id":{"name":"files_delete_lib","path":"scripts/files_delete_lib/files_delete_lib.yy",},"order":6,},
+    {"id":{"name":"get_save_filename_cond_ext","path":"scripts/get_save_filename_cond_ext/get_save_filename_cond_ext.yy",},"order":0,},
     {"id":{"name":"spr_tooltip_ml_middle_hires","path":"sprites/spr_tooltip_ml_middle_hires/spr_tooltip_ml_middle_hires.yy",},"order":4,},
     {"id":{"name":"files_copy_lib","path":"scripts/files_copy_lib/files_copy_lib.yy",},"order":7,},
     {"id":{"name":"spr_numbers","path":"sprites/spr_numbers/spr_numbers.yy",},"order":7,},
@@ -388,6 +390,7 @@
     {"id":{"name":"spr_tempobox_hires","path":"sprites/spr_tempobox_hires/spr_tempobox_hires.yy",},"order":46,},
     {"id":{"name":"midi_input_key_releases","path":"scripts/midi_input_key_releases/midi_input_key_releases.yy",},"order":6,},
     {"id":{"name":"midi_input_key_release_note","path":"scripts/midi_input_key_release_note/midi_input_key_release_note.yy",},"order":7,},
+    {"id":{"name":"get_open_filename_cond_ext","path":"scripts/get_open_filename_cond_ext/get_open_filename_cond_ext.yy",},"order":1,},
     {"id":{"name":"midi_input_key_release_time","path":"scripts/midi_input_key_release_time/midi_input_key_release_time.yy",},"order":8,},
     {"id":{"name":"draw_accent_init","path":"scripts/draw_accent_init/draw_accent_init.yy",},"order":33,},
     {"id":{"name":"spr_scrollbar_h_button_right_hires","path":"sprites/spr_scrollbar_h_button_right_hires/spr_scrollbar_h_button_right_hires.yy",},"order":3,},
@@ -721,6 +724,7 @@
     {"folderPath":"folders/Fonts/fnt_src_hires.yy","order":26,"resourceVersion":"1.0","name":"fnt_src_hires","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Fonts/fnt_wslui_hires.yy","order":27,"resourceVersion":"1.0","name":"fnt_wslui_hires","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Fonts/fnt_symbol.yy","order":28,"resourceVersion":"1.0","name":"fnt_symbol","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Scripts/Interface/Dialogs.yy","order":55,"resourceVersion":"1.0","name":"Dialogs","tags":[],"resourceType":"GMFolder",},
   ],
   "AudioGroups": [
     {"targets":-1,"resourceVersion":"1.3","name":"audiogroup_default","resourceType":"GMAudioGroup",},
