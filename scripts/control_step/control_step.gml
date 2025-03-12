@@ -47,6 +47,13 @@ function control_step() {
 		mousepress_y = mouse_y
 	}
 	
+	if (is_mobile()) {
+		if (text_focus != text_focus_last){
+			if (text_focus = -1) keyboard_virtual_hide()
+			else if (text_focus_last = -1) keyboard_virtual_show(kbv_type_ascii, kbv_returnkey_default, kbv_autocapitalize_none, false)
+		}
+	}
+	
 	// handle midi messages
 	var b,i,listMessage;
 	ds_list_clear(midiMessages)//midiMessages is a ds_list that was created previously, and holds all MIDI messages that came in on this step

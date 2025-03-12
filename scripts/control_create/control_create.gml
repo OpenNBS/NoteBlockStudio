@@ -409,7 +409,7 @@ function control_create() {
 	prevwindow = 0
 	selected_tab = 0
 	global.popup = 0
-	globalvar text_focus;
+	globalvar text_focus, text_focus_last;
 	globalvar text_select, text_exists, text_str, text_start, text_line, text_line_wrap, text_line_single, text_lines;
 	globalvar text_sline, text_spos, text_eline, text_epos, text_cline, text_cpos, text_mline, text_mpos;
 	globalvar text_click, text_marker, text_key_delay, text_lastwidth, text_laststr, text_lastfocus, text_mouseover, text_chars, text_clipboard;
@@ -421,6 +421,7 @@ function control_create() {
 	text_lastfocus = -1
 	text_mouseover = []
 	text_focus = -1
+	text_focus_last = -1
 	text_clipboard = ""
 
 	globalvar sb_count, sb_drag, sb_mprev, sb, sb_press, sb_sel;

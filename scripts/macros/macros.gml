@@ -29,7 +29,7 @@ function macros() {
 #macro bundled_pattern_directory current_directory + "patterns" + condstr(os_type = os_windows, "\\", "/")
 
 #macro data_directory    condstr(os_type = os_windows, working_directory, file_directory) + "data" + condstr(os_type = os_windows, "\\", "/")
-#macro sounds_directory  condstr(os_type = os_windows || os_type = os_ios, working_directory, file_directory) + "data" + condstr(os_type = os_windows, "\\", "/") + "sounds" + condstr(os_type = os_windows, "\\", "/")
+#macro sounds_directory  condstr(os_type = os_windows, working_directory, file_directory) + "data" + condstr(os_type = os_windows, "\\", "/") + "sounds" + condstr(os_type = os_windows, "\\", "/")
 #macro resource_directory	sounds_directory + "resourcepacks" + condstr(os_type = os_windows, "\\", "/")
 #macro songs_directory   condstr(os_type = os_windows, working_directory, file_directory) + "songs" + condstr(os_type = os_windows, "\\", "/")
 #macro pattern_directory condstr(os_type = os_windows, working_directory, file_directory) + "patterns" + condstr(os_type = os_windows, "\\", "/")
