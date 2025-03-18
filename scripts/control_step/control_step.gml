@@ -261,4 +261,5 @@ function control_step() {
 		    }
 		}
 	}
+	if (wpaperanchor = 1) wpaperside = (window_width / window_height < sprite_get_width(wpaper) / sprite_get_height(wpaper))
 }
