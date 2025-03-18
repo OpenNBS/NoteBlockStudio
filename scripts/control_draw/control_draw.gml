@@ -1625,7 +1625,7 @@ function control_draw() {
 											inactive(current_song.selected != 0)+"Pattern...|"+
 											"MIDI...|"+
 											inactive(os_type != os_windows)+"Schematic...|"+
-											"Reference audio...|/|"+
+											"Reference audio...|Background image...|/|"+
 										 "Export...|\\|" +
 											inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "Song with custom sounds...|" +
 											inactive(current_song.selected = 0)+"Pattern...|" +
@@ -1720,7 +1720,7 @@ function control_draw() {
 											inactive(current_song.selected != 0)+"片段......|"+
 											"MIDI 文件......|"+
 											inactive(os_type != os_windows)+"Schematic 文件......|"+
-											"参考音频......|/|"+
+											"参考音频......|背景图片......|/|"+
 										 "导出......|\\|"+
 											inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "带自定义音色的歌曲......|"+
 											inactive(current_song.selected = 0)+"片段......|"+

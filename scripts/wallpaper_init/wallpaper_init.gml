@@ -1,10 +1,14 @@
-function wallpaper_init() {
+function wallpaper_init(wallpaper_path = "") {
 	var tempsurf, wpaperwidth;
 	can_draw_mica = (os_browser = browser_not_a_browser)
-	execute_program("cmd", "\"" + data_directory + "wallpaper.bat", true)
-	wpaperexist = (file_exists(data_directory + "Wallpaper.jpg") && (os_browser = browser_not_a_browser))
+	if (wallpaper_path = "") {
+		execute_program("cmd", "\"" + data_directory + "wallpaper.bat", true)
+		wallpaper_path = data_directory + "Wallpaper.jpg"
+	}
+	wpaperexist = (file_exists(wallpaper_path) && (os_browser = browser_not_a_browser))
 	if (wpaperexist) {
-		wpaper = sprite_add(data_directory + "Wallpaper.jpg", 1, 0, 0, 0, 0)
+		if (sprite_exists(wpaper)) sprite_delete(wpaper)
+		wpaper = sprite_add(wallpaper_path, 1, 0, 0, 0, 0)
 		if (display_width / display_height < sprite_get_width(wpaper) / sprite_get_height(wpaper)) wpaperside = 1
 		wpaperwidth = (sprite_get_width(wpaper) / sprite_get_height(wpaper)) * 720
 		tempsurf = surface_create(wpaperwidth, 720)
