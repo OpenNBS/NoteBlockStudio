@@ -247,10 +247,12 @@ function control_step() {
 		                    if (current_time - current_song.song_added[xx, b] < 1000) a = 0
 		                }
 		                if (a) {
+							var insname = current_song.instrument_list[| ds_list_find_index(current_song.instrument_list, current_song.song_ins[xx, b])].name
 		                    if (current_song.song_ins[xx, b].loaded && c > 0 && current_song.reference_option != 1) play_sound(current_song.song_ins[xx, b], current_song.song_key[xx, b], c , d, e, b + 1)
-							if (current_song.instrument_list[| ds_list_find_index(current_song.instrument_list, current_song.song_ins[xx, b])].name = "Tempo Changer") current_song.tempo = floor(abs(e)) / 15
-							if (current_song.instrument_list[| ds_list_find_index(current_song.instrument_list, current_song.song_ins[xx, b])].name = "Toggle Rainbow") {rainbowtoggle = !rainbowtoggle draw_accent_init()}
-							if (current_song.instrument_list[| ds_list_find_index(current_song.instrument_list, current_song.song_ins[xx, b])].name = "Sound Stopper") {remove_emitters_all(floor(e), floor(d - 100))}
+							if (insname = "Tempo Changer") current_song.tempo = floor(abs(e)) / 15
+							if (insname = "Toggle Rainbow") {rainbowtoggle = !rainbowtoggle draw_accent_init()}
+							if (insname = "Sound Stopper") {remove_emitters_all(floor(e), floor(d - 100))}
+							if (insname = "Show Save Popup") set_msg("Song saved")
 		                    if (current_song.song_ins[xx, b].press || isplayer) key_played[current_song.song_key[xx, b]] = current_time
 		                    current_song.song_played[xx, b] = current_time
 		                }
