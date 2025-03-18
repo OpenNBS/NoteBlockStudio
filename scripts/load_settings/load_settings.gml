@@ -77,6 +77,10 @@ function load_settings() {
 	hires =              ini_read_real(  "preferences", "hires",              hires)
 	current_resource =   ini_read_string("preferences", "current_resource",   current_resource)
 	acrylic_successful = ini_read_real(  "preferences", "acrylic_successful", acrylic_successful)
+	advancedinterface  = ini_read_real(  "preferences", "advancedinterface",  advancedinterface)
+	wpapernoblur       = ini_read_real(  "preferences", "wpapernoblur",       wpapernoblur)
+	wpapernodim        = ini_read_real(  "preferences", "wpapernodim",        wpapernodim)
+	noeditingbackground= ini_read_real(  "preferences", "noeditingbackground",noeditingbackground)
 
 	// Midi import settings
 	w_midi_remember =     ini_read_real(  "midi_import", "remember",        w_midi_remember)

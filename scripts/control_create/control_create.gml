@@ -131,6 +131,14 @@ function control_create() {
 	wpaperside = 0
 	wpaperwidth = 0
 	wpaperblur = 0
+	
+	wpaperanchor = 0
+	wpapernoblur = 0
+	wpapernodim = 0
+	
+	noeditingbackground = 0
+	
+	advancedinterface = 0
 
 	// Audio
 	channels = 1024

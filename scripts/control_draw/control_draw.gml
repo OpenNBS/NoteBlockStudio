@@ -39,11 +39,27 @@ function control_draw() {
 	if (theme = 3) window_background = 15987699
 	if (theme = 3 && fdark) window_background = 2105376
 	draw_clear(window_background)
-	if (theme = 3 && acrylic && wpaperexist && can_draw_mica) draw_sprite_tiled_ext(wpaperblur, 0,
-	0 - window_get_x() * (1 / window_scale) - (sprite_get_width(wpaper) * (display_height / sprite_get_height(wpaper)) - display_width) * (1 / window_scale) * (wpaperside) / 2,
-	0 - window_get_y() * (1 / window_scale) - (sprite_get_height(wpaper) * (display_width / sprite_get_width(wpaper)) - display_height) * (1 / window_scale) * (!wpaperside) / 2,
-	(1 / window_scale) * (display_width / sprite_get_width(wpaper)) * (!wpaperside) + (1 / window_scale) * (display_height / sprite_get_height(wpaper)) * (wpaperside),
-	(1 / window_scale) * (display_width / sprite_get_width(wpaper)) * (!wpaperside) + (1 / window_scale) * (display_height / sprite_get_height(wpaper)) * (wpaperside), -1, 1)
+	if (theme = 3 && acrylic && wpaperexist && can_draw_mica) {
+		var wpapertodraw = wpaperblur
+		if (wpapernoblur = 1) wpapertodraw = wpaper
+		var wpaperscale = 1
+		if (wpaperanchor = 0) {
+			wpaperscale = (1 / window_scale) * (display_width / sprite_get_width(wpaper)) * (!wpaperside) + (1 / window_scale) * (display_height / sprite_get_height(wpaper)) * (wpaperside)
+			draw_sprite_tiled_ext(wpapertodraw, 0,
+			0 - window_get_x() * (1 / window_scale) - (sprite_get_width(wpaper) * (display_height / sprite_get_height(wpaper)) - display_width) * (1 / window_scale) * (wpaperside) / 2,
+			0 - window_get_y() * (1 / window_scale) - (sprite_get_height(wpaper) * (display_width / sprite_get_width(wpaper)) - display_height) * (1 / window_scale) * (!wpaperside) / 2,
+			wpaperscale,
+			wpaperscale, -1, 1)
+		}
+		else if (wpaperanchor = 1) {
+			wpaperscale = (1 / window_scale) * (window_width / sprite_get_width(wpaper)) * (!wpaperside) + (1 / window_scale) * (window_height / sprite_get_height(wpaper)) * (wpaperside)
+			draw_sprite_ext(wpapertodraw, 0,
+			(rw - sprite_get_width(wpaper) * wpaperscale) / 2,
+			(rh - sprite_get_height(wpaper) * wpaperscale) / 2,
+			wpaperscale,
+			wpaperscale, 0, -1, 1)
+		}
+	}
 	if (isplayer) {
 		draw_set_color(15790320)
 		if (theme = 1) draw_set_color(13160660)
@@ -53,7 +69,7 @@ function control_draw() {
 		if (theme = 3 && fdark) draw_set_color(2105376)
 		if (theme = 3 && fdark && acrylic && wpaperexist && can_draw_mica) draw_set_color(1315860)
 		if (theme = 3 && acrylic && wpaperexist && can_draw_mica) draw_set_alpha(0.875)
-		draw_rectangle(0, 0, rw, rh, 0)
+		if (theme != 3 or !wpapernodim) draw_rectangle(0, 0, rw, rh, 0)
 		draw_set_alpha(1)
 	}
 
@@ -256,9 +272,19 @@ function control_draw() {
 		}
 	}
 	if (!isplayer && theme = 3 && !blackout) {
-		draw_set_color(16382457)
-		if (fdark) draw_set_color(2565927)
-		draw_rectangle(x1 + 2, y1 + 34, x1 + 2 + 32 * totalcols, y1 + 34 + 32 * totalrows, false)
+		if (noeditingbackground) {
+			draw_set_color(15987699)
+			if (acrylic && wpaperexist && can_draw_mica) draw_set_color(15198183)
+			if (fdark) draw_set_color(2105376)
+			if (fdark && acrylic && wpaperexist && can_draw_mica) draw_set_color(1315860)
+			if (acrylic && wpaperexist && can_draw_mica) draw_set_alpha(0.875)
+			if (!wpapernodim) draw_rectangle(x1 + 2, y1 + 1, x1 + 2 + 32 * totalcols + 16, y1 + 34 + 32 * totalrows + 16, false)
+			draw_set_alpha(1)
+		} else {
+			draw_set_color(16382457)
+			if (fdark) draw_set_color(2565927)
+			draw_rectangle(x1 + 2, y1 + 34, x1 + 2 + 32 * totalcols, y1 + 34 + 32 * totalrows, false)
+		}
 	}
 	note_offset = floor(((current_song.marker_pos - floor(current_song.marker_pos + 0.5 * !isplayer)) * 32) + 0.5) * ((playing && marker_follow && marker_pagebypage = 2 && (current_song.marker_pos - floor(totalcols / 2 + 0.5) < current_song.enda + 1 && current_song.marker_pos - floor(totalcols / 2 + 0.5) > 0)) || isplayer)
 	if (!isplayer) {
@@ -891,7 +917,8 @@ function control_draw() {
 
 	// Timeline and markers
 	if (hires && theme = 3) gpu_set_texfilter(false)
-	draw_sprite_ext(spr_timeline, (0 + theme = 2 + (fdark && theme = 3)) * !blackout + blackout * 2, x1 + 2, y1 + 2, totalcols * 32 + 18, 1, 0, -1, 1)
+	if (!noeditingbackground) draw_sprite_ext(spr_timeline, (0 + theme = 2 + (fdark && theme = 3)) * !blackout + blackout * 2, x1 + 2, y1 + 2, totalcols * 32 + 18, 1, 0, -1, 1)
+	else draw_sprite_ext(spr_timeline, 3, x1 + 2, y1 + 2, totalcols * 32 + 18, 1, 0, -1, 1)
 	if (hires && theme = 3) gpu_set_texfilter(true)
 	draw_theme_font(font_small)
 	draw_set_halign(fa_left)
@@ -1126,11 +1153,13 @@ function control_draw() {
 		if (theme = 3 && fdark) draw_set_color(2105376)
 		if (theme = 3 && fdark && acrylic && wpaperexist && can_draw_mica) draw_set_color(1315860)
 		if (theme = 3 && acrylic && wpaperexist && can_draw_mica) draw_set_alpha(0.875)
-		draw_rectangle(0, y1 + 3, x1 + 1, rh, 0)
-		draw_rectangle(0, 0, rw, y1 + 2, 0)
-		draw_rectangle(x1 + 2, y1 + totalrows * 32 + 50 - 15 * (current_song.reference_audio >= 0), rw, rh, 0)
-		draw_rectangle(x1 + totalcols * 32 + 18, y1 + 3, rw, y1 + totalrows * 32 + 49, 0)
-		draw_rectangle(x1 + totalcols * 32 + 2, y1 + totalrows * 32 + 32, x1 + totalcols * 32 + 2 + 17, y1 + totalrows * 32 + 32 + 18, 0)
+		if (theme != 3 or !wpapernodim) {
+			draw_rectangle(0, y1 + 3, x1 + 1, rh, 0)
+			draw_rectangle(0, 0, rw, y1 + 2, 0)
+			draw_rectangle(x1 + 2, y1 + totalrows * 32 + 50 - 15 * (current_song.reference_audio >= 0), rw, rh, 0)
+			draw_rectangle(x1 + totalcols * 32 + 18, y1 + 3, rw, y1 + totalrows * 32 + 49, 0)
+			draw_rectangle(x1 + totalcols * 32 + 2, y1 + totalrows * 32 + 32, x1 + totalcols * 32 + 2 + 17, y1 + totalrows * 32 + 32 + 18, 0)
+		}
 		draw_area(x1, y1, x1 + totalcols * 32 + 20, y1 + (totalrows + (current_song.reference_audio >= 0)) * 32 + 52)
 		draw_set_alpha(1)
 	}
@@ -2310,7 +2339,7 @@ function control_draw() {
 				}
 				
 				draw_text_dynamic(centerx - 200, centery - 80 - offset, title_str, true)
-				if (song_author != "") {
+				if (current_song.song_author != "") {
 					draw_theme_font(font_main_bold)
 					draw_text_dynamic(centerx - 200, centery - 60 - offset, current_song.song_author, true)
 				}

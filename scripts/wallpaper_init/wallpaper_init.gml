@@ -4,6 +4,9 @@ function wallpaper_init(wallpaper_path = "") {
 	if (wallpaper_path = "") {
 		execute_program("cmd", "\"" + data_directory + "wallpaper.bat", true)
 		wallpaper_path = data_directory + "Wallpaper.jpg"
+		wpaperanchor = 0
+	} else {
+		wpaperanchor = 1
 	}
 	wpaperexist = (file_exists(wallpaper_path) && (os_browser = browser_not_a_browser))
 	if (wpaperexist) {

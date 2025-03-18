@@ -75,6 +75,10 @@ function save_settings() {
 	ini_write_real_clean("preferences", "hires",              hires)
 	ini_write_string(    "preferences", "current_resource",   current_resource)
 	ini_write_real_clean("preferences", "acrylic_successful", acrylic_successful)
+	ini_write_real_clean("preferences", "advancedinterface",  advancedinterface)
+	ini_write_real_clean("preferences", "wpapernoblur",       wpapernoblur)
+	ini_write_real_clean("preferences", "wpapernodim",        wpapernodim)
+	ini_write_real_clean("preferences", "noeditingbackground",noeditingbackground)
 
 	// Midi import settings
 	ini_write_real_clean("midi_import", "remember",        w_midi_remember)

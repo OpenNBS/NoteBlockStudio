@@ -440,6 +440,20 @@ function draw_window_preferences() {
 		else draw_areaheader(x1 + 258, y1 + 239 + (theme = 3) * 22, 220, 65, "图标")
 		if (theme = 3) draw_theme_font(font_main)
 		if (draw_checkbox(x1 + 276, y1 + (theme = 3) * 22 + 239 + 16 + 5 + 4, window_icon, condstr(language != 1, "Fruity icon", "macOS样式图标"), condstr(language != 1, "Whether to use the a fruity themed icon instead of the regular icon.", "使用macOS风格图标替换普通图标。"), false, true)) window_icon = !window_icon
+		if (theme = 3) {
+			if (draw_checkbox(x1 + 420 - 100, y1 + 478 - isplayer * 100 + 5, advancedinterface, condstr(language != 1, "Advanced", "高级设置"), condstr(language != 1, "Whether to show the advanced interfaces settings.", "显示高级界面设置选项。"), false, true)) advancedinterface = !advancedinterface
+			if (advancedinterface) {
+				draw_theme_font(font_info_med)
+				if (language != 1) draw_areaheader(x1 + 22, y1 + 239 + 22 + 65, 456, 65, "Advanced")
+				else draw_areaheader(x1 + 22, y1 + 239 + 22 + 65, 456, 65, "高级")
+				draw_theme_font(font_main)
+				if (draw_checkbox(x1 + 40, y1 + 239 + 22 + 65 + 21, wpapernoblur, condstr(language != 1, "Turn off background blurring", "关闭背景虚化"), condstr(language != 1, "Whether to turn off the blurring effect on the background image.", "关闭背景图片虚化效果。"), false, true)) wpapernoblur = !wpapernoblur
+				if (draw_checkbox(x1 + 40, y1 + 239 + 22 + 65 + 21 + 20, wpapernodim, condstr(language != 1, "Turn off background dimming", "关闭背景暗化"), condstr(language != 1, "Whether to turn off the dimming effect on the background image.", "关闭背景图片变暗效果。"), false, true)) wpapernodim = !wpapernodim
+				if (!isplayer) {
+					if (draw_checkbox(x1 + 40, y1 + 239 + 22 + 65 + 21 + 20 + 20, noeditingbackground, condstr(language != 1, "Turn off editing area background", "关闭编辑区域背景"), condstr(language != 1, "Whether to turn off the background of the editing area.", "关闭编辑区域背景。"), false, true)) noeditingbackground = !noeditingbackground
+				}
+			}
+		}
 	} else if (selected_tab = 2) {
 		if (language != 1) {
 		if (theme = 3) draw_theme_font(font_info_med)
