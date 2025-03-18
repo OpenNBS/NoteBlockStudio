@@ -917,7 +917,7 @@ function control_draw() {
 
 	// Timeline and markers
 	if (hires && theme = 3) gpu_set_texfilter(false)
-	if (!noeditingbackground) draw_sprite_ext(spr_timeline, (0 + theme = 2 + (fdark && theme = 3)) * !blackout + blackout * 2, x1 + 2, y1 + 2, totalcols * 32 + 18, 1, 0, -1, 1)
+	if (!noeditingbackground or blackout) draw_sprite_ext(spr_timeline, (0 + theme = 2 + (fdark && theme = 3)) * !blackout + blackout * 2, x1 + 2, y1 + 2, totalcols * 32 + 18, 1, 0, -1, 1)
 	else draw_sprite_ext(spr_timeline, 3, x1 + 2, y1 + 2, totalcols * 32 + 18, 1, 0, -1, 1)
 	if (hires && theme = 3) gpu_set_texfilter(true)
 	draw_theme_font(font_small)
@@ -1664,7 +1664,7 @@ function control_draw() {
 											inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Branch schematic...|"+
 											inactive(current_song.totalblocks = 0) + "Data pack...|/|-|" + 
 			                             get_hotkey("exit") + "$Exit")
-				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import from schematic...|-|" + get_hotkey("exit") + "$Exit")
+				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import from schematic...|Import background image...|-|" + get_hotkey("exit") + "$Exit")
 							
 			}
 			if (!isplayer) if (draw_tab("Edit")) {
@@ -1759,7 +1759,7 @@ function control_draw() {
 											inactive(current_song.totalblocks = 0 || os_type != os_windows) + "分支结构......|"+
 											inactive(current_song.totalblocks = 0) + "数据包......|/|-|" +
 			                             get_hotkey("exit") + "$退出")
-				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|从 Schematic 文件导入......|-|" + get_hotkey("exit") + "$退出")
+				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|从 Schematic 文件导入......|导入背景图片......|-|" + get_hotkey("exit") + "$退出")
 							
 			}
 			if (!isplayer) if (draw_tab("编辑")) {

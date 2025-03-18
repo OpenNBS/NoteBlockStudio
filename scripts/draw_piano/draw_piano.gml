@@ -19,6 +19,7 @@ function draw_piano(argument0, argument1, argument2, argument3) {
 	    if (a > 0 && c != 2 && c != 5) { // Sharp key to the left
 	        c1 = startkey + sharpkeys + b
 	        c2 = startkey + sharpkeys + b + 1
+			if (c1 >= 88) continue
 	        k1 = show_keyboard && piano_key[c1] > 0
 	        k2 = show_keyboard && piano_key[c2] > 0
 	        if (window = 0 && mouse_rectangle(xx + 39 * a, yy, 39, 128)) {

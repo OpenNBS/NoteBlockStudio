@@ -357,7 +357,11 @@ function menu_click(argument0) {
 	        }
 	        if (sel = b + 3) open_midi("")
 	        if (sel = b + 4) open_schematic("")
-	        if (sel = b + 5) game_end()
+			if (sel = b + 5) {
+				var temppath = string(get_open_filename_ext("Image Files (*.png, *.jpg, *.jpeg)|*.png;*.jpg;*.jpeg", "", "", condstr(language != 1, "Open background image", "打开背景图片")))
+				wallpaper_init(temppath)
+			}
+	        if (sel = b + 6) game_end()
 	        break
 	    }
 		case "settingsp": {
