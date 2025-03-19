@@ -79,6 +79,7 @@ function save_settings() {
 	ini_write_real_clean("preferences", "wpapernoblur",       wpapernoblur)
 	ini_write_real_clean("preferences", "wpapernodim",        wpapernodim)
 	ini_write_real_clean("preferences", "noeditingbackground",noeditingbackground)
+	ini_write_real_clean("preferences", "backgroundrainbow",  backgroundrainbow)
 
 	// Midi import settings
 	ini_write_real_clean("midi_import", "remember",        w_midi_remember)

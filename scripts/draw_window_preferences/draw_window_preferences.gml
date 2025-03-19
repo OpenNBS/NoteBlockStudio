@@ -449,6 +449,7 @@ function draw_window_preferences() {
 				draw_theme_font(font_main)
 				if (draw_checkbox(x1 + 40, y1 + 239 + 22 + 65 + 21, wpapernoblur, condstr(language != 1, "Turn off background blurring", "关闭背景虚化"), condstr(language != 1, "Whether to turn off the blurring effect on the background image.", "关闭背景图片虚化效果。"), false, true)) wpapernoblur = !wpapernoblur
 				if (draw_checkbox(x1 + 40, y1 + 239 + 22 + 65 + 21 + 20, wpapernodim, condstr(language != 1, "Turn off background dimming", "关闭背景暗化"), condstr(language != 1, "Whether to turn off the dimming effect on the background image.", "关闭背景图片变暗效果。"), false, true)) wpapernodim = !wpapernodim
+				if (draw_checkbox(x1 + 276, y1 + 239 + 22 + 65 + 21, backgroundrainbow, condstr(language != 1, "Rainbow mode affects background", "炫彩模式对背景生效"), condstr(language != 1, "Whether to make rainbow mode affect background too.", "使炫彩模式对背景生效。"), false, true)) backgroundrainbow = !backgroundrainbow
 				if (!isplayer) {
 					if (draw_checkbox(x1 + 40, y1 + 239 + 22 + 65 + 21 + 20 + 20, noeditingbackground, condstr(language != 1, "Turn off editing area background", "关闭编辑区域背景"), condstr(language != 1, "Whether to turn off the background of the editing area.", "关闭编辑区域背景。"), false, true)) noeditingbackground = !noeditingbackground
 				}

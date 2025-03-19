@@ -60,6 +60,10 @@ function control_draw() {
 			wpaperscale, 0, -1, 1)
 		}
 	}
+	if (theme = 3 && rainbowtoggle && backgroundrainbow) {
+		draw_set_color(accent[3])
+		draw_rectangle(0, 0, rw, rh, 0)
+	}
 	if (isplayer) {
 		draw_set_color(15790320)
 		if (theme = 1) draw_set_color(13160660)

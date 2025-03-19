@@ -136,6 +136,8 @@ function control_create() {
 	wpapernoblur = 0
 	wpapernodim = 0
 	
+	backgroundrainbow = 0
+	
 	noeditingbackground = 0
 	
 	advancedinterface = 0

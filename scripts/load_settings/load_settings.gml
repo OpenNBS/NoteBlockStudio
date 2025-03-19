@@ -81,6 +81,7 @@ function load_settings() {
 	wpapernoblur       = ini_read_real(  "preferences", "wpapernoblur",       wpapernoblur)
 	wpapernodim        = ini_read_real(  "preferences", "wpapernodim",        wpapernodim)
 	noeditingbackground= ini_read_real(  "preferences", "noeditingbackground",noeditingbackground)
+	backgroundrainbow  = ini_read_real(  "preferences", "backgroundrainbow",  backgroundrainbow)
 
 	// Midi import settings
 	w_midi_remember =     ini_read_real(  "midi_import", "remember",        w_midi_remember)

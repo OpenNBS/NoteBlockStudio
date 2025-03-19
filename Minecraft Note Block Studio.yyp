@@ -255,6 +255,7 @@
     {"id":{"name":"popup_set_window","path":"scripts/popup_set_window/popup_set_window.yy",},"order":8,},
     {"id":{"name":"spr_hsv","path":"sprites/spr_hsv/spr_hsv.yy",},"order":40,},
     {"id":{"name":"fnt_src_info_med_bold_hires","path":"fonts/fnt_src_info_med_bold_hires/fnt_src_info_med_bold_hires.yy",},"order":4,},
+    {"id":{"name":"draw_set_accent","path":"scripts/draw_set_accent/draw_set_accent.yy",},"order":56,},
     {"id":{"name":"spr_icons_f","path":"sprites/spr_icons_f/spr_icons_f.yy",},"order":6,},
     {"id":{"name":"fnt_src_small_bold","path":"fonts/fnt_src_small_bold/fnt_src_small_bold.yy",},"order":7,},
     {"id":{"name":"get_hotkey","path":"scripts/get_hotkey/get_hotkey.yy",},"order":15,},
