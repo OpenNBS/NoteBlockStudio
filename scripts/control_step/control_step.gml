@@ -254,8 +254,8 @@ function control_step() {
 							if (insname = "Sound Stopper") {remove_emitters_all(floor(e), floor(d - 100))}
 							if (insname = "Show Save Popup") set_msg("Song saved")
 							if (string_count(string_lower("Change Color to #"), string_lower(insname)) = 1) {
-								draw_set_accent(real("0x" + string_copy(insname, 17, 2)), real("0x" + string_copy(insname, 19, 2)), real("0x" + string_copy(insname, 21, 2)))
-								show_debug_message("Change Color to " + string(real("0x" + string_copy(insname, 17, 2))) + string(real("0x" + string_copy(insname, 19, 2))) + string(real("0x" + string_copy(insname, 21, 2))))
+								draw_set_accent(real("0x" + string_copy(insname, 18, 2)), real("0x" + string_copy(insname, 20, 2)), real("0x" + string_copy(insname, 22, 2)))
+								log("Change Color to " + string_copy(insname, 18, 2) + " " + string_copy(insname, 20, 2) + " " + string_copy(insname, 22, 2))
 							}
 							if (insname = "Toggle Background Accent") backgroundaccent = !backgroundaccent
 		                    if (current_song.song_ins[xx, b].press || isplayer) key_played[current_song.song_key[xx, b]] = current_time
