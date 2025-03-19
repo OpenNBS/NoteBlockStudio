@@ -137,6 +137,7 @@ function control_create() {
 	wpapernodim = 0
 	
 	backgroundrainbow = 0
+	backgroundaccent = 0
 	
 	noeditingbackground = 0
 	

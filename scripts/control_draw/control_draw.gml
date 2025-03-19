@@ -60,7 +60,7 @@ function control_draw() {
 			wpaperscale, 0, -1, 1)
 		}
 	}
-	if (theme = 3 && rainbowtoggle && backgroundrainbow) {
+	if (theme = 3 && ((rainbowtoggle && backgroundrainbow) || backgroundaccent)) {
 		draw_set_color(accent[3])
 		draw_rectangle(0, 0, rw, rh, 0)
 	}

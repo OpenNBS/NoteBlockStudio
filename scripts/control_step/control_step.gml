@@ -257,6 +257,7 @@ function control_step() {
 								draw_set_accent(real("0x" + string_copy(insname, 17, 2)), real("0x" + string_copy(insname, 19, 2)), real("0x" + string_copy(insname, 21, 2)))
 								show_debug_message("Change Color to " + string(real("0x" + string_copy(insname, 17, 2))) + string(real("0x" + string_copy(insname, 19, 2))) + string(real("0x" + string_copy(insname, 21, 2))))
 							}
+							if (insname = "Toggle Background Accent") backgroundaccent = !backgroundaccent
 		                    if (current_song.song_ins[xx, b].press || isplayer) key_played[current_song.song_key[xx, b]] = current_time
 		                    current_song.song_played[xx, b] = current_time
 		                }
