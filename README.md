@@ -29,6 +29,8 @@ You can download Open Note Block Studio [here](https://github.com/OpenNBS/OpenNo
 
 > _Windows-only. Support for other platforms is coming soon!_
 
+> _We're having a TestFlight on macOS for an upcoming version! Join [here](https://testflight.apple.com/join/hg58hwbM)!_
+
 ## 📄 Project Status
 
 The current version is considered stable and feature-complete; as such, it's no longer accepting contributions or new features other than minor bug fixes.
