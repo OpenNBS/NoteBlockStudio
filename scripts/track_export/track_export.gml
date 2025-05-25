@@ -248,7 +248,7 @@ function track_export() {
 		TAG_List("entities", 0, 10)
 		blocktagpos = buffer_tell(buffer)
 		TAG_List("blocks", 114514, 10)
-		log("blocktagpos: " + blocktagpos)
+		log("blocktagpos: " + string(blocktagpos))
 			TAG_Compound("nbt")
 				TAG_String("Color", "black")
 				TAG_String("id", "minecraft:sign")
