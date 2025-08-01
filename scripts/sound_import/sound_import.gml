@@ -12,11 +12,11 @@ function get_asset_index_friendly_name(asset_index) {
 function get_assets_dir() {
 	var assets_dir = mc_install_path;
 	
-	if (string_char_at(assets_dir, string_length(assets_dir)) != "\\") {
-		assets_dir = assets_dir + "\\";
+	if (string_char_at(assets_dir, string_length(assets_dir)) != condstr(os_type = os_windows, "\\", "/")) {
+		assets_dir = assets_dir + condstr(os_type = os_windows, "\\", "/")
 	}
 	
-	assets_dir = assets_dir + "assets\\";
+	assets_dir = assets_dir + "assets" + condstr(os_type = os_windows, "\\", "/");
 	return assets_dir;
 }
 
@@ -32,7 +32,7 @@ function find_asset_indexes() {
 	var assets_dir = get_assets_dir();
 	log("Looking for index files at " + assets_dir);
 	var asset_indexes = [];
-	var file_name = file_find_first(assets_dir + "indexes\\*.json", 0);
+	var file_name = file_find_first(assets_dir + "indexes" + condstr(os_type = os_windows, "\\", "/") + "*.json", 0);
 	while (file_name != "") {
 	    array_push(asset_indexes, string_replace(file_name, ".json", ""));
 		log(file_name);
@@ -87,7 +87,7 @@ function load_asset_index(copy = false) {
 	var assets_dir = get_assets_dir();
 	var selected_asset_list = sound_import_selected_asset_index;
 	if (selected_asset_list == "") return;
-	var asset_index_path = assets_dir + "indexes\\" + selected_asset_list + ".json";
+	var asset_index_path = assets_dir + "indexes" + condstr(os_type = os_windows, "\\", "/") + selected_asset_list + ".json";
 	if (!file_exists(asset_index_path)) {
 		if (language != 1) message("The file for the specified asset index could not be found!", "Note Block Studio")
 		else message("未找到该索引所指向的文件！", "Note Block Studio")
@@ -135,8 +135,8 @@ function load_asset_index(copy = false) {
 		//show_debug_message(key + " " + hash);
 
 		if (copy) {
-			var src = assets_dir + "objects\\" + string_copy(hash, 1, 2) + "\\" + hash;
-			var dst = sounds_mc_subdir + string_replace(key, "minecraft/sounds/", "\\");
+			var src = assets_dir + "objects" + condstr(os_type = os_windows, "\\", "/") + string_copy(hash, 1, 2) + condstr(os_type = os_windows, "\\", "/") + hash;
+			var dst = sounds_mc_subdir + string_replace(key, "minecraft/sounds/", condstr(os_type = os_windows, "\\", "/"));
 		
 			if (!file_exists_lib(src)) {
 				continue;
