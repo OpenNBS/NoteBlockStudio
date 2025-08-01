@@ -56,7 +56,12 @@ function draw_window_sound_import() {
 			((language == 0) ? "Select Minecraft installation directory" : "选择Minecraft安装目录"), 
 			mc_install_path, 
 			((language == 0) ? "Minecraft installation directory" : "Minecraft安装目录")));
-		if (fn != "") mc_install_path = filename_dir(fn);
+		if (fn != "") {
+			mc_install_path = filename_dir(fn);
+			mc_install_path = string_replace_all(mc_install_path, "Select Minecraft installation directory", "")
+			mc_install_path = string_replace_all(mc_install_path, "选择Minecraft安装目录", "")
+			if (os_type != os_windows && string_char_at(mc_install_path, string_length(mc_install_path)) != "/") mc_install_path = mc_install_path + "/"
+		}
 		update_asset_index_menu();
 	}
 	y1 += 28;
