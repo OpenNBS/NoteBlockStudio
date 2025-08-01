@@ -1,0 +1,20 @@
+To make a TestFlight or App Store build for macOS (You need a developer subscription):
+1. Use the Create Executable function in GameMaker
+2. Navigate to the generated Xcode project and open it
+3. In Xcode, 
+ - drag the files "NBS Icon macOS" and "Icon.xcassets" into Resources
+ - In Signing & Capabilities, 
+   - Turn off Automatically manage signing
+   - Choose a working provisioning profile
+   - Change permission to Read/Write for User Selected File, Downloads Folder and Music Folder
+   - Added capability "Hardened Runtime" and check "Disable Library Validation"
+ - In General, 
+   - Change the field at App Icons and Launch Screen -> App Icon to "NBS Icon macOS"
+ - In Info, 
+   - Change Icon file to "NBS Icon macOS.icon"
+ - In Build Settings,
+   - Change Packaging -> Product Name to "Note Block Studio"
+4. On the Xcode menu bar on the top of the screen, click Product -> Archive
+5. In the Archives screen, choose the build, click Distribute App
+5. If you want to distribute it as a file, choose Direct Distribution to notarize it
+6. If you want to distribute it to TestFlight or App Store, choose App Store Connect
