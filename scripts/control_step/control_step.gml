@@ -104,7 +104,7 @@ function control_step() {
 	
 	// update tabs name and window title accordingly
 	update_tabs_name()
-	update_window_caption(current_song)
+	if (os_type != os_macosx) update_window_caption(current_song)
 	
 	update_refreshrate()
 	
