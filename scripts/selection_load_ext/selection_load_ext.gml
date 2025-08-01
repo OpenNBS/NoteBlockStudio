@@ -64,4 +64,5 @@ function selection_load_ext(argument0, argument1, argument2) {
 	songs[song].selection_h = h + 1
 	selection_code_update()
 	selection_expand_layers()
+	update_tempo_changes()
 }

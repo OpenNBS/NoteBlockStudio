@@ -386,7 +386,7 @@ function control_draw() {
 		if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
 			current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
 			audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-			audio_sound_set_track_position(current_song.reference_sound, current_song.marker_pos / current_song.tempo + current_song.reference_offset / 1000)
+			audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
 		}
 	}
 	if (checkplaying < 0) {
@@ -881,7 +881,7 @@ function control_draw() {
 			if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
 				current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
 				audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-				audio_sound_set_track_position(current_song.reference_sound, current_song.marker_pos / current_song.tempo + current_song.reference_offset / 1000)
+				audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
 			}
 		}
 	}
@@ -892,7 +892,7 @@ function control_draw() {
 			if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
 				current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
 				audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-				audio_sound_set_track_position(current_song.reference_sound, current_song.marker_pos / current_song.tempo + current_song.reference_offset / 1000)
+				audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
 			}
 		}
 	}
@@ -934,7 +934,7 @@ function control_draw() {
 	if (current_song.tempo < 0.5) c = 30
 	if (current_song.tempo > 11) c = 0.5
 	if (current_song.tempo > 18) c = 0.25
-	a = ceil(current_song.starta / (current_song.tempo * c)) * c
+	a = ceil(get_seconds_from_tick(current_song.starta) / c) * c
 	xx = (ceil(current_song.starta / (current_song.tempo * c)) - (current_song.starta / (current_song.tempo * c))) * (32 * current_song.tempo * c)
 
 	while (xx < totalcols * 32 + 16) {
@@ -1473,7 +1473,7 @@ function control_draw() {
 					if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
 						current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
 						audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-						audio_sound_set_track_position(current_song.reference_sound, current_song.marker_pos / current_song.tempo + current_song.reference_offset / 1000)
+						audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
 					}
 				}
 		    } else {
@@ -1490,7 +1490,7 @@ function control_draw() {
 					if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
 						current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
 						audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-						audio_sound_set_track_position(current_song.reference_sound, current_song.marker_pos / current_song.tempo + current_song.reference_offset / 1000)
+						audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
 					}
 				}
 		    } else {
@@ -1499,7 +1499,7 @@ function control_draw() {
 					if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
 						current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
 						audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-						audio_sound_set_track_position(current_song.reference_sound, current_song.marker_pos / current_song.tempo + current_song.reference_offset / 1000)
+						audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
 					}
 				}
 		    }
@@ -2295,24 +2295,24 @@ function control_draw() {
 		if (isplayer && blackout) draw_set_color(c_white)
 		if (!isplayer || dropmode) {
 		draw_theme_font(font_info_med_bold)
-		if (theme != 3) draw_text_dynamic(93, 52 + song_tab_offset, time_str(current_song.marker_pos / current_song.tempo))
-		else draw_text_dynamic(93 - 84, 52 + song_tab_offset, time_str(current_song.marker_pos / current_song.tempo))
+		if (theme != 3) draw_text_dynamic(93, 52 + song_tab_offset, time_str(get_seconds_from_tick(current_song.marker_pos)))
+		else draw_text_dynamic(93 - 84, 52 + song_tab_offset, time_str(get_seconds_from_tick(current_song.marker_pos)))
 		} else {
 		draw_theme_font(font_info_big)
-		if (theme != 3) draw_text_dynamic(centerx + 70, centery - 50 + song_tab_offset, time_str(current_song.marker_pos / current_song.tempo))
-		else draw_text_dynamic(centerx - 134 + 70, centery - 50 + song_tab_offset, time_str(current_song.marker_pos / current_song.tempo))
+		if (theme != 3) draw_text_dynamic(centerx + 70, centery - 50 + song_tab_offset, time_str(get_seconds_from_tick(current_song.marker_pos)))
+		else draw_text_dynamic(centerx - 134 + 70, centery - 50 + song_tab_offset, time_str(get_seconds_from_tick(current_song.marker_pos)))
 		}
 
 		// Song length
 		if (!isplayer || dropmode) {
 		draw_theme_font(font_small)
-		if (theme != 3) draw_text_dynamic(93, 69 + song_tab_offset, "/ " + time_str(current_song.enda / current_song.tempo))
-		else draw_text_dynamic(93 - 67, 69 + song_tab_offset, "/ " + time_str(current_song.enda / current_song.tempo))
+		if (theme != 3) draw_text_dynamic(93, 69 + song_tab_offset, "/ " + time_str(get_seconds_from_tick(current_song.enda)))
+		else draw_text_dynamic(93 - 67, 69 + song_tab_offset, "/ " + time_str(get_seconds_from_tick(current_song.enda)))
 		} else {
 		if (blackout) draw_set_color(c_white)
 		draw_theme_font(font_info_med)
-		if (theme != 3) draw_text_dynamic(centerx + 70, centery - 20 + song_tab_offset, "/ " + time_str(current_song.enda / current_song.tempo))
-		else draw_text_dynamic(centerx - 91 + 70, centery - 20 + song_tab_offset, "/ " + time_str(current_song.enda / current_song.tempo))
+		if (theme != 3) draw_text_dynamic(centerx + 70, centery - 20 + song_tab_offset, "/ " + time_str(get_seconds_from_tick(current_song.enda)))
+		else draw_text_dynamic(centerx - 91 + 70, centery - 20 + song_tab_offset, "/ " + time_str(get_seconds_from_tick(current_song.enda)))
 		}
 		draw_theme_font(font_main)
 		draw_set_halign(fa_left)
@@ -2322,7 +2322,7 @@ function control_draw() {
 			current_song = songs[song]
 			if (!dropmode) {
 
-				current_song.marker_pos = draw_dragbar(current_song.marker_pos, current_song.enda + totalcols, centerx - 200, centery + 25, 400, 1, time_str((clamp(((mouse_x - (centerx - 200)) / 400) * current_song.enda, 0, current_song.enda)) / current_song.tempo), condstr(language != 1, "Song Position", "当前位置"), 0)
+				current_song.marker_pos = draw_dragbar(current_song.marker_pos, current_song.enda + totalcols, centerx - 200, centery + 25, 400, 1, time_str(get_seconds_from_tick(clamp(((mouse_x - (centerx - 200)) / 400) * current_song.enda, 0, current_song.enda))), condstr(language != 1, "Song Position", "当前位置"), 0)
 				draw_set_halign(fa_left)
 				draw_theme_color()
 				if (blackout) draw_set_color(c_white)
@@ -2360,7 +2360,7 @@ function control_draw() {
 				dropalpha = 1
 			} else {
 				draw_set_alpha(dropalpha)
-				current_song.marker_pos = draw_dragbar(current_song.marker_pos, current_song.enda + totalcols, 93 - 84 + 100, 52 + 15, 400, 1, time_str((clamp(((mouse_x - (93 - 84 + 100)) / 400) * current_song.enda, 0, current_song.enda)) / current_song.tempo), condstr(language != 1, "Song Position", "当前位置"), 0)
+				current_song.marker_pos = draw_dragbar(current_song.marker_pos, current_song.enda + totalcols, 93 - 84 + 100, 52 + 15, 400, 1, time_str(get_seconds_from_tick(clamp(((mouse_x - (93 - 84 + 100)) / 400) * current_song.enda, 0, current_song.enda))), condstr(language != 1, "Song Position", "当前位置"), 0)
 				draw_set_alpha(1)
 				if (mouse_x != mouse_xprev || mouse_y != mouse_yprev || mouse_rectangle(0, 0, 530, 90) || window != 0) {
 					dropalpha = 1
@@ -2400,20 +2400,20 @@ function control_draw() {
 		if (window != w_settempo) {
 		if (language != 1) {
 		if (use_bpm) {
-			bpm = current_song.tempo * 15
+			bpm = current_song.real_tempo * 15
 			draw_text_dynamic(136, 60 + song_tab_offset, string_format(bpm, 4, 2) + " BPM")
 			popup_set(108, 57 + song_tab_offset, 64, 22, "Tempo of the song (measured in beats per minute).\nClick and drag to change. Click to enter value. Right-click for more options.")
 		} else {
-			draw_text_dynamic(136, 60 + song_tab_offset, string_format(current_song.tempo, 4, 2) + " t / s")
+			draw_text_dynamic(136, 60 + song_tab_offset, string_format(current_song.real_tempo, 4, 2) + " t / s")
 			popup_set(108, 57 + song_tab_offset, 64, 22, "Tempo of the song (measured in ticks per second).\nClick and drag to change. Click to enter value. Right-click for more options.")
 		}
 		} else {
 		if (use_bpm) {
-			bpm = current_song.tempo * 15
+			bpm = current_song.real_tempo * 15
 			draw_text_dynamic(136, 60 + song_tab_offset, string_format(bpm, 4, 2) + " BPM")
 			popup_set(108, 57 + song_tab_offset, 64, 22, "歌曲的速度（拍数/分钟）\n拖拽来大致更改，点击来手动输入，右键查看更多选项。")
 		} else {
-			draw_text_dynamic(136, 60 + song_tab_offset, string_format(current_song.tempo, 4, 2) + " t / s")
+			draw_text_dynamic(136, 60 + song_tab_offset, string_format(current_song.real_tempo, 4, 2) + " t / s")
 			popup_set(108, 57 + song_tab_offset, 64, 22, "歌曲的速度（红石刻/秒）\n拖拽来大致更改，点击来手动输入，右键查看更多选项。")
 		}
 		}
@@ -2432,7 +2432,7 @@ function control_draw() {
 			// Drag
 		    if (mouse_check_button(mb_left) && (mouse_x != mouse_xprev || mouse_y != mouse_yprev)) {
 		        curs = cr_size_ns
-				tempodrag = current_song.tempo
+				tempodrag = current_song.real_tempo
 		        window = w_dragtempo
 				if (tutorial_tempobox == 0) {
 					if (language != 1) set_msg("Tip: click the tempo box\nto enter a value!", 7.0, 208, 118 + song_tab_offset)
@@ -2444,25 +2444,25 @@ function control_draw() {
 		    if (mouse_check_button_pressed(mb_right)) {
 				if (language != 1) menu = show_menu_ext("tempo", mouse_x, mouse_y, check(!use_bpm) + "Ticks per second (t/s)|" +
 																check(use_bpm) + "Beats per minute (BPM)|-|" +
-																check(current_song.tempo = 10) + string(10 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 12) + string(12 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 14) + string(14 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 16) + string(16 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 18) + string(18 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 20) + string(20 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 30) + string(30 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 60) + string(60 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|-|" +
+																check(current_song.real_tempo = 10) + string(10 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 12) + string(12 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 14) + string(14 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 16) + string(16 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 18) + string(18 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 20) + string(20 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 30) + string(30 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 60) + string(60 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|-|" +
 																"Tempo tapper...")
 				else menu = show_menu_ext("tempo", mouse_x, mouse_y, check(!use_bpm) + "红石刻/秒 (t/s)|" +
 																check(use_bpm) + "拍数/分钟 (BPM)|-|" +
-																check(current_song.tempo = 10) + string(10 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 12) + string(12 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 14) + string(14 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 16) + string(16 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 18) + string(18 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 20) + string(20 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 30) + string(30 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
-																check(current_song.tempo = 60) + string(60 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|-|" +
+																check(current_song.real_tempo = 10) + string(10 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 12) + string(12 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 14) + string(14 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 16) + string(16 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 18) + string(18 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 20) + string(20 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 30) + string(30 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|" +
+																check(current_song.real_tempo = 60) + string(60 * bpm_multiplier) + condstr(use_bpm, " BPM", " t/s") + "|-|" +
 																"速度测量器......")
 				if (tutorial_tempobox == 2) {
 					if (language != 1) set_msg("Way to go!", 5.0, 158, 118 + song_tab_offset)
@@ -2475,9 +2475,9 @@ function control_draw() {
 		    curs = cr_size_ns
 		    tempodrag += 0.25 * (mouse_yprev - mouse_y) / 3
 		    tempodrag = median(0.25, tempodrag, 60)
-		    a = current_song.tempo
+		    a = current_song.real_tempo
 		    current_song.tempo = floor(tempodrag * 4) / 4
-		    if (a != current_song.tempo) current_song.changed = 1
+		    if (a != current_song.real_tempo) current_song.changed = 1
 		    if (!mouse_check_button(mb_left)) window = w_releasemouse
 		}
 		}

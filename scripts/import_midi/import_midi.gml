@@ -253,11 +253,13 @@ function import_midi() {
 	// Set tempo
 	if (!w_midi_tempo_changer || midi_tempo_changers = 0) {
 		if (w_midi_tempo && songs[song].enda > 0 && midi_songlength > 0) {
-		    songs[song].tempo = median(0.25, 10 / ((midi_songlength) / (songs[song].enda / 10)), 1000)
+		    songs[song].real_tempo = median(0.25, 10 / ((midi_songlength) / (songs[song].enda / 10)), 1000)
+			songs[song].tempo = songs[song].real_tempo
 		    //tempo = floor(tempo * 4) / 4
 		}
 	} else {
-		songs[song].tempo = (midi_tempo_changer_tempo[0] * (w_midi_precision + 1)) / 15
+		songs[song].real_tempo = (midi_tempo_changer_tempo[0] * (w_midi_precision + 1)) / 15
+		songs[song].tempo = songs[song].real_tempo
 	}
 	// Name
 	if (w_midi_name = 1) {
@@ -316,6 +318,7 @@ function import_midi() {
 	window = 0
 	songs[song].changed = 0
 	for (a = 0; a < 10000; a += 1) text_exists[a] = 0
+	if (w_midi_tempo_changer) update_tempo_changes()
 
 
 

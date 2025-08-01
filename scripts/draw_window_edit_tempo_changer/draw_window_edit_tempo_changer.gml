@@ -48,6 +48,7 @@ function draw_window_edit_tempo_changer() {
 				windowopen = 0
 				window = 0
 				windowprogress = 0
+				update_tempo_changes()
 			} else {
 				if (language != 1) message("Invalid value!", "Set Tempo")
 				else message("非法数值！", "设置速度")

@@ -1,7 +1,7 @@
 function draw_window_set_tempo() {
 	// draw_window_set_tempo()
 	var bpm_multiplier = use_bpm ? 15 : 1
-	var input = string_format(songs[song].tempo * bpm_multiplier, 0, 2)
+	var input = string_format(songs[song].real_tempo * bpm_multiplier, 0, 2)
 	var song_tab_offset = 0
 	if (array_length(songs) > 1 && !fullscreen) {
 		if (theme = 0) song_tab_offset = 35
@@ -26,25 +26,26 @@ function draw_window_set_tempo() {
 		settempo = mouse_rectangle(xx, 57 + song_tab_offset, w, 22)
 	}
 	
-	var otempo = songs[song].tempo;
+	var otempo = songs[song].real_tempo;
 	
 	// Set tempo and close
 	if ((mouse_check_button_released(mb_left) && !settempo && !mouse_rectangle(xx, 57 + song_tab_offset, w, 22)) || keyboard_check_pressed(vk_enter)) {
 		try {
-			songs[song].tempo = real(string_digits_symbol(string_replace(input, ",", "."), ".") / bpm_multiplier)
+			songs[song].real_tempo = real(string_digits_symbol(string_replace(input, ",", "."), ".") / bpm_multiplier)
 		} catch (e) {
 			// Input is invalid, don't change the tempo!
 		} finally {
-			if (songs[song].tempo >= 1000) {
-				songs[song].tempo /= 100
-			} else if (songs[song].tempo >= 100) {
-				songs[song].tempo /= 10
+			if (songs[song].real_tempo >= 1000) {
+				songs[song].real_tempo /= 100
+			} else if (songs[song].real_tempo >= 100) {
+				songs[song].real_tempo /= 10
 			}
-			songs[song].tempo = median(0.25, songs[song].tempo, 60)
+			songs[song].real_tempo = median(0.25, songs[song].real_tempo, 60)
 		}
-		if (songs[song].tempo != otempo) {
+		if (songs[song].real_tempo != otempo) {
 			changed = 1
 		}
+		update_tempo_changes()
 		settempo = 0
 		text_focus = -1
 		window = 0

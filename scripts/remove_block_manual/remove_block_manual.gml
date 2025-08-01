@@ -67,6 +67,9 @@ function remove_block_manual(argument0, argument1) {
 		ani.yn = yy - songs[song].startb
 	}
 	songs[song].changed = 1
+	if (songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, ins)].name = "Tempo Changer") {
+		update_tempo_changes()
+	}
 
 
 

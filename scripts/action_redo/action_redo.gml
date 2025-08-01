@@ -24,10 +24,12 @@ function action_redo() {
 	switch (t) {
 		case h_addblock: {
 			add_block(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+			update_tempo_changes()
 			break
 		}
 		case h_removeblock: {
 			remove_block(arg0, arg1)
+			update_tempo_changes()
 			break
 		}
 		case h_changeblock: {

@@ -51,7 +51,7 @@ function draw_window_tempo_tapper() {
 	draw_theme_color()
 	if (draw_button2(x1 + 10, y1 + 98, 60, condstr(language != 1, "OK", "确认")) && (windowopen = 1 || theme != 3)) {
 		try {
-			songs[song].tempo = (ctempo * (1 + tapdouble)) / 15
+			songs[song].real_tempo = (ctempo * (1 + tapdouble)) / 15
 			changed = 1
 			taptempo = 0
 			tapping = 0

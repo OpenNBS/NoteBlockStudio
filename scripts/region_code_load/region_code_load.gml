@@ -51,5 +51,6 @@ function region_code_load(argument0, argument1, argument2) {
 	} until (pipe_pos >= str_len)
 	buffer_delete(str_buffer)
 	buffer_delete(val_buffer)
+	update_tempo_changes()
 	
 }

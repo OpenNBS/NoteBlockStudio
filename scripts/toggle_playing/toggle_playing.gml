@@ -19,6 +19,7 @@ function toggle_playing(argument0) {
 	    metronome_played = -1
 	    // PLAY COL
 	    xx = floor(songs[song].marker_pos)
+		songs[song].tempo = get_tempo_from_tick(xx)
 	    if (xx <= songs[song].enda) {
 	        if (songs[song].colamount[xx] > 0) {
 	            for (b = songs[song].colfirst[xx]; b <= songs[song].collast[xx]; b += 1) {
@@ -43,13 +44,21 @@ function toggle_playing(argument0) {
 	                            a = 0
 	                        }
 	                    }
+						var insname = songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, songs[song].song_ins[xx, b])].name
 	                    if (a) {
-	                        if (songs[song].song_ins[xx, b].loaded) play_sound(songs[song].song_ins[xx, b], songs[song].song_key[xx, b], c , d, e)
-							if (songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, songs[song].song_ins[xx, b])].name = "Tempo Changer") songs[song].tempo = floor(abs(e)) / 15
-							if (songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, songs[song].song_ins[xx, b])].name = "Toggle Rainbow") {rainbowtoggle = !rainbowtoggle draw_accent_init()}
+	                        if (songs[song].song_ins[xx, b].loaded && songs[song].reference_option != 1) play_sound(songs[song].song_ins[xx, b], songs[song].song_key[xx, b], c , d, e)
 	                        if (songs[song].song_ins[xx, b].press) key_played[songs[song].song_key[xx, b]] = current_time
 	                        songs[song].song_played[xx, b] = current_time
 	                    }
+						if (insname = "Tempo Changer") songs[song].tempo = floor(abs(e)) / 15
+						if (insname = "Toggle Rainbow") {rainbowtoggle = !rainbowtoggle draw_accent_init()}
+						if (insname = "Sound Stopper") {remove_emitters_all(floor(e), floor(d - 100))}
+						if (insname = "Show Save Popup") set_msg("Song saved")
+						if (string_count(string_lower("Change Color to #"), string_lower(insname)) = 1) {
+							draw_set_accent(real("0x" + string_copy(insname, 18, 2)), real("0x" + string_copy(insname, 20, 2)), real("0x" + string_copy(insname, 22, 2)))
+							log("Change Color to " + string_copy(insname, 18, 2) + " " + string_copy(insname, 20, 2) + " " + string_copy(insname, 22, 2))
+						}
+						if (insname = "Toggle Background Accent") backgroundaccent = !backgroundaccent
 	                }
 	            }
 	        }

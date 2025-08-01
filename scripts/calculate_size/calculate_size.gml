@@ -15,7 +15,7 @@ function calculate_size() {
 	if (songs[song].block_pitched > 0) {
 	    if (!question("Some note blocks have fine pitch tuning, which isn't supported in note blocks. Export anyway?", "Minecraft Compatibility")) return 0
 	}
-	if (songs[song].tempo != 10 && songs[song].tempo != 5 && songs[song].tempo != 2.5) {
+	if (songs[song].real_tempo != 10 && songs[song].real_tempo != 5 && songs[song].real_tempo != 2.5) {
 	    message("The tempo of the song is not compatible with Minecraft. As a result, the playback speed of the song in-game will differ from the one in the program.", "Tempo")
 	}
 	selection_place(0)
@@ -38,7 +38,7 @@ function calculate_size() {
 	if (songs[song].block_pitched > 0) {
 	    if (!question("一些方块带有音符盒不支持的微分音。继续导出吗？", "Minecraft 兼容性")) return 0
 	}
-	if (songs[song].tempo != 10 && songs[song].tempo != 5 && songs[song].tempo != 2.5) {
+	if (songs[song].real_tempo != 10 && songs[song].real_tempo != 5 && songs[song].real_tempo != 2.5) {
 	    message("歌曲的速度与 Minecraft 不兼容。所以，在游戏内的播放会和软件内的有差别。", "速度")
 	}
 	selection_place(0)
@@ -126,10 +126,10 @@ function calculate_size() {
 	    }
 	}
 	sch_exp_tempo = 0 // 0 = 10, 1 = 5, 2 = 2.5
-	if (songs[song].tempo > 10) sch_exp_tempo = 0
-	if (songs[song].tempo < 10) sch_exp_tempo = 0
-	if (songs[song].tempo < 7.5) sch_exp_tempo = 1
-	if (songs[song].tempo < 3.75) sch_exp_tempo = 2
+	if (songs[song].real_tempo > 10) sch_exp_tempo = 0
+	if (songs[song].real_tempo < 10) sch_exp_tempo = 0
+	if (songs[song].real_tempo < 7.5) sch_exp_tempo = 1
+	if (songs[song].real_tempo < 3.75) sch_exp_tempo = 2
 	return 1
 
 

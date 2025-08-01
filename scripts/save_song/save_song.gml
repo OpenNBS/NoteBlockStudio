@@ -47,7 +47,7 @@ function save_song() {
 	buffer_write_string_int(cursong.song_orauthor)
 	buffer_write_string_int(cursong.song_desc)
 
-	buffer_write_short(cursong.tempo * 100)
+	buffer_write_short(cursong.real_tempo * 100)
 	// Per-song auto-save is deprecated. It is only written to
 	// the file to preserve auto-save behavior on older versions
 	buffer_write_byte(autosave)

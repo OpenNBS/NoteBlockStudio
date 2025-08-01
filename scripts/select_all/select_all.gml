@@ -49,6 +49,7 @@ function select_all(argument0, argument1) {
 	selection_trim()
 	selection_code_update()
 	history_set(h_select, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, x1, y1, str)
+	update_tempo_changes()
 
 
 

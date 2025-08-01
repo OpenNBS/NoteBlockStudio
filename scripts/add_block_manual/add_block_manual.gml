@@ -79,6 +79,7 @@ function add_block_manual(argument0, argument1, argument2, argument3, argument4,
 		songs[song].song_pit[xx, yy] = int64(songs[song].tempo * 15)
 		text_exists[59] = 0
 		window = w_edit_tempo_changer
+		update_tempo_changes()
 	}
 	
 	return 1

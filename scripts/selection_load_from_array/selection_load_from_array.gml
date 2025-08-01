@@ -36,4 +36,5 @@ function selection_load_from_array(xx, yy, array){
 	songs[song].selection_h = h + 1
 	selection_code_update()
 	selection_expand_layers()
+	update_tempo_changes()
 }

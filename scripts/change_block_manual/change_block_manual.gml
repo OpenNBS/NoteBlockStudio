@@ -37,6 +37,7 @@ function change_block_manual(argument0, argument1, argument2, argument3, argumen
 		tempo_changer_sel_ins = ins
 		text_exists[59] = 0
 		window = w_edit_tempo_changer
+		update_tempo_changes()
 	} else {
 		history_set(h_changeblock, xx, yy, ins, key, vel, pan, pit, pins, pkey, pvel, ppan, ppit)
 		songs[song].changed = 1
@@ -49,7 +50,6 @@ function change_block_manual(argument0, argument1, argument2, argument3, argumen
 		if (ppit != 0 && pit = 0) songs[song].block_pitched -= 1
 	}
 	
-
 
 
 }

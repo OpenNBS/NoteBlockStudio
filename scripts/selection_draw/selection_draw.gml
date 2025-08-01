@@ -37,7 +37,7 @@ function selection_draw(argument0, argument1, argument2, argument3) {
 	                    }
 	                }
 	                if (a) {
-	                    if (songs[song].selection_ins[xx, b].loaded) play_sound(songs[song].selection_ins[xx, b], songs[song].selection_key[xx, b], c , d, e)
+	                    if (songs[song].selection_ins[xx, b].loaded && songs[song].reference_option != 1) play_sound(songs[song].selection_ins[xx, b], songs[song].selection_key[xx, b], c , d, e)
 	                    if (songs[song].selection_ins[xx, b].press) key_played[songs[song].selection_key[xx, b]] = current_time
 	                    songs[song].selection_played[xx, b] = current_time
 	                }

@@ -11,6 +11,7 @@ song_download_display_name = ""
 
 // Playback
 tempo = 10
+real_tempo = 10
 marker_pos = 0
 marker_prevpos = 0
 section_exists = 0
@@ -118,3 +119,5 @@ reference_option = 2
 reference_offset = 0
 reference_sound = -1
 reference_volume = 100
+
+tempo_changes = [[0, 10]]

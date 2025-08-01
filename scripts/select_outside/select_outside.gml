@@ -41,6 +41,7 @@ function select_outside(argument0, argument1) {
 	songs[song].starta = songs[song].selection_x
 	sb_val[0] = songs[song].starta
 	history_set(h_select, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, 0, 0, songs[song].selection_code)
+	update_tempo_changes()
 
 
 

@@ -110,6 +110,7 @@ function selection_remove(argument0, argument1, argument2, argument3, argument4,
 	    selection_trim()
 	    selection_code_update()
 	}
+	update_tempo_changes()
 
 
 

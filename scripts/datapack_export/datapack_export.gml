@@ -30,7 +30,7 @@ function datapack_export() {
 		// https://minecraft.wiki/w/Java_Edition_1.21#Command_format_2
 		var function_registry = (o.dat_mcversion == 0) ? "functions" : "function";
 
-		var playspeed = min(round(o.songs[o.song].tempo * 4), 120)
+		var playspeed = min(round(o.songs[o.song].real_tempo * 4), 120)
 		var rootfunction = "0_" + string(power(2, floor(log2(o.songs[o.song].enda))+1)-1)
 		var tempdir
 		var functionpath

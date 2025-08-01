@@ -373,14 +373,14 @@ function menu_click(argument0) {
 		case "tempo": {
 			if (sel = 0) use_bpm = false
 			else if (sel = 1) use_bpm = true
-			else if (sel = 2) { songs[song].tempo = 10 songs[song].changed = 1 }
-			else if (sel = 3) { songs[song].tempo = 12 songs[song].changed = 1 }
-			else if (sel = 4) { songs[song].tempo = 14 songs[song].changed = 1 }
-			else if (sel = 5) { songs[song].tempo = 16 songs[song].changed = 1 }
-			else if (sel = 6) { songs[song].tempo = 18 songs[song].changed = 1 }
-			else if (sel = 7) { songs[song].tempo = 20 songs[song].changed = 1 }
-			else if (sel = 8) { songs[song].tempo = 30 songs[song].changed = 1 }
-			else if (sel = 9) { songs[song].tempo = 60 songs[song].changed = 1 }
+			else if (sel = 2) { songs[song].real_tempo = 10 songs[song].changed = 1 }
+			else if (sel = 3) { songs[song].real_tempo = 12 songs[song].changed = 1 }
+			else if (sel = 4) { songs[song].real_tempo = 14 songs[song].changed = 1 }
+			else if (sel = 5) { songs[song].real_tempo = 16 songs[song].changed = 1 }
+			else if (sel = 6) { songs[song].real_tempo = 18 songs[song].changed = 1 }
+			else if (sel = 7) { songs[song].real_tempo = 20 songs[song].changed = 1 }
+			else if (sel = 8) { songs[song].real_tempo = 30 songs[song].changed = 1 }
+			else if (sel = 9) { songs[song].real_tempo = 60 songs[song].changed = 1 }
 			else if (sel = 10) window = w_tempotapper
 			break
 		}

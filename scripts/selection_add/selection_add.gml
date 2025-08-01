@@ -153,6 +153,7 @@ function selection_add() {
 	if (!argument[5]) history_set(h_selectadd, x1, y1, x2, y2, copy)
 	songs[song].selected += ac
 	selection_code_update()
+	update_tempo_changes()
 
 
 

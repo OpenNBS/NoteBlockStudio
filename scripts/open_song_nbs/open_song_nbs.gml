@@ -50,7 +50,7 @@ function open_song_nbs(fn, sounds_path = "", safeopen, replace) {
 	// SONG DESCRIPTION
 	newsong.song_desc = buffer_read_string_int()
 	// TEMPO
-	newsong.tempo = buffer_read_short() / 100
+	newsong.real_tempo = buffer_read_short() / 100
 	// AUTOSAVE (deprecated)
 	buffer_read_byte()
 	// AUTOSAVE MINUTES (deprecated)

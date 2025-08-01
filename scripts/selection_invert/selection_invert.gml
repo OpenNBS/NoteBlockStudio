@@ -65,6 +65,7 @@ function selection_invert() {
 	selection_trim()
 	selection_code_update()
 	history_set(h_select, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, xx, yy, str)
+	update_tempo_changes()
 
 
 

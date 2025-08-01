@@ -103,7 +103,7 @@ function draw_window_minecraft() {
 	yy += 65
 	if (selected_tab_mc = 0) { // Schematic
 
-		if(songs[song].tempo = 10 || songs[song].tempo = 5 || songs[song].tempo = 2.5){
+		if(songs[song].real_tempo = 10 || songs[song].real_tempo = 5 || songs[song].real_tempo = 2.5){
 			// compatible
 			if (theme != 3) {
 				draw_sprite(spr_yesno, 1, x1 + 25, yy + 8)
@@ -136,21 +136,21 @@ function draw_window_minecraft() {
 		else draw_text_dynamic(x1 + 45, yy, "速度必须为每秒 2.5、5 或 10 红石刻。")
 		draw_theme_font(font_main)
 
-		if (songs[song].tempo = 10 || songs[song].tempo = 5 || songs[song].tempo = 2.5) {    
+		if (songs[song].real_tempo = 10 || songs[song].real_tempo = 5 || songs[song].real_tempo = 2.5) {    
 			draw_set_color(c_green)
 			if (theme == 2 || (theme == 3 && fdark)) draw_set_color(c_lime)
-		    if (language != 1) draw_text_dynamic(x1 + 45, yy + 16, "The tempo is " + string(songs[song].tempo) + " ticks per second.")
-		    else draw_text_dynamic(x1 + 45, yy + 16, "目前速度为每秒 " + string(songs[song].tempo) + " 红石刻。")
+		    if (language != 1) draw_text_dynamic(x1 + 45, yy + 16, "The tempo is " + string(songs[song].real_tempo) + " ticks per second.")
+		    else draw_text_dynamic(x1 + 45, yy + 16, "目前速度为每秒 " + string(songs[song].real_tempo) + " 红石刻。")
 		} else {
 			draw_set_color(c_red)
-		    if (language != 1) draw_text_dynamic(x1 + 45, yy + 16, "The tempo is " + string(songs[song].tempo) + " ticks per second.")
-		    else draw_text_dynamic(x1 + 45, yy + 16, "目前速度为每秒 " + string(songs[song].tempo) + " 红石刻。")
+		    if (language != 1) draw_text_dynamic(x1 + 45, yy + 16, "The tempo is " + string(songs[song].real_tempo) + " ticks per second.")
+		    else draw_text_dynamic(x1 + 45, yy + 16, "目前速度为每秒 " + string(songs[song].real_tempo) + " 红石刻。")
 		    if (draw_button2(x1 + 45, yy + 34, 140, condstr(language != 1, "Fix tempo for schematic", "针对 Schematic 调整速度"), 0, 1)) {
-		        var otempo = songs[song].tempo
-		        if (otempo > 10) songs[song].tempo = 10 songs[song].changed = 1
-		        if (otempo < 10) songs[song].tempo = 10 songs[song].changed = 1
-		        if (otempo < 7.5) songs[song].tempo = 5 songs[song].changed = 1
-		        if (otempo < 3.75) songs[song].tempo = 2.5 songs[song].changed = 1
+		        var otempo = songs[song].real_tempo
+		        if (otempo > 10) songs[song].real_tempo = 10 songs[song].changed = 1
+		        if (otempo < 10) songs[song].real_tempo = 10 songs[song].changed = 1
+		        if (otempo < 7.5) songs[song].real_tempo = 5 songs[song].changed = 1
+		        if (otempo < 3.75) songs[song].real_tempo = 2.5 songs[song].changed = 1
 		    }
 		}
 		draw_theme_color()
@@ -281,7 +281,7 @@ function draw_window_minecraft() {
 		if (language != 1) draw_text_dynamic(x1 + 45, yy + 16, "However, the tempos 0.25, 0.5, 1, 1.25, 2, 2.5, 4, 5, 10 and 20 t/s work better.")
 		else draw_text_dynamic(x1 + 45, yy + 16, "但是，使用每秒 0.25、0.5、1、1.25、2、2.5、4、5、10 或 20 红石刻的速度更佳。")
 
-		if (songs[song].tempo = 20 || songs[song].tempo = 10 || songs[song].tempo = 5 || songs[song].tempo = 4 || songs[song].tempo = 2.5 || songs[song].tempo = 2 || songs[song].tempo = 1.25 || songs[song].tempo = 1 || songs[song].tempo = 0.5 || songs[song].tempo = 0.25) {    
+		if (songs[song].real_tempo = 20 || songs[song].real_tempo = 10 || songs[song].real_tempo = 5 || songs[song].real_tempo = 4 || songs[song].real_tempo = 2.5 || songs[song].real_tempo = 2 || songs[song].real_tempo = 1.25 || songs[song].real_tempo = 1 || songs[song].real_tempo = 0.5 || songs[song].real_tempo = 0.25) {    
 			if (theme != 3) {
 				draw_sprite(spr_yesno, 1, x1 + 25, yy + 8)	
 			} else {
@@ -295,8 +295,8 @@ function draw_window_minecraft() {
 			}
 			draw_set_color(c_green)
 			if (theme == 2 || (theme == 3 && fdark)) draw_set_color(c_lime)
-			if (language != 1) draw_text_dynamic(x1 + 45, yy + 32, "The tempo is " + string(songs[song].tempo) + " ticks per second.")
-			else draw_text_dynamic(x1 + 45, yy + 32, "目前速度为每秒 " + string(songs[song].tempo) + " 红石刻。")
+			if (language != 1) draw_text_dynamic(x1 + 45, yy + 32, "The tempo is " + string(songs[song].real_tempo) + " ticks per second.")
+			else draw_text_dynamic(x1 + 45, yy + 32, "目前速度为每秒 " + string(songs[song].real_tempo) + " 红石刻。")
 		} else {
 			if (theme != 3) {
 				draw_sprite(spr_yesno, 2, x1 + 25, yy + 8)	
@@ -310,21 +310,21 @@ function draw_window_minecraft() {
 				}
 			}
 		    draw_set_color(c_orange)
-			if (language != 1) draw_text_dynamic(x1 + 45, yy + 32, "The tempo is " + string(songs[song].tempo) + " ticks per second.")
-			else draw_text_dynamic(x1 + 45, yy + 32, "目前速度为每秒 " + string(songs[song].tempo) + " 红石刻。")
+			if (language != 1) draw_text_dynamic(x1 + 45, yy + 32, "The tempo is " + string(songs[song].real_tempo) + " ticks per second.")
+			else draw_text_dynamic(x1 + 45, yy + 32, "目前速度为每秒 " + string(songs[song].real_tempo) + " 红石刻。")
 			if (draw_button2(x1 + 45, yy + 50, 180, condstr(language != 1, "Optimize tempo for data pack", "针对数据包调整速度"), 0, 1)) {
 			    var otempo
-				otempo = songs[song].tempo
-				if (otempo >= 15) songs[song].tempo = 20 songs[song].changed = 1
-		        if (otempo < 15) songs[song].tempo = 10 songs[song].changed = 1
-		        if (otempo < 7.5) songs[song].tempo = 5 songs[song].changed = 1
-		        if (otempo < 4.5) songs[song].tempo = 4 songs[song].changed = 1
-		        if (otempo < 3.25) songs[song].tempo = 2.5 songs[song].changed = 1
-				if (otempo < 2.25) songs[song].tempo = 2 songs[song].changed = 1
-				if (otempo < 1.625) songs[song].tempo = 1.25 songs[song].changed = 1
-				if (otempo < 1.125) songs[song].tempo = 1 songs[song].changed = 1
-				if (otempo < 0.75) songs[song].tempo = 0.5 songs[song].changed = 1
-				if (otempo < 0.375) songs[song].tempo = 0.25 songs[song].changed = 1
+				otempo = songs[song].real_tempo
+				if (otempo >= 15) songs[song].real_tempo = 20 songs[song].changed = 1
+		        if (otempo < 15) songs[song].real_tempo = 10 songs[song].changed = 1
+		        if (otempo < 7.5) songs[song].real_tempo = 5 songs[song].changed = 1
+		        if (otempo < 4.5) songs[song].real_tempo = 4 songs[song].changed = 1
+		        if (otempo < 3.25) songs[song].real_tempo = 2.5 songs[song].changed = 1
+				if (otempo < 2.25) songs[song].real_tempo = 2 songs[song].changed = 1
+				if (otempo < 1.625) songs[song].real_tempo = 1.25 songs[song].changed = 1
+				if (otempo < 1.125) songs[song].real_tempo = 1 songs[song].changed = 1
+				if (otempo < 0.75) songs[song].real_tempo = 0.5 songs[song].changed = 1
+				if (otempo < 0.375) songs[song].real_tempo = 0.25 songs[song].changed = 1
 		    }
 		}
 		draw_theme_color()
