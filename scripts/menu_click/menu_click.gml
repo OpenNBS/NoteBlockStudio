@@ -382,6 +382,7 @@ function menu_click(argument0) {
 			else if (sel = 8) { songs[song].real_tempo = 30 songs[song].changed = 1 }
 			else if (sel = 9) { songs[song].real_tempo = 60 songs[song].changed = 1 }
 			else if (sel = 10) window = w_tempotapper
+			update_tempo_changes()
 			break
 		}
 		case "language": {

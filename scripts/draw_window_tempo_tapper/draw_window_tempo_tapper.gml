@@ -57,6 +57,7 @@ function draw_window_tempo_tapper() {
 			tapping = 0
 			ltime = 0
 			windowclose = 1
+			update_tempo_changes()
 		}
 		catch(e) {
 			if (language != 1) message("An error occurred.", "Tempo tapper")

@@ -2476,9 +2476,12 @@ function control_draw() {
 		    tempodrag += 0.25 * (mouse_yprev - mouse_y) / 3
 		    tempodrag = median(0.25, tempodrag, 60)
 		    a = current_song.real_tempo
-		    current_song.tempo = floor(tempodrag * 4) / 4
+		    current_song.real_tempo = floor(tempodrag * 4) / 4
 		    if (a != current_song.real_tempo) current_song.changed = 1
-		    if (!mouse_check_button(mb_left)) window = w_releasemouse
+		    if (!mouse_check_button(mb_left)) {
+				window = w_releasemouse
+				update_tempo_changes()
+			}
 		}
 		}
 		}
