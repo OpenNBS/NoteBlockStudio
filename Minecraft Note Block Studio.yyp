@@ -1672,6 +1672,8 @@
     {"CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib/site-packages/numpy","resourceVersion":"1.0","name":"_globals.pyc","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib","resourceVersion":"1.0","name":"site-packages.zip","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib/site-packages/numpy/typing/tests/data/fail","resourceVersion":"1.0","name":"array_pad.pyi","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles/Data","resourceVersion":"1.0","name":".DS_Store","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":".DS_Store","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
     "IDEVersion": "2022.6.1.26",
