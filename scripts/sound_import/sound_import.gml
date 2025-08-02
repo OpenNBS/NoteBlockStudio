@@ -303,6 +303,7 @@ function sound_import_download() {
 					} else {
 						log("All download complete!");
 						sound_import_status = 2
+						sound_import_download_files_index = 0
 					}
 				}
 			} else {
@@ -312,6 +313,8 @@ function sound_import_download() {
 					message("下载失败！请重试。", "Note Block Studio");
 				}
 				sound_import_download_stage = 0
+				sound_import_status = 0
+				if (sound_import_download_files_index != 0) sound_import_download_files_index -= 1
 			}
 		}
 	}

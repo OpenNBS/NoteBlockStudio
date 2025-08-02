@@ -106,9 +106,10 @@ function draw_window_sound_import() {
 	
 		// Get button
 		x1 = startx + width - 72 - 20;
-		if (draw_button2(x1, y1, 72, ((language == 0) ? "Get" : "获取"), false, true)) {
+		if (draw_button2(x1, y1, 72, ((language == 0) ? "Get" : "获取"), (sound_import_download_toggle && sound_import_status == 1), true)) {
 			sound_import_download_stage = 1
 			sound_import_download_status = http_get("https://launchermeta.mojang.com/mc/game/version_manifest.json")
+			sound_import_download_files_index = 0
 		}
 		y1 += 28;
 		y1 += 4
@@ -125,7 +126,7 @@ function draw_window_sound_import() {
 	draw_area(x1, y1, x1 + 86, y1 + 20);
 	if (sound_import_download_toggle) draw_text_dynamic(x1 + 4, y1 + 4, sound_import_selected_asset_index);
 	else draw_text_dynamic(x1 + 4, y1 + 4, get_asset_index_friendly_name(sound_import_selected_asset_index));
-	if (draw_abutton(x1 + 86 - 16, y1 + 1, sound_import_menu_str == "")) {
+	if (draw_abutton(x1 + 86 - 16, y1 + 1, sound_import_menu_str == "" || sound_import_download_files_index > 0)) {
 		menu = show_menu_ext("sound_import_asset_index", x1, y1, sound_import_menu_str);
 	}
 	
@@ -163,9 +164,18 @@ function draw_window_sound_import() {
 		if (!sound_import_download_toggle) load_asset_index(true);
 		else {
 			sound_import_download_stage = 2
-			sound_import_download_files_index = 0
-			sound_import_download_status = http_get(sound_import_download_version_url_list[sound_import_asset_index_select][1])
-			log (sound_import_download_version_url_list[sound_import_asset_index_select][1])
+			if (sound_import_download_files_index = 0) {
+				sound_import_download_status = http_get(sound_import_download_version_url_list[sound_import_asset_index_select][1])
+				log (sound_import_download_version_url_list[sound_import_asset_index_select][1])
+			} else {
+				if (sound_import_download_files_index < array_length(sound_import_download_files_list)) {
+					sound_import_status = 1
+					sound_import_download_stage = 4
+					sound_import_download_status = http_get_file(sound_import_download_files_list[sound_import_download_files_index, 0], sound_import_download_files_list[sound_import_download_files_index, 1])
+					log (sound_import_download_files_list[sound_import_download_files_index, 0])
+					sound_import_download_files_index += 1
+				}
+			}
 		}
 	}
 	
