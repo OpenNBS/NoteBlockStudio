@@ -214,6 +214,15 @@ function control_create() {
 	draggingtab = -1
 	tabdest = -1
 	if (directory_exists(temp_directory_included)) directory_destroy(temp_directory_included)
+	sound_import_download_toggle = 0
+	sound_import_download_status = pointer_null
+	sound_import_downloaded_size = -1
+	sound_import_total_size = -1
+	sound_import_download_file = pointer_null
+	sound_import_download_stage = 0
+	sound_import_download_version_url_list = []
+	sound_import_download_files_list = []
+	sound_import_download_files_index = 0
 
 	// Instruments
 	current_resource = "Vanilla"
