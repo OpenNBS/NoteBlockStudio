@@ -426,6 +426,7 @@
     {"id":{"name":"region_code_load","path":"scripts/region_code_load/region_code_load.yy",},"order":1,},
     {"id":{"name":"select_all","path":"scripts/select_all/select_all.yy",},"order":2,},
     {"id":{"name":"select_outside","path":"scripts/select_outside/select_outside.yy",},"order":3,},
+    {"id":{"name":"directory_copy","path":"scripts/directory_copy/directory_copy.yy",},"order":20,},
     {"id":{"name":"midi_is_note_fade","path":"scripts/midi_is_note_fade/midi_is_note_fade.yy",},"order":9,},
     {"id":{"name":"select_custom","path":"scripts/select_custom/select_custom.yy",},"order":4,},
     {"id":{"name":"selection_add","path":"scripts/selection_add/selection_add.yy",},"order":5,},
@@ -1674,6 +1675,8 @@
     {"CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib/site-packages/numpy/typing/tests/data/fail","resourceVersion":"1.0","name":"array_pad.pyi","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles/Data","resourceVersion":"1.0","name":".DS_Store","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":".DS_Store","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib","resourceVersion":"1.0","name":".DS_Store","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles/Data/Python","resourceVersion":"1.0","name":".DS_Store","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
     "IDEVersion": "2022.6.1.26",
