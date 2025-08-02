@@ -34,7 +34,11 @@ function draw_window_sound_import() {
 		)
 	)
 	y1 += 33
-	if (draw_checkbox(x1, y1, sound_import_download_toggle, ((language == 0) ? "Download from Mojang" : "从 Mojang 下载"), "", 0, 1)) sound_import_download_toggle = !sound_import_download_toggle
+	if (draw_checkbox(x1, y1, sound_import_download_toggle, ((language == 0) ? "Download from Mojang" : "从 Mojang 下载"), "", (sound_import_download_toggle && sound_import_status == 1), 1)) {
+		sound_import_download_toggle = !sound_import_download_toggle
+		sound_import_asset_indexes = []
+		update_asset_index_menu()
+	}
 	y1 += 17
 	if (!sound_import_download_toggle) {
 		draw_text_dynamic(
