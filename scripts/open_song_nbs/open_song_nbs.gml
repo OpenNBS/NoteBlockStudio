@@ -3,6 +3,10 @@ function open_song_nbs(fn, sounds_path = "", safeopen, replace) {
 	var str, ca, cb, a, b, hei, byte1, byte2, song_first_custom_index, custom_index_diff, newsong
 	
 	buffer = buffer_import(fn)
+	if (buffer < 0) {
+		message((language == 0) ? "Error: Failed to access file. Note Block Studio may not have permission to access the directory. \nPlease try again using the file browser." : "错误：访问文件失败。Note Block Studio 可能没有权限访问该目录。\n请通过文件浏览器重试。", (language == 0) ? "Error" : "错误")
+		return -1
+	}
 	
 	byte1 = buffer_read_byte()
 	byte2 = buffer_read_byte()
