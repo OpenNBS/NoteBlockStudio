@@ -15,7 +15,8 @@ function schematic_save(argument0, argument1) {
 	filen = argument1;
 
 	var file, a, b, c, d, t;
-	file = external_call(global.dll_OpenFileWrite, "temp");
+	//file = external_call(global.dll_OpenFileWrite, "temp");
+	file = buffer_create(8, buffer_grow, 1)
 	var c = 0
 	// Write NBT tags
 	nbt_tag_compound(file, "Schematic") {
@@ -45,7 +46,7 @@ function schematic_save(argument0, argument1) {
 	            for (a = 0; a < sch.xsize; a += 1) {
 	                for (b = sch.ysize - 1; b >= 0; b -= 1) {
 	                    t = a * sch.xysize * sch.zsize + b + c * sch.xysize;
-	                    external_call(global.dll_WriteByte, file, sch.block[t div sch.dsize, t mod sch.dsize]);
+	                    buffer_write(file, buffer_s8, sch.block[t div sch.dsize, t mod sch.dsize]);
 	                }
 	            }
 	        }
@@ -55,18 +56,21 @@ function schematic_save(argument0, argument1) {
 	            for (a = 0; a < sch.xsize; a += 1) {
 	                for (b = sch.ysize - 1; b >= 0; b -= 1) {
 	                    t = a * sch.xysize * sch.zsize + b + c * sch.xysize;
-	                    external_call(global.dll_WriteByte, file, sch.data[t div sch.dsize, t mod sch.dsize]);
+	                    buffer_write(file, buffer_s8, sch.data[t div sch.dsize, t mod sch.dsize]);
 	                }
 	            }
 	        }
 	    }
 	    nbt_tag_end(file);
 	}
-	external_call(global.dll_CloseFile, file);
+	//external_call(global.dll_CloseFile, file);
+	buffer_save(file, temp_file)
+	log ("buffer size " + string(buffer_get_size(file)))
+	buffer_delete(file)
 
 	// Compress using Gzip and clean up
-	gzzip("temp", filen)
-	file_delete("temp");
+	gzzip(temp_file, filen)
+	file_delete(temp_file);
 
 
 }

@@ -14,9 +14,9 @@ function nbt_tag_double(argument0, argument1, argument2) {
 	name = argument1;
 	val = argument2;
 
-	external_call(global.dll_WriteByte, file, 6);
+	buffer_write(file, buffer_s8, 6);
 	nbt_string_write(file, name);
-	external_call(global.dll_WriteDouble, file, val);
+	buffer_write_double_be_ext(file, val);
 
 
 }

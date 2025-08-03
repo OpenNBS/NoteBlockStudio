@@ -14,9 +14,9 @@ function nbt_tag_float(argument0, argument1, argument2) {
 	name = argument1;
 	val = argument2;
 
-	external_call(global.dll_WriteByte, file, 5);
+	buffer_write(file, buffer_s8, 5);
 	nbt_string_write(file, name);
-	external_call(global.dll_WriteFloat, file, val);
+	buffer_write_float_be_ext(file, val);
 
 
 }

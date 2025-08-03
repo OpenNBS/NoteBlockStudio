@@ -13,8 +13,8 @@ function nbt_string_write(argument0, argument1) {
 	str = argument1;
 
 	var p;
-	external_call(global.dll_WriteShort, file, string_length(str));
-	for (p = 0; p < string_length(str); p += 1) external_call(global.dll_WriteByte, file, ord(string_char_at(str, p + 1)))
+	buffer_write_short_be_ext(file, string_length(str));
+	for (p = 0; p < string_length(str); p += 1) buffer_write(file, buffer_s8, ord(string_char_at(str, p + 1)))
 
 
 }
