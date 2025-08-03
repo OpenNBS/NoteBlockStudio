@@ -336,6 +336,7 @@ function control_create() {
 	for (a = 0; a < 10000; a += 1) text_exists[a] = 0
 	currspeed = 0
 	taskbar = 1
+	global.__temp_audio_buffer__ = -1
 
 	// Note blocks
 	midi_devices = 0

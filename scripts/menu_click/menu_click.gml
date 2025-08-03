@@ -49,21 +49,7 @@ function menu_click(argument0) {
 	        if (sel = b + 10) open_midi("")
 	        if (sel = b + 11) open_schematic("")
 	        if (sel = b + 12) {
-				audio_destroy_stream(songs[song].reference_audio)
-				songs[song].reference_audio_file = ""
-				songs[song].reference_audio = -1
-				songs[song].reference_option = 2
-				songs[song].reference_offset = 0
-				songs[song].reference_sound = -1
-				songs[song].reference_volume = 100
-				songs[song].reference_audio_file = string(get_open_filename_ext("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
-				songs[song].reference_audio = audio_create_stream(songs[song].reference_audio_file)
-				if (songs[song].reference_audio < 0) {
-				    if (language != 1) message("Couldn't load the file", "Error")
-				    else message("文件加载失败", "错误")
-					songs[song].reference_audio_file = ""
-					songs[song].reference_audio = -1
-				}
+				load_reference_audio()
 			}
 			if (sel = b + 13) {
 				var temppath = string(get_open_filename_ext("Image Files (*.png, *.jpg, *.jpeg)|*.png;*.jpg;*.jpeg", "", "", condstr(language != 1, "Open background image", "打开背景图片")))
