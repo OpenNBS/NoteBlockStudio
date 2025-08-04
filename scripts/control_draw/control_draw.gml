@@ -2746,7 +2746,7 @@ function control_draw() {
 		macos_menu_last_refresh = current_time
 	}
 	
-	if (macos_menu_last_refresh != -1 && current_time - macos_menu_last_refresh > 500) {
+	if (macos_menu_last_refresh != -1 && current_time - macos_menu_last_refresh > 200) {
 		macos_menu_last_refresh = -1
 		menu_macos_init()
 	}
