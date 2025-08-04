@@ -3,6 +3,7 @@ To make a TestFlight or App Store build for macOS (You need a developer subscrip
 2. Navigate to the generated Xcode project and open it
 3. In Xcode, 
  - drag the files "NBS Icon macOS" and "Icon.xcassets" into Resources
+ - drag the file "Minecraft_Note_Block_Studio-Info.plist" to replace the one in xcode project
  - In Signing & Capabilities, 
    - Turn off Automatically manage signing
    - Choose a working provisioning profile

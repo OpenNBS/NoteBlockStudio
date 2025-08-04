@@ -36,5 +36,10 @@ function control_social(){
 			menu_macos_init()
 			playing = 0
 		}
+	} else if (async_load[? "id"] == "FILE_OPEN"){
+		var file = async_load[? "path"]
+		if (file != "" && (filename_ext(file) = ".mid" || filename_ext(file) = ".midi" || filename_ext(file) = ".schematic" || filename_ext(file) = ".nbs" || filename_ext(file) = ".zip")) {
+			load_song(file)
+		}
 	}
 }

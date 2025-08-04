@@ -2754,6 +2754,7 @@ function control_draw() {
 		var curr_unsaved = check_unsaved()
 		if (current_song.filename != "") macos_window_set_unsaved(current_song.filename, curr_unsaved, ((language = 0) ? "Unsaved Song" : "新文件"))
 		else macos_window_set_unsaved("", curr_unsaved, ((language = 0) ? "Unsaved Song" : "新文件"))
+		//if (keyboard_check_pressed(ord("M"))) macos_share(current_song.filename, 1)
 	}
 	
 	// Detect when windows have changed
