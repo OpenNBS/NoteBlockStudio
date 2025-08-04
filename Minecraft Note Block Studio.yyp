@@ -445,6 +445,7 @@
     {"id":{"name":"selection_changepan","path":"scripts/selection_changepan/selection_changepan.yy",},"order":9,},
     {"id":{"name":"obj_removeeff","path":"objects/obj_removeeff/obj_removeeff.yy",},"order":8,},
     {"id":{"name":"selection_changepit","path":"scripts/selection_changepit/selection_changepit.yy",},"order":10,},
+    {"id":{"name":"check_unsaved","path":"scripts/check_unsaved/check_unsaved.yy",},"order":23,},
     {"id":{"name":"selection_setkey","path":"scripts/selection_setkey/selection_setkey.yy",},"order":11,},
     {"id":{"name":"selection_setvel","path":"scripts/selection_setvel/selection_setvel.yy",},"order":12,},
     {"id":{"name":"selection_setpan","path":"scripts/selection_setpan/selection_setpan.yy",},"order":13,},

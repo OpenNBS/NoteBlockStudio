@@ -76,12 +76,12 @@ function macos_create_menu_ext(argument0, argument1, argument2) {
 				var temp_icon = ""
 				if (submenu == 0) {
 					macos_menu_add_item(temp_title, temp_itemstr, temp_shortcut, temp_uid)
-					log ("parent: " + title + " content: " + itemstr + " shortcut: " + obj.item_shortcut[submenu, obj.items[submenu]] + " uid: " + obj.name + "_" + string(n))
+					//log ("parent: " + title + " content: " + itemstr + " shortcut: " + obj.item_shortcut[submenu, obj.items[submenu]] + " uid: " + obj.name + "_" + string(n))
 				}
 				else {
 					temp_title = submenu_name
 					macos_menu_add_subitem(temp_title, temp_itemstr, temp_shortcut, temp_uid)
-					log ("parent: " + submenu_name + " content: " + itemstr + " shortcut: " + obj.item_shortcut[submenu, obj.items[submenu]] + " uid: " + obj.name + "_" + string(n))
+					//log ("parent: " + submenu_name + " content: " + itemstr + " shortcut: " + obj.item_shortcut[submenu, obj.items[submenu]] + " uid: " + obj.name + "_" + string(n))
 				}
 				if (obj.item_inactive[submenu, obj.items[submenu]]) macos_menu_set_enabled(temp_uid, 0)
 				if (obj.item_image[submenu, obj.items[submenu]] != -1) {

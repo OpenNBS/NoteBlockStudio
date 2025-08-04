@@ -491,6 +491,7 @@ function control_create() {
 	dropalphawait = 0
 	draw_set_circle_precision(64);
 	macos_menu_last_refresh = -1
+	unsaved_status = 0
 
 	// Midi export / import
 	w_midi_remember = 1
@@ -690,13 +691,8 @@ function control_create() {
 	//		}
 	if (file_find_first(backup_directory + "*.nbs", 0) != "" && !port_taken && !isplayer) {
 		var isrecover = 0
-		if (os_type != os_macosx) {
-			if (language != 1) isrecover = question("Note Block Studio quit unexpectedly while you were working on a song. Do you want to recover your work?\n\n(If you click 'No', you'll be prompted to recover it again the next time you open the program.)", "Auto-recovery")
-			else isrecover = question("Note Block Studio在您工作时意外关闭了。要恢复您的文档吗？\n\n（如果点击“No”，下次打开软件时将会再次提示恢复。）", "自动恢复")
-		} else {
-			if (language != 1) isrecover = question("Note Block Studio quit unexpectedly while you were working on a song or the song haven't been saved since you closed the program. Do you want to recover your work?\n\n(If you click 'No', you'll be prompted to recover it again the next time you open the program.)", "Auto-recovery")
-			else isrecover = question("Note Block Studio在您工作时意外关闭，或上次关闭时没有保存文件。要恢复您的文档吗？\n\n（如果点击“No”，下次打开软件时将会再次提示恢复。）", "自动恢复")
-		}
+		if (language != 1) isrecover = question("Note Block Studio quit unexpectedly while you were working on a song. Do you want to recover your work?\n\n(If you click 'No', you'll be prompted to recover it again the next time you open the program.)", "Auto-recovery")
+		else isrecover = question("Note Block Studio在您工作时意外关闭了。要恢复您的文档吗？\n\n（如果点击“No”，下次打开软件时将会再次提示恢复。）", "自动恢复")
 		if (isrecover) {
 			// Create restore folder
 			if (!directory_exists_lib(restore_directory)) {
