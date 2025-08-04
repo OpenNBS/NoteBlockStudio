@@ -63,7 +63,23 @@ function menu_macos_init(){
 				                            inactive(current_song.selected = 0) + "Change instrument...|\\|" + str + condstr(customstr != "", "-|") + customstr + string_repeat("/|", insmenu) + "-|" +
 				                            inactive(current_song.selected = 0 || current_song.selection_l = 0) + "Expand selection|"+
 				                            inactive(current_song.selected = 0 || current_song.selection_l = 0) + "Compress selection|"+
-				                            inactive(current_song.selected = 0 || current_song.selection_l = 0) + "Macros...|\\||"+ "Tremolo...|"+ "Stereo...|"+ "Arpeggio...|"+ "Portamento...|"+ "Vibrato|"+ "Stagger...|"+ "Chorus|"+ "Volume LFO|"+ "Fade in|"+ "Fade out|"+ "Replace key|"+ "Set velocity...|"+ "Set panning...|"+ "Set pitch...|"+ "Reset all properties|"+ "/|-|"+
+				                            inactive(current_song.selected = 0 || current_song.selection_l = 0) + "Macros...|\\||"+ 
+											get_hotkey_menubar("tremolo") + "$Tremolo...|"+
+											get_hotkey_menubar("stereo") + "$Stereo...|"+
+											get_hotkey_menubar("arpeggio") + "$Arpeggio...|"+
+											get_hotkey_menubar("portamento") + "$Portamento...|"+
+											get_hotkey_menubar("vibrato") + "$Vibrato|"+
+											get_hotkey_menubar("stagger") + "$Stagger...|"+
+											get_hotkey_menubar("chorus") + "$Chorus|"+
+											get_hotkey_menubar("volume_lfo") + "$Volume LFO|"+
+											get_hotkey_menubar("fade_in") + "$Fade in|"+
+											get_hotkey_menubar("fade_out") + "$Fade out|"+
+											get_hotkey_menubar("replace_key") + "$Replace key|"+
+											get_hotkey_menubar("set_velocity") + "$Set velocity...|"+
+											get_hotkey_menubar("set_panning") + "$Set panning...|"+
+											get_hotkey_menubar("set_pitch") + "$Set pitch...|"+
+											get_hotkey_menubar("reset_properties") + "$Reset all properties|"+
+											"/|-|"+
 				                            inactive(current_song.selected = 0) + "Transpose notes outside octave range")
 			}
 			str = ""
@@ -151,7 +167,23 @@ function menu_macos_init(){
 				                            inactive(current_song.selected = 0) + "更改音色......|\\|" + str + condstr(customstr != "", "-|") + customstr + string_repeat("/|", insmenu) + "-|" +
 				                            inactive(current_song.selected = 0 || current_song.selection_l = 0) + "扩展选区|"+
 				                            inactive(current_song.selected = 0 || current_song.selection_l = 0) + "压缩选区|"+
-				                            inactive(current_song.selected = 0 || current_song.selection_l = 0) + "快捷键......|\\||"+ "Tremolo...|"+ "Stereo...|"+ "Arpeggio...|"+ "Portamento...|"+ "Vibrato|"+ "Stagger...|"+ "Chorus|"+ "Volume LFO|"+ "淡入|"+ "淡出|"+ "替换音|"+ "设定音量......|"+ "设定声道......|"+ "设定音高......|"+ "重置所有属性|"+ "/|-|"+
+				                            inactive(current_song.selected = 0 || current_song.selection_l = 0) + "快捷键......|\\||"+ 
+											get_hotkey_menubar("tremolo") + "$Tremolo...|"+
+											get_hotkey_menubar("stereo") + "$Stereo...|"+
+											get_hotkey_menubar("arpeggio") + "$Arpeggio...|"+
+											get_hotkey_menubar("portamento") + "$Portamento...|"+
+											get_hotkey_menubar("vibrato") + "$Vibrato|"+
+											get_hotkey_menubar("stagger") + "$Stagger...|"+
+											get_hotkey_menubar("chorus") + "$Chorus|"+
+											get_hotkey_menubar("volume_lfo") + "$Volume LFO|"+
+											get_hotkey_menubar("fade_in") + "$淡入|"+
+											get_hotkey_menubar("fade_out") + "$淡出|"+
+											get_hotkey_menubar("replace_key") + "$替换音|"+
+											get_hotkey_menubar("set_velocity") + "$设定音量......|"+
+											get_hotkey_menubar("set_panning") + "$设定声道......|"+
+											get_hotkey_menubar("set_pitch") + "$设定音高......|"+
+											get_hotkey_menubar("reset_properties") + "$重置所有属性|"+
+											"/|-|"+
 				                            inactive(current_song.selected = 0) + "转换所有超出八度范围的音符")
 			}
 			str = ""
