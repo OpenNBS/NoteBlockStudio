@@ -190,7 +190,7 @@
             1,
             1,
             1,
-          ],"resourceVersion":"1.0","name":"RegisterCallbacks","tags":[],"resourceType":"GMExtensionFunction",},
+          ],"resourceVersion":"1.0","name":"libdlgmod_registercallbacks","tags":[],"resourceType":"GMExtensionFunction",},
         {"externalName":"widget_get_button_name","kind":1,"help":"widget_get_button_name(type)","hidden":false,"returnType":1,"argCount":0,"args":[
             2,
           ],"resourceVersion":"1.0","name":"widget_get_button_name","tags":[],"resourceType":"GMExtensionFunction",},
@@ -273,7 +273,7 @@
         {"name":"show_message_cancelable_async","path":"extensions/libdlgmod/libdlgmod.yy",},
         {"name":"show_question_cancelable_async","path":"extensions/libdlgmod/libdlgmod.yy",},
         {"name":"show_attempt_async","path":"extensions/libdlgmod/libdlgmod.yy",},
-        {"name":"RegisterCallbacks","path":"extensions/libdlgmod/libdlgmod.yy",},
+        {"name":"libdlgmod_registercallbacks","path":"extensions/libdlgmod/libdlgmod.yy",},
         {"name":"widget_get_button_name","path":"extensions/libdlgmod/libdlgmod.yy",},
         {"name":"widget_set_button_name","path":"extensions/libdlgmod/libdlgmod.yy",},
       ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},

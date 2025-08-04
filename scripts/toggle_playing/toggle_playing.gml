@@ -2,6 +2,8 @@ function toggle_playing(argument0) {
 	// toggle_playing(cols)
 	var xx, a, b, c, d, e;
 	playing=!playing
+	if (playing) macos_menu_last_refresh = -1
+	else macos_menu_last_refresh = current_time
 	if (playing = 1) {
 	    if (songs[song].marker_pos = songs[song].enda + argument0) songs[song].marker_pos = 0
 	    if (marker_start && songs[song].section_exists) songs[song].marker_pos = songs[song].section_start

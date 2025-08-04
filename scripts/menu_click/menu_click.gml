@@ -82,7 +82,22 @@ function menu_click(argument0) {
 	        if (sel = 1) action_redo()
 	        if (sel = 2) action_copy()
 	        if (sel = 3) action_cut()
-	        if (sel = 4) action_paste(songs[song].starta, songs[song].startb)
+	        if (sel = 4) {
+				var x1a = -2
+				var y1a = -2
+				if (!fullscreen && show_layers) {
+					x1a = 264
+				}
+				if (fullscreen) {
+					y1a = -2
+				} else {
+					y1a = 52 + get_tab_offset()
+				}
+				var selbxa = songs[song].starta + floor((mouse_x - (x1a + 2)) / 32)
+				var selbya = songs[song].startb + floor((mouse_y - (y1a + 34)) / 32)
+				if (selbxa > -1 && selbya > -1) action_paste(selbxa, selbya)
+				else action_paste(songs[song].starta, songs[song].startb)
+			}
 	        if (sel = 5) action_delete()
 	        if (sel = 6) select_all(-1, 0)
 	        if (sel = 7) selection_place(0)
@@ -373,6 +388,7 @@ function menu_click(argument0) {
 		}
 		case "language": {
 			language = sel
+			menu_macos_init()
 			break
 		}
 		case "audio_exp_format": {

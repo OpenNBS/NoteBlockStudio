@@ -490,6 +490,7 @@ function control_create() {
 	dropalpha = 1
 	dropalphawait = 0
 	draw_set_circle_precision(64);
+	macos_menu_last_refresh = -1
 
 	// Midi export / import
 	w_midi_remember = 1
@@ -569,6 +570,8 @@ function control_create() {
 
 	// Settings
 	if (!check_args("--prefreset")) load_settings()
+	if (os_type = os_macosx) macos_enable_system_settings_menu()
+	menu_macos_init()
 	switch(language) {
 		default:
 			lang_en_us()

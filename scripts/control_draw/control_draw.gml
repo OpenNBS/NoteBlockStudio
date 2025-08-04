@@ -2742,6 +2742,15 @@ function control_draw() {
 	
 	if (remove_emitters_all_schedule) remove_emitters_all()
 	
+	if (!playing && (mouse_check_button_released(mb_left) || mouse_check_button_released(mb_right))) {
+		macos_menu_last_refresh = current_time
+	}
+	
+	if (macos_menu_last_refresh != -1 && current_time - macos_menu_last_refresh > 500) {
+		macos_menu_last_refresh = -1
+		menu_macos_init()
+	}
+	
 	// Detect when windows have changed
 	/*if window != prevwindow {
 		show_debug_message(string(window) + " " + string(prevwindow))
