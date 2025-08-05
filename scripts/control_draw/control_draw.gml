@@ -2756,6 +2756,25 @@ function control_draw() {
 		if (current_song.filename != "") macos_window_set_unsaved(current_song.filename, curr_unsaved, filename_name(current_song.filename))
 		else macos_window_set_unsaved("", curr_unsaved, ((language = 0) ? "Unsaved Song" : "新文件"))
 		//if (keyboard_check_pressed(ord("M"))) macos_share(current_song.filename, 1)
+		if (macos_url_pending_count() > 0) {
+			var temp_url = macos_url_take_pending()
+			if (string_count("nbs://", temp_url) = 0) {
+				var file = string_replace_all(temp_url, "file://", "")
+				if (file != "" && (filename_ext(file) = ".mid" || filename_ext(file) = ".midi" || filename_ext(file) = ".schematic" || filename_ext(file) = ".nbs" || filename_ext(file) = ".zip")) {
+					load_song(file)
+				}
+			} else {
+				if (isplayer) {
+					protocol_data = temp_url
+					if (protocol_data != pointer_null) {
+						var download_url = string_replace(protocol_data, "nbs://", "")
+						download_url = string_replace(download_url, "https//", "https://") // Re-add : stripped from URL
+						download_url = string_replace(download_url, "http//", "http://")
+						download_song_start(download_url)
+					}
+				}
+			}
+		}
 	}
 	
 	// Detect when windows have changed
