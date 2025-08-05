@@ -21,7 +21,7 @@ function get_hotkey_menubar(action){
 			break
 		}
 		case "delete": {
-			return "backspace"
+			return "\b"
 			break
 		}
 		case "select_all": {

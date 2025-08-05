@@ -86,7 +86,7 @@ function menu_macos_init(){
 			for (b = 0; b < 11; b += 1) {
 				if (recent_song[b] = "") break
 				c = floor(date_second_span(recent_song_time[b], date_current_datetime()))
-				str += seconds_to_str(c) + "$" + string_truncate(clean(filename_name(recent_song[b])), 310) + "|"
+				str += string_truncate(clean(filename_name(recent_song[b])), 310) + "|"
 			}
 			if (!isplayer) macos_create_menu_ext("File", "file", icon_menubar(icons.NEW)+get_hotkey_menubar("new_song") + "$New song|"+
 				                        icon_menubar(icons.OPEN)+get_hotkey_menubar("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+
@@ -190,7 +190,7 @@ function menu_macos_init(){
 			for (b = 0; b < 11; b += 1) {
 				if (recent_song[b] = "") break
 				c = floor(date_second_span(recent_song_time[b], date_current_datetime()))
-				str += seconds_to_str(c) + "$" + string_truncate(clean(filename_name(recent_song[b])), 310) + "|"
+				str += string_truncate(clean(filename_name(recent_song[b])), 310) + "|"
 			}
 			if (!isplayer) macos_create_menu_ext("文件", "file", icon_menubar(icons.NEW)+get_hotkey_menubar("new_song") + "$新文件|"+
 				                        icon_menubar(icons.OPEN)+get_hotkey_menubar("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+
