@@ -297,10 +297,10 @@ function draw_window_preferences() {
 	    if (draw_button2(x1 + 40 + 84 + 84, y1 + 296 + (theme = 3) * 22, 96, "还原默认", 0, 1)) patternfolder = pattern_directory
 		}
 		}
-		if (theme = 3) draw_theme_font(font_info_med)
-		draw_areaheader(x1 + 22, y1 + 354 + (theme = 3) * 22 - 170 * isplayer, 456, 45, "Discord")
-		if (theme = 3) draw_theme_font(font_main)
 		if (os_type != os_macosx) {
+			if (theme = 3) draw_theme_font(font_info_med)
+			draw_areaheader(x1 + 22, y1 + 354 + (theme = 3) * 22 - 170 * isplayer, 456, 45, "Discord")
+			if (theme = 3) draw_theme_font(font_main)
 			if (language != 1) {
 				if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "Enable Discord Rich Presence", "Whether to display info about your current\nsong in your Discord status activity.", 0, 1)) {
 				    presence = !presence
