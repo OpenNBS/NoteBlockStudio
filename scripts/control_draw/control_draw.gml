@@ -2710,13 +2710,14 @@ function control_draw() {
 		if (filename_ext(dndfile) = ".nbp") pattern_import(dndfile, 1)
 		else if (lastfile != dndfile) {
 			load_song(dndfile)
+			if (os_type = os_macosx) macos_bookmark_store(dndfile, dndfile, 0)
 			lastfile = dndfile
 		}
 		// Reset dndfile
 		file_dnd_set_enabled(false)
 		file_dnd_set_enabled(true)
 		dndfile = ""
-}
+	}
 
 	// Draw update progress bar
 	if (update == 4) {
