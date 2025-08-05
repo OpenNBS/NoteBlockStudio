@@ -7,12 +7,10 @@ To make a TestFlight or App Store build for macOS (You need a developer subscrip
  - In Signing & Capabilities, 
    - Turn off Automatically manage signing
    - Choose a working provisioning profile
-   - Change permission to Read/Write for User Selected File, Downloads Folder and Music Folder
-   - Added capability "Hardened Runtime" and check "Disable Library Validation"
+   - Added capability "Hardened Runtime"
  - In General, 
    - Change the field at App Icons and Launch Screen -> App Icon to "NBS Icon macOS"
- - In Info, 
-   - Change Icon file to "NBS Icon macOS.icon"
+   - Add the file "libGMmacOSTools.dylib" to Frameworks, Libraries, and Embedded Content
  - In Build Settings,
    - Change Packaging -> Product Name to "Note Block Studio"
 4. On the Xcode menu bar on the top of the screen, click Product -> Archive

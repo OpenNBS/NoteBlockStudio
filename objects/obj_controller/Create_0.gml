@@ -17,8 +17,5 @@ if (os_type = os_windows) {
   if (!directory_exists(pattern_directory)) directory_copy(bundled_pattern_directory, pattern_directory);
 }
 
-// Maximize game window on startup
-window_zoom(window_handle());
-
 // Do everything else for create event...
 control_create();

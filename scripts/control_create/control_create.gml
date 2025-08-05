@@ -691,6 +691,22 @@ function control_create() {
 	//		if (question("Minecraft Note Block Studio detected you closed the window without saving the song in the last session. Do you want to recover your work?", "Auto-recovery")) {
 	//			open_url(backup_file)
 	//		}
+	
+	if (os_type = os_macosx && macos_url_pending_count() > 0) {
+		var temp_url = macos_url_take_pending()
+		if (string_count("nbs://", temp_url) = 0) {
+			var file = string_replace_all(temp_url, "file://", "")
+			if (file != "" && (filename_ext(file) = ".mid" || filename_ext(file) = ".midi" || filename_ext(file) = ".schematic" || filename_ext(file) = ".nbs" || filename_ext(file) = ".zip")) {
+				songs[song].filename = file
+				load_song(file, 0, 1, 1)
+			}
+		} else {
+			isplayer = 1
+			window_set_size(floor(800 * window_scale), floor(500 * window_scale))
+			protocol_data = temp_url
+		}
+	}
+	
 	if (file_find_first(backup_directory + "*.nbs", 0) != "" && !port_taken && !isplayer) {
 		var isrecover = 0
 		if (language != 1) isrecover = question("Note Block Studio quit unexpectedly while you were working on a song. Do you want to recover your work?\n\n(If you click 'No', you'll be prompted to recover it again the next time you open the program.)", "Auto-recovery")
@@ -765,7 +781,7 @@ function control_create() {
 		download_song_start(download_url)
 	}
 	// Open song
-	if (parameter_count() > 0) {
+	if (os_type != os_macosx && parameter_count() > 0) {
 		songs[song].filename = filenamearg
 		if (songs[song].filename != "" && (filename_ext(songs[song].filename) = ".mid" || filename_ext(songs[song].filename) = ".midi" || filename_ext(songs[song].filename) = ".schematic" || filename_ext(songs[song].filename) = ".nbs" || filename_ext(songs[song].filename) = ".zip")) {
 			if (!port_taken) {
