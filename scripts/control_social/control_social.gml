@@ -35,6 +35,8 @@ function control_social(){
 		if (event == "open") {
 			menu_macos_init()
 			playing = 0
+		} else {
+			w_isdragging = 0
 		}
 	} else if (async_load[? "id"] == "FILE_OPEN"){
 		var file = async_load[? "path"]
