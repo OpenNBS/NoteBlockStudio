@@ -68,6 +68,17 @@
             1,
             2,
           ],"resourceVersion":"1.0","name":"macos_share","tags":[],"resourceType":"GMExtensionFunction",},
+        {"externalName":"bookmark_store","kind":1,"help":"macos_bookmark_store(path_or_url, key, readOnly)","hidden":false,"returnType":2,"argCount":0,"args":[
+            1,
+            1,
+            2,
+          ],"resourceVersion":"1.0","name":"macos_bookmark_store","tags":[],"resourceType":"GMExtensionFunction",},
+        {"externalName":"bookmark_begin","kind":1,"help":"macos_bookmark_begin(key)","hidden":false,"returnType":2,"argCount":0,"args":[
+            1,
+          ],"resourceVersion":"1.0","name":"macos_bookmark_begin","tags":[],"resourceType":"GMExtensionFunction",},
+        {"externalName":"bookmark_end","kind":1,"help":"macos_bookmark_end(key)","hidden":false,"returnType":2,"argCount":0,"args":[
+            1,
+          ],"resourceVersion":"1.0","name":"macos_bookmark_end","tags":[],"resourceType":"GMExtensionFunction",},
       ],"constants":[],"ProxyFiles":[],"copyToTargets":2,"order":[
         {"name":"macos_menu_create","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_menu_add_item","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
@@ -82,6 +93,9 @@
         {"name":"macos_enable_system_settings_menu","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_window_set_unsaved","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_share","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
+        {"name":"macos_bookmark_store","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
+        {"name":"macos_bookmark_begin","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
+        {"name":"macos_bookmark_end","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
       ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
   ],
   "classname": "",

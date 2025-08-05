@@ -18,6 +18,9 @@ function load_song() {
 	if (!backup && fn = "") {
 	    if (!directory_exists_lib(songfolder)) songfolder = songs_directory
 	    fn = string(get_open_filename_ext("Note Block Songs (*.nbs)|*.nbs|MIDI Sequences (*.mid)|*.mid;*.midi|Minecraft Schematics (*.schematic)|*.schematic|ZIP archive (*.zip)|*.zip", "", songfolder, condstr(language != 1, "Load song", "打开歌曲")))
+		if (os_type = os_macosx) macos_bookmark_store(fn, fn, 0)
+	} else {
+		if (os_type = os_macosx) macos_bookmark_begin(fn)
 	}
 	if (fn = "" || !file_exists_lib(fn)) return 0
 
