@@ -2761,7 +2761,7 @@ function control_draw() {
 			if (string_count("nbs://", temp_url) = 0) {
 				var file = string_replace_all(temp_url, "file://", "")
 				if (file != "" && (filename_ext(file) = ".mid" || filename_ext(file) = ".midi" || filename_ext(file) = ".schematic" || filename_ext(file) = ".nbs" || filename_ext(file) = ".zip")) {
-					load_song(file)
+					load_song(file, 0, isplayer, 0)
 				}
 			} else {
 				if (isplayer) {
