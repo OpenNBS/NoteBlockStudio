@@ -300,20 +300,22 @@ function draw_window_preferences() {
 		if (theme = 3) draw_theme_font(font_info_med)
 		draw_areaheader(x1 + 22, y1 + 354 + (theme = 3) * 22 - 170 * isplayer, 456, 45, "Discord")
 		if (theme = 3) draw_theme_font(font_main)
-		if (language != 1) {
-		if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "Enable Discord Rich Presence", "Whether to display info about your current\nsong in your Discord status activity.", 0, 1)) {
-		    presence = !presence
-			if (presence = 1) {
-				np_setpresence_timestamps(date_current_datetime(), 0, false);
+		if (os_type != os_macosx) {
+			if (language != 1) {
+				if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "Enable Discord Rich Presence", "Whether to display info about your current\nsong in your Discord status activity.", 0, 1)) {
+				    presence = !presence
+					if (presence = 1) {
+						np_setpresence_timestamps(date_current_datetime(), 0, false);
+					}
+				}
+			} else {
+				if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "启用 Discord Rich Presence", "是否在 Discord 个人状态中显示当前歌曲信息。", 0, 1)) {
+				    presence = !presence
+					if (presence = 1) {
+						np_setpresence_timestamps(date_current_datetime(), 0, false);
+					}
+				}
 			}
-		}
-		} else {
-		if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "启用 Discord Rich Presence", "是否在 Discord 个人状态中显示当前歌曲信息。", 0, 1)) {
-		    presence = !presence
-			if (presence = 1) {
-				np_setpresence_timestamps(date_current_datetime(), 0, false);
-			}
-		}
 		}
 	} else if (selected_tab = 1) {
 		if (theme = 3) draw_theme_font(font_info_med)
