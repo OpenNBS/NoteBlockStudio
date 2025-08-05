@@ -318,7 +318,7 @@ function import_midi() {
 	window = 0
 	songs[song].changed = 0
 	for (a = 0; a < 10000; a += 1) text_exists[a] = 0
-	if (w_midi_tempo_changer) update_tempo_changes()
+	update_tempo_changes()
 
 
 
