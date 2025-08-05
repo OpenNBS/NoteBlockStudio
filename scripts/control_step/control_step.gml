@@ -39,7 +39,8 @@ function control_step() {
 	
 	if (channelstoggle) channels = 1024
 	else channels = 256
-	audio_channel_num(channels)
+	if (os_type = os_windows) audio_channel_num(channels)
+	else audio_channel_num(256)
 	update_window_icon()
 	
 	if (mouse_check_button_pressed(mb_left)) {

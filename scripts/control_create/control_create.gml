@@ -147,7 +147,8 @@ function control_create() {
 	channels = 1024
 	channelstoggle = 1
 	sounds = 0
-	audio_channel_num(channels)
+	if (os_type = os_windows) audio_channel_num(channels)
+	else audio_channel_num(256)
 	show_soundcount = 0
 
 	// Application
@@ -579,7 +580,8 @@ function control_create() {
 	}
 	if (channelstoggle) channels = 1024
 	else channels = 256
-	audio_channel_num(channels)
+	if (os_type = os_windows) audio_channel_num(channels)
+	else audio_channel_num(256)
 	if (acrylic_successful) {
 		if (acrylic) {
 			acrylic_successful = 0
