@@ -1,5 +1,5 @@
 function macros() {
-#macro gm_runtime_version "2022.6.1.40"
+#macro gm_runtime_version "2022.0.3 LTS"
 #macro version_date "2025.8.2"
 #macro version "3.12.0-dev"
 #macro is_prerelease 1 // remember to change to 0 in the release!

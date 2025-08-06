@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "spr_minecraft_f_hires",
   "bboxMode": 0,
   "collisionKind": 1,
   "type": 0,
@@ -14,6 +17,7 @@
   "HTile": false,
   "VTile": false,
   "For3D": false,
+  "DynamicTexturePage": false,
   "width": 80,
   "height": 80,
   "textureGroupId": {
@@ -24,36 +28,20 @@
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"compositeImage":{"FrameId":{"name":"61867e0e-1cda-4186-b7c2-31e9ac65f8e1","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":null,"resourceVersion":"1.0","name":"composite","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"61867e0e-1cda-4186-b7c2-31e9ac65f8e1","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":{"name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_minecraft_f_hires","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"61867e0e-1cda-4186-b7c2-31e9ac65f8e1","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"b75fa22e-07bf-4f57-ac9a-7fc38ba57651","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":null,"resourceVersion":"1.0","name":"composite","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"b75fa22e-07bf-4f57-ac9a-7fc38ba57651","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":{"name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_minecraft_f_hires","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"b75fa22e-07bf-4f57-ac9a-7fc38ba57651","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"d93f5da1-5486-4262-91d0-07513e6a9408","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":null,"resourceVersion":"1.0","name":"composite","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"d93f5da1-5486-4262-91d0-07513e6a9408","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":{"name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_minecraft_f_hires","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"d93f5da1-5486-4262-91d0-07513e6a9408","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"722d9e4f-8bca-4c76-ad7e-17826ce3d89b","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"722d9e4f-8bca-4c76-ad7e-17826ce3d89b","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":{"name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_minecraft_f_hires","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"722d9e4f-8bca-4c76-ad7e-17826ce3d89b","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"230bda79-fee0-4895-8881-029f362fd611","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"230bda79-fee0-4895-8881-029f362fd611","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":{"name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_minecraft_f_hires","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"230bda79-fee0-4895-8881-029f362fd611","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"5935f1d8-42ea-48fc-aa48-cc7eb8c131f1","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"5935f1d8-42ea-48fc-aa48-cc7eb8c131f1","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":{"name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_minecraft_f_hires","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"5935f1d8-42ea-48fc-aa48-cc7eb8c131f1","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"d2eae584-bc99-4d94-88ba-c4c457e00fad","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"d2eae584-bc99-4d94-88ba-c4c457e00fad","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":{"name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_minecraft_f_hires","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"d2eae584-bc99-4d94-88ba-c4c457e00fad","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"d5168a46-aeb1-4e7b-bc95-3cd68c57d78d","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"d5168a46-aeb1-4e7b-bc95-3cd68c57d78d","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":{"name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_minecraft_f_hires","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"d5168a46-aeb1-4e7b-bc95-3cd68c57d78d","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"8acc5a1f-773a-4f51-821d-74ff2816f46e","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"8acc5a1f-773a-4f51-821d-74ff2816f46e","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"LayerId":{"name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_minecraft_f_hires","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","name":"8acc5a1f-773a-4f51-821d-74ff2816f46e","tags":[],"resourceType":"GMSpriteFrame",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"61867e0e-1cda-4186-b7c2-31e9ac65f8e1",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"b75fa22e-07bf-4f57-ac9a-7fc38ba57651",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"d93f5da1-5486-4262-91d0-07513e6a9408",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"722d9e4f-8bca-4c76-ad7e-17826ce3d89b",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"230bda79-fee0-4895-8881-029f362fd611",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"5935f1d8-42ea-48fc-aa48-cc7eb8c131f1",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"d2eae584-bc99-4d94-88ba-c4c457e00fad",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"d5168a46-aeb1-4e7b-bc95-3cd68c57d78d",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"8acc5a1f-773a-4f51-821d-74ff2816f46e",},
   ],
   "sequence": {
-    "spriteId": {"name":"spr_minecraft_f_hires","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "spr_minecraft_f_hires",
     "timeUnits": 1,
     "playback": 1,
     "playbackSpeed": 1.0,
@@ -61,20 +49,20 @@
     "autoRecord": true,
     "volume": 1.0,
     "length": 9.0,
-    "events": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore`1","elementType":"MessageEventKeyframe",},
-    "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore`1","elementType":"MomentsEventKeyframe",},
+    "events": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MessageEventKeyframe>",},
+    "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MomentsEventKeyframe>",},
     "tracks": [
-      {"name":"frames","spriteId":null,"keyframes":{"Keyframes":[
-            {"id":"a4f6c4aa-72b4-4a3e-acc1-63c7dafbb427","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"61867e0e-1cda-4186-b7c2-31e9ac65f8e1","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
-            {"id":"1485be21-3c21-413a-8b5b-6f8e33050d93","Key":1.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"b75fa22e-07bf-4f57-ac9a-7fc38ba57651","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
-            {"id":"fc4a0e16-bae8-48cb-b7bf-dba2435d6888","Key":2.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"d93f5da1-5486-4262-91d0-07513e6a9408","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
-            {"id":"88554150-9014-4b6f-9892-0734bda144e0","Key":3.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"722d9e4f-8bca-4c76-ad7e-17826ce3d89b","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
-            {"id":"f0df2778-6a74-422b-a4ec-4ef91b617808","Key":4.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"230bda79-fee0-4895-8881-029f362fd611","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
-            {"id":"1b55aec7-140d-4559-acc6-8deb8c2ae928","Key":5.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"5935f1d8-42ea-48fc-aa48-cc7eb8c131f1","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
-            {"id":"c9da002f-e8ee-456c-bb37-27c27f4f4e05","Key":6.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"d2eae584-bc99-4d94-88ba-c4c457e00fad","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
-            {"id":"f5c088da-0542-4b49-bd2f-8d17aa53cf00","Key":7.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"d5168a46-aeb1-4e7b-bc95-3cd68c57d78d","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
-            {"id":"4165e3d7-b5bc-4ce1-a3d3-6e3d27620297","Key":8.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"8acc5a1f-773a-4f51-821d-74ff2816f46e","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
-          ],"resourceVersion":"1.0","resourceType":"KeyframeStore`1","elementType":"SpriteFrameKeyframe",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","spriteId":null,"keyframes":{"Keyframes":[
+            {"id":"a4f6c4aa-72b4-4a3e-acc1-63c7dafbb427","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"61867e0e-1cda-4186-b7c2-31e9ac65f8e1","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"1485be21-3c21-413a-8b5b-6f8e33050d93","Key":1.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"b75fa22e-07bf-4f57-ac9a-7fc38ba57651","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"fc4a0e16-bae8-48cb-b7bf-dba2435d6888","Key":2.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"d93f5da1-5486-4262-91d0-07513e6a9408","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"88554150-9014-4b6f-9892-0734bda144e0","Key":3.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"722d9e4f-8bca-4c76-ad7e-17826ce3d89b","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"f0df2778-6a74-422b-a4ec-4ef91b617808","Key":4.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"230bda79-fee0-4895-8881-029f362fd611","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"1b55aec7-140d-4559-acc6-8deb8c2ae928","Key":5.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"5935f1d8-42ea-48fc-aa48-cc7eb8c131f1","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"c9da002f-e8ee-456c-bb37-27c27f4f4e05","Key":6.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"d2eae584-bc99-4d94-88ba-c4c457e00fad","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"f5c088da-0542-4b49-bd2f-8d17aa53cf00","Key":7.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"d5168a46-aeb1-4e7b-bc95-3cd68c57d78d","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"4165e3d7-b5bc-4ce1-a3d3-6e3d27620297","Key":8.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"8acc5a1f-773a-4f51-821d-74ff2816f46e","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"modifiers":[],},
     ],
     "visibleRange": null,
     "lockOrigin": false,
@@ -90,22 +78,13 @@
     "yorigin": 0,
     "eventToFunction": {},
     "eventStubScript": null,
-    "parent": {"name":"spr_minecraft_f_hires","path":"sprites/spr_minecraft_f_hires/spr_minecraft_f_hires.yy",},
-    "resourceVersion": "1.4",
-    "name": "spr_minecraft_f_hires",
-    "tags": [],
-    "resourceType": "GMSequence",
   },
   "layers": [
-    {"visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default","resourceVersion":"1.0","name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","tags":[],"resourceType":"GMImageLayer",},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default",},
   ],
   "nineSlice": null,
   "parent": {
     "name": "Other",
     "path": "folders/Sprites/Other.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "spr_minecraft_f_hires",
-  "tags": [],
-  "resourceType": "GMSprite",
 }
