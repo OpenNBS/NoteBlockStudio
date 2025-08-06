@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMExtension",
+  "resourceVersion": "1.2",
+  "name": "GMmacOSTools",
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
@@ -14,74 +17,75 @@
   "iosProps": false,
   "tvosProps": false,
   "androidProps": false,
+  "html5Props": false,
   "installdir": "",
   "files": [
-    {"filename":"libGMmacOSTools.dylib","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[
-        {"externalName":"gm_create_menu","kind":1,"help":"macos_menu_create(title)","hidden":false,"returnType":2,"argCount":0,"args":[
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"libGMmacOSTools.dylib","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_menu_create","externalName":"gm_create_menu","kind":1,"help":"macos_menu_create(title)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"macos_menu_create","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_menu_add_item","kind":1,"help":"macos_menu_add_item(menuTitle, title, shortcut, UID)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-            1,
-            1,
-            1,
-          ],"resourceVersion":"1.0","name":"macos_menu_add_item","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_menu_add_sub_item","kind":1,"help":"macos_menu_add_subitem(parentUID, title, shortcut, UID)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_menu_add_item","externalName":"gm_menu_add_item","kind":1,"help":"macos_menu_add_item(menuTitle, title, shortcut, UID)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
             1,
             1,
             1,
-          ],"resourceVersion":"1.0","name":"macos_menu_add_subitem","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_menu_remove_item","kind":1,"help":"macos_menu_remove_item(UID)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-          ],"resourceVersion":"1.0","name":"macos_menu_remove_item","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_menu_clear_custom","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"macos_menu_clear","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_menu_set_enabled","kind":1,"help":"macos_menu_set_enabled(UID, enabled)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-            2,
-          ],"resourceVersion":"1.0","name":"macos_menu_set_enabled","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_menu_set_icon","kind":1,"help":"macos_menu_set_icon(UID, SF Symbol or File)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-            1,
-          ],"resourceVersion":"1.0","name":"macos_menu_set_icon","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"RegisterCallbacks","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_menu_add_subitem","externalName":"gm_menu_add_sub_item","kind":1,"help":"macos_menu_add_subitem(parentUID, title, shortcut, UID)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
             1,
             1,
             1,
-          ],"resourceVersion":"1.0","name":"RegisterCallbacks","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_menu_add_separator","kind":1,"help":"macos_menu_add_separator(menuTitle[, index])","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_menu_remove_item","externalName":"gm_menu_remove_item","kind":1,"help":"macos_menu_remove_item(UID)","hidden":false,"returnType":2,"argCount":0,"args":[
+            1,
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_menu_clear","externalName":"gm_menu_clear_custom","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_menu_set_enabled","externalName":"gm_menu_set_enabled","kind":1,"help":"macos_menu_set_enabled(UID, enabled)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
             2,
-          ],"resourceVersion":"1.0","name":"macos_menu_add_separator","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_submenu_add_separator","kind":1,"help":"macos_submenu_add_separator(parentUID[, index])","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_menu_set_icon","externalName":"gm_menu_set_icon","kind":1,"help":"macos_menu_set_icon(UID, SF Symbol or File)","hidden":false,"returnType":2,"argCount":0,"args":[
+            1,
+            1,
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"RegisterCallbacks","externalName":"RegisterCallbacks","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[
+            1,
+            1,
+            1,
+            1,
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_menu_add_separator","externalName":"gm_menu_add_separator","kind":1,"help":"macos_menu_add_separator(menuTitle[, index])","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
             2,
-          ],"resourceVersion":"1.0","name":"macos_submenu_add_separator","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_enable_system_settings_menu","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"macos_enable_system_settings_menu","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_window_set_unsaved","kind":1,"help":"macos_window_set_unsaved(fname, flag, unsaved_str)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_submenu_add_separator","externalName":"gm_submenu_add_separator","kind":1,"help":"macos_submenu_add_separator(parentUID[, index])","hidden":false,"returnType":2,"argCount":0,"args":[
+            1,
+            2,
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_enable_system_settings_menu","externalName":"gm_enable_system_settings_menu","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_window_set_unsaved","externalName":"gm_window_set_unsaved","kind":1,"help":"macos_window_set_unsaved(fname, flag, unsaved_str)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
             2,
             1,
-          ],"resourceVersion":"1.0","name":"macos_window_set_unsaved","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_share","kind":1,"help":"macos_share(path_or_text, isFileFlag)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_share","externalName":"gm_share","kind":1,"help":"macos_share(path_or_text, isFileFlag)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
             2,
-          ],"resourceVersion":"1.0","name":"macos_share","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"bookmark_store","kind":1,"help":"macos_bookmark_store(path_or_url, key, readOnly)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_bookmark_store","externalName":"bookmark_store","kind":1,"help":"macos_bookmark_store(path_or_url, key, readOnly)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
             1,
             2,
-          ],"resourceVersion":"1.0","name":"macos_bookmark_store","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"bookmark_begin","kind":1,"help":"macos_bookmark_begin(key)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_bookmark_begin","externalName":"bookmark_begin","kind":1,"help":"macos_bookmark_begin(key)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"macos_bookmark_begin","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"bookmark_end","kind":1,"help":"macos_bookmark_end(key)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_bookmark_end","externalName":"bookmark_end","kind":1,"help":"macos_bookmark_end(key)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"macos_bookmark_end","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_url_take_pending","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[],"resourceVersion":"1.0","name":"macos_url_take_pending","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"gm_url_pending_count","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"macos_url_pending_count","tags":[],"resourceType":"GMExtensionFunction",},
-      ],"constants":[],"ProxyFiles":[],"copyToTargets":2,"order":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_url_take_pending","externalName":"gm_url_take_pending","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_url_pending_count","externalName":"gm_url_pending_count","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+      ],"constants":[],"ProxyFiles":[],"copyToTargets":2,"usesRunnerInterface":false,"order":[
         {"name":"macos_menu_create","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_menu_add_item","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_menu_add_subitem","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
@@ -100,8 +104,9 @@
         {"name":"macos_bookmark_end","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_url_take_pending","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_url_pending_count","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
-      ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
+      ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "",
   "tvosclassname": null,
   "tvosdelegatename": null,
@@ -139,8 +144,4 @@
     "name": "Extensions",
     "path": "folders/Extensions.yy",
   },
-  "resourceVersion": "1.2",
-  "name": "GMmacOSTools",
-  "tags": [],
-  "resourceType": "GMExtension",
 }

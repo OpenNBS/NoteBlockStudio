@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "fnt_wslui_info_med_bold",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
@@ -22,6 +25,7 @@
   },
   "ascenderOffset": 0,
   "ascender": 15,
+  "lineHeight": 0,
   "glyphs": {
     "32": {"x":2,"y":2,"w":4,"h":20,"character":32,"shift":4,"offset":0,},
     "33": {"x":75,"y":90,"w":3,"h":20,"character":33,"shift":5,"offset":1,},
@@ -681,8 +685,4 @@
     "name": "fnt_wslui",
     "path": "folders/Fonts/fnt_wslui.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "fnt_wslui_info_med_bold",
-  "tags": [],
-  "resourceType": "GMFont",
 }

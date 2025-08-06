@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "fnt_wslui_small_bold_hires",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
@@ -22,6 +25,7 @@
   },
   "ascenderOffset": 0,
   "ascender": 43,
+  "lineHeight": 0,
   "glyphs": {
     "32": {"x":2,"y":2,"w":12,"h":57,"character":32,"shift":12,"offset":0,},
     "33": {"x":44,"y":297,"w":7,"h":57,"character":33,"shift":13,"offset":3,},
@@ -2047,8 +2051,4 @@
     "name": "fnt_wslui_hires",
     "path": "folders/Fonts/fnt_wslui_hires.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "fnt_wslui_small_bold_hires",
-  "tags": [],
-  "resourceType": "GMFont",
 }

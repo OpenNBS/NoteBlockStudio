@@ -1,8 +1,5 @@
 {
-  "extensionId": {
-    "name": "window_set_icon",
-    "path": "extensions/window_set_icon/window_set_icon.yy"
-  },
+  "extensionId": null,
   "resourceVersion": "1.0",
   "resourceType": "GMExtensionConfigSet",
   "configurables": null

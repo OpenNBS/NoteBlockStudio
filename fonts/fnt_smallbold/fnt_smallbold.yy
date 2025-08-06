@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "fnt_smallbold",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
@@ -22,6 +25,7 @@
   },
   "ascenderOffset": 0,
   "ascender": 0,
+  "lineHeight": 0,
   "glyphs": {
     "32": {"x":93,"y":257,"w":3,"h":13,"character":32,"shift":3,"offset":0,},
     "33": {"x":83,"y":257,"w":3,"h":13,"character":33,"shift":4,"offset":0,},
@@ -1054,8 +1058,4 @@
     "name": "fnt_classic",
     "path": "folders/Fonts/fnt_classic.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "fnt_smallbold",
-  "tags": [],
-  "resourceType": "GMFont",
 }

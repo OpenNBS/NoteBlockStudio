@@ -1,8 +1,5 @@
 {
-  "extensionId": {
-    "name": "NekoPresence",
-    "path": "extensions/NekoPresence/NekoPresence.yy"
-  },
+  "extensionId": null,
   "resourceVersion": "1.0",
   "resourceType": "GMExtensionConfigSet",
   "configurables": null

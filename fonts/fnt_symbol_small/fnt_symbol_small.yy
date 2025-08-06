@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "fnt_symbol_small",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
@@ -22,6 +25,7 @@
   },
   "ascenderOffset": 0,
   "ascender": 11,
+  "lineHeight": 0,
   "glyphs": {
     "32": {"x":2,"y":2,"w":6,"h":17,"character":32,"shift":6,"offset":0,},
     "33": {"x":143,"y":40,"w":2,"h":17,"character":33,"shift":3,"offset":0,},
@@ -146,8 +150,4 @@
     "name": "fnt_symbol",
     "path": "folders/Fonts/fnt_symbol.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "fnt_symbol_small",
-  "tags": [],
-  "resourceType": "GMFont",
 }

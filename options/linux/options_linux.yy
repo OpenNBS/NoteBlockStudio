@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMLinuxOptions",
+  "resourceVersion": "1.0",
+  "name": "Linux",
   "option_linux_display_name": "Note Block Studio",
   "option_linux_version": "3.12.0",
   "option_linux_maintainer_email": "",
@@ -18,8 +21,4 @@
   "option_linux_texture_page": "4096x4096",
   "option_linux_enable_steam": false,
   "option_linux_disable_sandbox": true,
-  "resourceVersion": "1.0",
-  "name": "Linux",
-  "tags": [],
-  "resourceType": "GMLinuxOptions",
 }

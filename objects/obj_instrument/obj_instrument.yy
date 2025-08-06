@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMObject",
+  "resourceVersion": "1.0",
+  "name": "obj_instrument",
   "spriteId": null,
   "solid": false,
   "visible": false,
@@ -25,8 +28,4 @@
     "name": "Objects",
     "path": "folders/Objects.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "obj_instrument",
-  "tags": [],
-  "resourceType": "GMObject",
 }

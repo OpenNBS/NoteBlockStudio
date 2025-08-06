@@ -1,7 +1,11 @@
 {
+  "resourceType": "GMMacOptions",
+  "resourceVersion": "1.0",
+  "name": "macOS",
   "option_mac_display_name": "Note Block Studio",
   "option_mac_app_id": "org.opennbs.onbs",
   "option_mac_version": "3.12.0",
+  "option_mac_build_number": 0,
   "option_mac_output_dir": "~/GameMaker-Studio/mcnbs",
   "option_mac_team_id": "",
   "option_mac_signing_identity": "Developer ID Application: ",
@@ -28,8 +32,5 @@
   "option_mac_x86_64": true,
   "option_mac_arm64": true,
   "option_mac_apple_sign_in": false,
-  "resourceVersion": "1.0",
-  "name": "macOS",
-  "tags": [],
-  "resourceType": "GMMacOptions",
+  "option_mac_min_version": "10.10",
 }

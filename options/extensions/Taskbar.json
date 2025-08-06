@@ -1,8 +1,5 @@
 {
-  "extensionId": {
-    "name": "Taskbar",
-    "path": "extensions/Taskbar/Taskbar.yy"
-  },
+  "extensionId": null,
   "resourceVersion": "1.0",
   "resourceType": "GMExtensionConfigSet",
   "configurables": null

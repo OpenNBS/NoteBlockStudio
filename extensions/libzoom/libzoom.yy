@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMExtension",
+  "resourceVersion": "1.2",
+  "name": "libzoom",
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
@@ -14,31 +17,33 @@
   "iosProps": false,
   "tvosProps": false,
   "androidProps": false,
+  "html5Props": false,
   "installdir": "",
   "files": [
-    {"filename":"libzoom.dll","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[
-        {"externalName":"window_zoom","kind":1,"help":"window_zoom(window_handle())","hidden":false,"returnType":2,"argCount":0,"args":[
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"libzoom.dll","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"window_zoom","externalName":"window_zoom","kind":1,"help":"window_zoom(window_handle())","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"window_zoom","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"window_focus","kind":1,"help":"window_focus(window_handle())","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"window_focus","externalName":"window_focus","kind":1,"help":"window_focus(window_handle())","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"window_focus","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"window_hide","kind":1,"help":"window_hide(window_handle())","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"window_hide","externalName":"window_hide","kind":1,"help":"window_hide(window_handle())","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"window_hide","tags":[],"resourceType":"GMExtensionFunction",},
+          ],"documentation":"",},
       ],"constants":[],"ProxyFiles":[
-        {"TargetMask":1,"resourceVersion":"1.0","name":"libzoom.dylib","tags":[],"resourceType":"GMProxyFile",},
-        {"TargetMask":7,"resourceVersion":"1.0","name":"libzoom.so","tags":[],"resourceType":"GMProxyFile",},
-        {"TargetMask":7,"resourceVersion":"1.0","name":"libzoom_arm.so","tags":[],"resourceType":"GMProxyFile",},
-        {"TargetMask":7,"resourceVersion":"1.0","name":"libzoom_arm64.so","tags":[],"resourceType":"GMProxyFile",},
-      ],"copyToTargets":194,"order":[
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libzoom.dylib","TargetMask":1,},
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libzoom.so","TargetMask":7,},
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libzoom_arm.so","TargetMask":7,},
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libzoom_arm64.so","TargetMask":7,},
+      ],"copyToTargets":194,"usesRunnerInterface":false,"order":[
         {"name":"window_zoom","path":"extensions/libzoom/libzoom.yy",},
         {"name":"window_focus","path":"extensions/libzoom/libzoom.yy",},
         {"name":"window_hide","path":"extensions/libzoom/libzoom.yy",},
-      ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
-    {"filename":"libzoom.cpp","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
-    {"filename":"libzoom.sh","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
+      ],},
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"libzoom.cpp","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"usesRunnerInterface":false,"order":[],},
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"libzoom.sh","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"usesRunnerInterface":false,"order":[],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "",
   "tvosclassname": null,
   "tvosdelegatename": null,
@@ -76,8 +81,4 @@
     "name": "Extensions",
     "path": "folders/Extensions.yy",
   },
-  "resourceVersion": "1.2",
-  "name": "libzoom",
-  "tags": [],
-  "resourceType": "GMExtension",
 }

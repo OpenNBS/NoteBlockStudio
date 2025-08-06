@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMExtension",
+  "resourceVersion": "1.2",
+  "name": "GMSSimpleMIDI",
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
@@ -14,49 +17,50 @@
   "iosProps": false,
   "tvosProps": false,
   "androidProps": false,
+  "html5Props": false,
   "installdir": "",
   "files": [
-    {"filename":"midistuff.dll","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[
-        {"externalName":"rtmidi_probe_outs","kind":1,"help":"Probes the name and number of MIDI outputs. Returns int outs, also internally saves the names of the ports which can be retrieved with rtmidi_name_out(port)","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"rtmidi_probe_outs","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_name_out","kind":1,"help":"returns the name of the indicated port","hidden":false,"returnType":1,"argCount":0,"args":[
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"midistuff.dll","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_probe_outs","externalName":"rtmidi_probe_outs","kind":1,"help":"Probes the name and number of MIDI outputs. Returns int outs, also internally saves the names of the ports which can be retrieved with rtmidi_name_out(port)","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_name_out","externalName":"rtmidi_name_out","kind":1,"help":"returns the name of the indicated port","hidden":false,"returnType":1,"argCount":0,"args":[
             2,
-          ],"resourceVersion":"1.0","name":"rtmidi_name_out","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_name_in","kind":1,"help":"returns the name of the indicated port","hidden":false,"returnType":1,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_name_in","externalName":"rtmidi_name_in","kind":1,"help":"returns the name of the indicated port","hidden":false,"returnType":1,"argCount":0,"args":[
             2,
-          ],"resourceVersion":"1.0","name":"rtmidi_name_in","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_probe_ins","kind":1,"help":"returns the number of available MIDI input ports","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"rtmidi_probe_ins","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_send_message","kind":1,"help":"m1,m2,m3","hidden":false,"returnType":2,"argCount":0,"args":[
-            2,
-            2,
-            2,
-          ],"resourceVersion":"1.0","name":"rtmidi_send_message","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_set_outport","kind":1,"help":"port sets the port num to use","hidden":false,"returnType":2,"argCount":0,"args":[
-            2,
-          ],"resourceVersion":"1.0","name":"rtmidi_set_outport","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_init","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"rtmidi_init","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_deinit","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[],"resourceVersion":"1.0","name":"rtmidi_deinit","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_ignore_messages","kind":1,"help":"bool sysex, bool timing, bool active sensing","hidden":false,"returnType":1,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_probe_ins","externalName":"rtmidi_probe_ins","kind":1,"help":"returns the number of available MIDI input ports","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_send_message","externalName":"rtmidi_send_message","kind":1,"help":"m1,m2,m3","hidden":false,"returnType":2,"argCount":0,"args":[
             2,
             2,
             2,
-          ],"resourceVersion":"1.0","name":"rtmidi_ignore_messages","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_set_inport","kind":1,"help":"int port","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_set_outport","externalName":"rtmidi_set_outport","kind":1,"help":"port sets the port num to use","hidden":false,"returnType":2,"argCount":0,"args":[
             2,
-          ],"resourceVersion":"1.0","name":"rtmidi_set_inport","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_check_message","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"rtmidi_check_message","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_get_message","kind":1,"help":"byte","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_init","externalName":"rtmidi_init","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_deinit","externalName":"rtmidi_deinit","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_ignore_messages","externalName":"rtmidi_ignore_messages","kind":1,"help":"bool sysex, bool timing, bool active sensing","hidden":false,"returnType":1,"argCount":0,"args":[
             2,
-          ],"resourceVersion":"1.0","name":"rtmidi_get_message","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_create_virtual_inport","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[
+            2,
+            2,
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_set_inport","externalName":"rtmidi_set_inport","kind":1,"help":"int port","hidden":false,"returnType":2,"argCount":0,"args":[
+            2,
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_check_message","externalName":"rtmidi_check_message","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_get_message","externalName":"rtmidi_get_message","kind":1,"help":"byte","hidden":false,"returnType":2,"argCount":0,"args":[
+            2,
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_create_virtual_inport","externalName":"rtmidi_create_virtual_inport","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"rtmidi_create_virtual_inport","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"rtmidi_create_virtual_outport","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"rtmidi_create_virtual_outport","externalName":"rtmidi_create_virtual_outport","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"rtmidi_create_virtual_outport","tags":[],"resourceType":"GMExtensionFunction",},
+          ],"documentation":"",},
       ],"constants":[],"ProxyFiles":[
-        {"TargetMask":1,"resourceVersion":"1.0","name":"libGMSSimpleMIDI.dylib","tags":[],"resourceType":"GMProxyFile",},
-        {"TargetMask":7,"resourceVersion":"1.0","name":"libmidistuff.so","tags":[],"resourceType":"GMProxyFile",},
-      ],"copyToTargets":194,"order":[
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libGMSSimpleMIDI.dylib","TargetMask":1,},
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libmidistuff.so","TargetMask":7,},
+      ],"copyToTargets":194,"usesRunnerInterface":false,"order":[
         {"name":"rtmidi_init","path":"extensions/GMSSimpleMIDI/GMSSimpleMIDI.yy",},
         {"name":"rtmidi_probe_outs","path":"extensions/GMSSimpleMIDI/GMSSimpleMIDI.yy",},
         {"name":"rtmidi_probe_ins","path":"extensions/GMSSimpleMIDI/GMSSimpleMIDI.yy",},
@@ -71,8 +75,9 @@
         {"name":"rtmidi_deinit","path":"extensions/GMSSimpleMIDI/GMSSimpleMIDI.yy",},
         {"name":"rtmidi_create_virtual_inport","path":"extensions/GMSSimpleMIDI/GMSSimpleMIDI.yy",},
         {"name":"rtmidi_create_virtual_outport","path":"extensions/GMSSimpleMIDI/GMSSimpleMIDI.yy",},
-      ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
+      ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "",
   "tvosclassname": null,
   "tvosdelegatename": null,
@@ -110,8 +115,4 @@
     "name": "Extensions",
     "path": "folders/Extensions.yy",
   },
-  "resourceVersion": "1.2",
-  "name": "GMSSimpleMIDI",
-  "tags": [],
-  "resourceType": "GMExtension",
 }
