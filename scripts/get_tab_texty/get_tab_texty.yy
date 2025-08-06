@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"get_tab_texty",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"get_tab_texty",
-  "parent":{
-    "name":"Interface",
-    "path":"folders/Scripts/Interface.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Interface",
+    "path": "folders/Scripts/Interface.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "get_tab_texty",
+  "tags": [],
+  "resourceType": "GMScript",
 }

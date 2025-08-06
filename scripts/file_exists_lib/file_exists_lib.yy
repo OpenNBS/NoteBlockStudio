@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"file_exists_lib",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"file_exists_lib",
-  "parent":{
-    "name":"file",
-    "path":"folders/Scripts/Libraries/file.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "file",
+    "path": "folders/Scripts/Libraries/file.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "file_exists_lib",
+  "tags": [],
+  "resourceType": "GMScript",
 }

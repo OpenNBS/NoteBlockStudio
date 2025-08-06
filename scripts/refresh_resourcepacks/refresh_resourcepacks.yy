@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"refresh_resourcepacks",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"refresh_resourcepacks",
-  "parent":{
-    "name":"Instruments",
-    "path":"folders/Scripts/Instruments.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Instruments",
+    "path": "folders/Scripts/Instruments.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "refresh_resourcepacks",
+  "tags": [],
+  "resourceType": "GMScript",
 }

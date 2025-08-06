@@ -1,4 +1,9 @@
 {
-  "$GMExtensionConfigSet": "GMExtensionConfigSet",
+  "extensionId": {
+    "name": "libzoom",
+    "path": "extensions/libzoom/libzoom.yy"
+  },
+  "resourceVersion": "1.0",
+  "resourceType": "GMExtensionConfigSet",
   "configurables": null
 }

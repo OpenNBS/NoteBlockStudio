@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"TAG_Byte",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"TAG_Byte",
-  "parent":{
-    "name":"Tags",
-    "path":"folders/Scripts/Schematic/Export/Tags.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Tags",
+    "path": "folders/Scripts/Schematic/Export/Tags.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "TAG_Byte",
+  "tags": [],
+  "resourceType": "GMScript",
 }

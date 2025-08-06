@@ -10,13 +10,13 @@ function control_step() {
 	
 	update_window()
 	if (os_version > 393217 && os_type = os_windows){
-	//if (songs[song].enda = 0 || !taskbar) {
-	//	window_noprogress(window_handle())
-	//} else {
-	//	if (playing) window_normal(window_handle())
-	//	else window_paused(window_handle())
-	//	window_value(window_handle(), songs[song].marker_pos, songs[song].enda)
-	//}
+	if (songs[song].enda = 0 || !taskbar) {
+		window_noprogress(window_handle())
+	} else {
+		if (playing) window_normal(window_handle())
+		else window_paused(window_handle())
+		window_value(window_handle(), songs[song].marker_pos, songs[song].enda)
+	}
 	}
 	if (current_time - pingtime >= 1000){
 	if (presence && obj_presence.ready) {

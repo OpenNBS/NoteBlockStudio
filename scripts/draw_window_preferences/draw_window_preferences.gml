@@ -625,7 +625,7 @@ function draw_window_preferences() {
 		//if (draw_checkbox(x1 + 32, y1 + 284 + 16 + (theme = 3) * 22, looptobarend, "循环至小节尾", "到小节尾再循环。")) looptobarend = !looptobarend
 		if (draw_checkbox(x1 + 32, y1 + 284 + 16 + (theme = 3) * 22, show_soundcount, "显示正在播放的声音数", "在状态栏里显示正在播放的声音数。")) show_soundcount = !show_soundcount
 		if (draw_checkbox(x1 + 32, y1 + 304 + 16 + (theme = 3) * 22, channelstoggle, "提升声音限制", "提升可同时播放的声音数。")) channelstoggle = !channelstoggle
-		//if (draw_checkbox(x1 + 32, y1 + 324 + 16 + (theme = 3) * 22, taskbar, "启用任务栏进度", "是否在任务栏显示当前歌曲的进度。")) taskbar = !taskbar
+		if (draw_checkbox(x1 + 32, y1 + 324 + 16 + (theme = 3) * 22, taskbar, "启用任务栏进度", "是否在任务栏显示当前歌曲的进度。")) taskbar = !taskbar
 		if (theme = 3) draw_theme_font(font_info_med)
 		draw_areaheader(x1 + 233 + 22, y1 + 244 + (theme = 3) * 22, 223, 60, "速度单位")
 		if (theme = 3) draw_theme_font(font_main)

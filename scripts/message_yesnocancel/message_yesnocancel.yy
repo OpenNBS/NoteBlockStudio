@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"message_yesnocancel",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"message_yesnocancel",
-  "parent":{
-    "name":"window",
-    "path":"folders/Scripts/Libraries/window.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "window",
+    "path": "folders/Scripts/Libraries/window.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "message_yesnocancel",
+  "tags": [],
+  "resourceType": "GMScript",
 }

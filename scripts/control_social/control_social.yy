@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"control_social",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"control_social",
-  "parent":{
-    "name":"Controller",
-    "path":"folders/Scripts/Controller.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Controller",
+    "path": "folders/Scripts/Controller.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "control_social",
+  "tags": [],
+  "resourceType": "GMScript",
 }

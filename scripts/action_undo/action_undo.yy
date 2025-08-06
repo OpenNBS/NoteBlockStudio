@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"action_undo",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"action_undo",
-  "parent":{
-    "name":"Actions",
-    "path":"folders/Scripts/Actions.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Actions",
+    "path": "folders/Scripts/Actions.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "action_undo",
+  "tags": [],
+  "resourceType": "GMScript",
 }

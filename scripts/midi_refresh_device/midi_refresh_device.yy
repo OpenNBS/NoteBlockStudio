@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"midi_refresh_device",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"midi_refresh_device",
-  "parent":{
-    "name":"Midi",
-    "path":"folders/Scripts/Midi.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Midi",
+    "path": "folders/Scripts/Midi.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "midi_refresh_device",
+  "tags": [],
+  "resourceType": "GMScript",
 }

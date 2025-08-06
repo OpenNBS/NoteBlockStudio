@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"dat_getpath",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"dat_getpath",
-  "parent":{
-    "name":"Datapack",
-    "path":"folders/Scripts/Datapack.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Datapack",
+    "path": "folders/Scripts/Datapack.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "dat_getpath",
+  "tags": [],
+  "resourceType": "GMScript",
 }

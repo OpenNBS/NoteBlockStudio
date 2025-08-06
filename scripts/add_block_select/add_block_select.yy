@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"add_block_select",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"add_block_select",
-  "parent":{
-    "name":"Note Blocks",
-    "path":"folders/Scripts/Note Blocks.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Note Blocks",
+    "path": "folders/Scripts/Note Blocks.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "add_block_select",
+  "tags": [],
+  "resourceType": "GMScript",
 }

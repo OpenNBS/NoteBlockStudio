@@ -1,4 +1,9 @@
 {
-  "$GMExtensionConfigSet": "GMExtensionConfigSet",
+  "extensionId": {
+    "name": "NekoPresence",
+    "path": "extensions/NekoPresence/NekoPresence.yy"
+  },
+  "resourceVersion": "1.0",
+  "resourceType": "GMExtensionConfigSet",
   "configurables": null
 }

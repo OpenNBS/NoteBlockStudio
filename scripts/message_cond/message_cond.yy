@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"message_cond",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"message_cond",
-  "parent":{
-    "name":"Dialogs",
-    "path":"folders/Scripts/Interface/Dialogs.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Dialogs",
+    "path": "folders/Scripts/Interface/Dialogs.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "message_cond",
+  "tags": [],
+  "resourceType": "GMScript",
 }

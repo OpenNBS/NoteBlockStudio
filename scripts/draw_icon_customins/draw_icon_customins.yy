@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"draw_icon_customins",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"draw_icon_customins",
-  "parent":{
-    "name":"Interface",
-    "path":"folders/Scripts/Interface.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Interface",
+    "path": "folders/Scripts/Interface.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "draw_icon_customins",
+  "tags": [],
+  "resourceType": "GMScript",
 }

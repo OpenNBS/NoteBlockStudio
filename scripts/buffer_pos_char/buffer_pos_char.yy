@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"buffer_pos_char",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"buffer_pos_char",
-  "parent":{
-    "name":"Functions",
-    "path":"folders/Scripts/Functions.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Functions",
+    "path": "folders/Scripts/Functions.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "buffer_pos_char",
+  "tags": [],
+  "resourceType": "GMScript",
 }

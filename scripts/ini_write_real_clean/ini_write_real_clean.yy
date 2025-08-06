@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"ini_write_real_clean",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"ini_write_real_clean",
-  "parent":{
-    "name":"File",
-    "path":"folders/Scripts/File.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "File",
+    "path": "folders/Scripts/File.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "ini_write_real_clean",
+  "tags": [],
+  "resourceType": "GMScript",
 }

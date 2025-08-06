@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"branch_export",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"branch_export",
-  "parent":{
-    "name":"Export",
-    "path":"folders/Scripts/Schematic/Export.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Export",
+    "path": "folders/Scripts/Schematic/Export.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "branch_export",
+  "tags": [],
+  "resourceType": "GMScript",
 }

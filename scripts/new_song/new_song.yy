@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"new_song",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"new_song",
-  "parent":{
-    "name":"File",
-    "path":"folders/Scripts/File.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "File",
+    "path": "folders/Scripts/File.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "new_song",
+  "tags": [],
+  "resourceType": "GMScript",
 }

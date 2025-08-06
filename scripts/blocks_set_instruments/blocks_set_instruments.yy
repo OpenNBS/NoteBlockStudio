@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"blocks_set_instruments",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"blocks_set_instruments",
-  "parent":{
-    "name":"Note Blocks",
-    "path":"folders/Scripts/Note Blocks.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Note Blocks",
+    "path": "folders/Scripts/Note Blocks.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "blocks_set_instruments",
+  "tags": [],
+  "resourceType": "GMScript",
 }

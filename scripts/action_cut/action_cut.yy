@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"action_cut",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"action_cut",
-  "parent":{
-    "name":"Actions",
-    "path":"folders/Scripts/Actions.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Actions",
+    "path": "folders/Scripts/Actions.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "action_cut",
+  "tags": [],
+  "resourceType": "GMScript",
 }

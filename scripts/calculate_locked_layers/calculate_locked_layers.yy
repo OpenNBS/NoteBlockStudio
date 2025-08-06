@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"calculate_locked_layers",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"calculate_locked_layers",
-  "parent":{
-    "name":"Layers",
-    "path":"folders/Scripts/Note Blocks/Layers.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Layers",
+    "path": "folders/Scripts/Note Blocks/Layers.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "calculate_locked_layers",
+  "tags": [],
+  "resourceType": "GMScript",
 }

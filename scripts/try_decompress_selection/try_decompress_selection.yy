@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"try_decompress_selection",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"try_decompress_selection",
-  "parent":{
-    "name":"Selection",
-    "path":"folders/Scripts/Note Blocks/Selection.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Selection",
+    "path": "folders/Scripts/Note Blocks/Selection.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "try_decompress_selection",
+  "tags": [],
+  "resourceType": "GMScript",
 }

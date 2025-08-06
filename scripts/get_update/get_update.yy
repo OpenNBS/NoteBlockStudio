@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"get_update",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"get_update",
-  "parent":{
-    "name":"Controller",
-    "path":"folders/Scripts/Controller.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Controller",
+    "path": "folders/Scripts/Controller.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "get_update",
+  "tags": [],
+  "resourceType": "GMScript",
 }

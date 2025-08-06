@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"directory_create_lib",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"directory_create_lib",
-  "parent":{
-    "name":"file",
-    "path":"folders/Scripts/Libraries/file.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "file",
+    "path": "folders/Scripts/Libraries/file.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "directory_create_lib",
+  "tags": [],
+  "resourceType": "GMScript",
 }

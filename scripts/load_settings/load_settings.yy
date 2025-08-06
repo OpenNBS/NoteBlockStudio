@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"load_settings",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"load_settings",
-  "parent":{
-    "name":"File",
-    "path":"folders/Scripts/File.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "File",
+    "path": "folders/Scripts/File.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "load_settings",
+  "tags": [],
+  "resourceType": "GMScript",
 }

@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"enforce_extension",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"enforce_extension",
-  "parent":{
-    "name":"file",
-    "path":"folders/Scripts/Libraries/file.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "file",
+    "path": "folders/Scripts/Libraries/file.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "enforce_extension",
+  "tags": [],
+  "resourceType": "GMScript",
 }

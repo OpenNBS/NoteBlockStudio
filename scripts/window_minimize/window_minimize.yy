@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"window_minimize",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"window_minimize",
-  "parent":{
-    "name":"window",
-    "path":"folders/Scripts/Libraries/window.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "window",
+    "path": "folders/Scripts/Libraries/window.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "window_minimize",
+  "tags": [],
+  "resourceType": "GMScript",
 }

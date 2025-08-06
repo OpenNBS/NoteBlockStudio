@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"schematic_end",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"schematic_end",
-  "parent":{
-    "name":"GMSchematic",
-    "path":"folders/Scripts/Schematic/GMSchematic.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "GMSchematic",
+    "path": "folders/Scripts/Schematic/GMSchematic.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "schematic_end",
+  "tags": [],
+  "resourceType": "GMScript",
 }

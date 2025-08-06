@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"sch_data_write",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"sch_data_write",
-  "parent":{
-    "name":"Schematic",
-    "path":"folders/Scripts/Schematic.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Schematic",
+    "path": "folders/Scripts/Schematic.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "sch_data_write",
+  "tags": [],
+  "resourceType": "GMScript",
 }

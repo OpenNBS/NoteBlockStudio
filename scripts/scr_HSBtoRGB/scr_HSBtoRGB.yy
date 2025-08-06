@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"scr_HSBtoRGB",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"scr_HSBtoRGB",
-  "parent":{
-    "name":"Functions",
-    "path":"folders/Scripts/Functions.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Functions",
+    "path": "folders/Scripts/Functions.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "scr_HSBtoRGB",
+  "tags": [],
+  "resourceType": "GMScript",
 }

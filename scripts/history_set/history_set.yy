@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"history_set",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"history_set",
-  "parent":{
-    "name":"Controller",
-    "path":"folders/Scripts/Controller.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Controller",
+    "path": "folders/Scripts/Controller.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "history_set",
+  "tags": [],
+  "resourceType": "GMScript",
 }

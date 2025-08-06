@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"string_format_thousands",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"string_format_thousands",
-  "parent":{
-    "name":"Strings",
-    "path":"folders/Scripts/Functions/Strings.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Strings",
+    "path": "folders/Scripts/Functions/Strings.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "string_format_thousands",
+  "tags": [],
+  "resourceType": "GMScript",
 }

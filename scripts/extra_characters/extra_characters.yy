@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"extra_characters",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"extra_characters",
-  "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Scripts",
+    "path": "folders/Scripts.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "extra_characters",
+  "tags": [],
+  "resourceType": "GMScript",
 }

@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"buffer_skip",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"buffer_skip",
-  "parent":{
-    "name":"Buffer",
-    "path":"folders/Scripts/File/Buffer.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Buffer",
+    "path": "folders/Scripts/File/Buffer.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "buffer_skip",
+  "tags": [],
+  "resourceType": "GMScript",
 }

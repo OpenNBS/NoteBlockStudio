@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"new",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"new",
-  "parent":{
-    "name":"Functions",
-    "path":"folders/Scripts/Functions.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Functions",
+    "path": "folders/Scripts/Functions.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "new",
+  "tags": [],
+  "resourceType": "GMScript",
 }

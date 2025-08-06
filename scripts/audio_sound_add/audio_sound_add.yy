@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"audio_sound_add",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"audio_sound_add",
-  "parent":{
-    "name":"audio",
-    "path":"folders/Scripts/Libraries/audio.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "audio",
+    "path": "folders/Scripts/Libraries/audio.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "audio_sound_add",
+  "tags": [],
+  "resourceType": "GMScript",
 }

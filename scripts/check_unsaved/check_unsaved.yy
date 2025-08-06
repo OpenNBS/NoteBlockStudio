@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"check_unsaved",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"check_unsaved",
-  "parent":{
-    "name":"File",
-    "path":"folders/Scripts/File.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "File",
+    "path": "folders/Scripts/File.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "check_unsaved",
+  "tags": [],
+  "resourceType": "GMScript",
 }

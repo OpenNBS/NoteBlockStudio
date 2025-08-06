@@ -22,7 +22,7 @@ function datapack_export() {
 		var name = string_path(o.dat_name)
 		var namespace = string_path(o.dat_namespace)
 		var path = dat_getpath(o.dat_path)
-		var objective = "nbs_" + string_copy((o.dat_name != "") ? string_lettersdigits(o.dat_name) : "", 1, 10)
+		var objective = "nbs_" + string_copy(string_lettersdigits(o.dat_name), 1, 10)
 		var tag = objective
 		
 		// https://minecraft.wiki/w/Pack_format

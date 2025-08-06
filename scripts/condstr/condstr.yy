@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"condstr",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"condstr",
-  "parent":{
-    "name":"Strings",
-    "path":"folders/Scripts/Functions/Strings.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Strings",
+    "path": "folders/Scripts/Functions/Strings.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "condstr",
+  "tags": [],
+  "resourceType": "GMScript",
 }

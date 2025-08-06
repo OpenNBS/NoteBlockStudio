@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"action_copy",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"action_copy",
-  "parent":{
-    "name":"Actions",
-    "path":"folders/Scripts/Actions.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Actions",
+    "path": "folders/Scripts/Actions.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "action_copy",
+  "tags": [],
+  "resourceType": "GMScript",
 }

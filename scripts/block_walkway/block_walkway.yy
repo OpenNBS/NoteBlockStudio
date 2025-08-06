@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"block_walkway",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"block_walkway",
-  "parent":{
-    "name":"Export",
-    "path":"folders/Scripts/Schematic/Export.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Export",
+    "path": "folders/Scripts/Schematic/Export.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "block_walkway",
+  "tags": [],
+  "resourceType": "GMScript",
 }

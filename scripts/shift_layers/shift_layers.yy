@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"shift_layers",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"shift_layers",
-  "parent":{
-    "name":"Layers",
-    "path":"folders/Scripts/Note Blocks/Layers.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Layers",
+    "path": "folders/Scripts/Note Blocks/Layers.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "shift_layers",
+  "tags": [],
+  "resourceType": "GMScript",
 }

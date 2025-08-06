@@ -7,7 +7,8 @@ function midi_input_key_releases(argument0) {
 
 	//  By David "Davve" Norgren for MIDI input - www.stuffbydavid.com
 
-	return ds_list_size(midi_keyreleases)
+	if (os_type = os_windows) return external_call(lib_midi_input_key_releases, argument0);
+	else return ds_list_size(midi_keyreleases)
 
 
 

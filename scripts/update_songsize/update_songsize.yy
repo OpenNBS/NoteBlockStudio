@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"update_songsize",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"update_songsize",
-  "parent":{
-    "name":"Note Blocks",
-    "path":"folders/Scripts/Note Blocks.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Note Blocks",
+    "path": "folders/Scripts/Note Blocks.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "update_songsize",
+  "tags": [],
+  "resourceType": "GMScript",
 }

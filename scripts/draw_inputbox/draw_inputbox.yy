@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"draw_inputbox",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"draw_inputbox",
-  "parent":{
-    "name":"Interface",
-    "path":"folders/Scripts/Interface.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Interface",
+    "path": "folders/Scripts/Interface.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "draw_inputbox",
+  "tags": [],
+  "resourceType": "GMScript",
 }

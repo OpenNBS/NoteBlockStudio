@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"control_networking",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"control_networking",
-  "parent":{
-    "name":"Controller",
-    "path":"folders/Scripts/Controller.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Controller",
+    "path": "folders/Scripts/Controller.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "control_networking",
+  "tags": [],
+  "resourceType": "GMScript",
 }

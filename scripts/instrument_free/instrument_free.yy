@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"instrument_free",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"instrument_free",
-  "parent":{
-    "name":"Instruments",
-    "path":"folders/Scripts/Instruments.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Instruments",
+    "path": "folders/Scripts/Instruments.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "instrument_free",
+  "tags": [],
+  "resourceType": "GMScript",
 }

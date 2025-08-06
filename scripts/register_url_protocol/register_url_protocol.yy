@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"register_url_protocol",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"register_url_protocol",
-  "parent":{
-    "name":"Controller",
-    "path":"folders/Scripts/Controller.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Controller",
+    "path": "folders/Scripts/Controller.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "register_url_protocol",
+  "tags": [],
+  "resourceType": "GMScript",
 }

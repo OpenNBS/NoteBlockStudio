@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"get_repeater_direction",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"get_repeater_direction",
-  "parent":{
-    "name":"Import",
-    "path":"folders/Scripts/Schematic/Import.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Import",
+    "path": "folders/Scripts/Schematic/Import.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "get_repeater_direction",
+  "tags": [],
+  "resourceType": "GMScript",
 }

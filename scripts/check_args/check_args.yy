@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"check_args",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"check_args",
-  "parent":{
-    "name":"Controller",
-    "path":"folders/Scripts/Controller.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Controller",
+    "path": "folders/Scripts/Controller.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "check_args",
+  "tags": [],
+  "resourceType": "GMScript",
 }

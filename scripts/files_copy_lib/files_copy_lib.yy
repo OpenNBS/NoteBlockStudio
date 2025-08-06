@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"files_copy_lib",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"files_copy_lib",
-  "parent":{
-    "name":"file",
-    "path":"folders/Scripts/Libraries/file.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "file",
+    "path": "folders/Scripts/Libraries/file.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "files_copy_lib",
+  "tags": [],
+  "resourceType": "GMScript",
 }

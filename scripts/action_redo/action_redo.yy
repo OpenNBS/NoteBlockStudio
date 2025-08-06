@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"action_redo",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"action_redo",
-  "parent":{
-    "name":"Actions",
-    "path":"folders/Scripts/Actions.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Actions",
+    "path": "folders/Scripts/Actions.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "action_redo",
+  "tags": [],
+  "resourceType": "GMScript",
 }

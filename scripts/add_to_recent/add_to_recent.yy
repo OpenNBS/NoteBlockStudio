@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"add_to_recent",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"add_to_recent",
-  "parent":{
-    "name":"File",
-    "path":"folders/Scripts/File.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "File",
+    "path": "folders/Scripts/File.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "add_to_recent",
+  "tags": [],
+  "resourceType": "GMScript",
 }

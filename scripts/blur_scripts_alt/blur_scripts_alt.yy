@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"blur_scripts_alt",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"blur_scripts_alt",
-  "parent":{
-    "name":"Interface",
-    "path":"folders/Scripts/Interface.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Interface",
+    "path": "folders/Scripts/Interface.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "blur_scripts_alt",
+  "tags": [],
+  "resourceType": "GMScript",
 }

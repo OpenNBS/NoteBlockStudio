@@ -8,7 +8,8 @@ function midi_input_key_press_velocity(argument0, argument1) {
 
 	//  By David "Davve" Norgren for MIDI input - www.stuffbydavid.com
 
-	return midi_keypresses[| argument1][1]
+	if (os_type = os_windows) return external_call(lib_midi_input_key_press_velocity, argument0, argument1);
+	else return midi_keypresses[| argument1][1]
 
 
 

@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"update_window_caption",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"update_window_caption",
-  "parent":{
-    "name":"Interface",
-    "path":"folders/Scripts/Interface.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Interface",
+    "path": "folders/Scripts/Interface.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "update_window_caption",
+  "tags": [],
+  "resourceType": "GMScript",
 }

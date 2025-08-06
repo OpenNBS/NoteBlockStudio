@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"update_window",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"update_window",
-  "parent":{
-    "name":"Controller",
-    "path":"folders/Scripts/Controller.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Controller",
+    "path": "folders/Scripts/Controller.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "update_window",
+  "tags": [],
+  "resourceType": "GMScript",
 }

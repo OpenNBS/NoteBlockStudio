@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"wallpaper_init",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"wallpaper_init",
-  "parent":{
-    "name":"Interface",
-    "path":"folders/Scripts/Interface.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Interface",
+    "path": "folders/Scripts/Interface.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "wallpaper_init",
+  "tags": [],
+  "resourceType": "GMScript",
 }

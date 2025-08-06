@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"log_init",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"log_init",
-  "parent":{
-    "name":"Controller",
-    "path":"folders/Scripts/Controller.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Controller",
+    "path": "folders/Scripts/Controller.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "log_init",
+  "tags": [],
+  "resourceType": "GMScript",
 }

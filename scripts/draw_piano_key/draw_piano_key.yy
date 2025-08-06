@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"draw_piano_key",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"draw_piano_key",
-  "parent":{
-    "name":"Piano",
-    "path":"folders/Scripts/Interface/Piano.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Piano",
+    "path": "folders/Scripts/Interface/Piano.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "draw_piano_key",
+  "tags": [],
+  "resourceType": "GMScript",
 }

@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"show_menu_ext",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"show_menu_ext",
-  "parent":{
-    "name":"Popup",
-    "path":"folders/Scripts/Interface/Menu/Popup.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Popup",
+    "path": "folders/Scripts/Interface/Menu/Popup.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "show_menu_ext",
+  "tags": [],
+  "resourceType": "GMScript",
 }

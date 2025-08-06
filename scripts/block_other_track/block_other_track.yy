@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"block_other_track",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"block_other_track",
-  "parent":{
-    "name":"Track",
-    "path":"folders/Scripts/Schematic/Export/Track.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Track",
+    "path": "folders/Scripts/Schematic/Export/Track.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "block_other_track",
+  "tags": [],
+  "resourceType": "GMScript",
 }

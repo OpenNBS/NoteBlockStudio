@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"datapack_getinstextures",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"datapack_getinstextures",
-  "parent":{
-    "name":"Datapack",
-    "path":"folders/Scripts/Datapack.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Datapack",
+    "path": "folders/Scripts/Datapack.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "datapack_getinstextures",
+  "tags": [],
+  "resourceType": "GMScript",
 }

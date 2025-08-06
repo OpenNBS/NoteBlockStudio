@@ -1,13 +1,12 @@
 {
-  "$GMScript":"v1",
-  "%Name":"anim_window_open",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"anim_window_open",
-  "parent":{
-    "name":"Windows",
-    "path":"folders/Scripts/Interface/Windows.yy",
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Windows",
+    "path": "folders/Scripts/Interface/Windows.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
+  "resourceVersion": "1.0",
+  "name": "anim_window_open",
+  "tags": [],
+  "resourceType": "GMScript",
 }
