@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Languages",
-    "path": "folders/Scripts/Languages.yy",
+  "$GMScript":"v1",
+  "%Name":"lang_en_us",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"lang_en_us",
+  "parent":{
+    "name":"Languages",
+    "path":"folders/Scripts/Languages.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "lang_en_us",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

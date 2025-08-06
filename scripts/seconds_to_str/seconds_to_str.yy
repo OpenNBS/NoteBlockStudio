@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Strings",
-    "path": "folders/Scripts/Functions/Strings.yy",
+  "$GMScript":"v1",
+  "%Name":"seconds_to_str",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"seconds_to_str",
+  "parent":{
+    "name":"Strings",
+    "path":"folders/Scripts/Functions/Strings.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "seconds_to_str",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

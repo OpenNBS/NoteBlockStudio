@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Controller",
-    "path": "folders/Scripts/Controller.yy",
+  "$GMScript":"v1",
+  "%Name":"download_song_start",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"download_song_start",
+  "parent":{
+    "name":"Controller",
+    "path":"folders/Scripts/Controller.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "download_song_start",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

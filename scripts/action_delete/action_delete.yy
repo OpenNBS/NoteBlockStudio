@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Actions",
-    "path": "folders/Scripts/Actions.yy",
+  "$GMScript":"v1",
+  "%Name":"action_delete",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"action_delete",
+  "parent":{
+    "name":"Actions",
+    "path":"folders/Scripts/Actions.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "action_delete",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

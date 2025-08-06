@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Datapack",
-    "path": "folders/Scripts/Datapack.yy",
+  "$GMScript":"v1",
+  "%Name":"datapack_export",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"datapack_export",
+  "parent":{
+    "name":"Datapack",
+    "path":"folders/Scripts/Datapack.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "datapack_export",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

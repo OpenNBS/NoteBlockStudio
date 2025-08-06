@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Layers",
-    "path": "folders/Scripts/Note Blocks/Layers.yy",
+  "$GMScript":"v1",
+  "%Name":"remove_layer",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"remove_layer",
+  "parent":{
+    "name":"Layers",
+    "path":"folders/Scripts/Note Blocks/Layers.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "remove_layer",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

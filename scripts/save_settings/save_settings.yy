@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "File",
-    "path": "folders/Scripts/File.yy",
+  "$GMScript":"v1",
+  "%Name":"save_settings",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"save_settings",
+  "parent":{
+    "name":"File",
+    "path":"folders/Scripts/File.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "save_settings",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Import",
-    "path": "folders/Scripts/Schematic/Import.yy",
+  "$GMScript":"v1",
+  "%Name":"block_get_ins",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"block_get_ins",
+  "parent":{
+    "name":"Import",
+    "path":"folders/Scripts/Schematic/Import.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "block_get_ins",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

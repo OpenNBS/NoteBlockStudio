@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Strings",
-    "path": "folders/Scripts/Functions/Strings.yy",
+  "$GMScript":"v1",
+  "%Name":"string_digits_symbol",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"string_digits_symbol",
+  "parent":{
+    "name":"Strings",
+    "path":"folders/Scripts/Functions/Strings.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "string_digits_symbol",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Import",
-    "path": "folders/Scripts/Schematic/Import.yy",
+  "$GMScript":"v1",
+  "%Name":"open_schematic",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"open_schematic",
+  "parent":{
+    "name":"Import",
+    "path":"folders/Scripts/Schematic/Import.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "open_schematic",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "GMSchematic",
-    "path": "folders/Scripts/Schematic/GMSchematic.yy",
+  "$GMScript":"v1",
+  "%Name":"schematic_line",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"schematic_line",
+  "parent":{
+    "name":"GMSchematic",
+    "path":"folders/Scripts/Schematic/GMSchematic.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "schematic_line",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

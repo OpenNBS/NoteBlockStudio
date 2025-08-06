@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Controller",
-    "path": "folders/Scripts/Controller.yy",
+  "$GMScript":"v1",
+  "%Name":"control_http",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"control_http",
+  "parent":{
+    "name":"Controller",
+    "path":"folders/Scripts/Controller.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "control_http",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

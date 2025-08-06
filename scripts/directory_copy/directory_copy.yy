@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "File",
-    "path": "folders/Scripts/File.yy",
+  "$GMScript":"v1",
+  "%Name":"directory_copy",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"directory_copy",
+  "parent":{
+    "name":"File",
+    "path":"folders/Scripts/File.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "directory_copy",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

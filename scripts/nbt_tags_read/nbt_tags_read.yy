@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "NBT",
-    "path": "folders/Scripts/Schematic/GMSchematic/NBT.yy",
+  "$GMScript":"v1",
+  "%Name":"nbt_tags_read",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"nbt_tags_read",
+  "parent":{
+    "name":"NBT",
+    "path":"folders/Scripts/Schematic/GMSchematic/NBT.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "nbt_tags_read",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

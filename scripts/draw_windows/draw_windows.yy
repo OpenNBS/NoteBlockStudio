@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Windows",
-    "path": "folders/Scripts/Interface/Windows.yy",
+  "$GMScript":"v1",
+  "%Name":"draw_windows",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_windows",
+  "parent":{
+    "name":"Windows",
+    "path":"folders/Scripts/Interface/Windows.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "draw_windows",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

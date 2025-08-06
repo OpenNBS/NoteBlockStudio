@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Controller",
-    "path": "folders/Scripts/Controller.yy",
+  "$GMScript":"v1",
+  "%Name":"reset_add",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"reset_add",
+  "parent":{
+    "name":"Controller",
+    "path":"folders/Scripts/Controller.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "reset_add",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

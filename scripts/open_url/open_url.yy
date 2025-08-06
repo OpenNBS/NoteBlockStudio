@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "file",
-    "path": "folders/Scripts/Libraries/file.yy",
+  "$GMScript":"v1",
+  "%Name":"open_url",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"open_url",
+  "parent":{
+    "name":"file",
+    "path":"folders/Scripts/Libraries/file.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "open_url",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

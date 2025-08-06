@@ -15,7 +15,7 @@ function play_sound() {
 	var argument_5 = 0
 	if (argument_count > 5) argument_5 = argument[5]
 	
-	if (os_type != os_macosx) {
+	if (true) {
 
 	var ins, key, vol, pan, newemitter, emitter, pit, keyshift
 	ins = argument_0
@@ -39,7 +39,7 @@ function play_sound() {
 	//Schedule emitter to be deleted from memory
 	newemitter = ds_list_create()
 	ds_list_add(newemitter,emitter) //store emitter id
-	var length = audio_sound_length(ins.sound) / (1 + 3 * (os_type = os_windows)) * (1/audio_emitter_get_pitch(emitter))
+	var length = audio_sound_length(ins.sound) / (1 - 0.5 * (os_type = os_windows)) * (1/audio_emitter_get_pitch(emitter))
 	ds_list_add(newemitter, (get_timer() + length * 1000000)) //store moment at which the emitter should be removed
 	ds_list_add(newemitter, argument_5)
 	ds_list_add(emitters_to_remove, newemitter)
@@ -71,7 +71,7 @@ function play_sound() {
 	//Schedule emitter to be deleted from memory
 	newemitter = ds_list_create()
 	ds_list_add(newemitter,soundid) //store emitter id
-	var length = audio_sound_length(ins.sound) / (1 + 3 * (os_type = os_windows)) * (1/emitter_pitch)
+	var length = audio_sound_length(ins.sound) / (1 - 0.5 * (os_type = os_windows)) * (1/emitter_pitch)
 	ds_list_add(newemitter, (get_timer() + length * 1000000)) //store moment at which the emitter should be removed
 	ds_list_add(newemitter, argument_5)
 	ds_list_add(emitters_to_remove, newemitter)

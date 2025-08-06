@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "midiinput",
-    "path": "folders/Scripts/Libraries/midiinput.yy",
+  "$GMScript":"v1",
+  "%Name":"midi_input_devices",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"midi_input_devices",
+  "parent":{
+    "name":"midiinput",
+    "path":"folders/Scripts/Libraries/midiinput.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "midi_input_devices",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

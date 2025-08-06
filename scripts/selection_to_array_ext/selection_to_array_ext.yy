@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Selection",
-    "path": "folders/Scripts/Note Blocks/Selection.yy",
+  "$GMScript":"v1",
+  "%Name":"selection_to_array_ext",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"selection_to_array_ext",
+  "parent":{
+    "name":"Selection",
+    "path":"folders/Scripts/Note Blocks/Selection.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "selection_to_array_ext",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

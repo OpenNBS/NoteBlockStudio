@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Instruments",
-    "path": "folders/Scripts/Instruments.yy",
+  "$GMScript":"v1",
+  "%Name":"instrument_change",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"instrument_change",
+  "parent":{
+    "name":"Instruments",
+    "path":"folders/Scripts/Instruments.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "instrument_change",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Selection",
-    "path": "folders/Scripts/Note Blocks/Selection.yy",
+  "$GMScript":"v1",
+  "%Name":"select_custom",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"select_custom",
+  "parent":{
+    "name":"Selection",
+    "path":"folders/Scripts/Note Blocks/Selection.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "select_custom",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

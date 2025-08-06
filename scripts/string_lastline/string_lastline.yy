@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Strings",
-    "path": "folders/Scripts/Functions/Strings.yy",
+  "$GMScript":"v1",
+  "%Name":"string_lastline",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"string_lastline",
+  "parent":{
+    "name":"Strings",
+    "path":"folders/Scripts/Functions/Strings.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "string_lastline",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

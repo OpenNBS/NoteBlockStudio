@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Interface",
-    "path": "folders/Scripts/Interface.yy",
+  "$GMScript":"v1",
+  "%Name":"update_compatible",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"update_compatible",
+  "parent":{
+    "name":"Interface",
+    "path":"folders/Scripts/Interface.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "update_compatible",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Strings",
-    "path": "folders/Scripts/Functions/Strings.yy",
+  "$GMScript":"v1",
+  "%Name":"string_maxwidth",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"string_maxwidth",
+  "parent":{
+    "name":"Strings",
+    "path":"folders/Scripts/Functions/Strings.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "string_maxwidth",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

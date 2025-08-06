@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Export",
-    "path": "folders/Scripts/Schematic/Export.yy",
+  "$GMScript":"v1",
+  "%Name":"schematic_width",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"schematic_width",
+  "parent":{
+    "name":"Export",
+    "path":"folders/Scripts/Schematic/Export.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "schematic_width",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

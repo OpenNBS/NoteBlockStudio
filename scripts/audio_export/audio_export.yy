@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Controller",
-    "path": "folders/Scripts/Controller.yy",
+  "$GMScript":"v1",
+  "%Name":"audio_export",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"audio_export",
+  "parent":{
+    "name":"Controller",
+    "path":"folders/Scripts/Controller.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "audio_export",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

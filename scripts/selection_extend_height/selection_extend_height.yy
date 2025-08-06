@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Selection",
-    "path": "folders/Scripts/Note Blocks/Selection.yy",
+  "$GMScript":"v1",
+  "%Name":"selection_extend_height",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"selection_extend_height",
+  "parent":{
+    "name":"Selection",
+    "path":"folders/Scripts/Note Blocks/Selection.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "selection_extend_height",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

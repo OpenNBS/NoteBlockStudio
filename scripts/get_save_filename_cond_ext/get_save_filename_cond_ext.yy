@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Dialogs",
-    "path": "folders/Scripts/Interface/Dialogs.yy",
+  "$GMScript":"v1",
+  "%Name":"get_save_filename_cond_ext",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"get_save_filename_cond_ext",
+  "parent":{
+    "name":"Dialogs",
+    "path":"folders/Scripts/Interface/Dialogs.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "get_save_filename_cond_ext",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

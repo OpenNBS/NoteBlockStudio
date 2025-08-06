@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Buffer",
-    "path": "folders/Scripts/File/Buffer.yy",
+  "$GMScript":"v1",
+  "%Name":"buffer_write_short_be_ext",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"buffer_write_short_be_ext",
+  "parent":{
+    "name":"Buffer",
+    "path":"folders/Scripts/File/Buffer.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "buffer_write_short_be_ext",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

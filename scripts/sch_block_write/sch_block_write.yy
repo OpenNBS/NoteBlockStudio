@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Schematic",
-    "path": "folders/Scripts/Schematic.yy",
+  "$GMScript":"v1",
+  "%Name":"sch_block_write",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"sch_block_write",
+  "parent":{
+    "name":"Schematic",
+    "path":"folders/Scripts/Schematic.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "sch_block_write",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

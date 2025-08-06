@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Functions",
-    "path": "folders/Scripts/Functions.yy",
+  "$GMScript":"v1",
+  "%Name":"ds_list_delete_value",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ds_list_delete_value",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Scripts/Functions.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "ds_list_delete_value",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

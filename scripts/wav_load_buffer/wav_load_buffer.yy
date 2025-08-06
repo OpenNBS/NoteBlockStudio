@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "File",
-    "path": "folders/Scripts/File.yy",
+  "$GMScript":"v1",
+  "%Name":"wav_load_buffer",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"wav_load_buffer",
+  "parent":{
+    "name":"File",
+    "path":"folders/Scripts/File.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "wav_load_buffer",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

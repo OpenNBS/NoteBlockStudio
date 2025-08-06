@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Macros",
-    "path": "folders/Scripts/Note Blocks/Macros.yy",
+  "$GMScript":"v1",
+  "%Name":"macro_tremolo",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"macro_tremolo",
+  "parent":{
+    "name":"Macros",
+    "path":"folders/Scripts/Note Blocks/Macros.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "macro_tremolo",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

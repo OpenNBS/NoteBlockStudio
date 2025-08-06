@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Functions",
-    "path": "folders/Scripts/Functions.yy",
+  "$GMScript":"v1",
+  "%Name":"buffer_substr_copy",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"buffer_substr_copy",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Scripts/Functions.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "buffer_substr_copy",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

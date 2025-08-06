@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Popup",
-    "path": "folders/Scripts/Interface/Menu/Popup.yy",
+  "$GMScript":"v1",
+  "%Name":"macos_create_menu_ext",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"macos_create_menu_ext",
+  "parent":{
+    "name":"Popup",
+    "path":"folders/Scripts/Interface/Menu/Popup.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "macos_create_menu_ext",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

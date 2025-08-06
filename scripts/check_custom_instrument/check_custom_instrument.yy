@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Selection",
-    "path": "folders/Scripts/Note Blocks/Selection.yy",
+  "$GMScript":"v1",
+  "%Name":"check_custom_instrument",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"check_custom_instrument",
+  "parent":{
+    "name":"Selection",
+    "path":"folders/Scripts/Note Blocks/Selection.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "check_custom_instrument",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

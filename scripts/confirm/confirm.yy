@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "File",
-    "path": "folders/Scripts/File.yy",
+  "$GMScript":"v1",
+  "%Name":"confirm",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"confirm",
+  "parent":{
+    "name":"File",
+    "path":"folders/Scripts/File.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "confirm",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

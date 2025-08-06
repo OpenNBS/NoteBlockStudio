@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Note Blocks",
-    "path": "folders/Scripts/Note Blocks.yy",
+  "$GMScript":"v1",
+  "%Name":"remove_block",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"remove_block",
+  "parent":{
+    "name":"Note Blocks",
+    "path":"folders/Scripts/Note Blocks.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "remove_block",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

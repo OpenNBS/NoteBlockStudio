@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Selection",
-    "path": "folders/Scripts/Note Blocks/Selection.yy",
+  "$GMScript":"v1",
+  "%Name":"try_compress_selection",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"try_compress_selection",
+  "parent":{
+    "name":"Selection",
+    "path":"folders/Scripts/Note Blocks/Selection.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "try_compress_selection",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

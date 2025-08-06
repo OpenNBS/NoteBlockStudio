@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Note Blocks",
-    "path": "folders/Scripts/Note Blocks.yy",
+  "$GMScript":"v1",
+  "%Name":"mode_action",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"mode_action",
+  "parent":{
+    "name":"Note Blocks",
+    "path":"folders/Scripts/Note Blocks.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "mode_action",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

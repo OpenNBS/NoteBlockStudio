@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "File",
-    "path": "folders/Scripts/File.yy",
+  "$GMScript":"v1",
+  "%Name":"pattern_import",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"pattern_import",
+  "parent":{
+    "name":"File",
+    "path":"folders/Scripts/File.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "pattern_import",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

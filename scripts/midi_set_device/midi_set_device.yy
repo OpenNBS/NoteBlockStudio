@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Midi",
-    "path": "folders/Scripts/Midi.yy",
+  "$GMScript":"v1",
+  "%Name":"midi_set_device",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"midi_set_device",
+  "parent":{
+    "name":"Midi",
+    "path":"folders/Scripts/Midi.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "midi_set_device",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

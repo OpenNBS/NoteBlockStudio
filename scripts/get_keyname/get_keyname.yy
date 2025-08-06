@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Piano",
-    "path": "folders/Scripts/Interface/Piano.yy",
+  "$GMScript":"v1",
+  "%Name":"get_keyname",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"get_keyname",
+  "parent":{
+    "name":"Piano",
+    "path":"folders/Scripts/Interface/Piano.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "get_keyname",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

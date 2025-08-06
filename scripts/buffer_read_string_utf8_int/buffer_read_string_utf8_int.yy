@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Buffer",
-    "path": "folders/Scripts/File/Buffer.yy",
+  "$GMScript":"v1",
+  "%Name":"buffer_read_string_utf8_int",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"buffer_read_string_utf8_int",
+  "parent":{
+    "name":"Buffer",
+    "path":"folders/Scripts/File/Buffer.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "buffer_read_string_utf8_int",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

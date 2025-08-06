@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "audio",
-    "path": "folders/Scripts/Libraries/audio.yy",
+  "$GMScript":"v1",
+  "%Name":"audio_combine",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"audio_combine",
+  "parent":{
+    "name":"audio",
+    "path":"folders/Scripts/Libraries/audio.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "audio_combine",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

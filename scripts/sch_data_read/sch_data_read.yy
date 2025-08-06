@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Schematic",
-    "path": "folders/Scripts/Schematic.yy",
+  "$GMScript":"v1",
+  "%Name":"sch_data_read",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"sch_data_read",
+  "parent":{
+    "name":"Schematic",
+    "path":"folders/Scripts/Schematic.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "sch_data_read",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

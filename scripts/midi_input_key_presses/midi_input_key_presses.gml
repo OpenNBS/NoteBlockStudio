@@ -7,8 +7,7 @@ function midi_input_key_presses(argument0) {
 
 	//  By David "Davve" Norgren for MIDI input - www.stuffbydavid.com
 
-	if (os_type = os_windows) return external_call(lib_midi_input_key_presses, argument0);
-	else return ds_list_size(midi_keypresses)
+	return ds_list_size(midi_keypresses)
 
 
 

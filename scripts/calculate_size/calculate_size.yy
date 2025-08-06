@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Export",
-    "path": "folders/Scripts/Schematic/Export.yy",
+  "$GMScript":"v1",
+  "%Name":"calculate_size",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"calculate_size",
+  "parent":{
+    "name":"Export",
+    "path":"folders/Scripts/Schematic/Export.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "calculate_size",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

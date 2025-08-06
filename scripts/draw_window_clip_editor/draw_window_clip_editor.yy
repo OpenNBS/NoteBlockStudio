@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Windows",
-    "path": "folders/Scripts/Interface/Windows.yy",
+  "$GMScript":"v1",
+  "%Name":"draw_window_clip_editor",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_window_clip_editor",
+  "parent":{
+    "name":"Windows",
+    "path":"folders/Scripts/Interface/Windows.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "draw_window_clip_editor",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Midi",
-    "path": "folders/Scripts/Midi.yy",
+  "$GMScript":"v1",
+  "%Name":"open_midi",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"open_midi",
+  "parent":{
+    "name":"Midi",
+    "path":"folders/Scripts/Midi.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "open_midi",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

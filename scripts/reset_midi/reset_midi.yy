@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Midi",
-    "path": "folders/Scripts/Midi.yy",
+  "$GMScript":"v1",
+  "%Name":"reset_midi",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"reset_midi",
+  "parent":{
+    "name":"Midi",
+    "path":"folders/Scripts/Midi.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "reset_midi",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Macros",
-    "path": "folders/Scripts/Note Blocks/Macros.yy",
+  "$GMScript":"v1",
+  "%Name":"macro_chorus",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"macro_chorus",
+  "parent":{
+    "name":"Macros",
+    "path":"folders/Scripts/Note Blocks/Macros.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "macro_chorus",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

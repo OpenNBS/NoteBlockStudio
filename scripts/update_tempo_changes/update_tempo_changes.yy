@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Note Blocks",
-    "path": "folders/Scripts/Note Blocks.yy",
+  "$GMScript":"v1",
+  "%Name":"update_tempo_changes",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"update_tempo_changes",
+  "parent":{
+    "name":"Note Blocks",
+    "path":"folders/Scripts/Note Blocks.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "update_tempo_changes",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

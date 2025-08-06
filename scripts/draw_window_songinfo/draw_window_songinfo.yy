@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Windows",
-    "path": "folders/Scripts/Interface/Windows.yy",
+  "$GMScript":"v1",
+  "%Name":"draw_window_songinfo",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_window_songinfo",
+  "parent":{
+    "name":"Windows",
+    "path":"folders/Scripts/Interface/Windows.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "draw_window_songinfo",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

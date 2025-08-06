@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Strings",
-    "path": "folders/Scripts/Functions/Strings.yy",
+  "$GMScript":"v1",
+  "%Name":"string_buffer_create",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"string_buffer_create",
+  "parent":{
+    "name":"Strings",
+    "path":"folders/Scripts/Functions/Strings.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "string_buffer_create",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

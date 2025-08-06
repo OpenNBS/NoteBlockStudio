@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "window",
-    "path": "folders/Scripts/Libraries/window.yy",
+  "$GMScript":"v1",
+  "%Name":"window_setnormal",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"window_setnormal",
+  "parent":{
+    "name":"window",
+    "path":"folders/Scripts/Libraries/window.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "window_setnormal",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

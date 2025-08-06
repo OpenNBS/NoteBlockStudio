@@ -1,12 +1,13 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Popup",
-    "path": "folders/Scripts/Interface/Menu/Popup.yy",
+  "$GMScript":"v1",
+  "%Name":"popup_set",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"popup_set",
+  "parent":{
+    "name":"Popup",
+    "path":"folders/Scripts/Interface/Menu/Popup.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "popup_set",
-  "tags": [],
-  "resourceType": "GMScript",
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }
