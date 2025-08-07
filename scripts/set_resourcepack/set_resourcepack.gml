@@ -62,6 +62,7 @@ function swap_instrument(index, ins_name, sound_name, vanilla_name, dir_no_path,
 			filename = dir_no_path + "assets/minecraft/sounds/note/" + sound_name + ".ogg"
 			//if (os_type = os_windows) {
 				log("audio_file_decode")
+				if (file_exists(temp_file)) file_delete(temp_file)
 				var ret = audio_file_decode_ogg(using_directory + dir_no_path + "assets/minecraft/sounds/note/" + sound_name + ".ogg", temp_file);
 				if (ret < 0) {
 				    if (obj_controller.language != 1) message("Couldn't load the file " + using_directory + dir_no_path + "assets/minecraft/sounds/note/" + sound_name + ".ogg" + "! Error: " + string(ret), "Error")
@@ -90,6 +91,7 @@ function swap_instrument(index, ins_name, sound_name, vanilla_name, dir_no_path,
 			filename = vanilla_name + ".ogg"
 			//if (os_type = os_windows) {
 				log("audio_file_decode")
+				if (file_exists(temp_file)) file_delete(temp_file)
 				var ret = audio_file_decode_ogg(sounds_directory + vanilla_name + ".ogg", temp_file);
 				if (ret < 0) {
 				    if (obj_controller.language != 1) message("Couldn't load the file " + sounds_directory + vanilla_name + ".ogg" + "! Error: " + string(ret), "Error")
