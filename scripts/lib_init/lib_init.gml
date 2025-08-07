@@ -6,10 +6,10 @@ function lib_init() {
 
 	log("Init libraries")
 
-	path_file = bundled_data_directory + "file.dll"
-	path_audio = bundled_data_directory + "audio.dll"
-	path_window = bundled_data_directory + "window.dll"
-	path_midiinput = bundled_data_directory + "midiinput.dll"
+	path_file = data_directory + "file.dll"
+	path_audio = data_directory + "audio.dll"
+	path_window = data_directory + "window.dll"
+	path_midiinput = data_directory + "midiinput.dll"
 
 	globalvar lib_open_url, lib_execute, lib_gzunzip, lib_gzzip, lib_program_path;
 	globalvar lib_file_rename, lib_file_copy, lib_file_delete, lib_file_exists;
