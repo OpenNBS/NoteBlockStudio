@@ -59,6 +59,7 @@
     {"id":{"name":"spr_scrollbar_h_bar_right","path":"sprites/spr_scrollbar_h_bar_right/spr_scrollbar_h_bar_right.yy",},"order":3,},
     {"id":{"name":"spr_scrollbar_h_button_left","path":"sprites/spr_scrollbar_h_button_left/spr_scrollbar_h_button_left.yy",},"order":0,},
     {"id":{"name":"spr_scrollbar_h_button_right","path":"sprites/spr_scrollbar_h_button_right/spr_scrollbar_h_button_right.yy",},"order":1,},
+    {"id":{"name":"GMaudioTools","path":"extensions/GMaudioTools/GMaudioTools.yy",},"order":10,},
     {"id":{"name":"fnt_wslui_med","path":"fonts/fnt_wslui_med/fnt_wslui_med.yy",},"order":5,},
     {"id":{"name":"spr_bigicons_d","path":"sprites/spr_bigicons_d/spr_bigicons_d.yy",},"order":5,},
     {"id":{"name":"try_decompress_selection","path":"scripts/try_decompress_selection/try_decompress_selection.yy",},"order":32,},
