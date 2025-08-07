@@ -52,7 +52,9 @@
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"window_set_icon_init_raw","externalName":"window_set_icon_init_raw","kind":11,"help":"","hidden":true,"returnType":2,"argCount":1,"args":[
             2,
           ],"documentation":"",},
-      ],"constants":[],"ProxyFiles":[],"copyToTargets":9223372036854775807,"usesRunnerInterface":false,"order":[
+      ],"constants":[],"ProxyFiles":[
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"window_set_icon_x64.dll","TargetMask":6,},
+      ],"copyToTargets":9223372036854775807,"usesRunnerInterface":false,"order":[
         {"name":"window_set_overlay_icon_raw","path":"extensions/window_set_icon/window_set_icon.yy",},
         {"name":"window_set_icon_raw","path":"extensions/window_set_icon/window_set_icon.yy",},
         {"name":"window_set_icon_surface_raw","path":"extensions/window_set_icon/window_set_icon.yy",},

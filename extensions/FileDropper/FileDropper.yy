@@ -41,6 +41,7 @@
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"hwnd_default","value":"pointer_null","hidden":false,},
       ],"ProxyFiles":[
         {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"FileDropper.dylib","TargetMask":1,},
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"FileDropper_x64.dll","TargetMask":6,},
       ],"copyToTargets":66,"usesRunnerInterface":false,"order":[
         {"name":"file_dnd_get_enabled","path":"extensions/FileDropper/FileDropper.yy",},
         {"name":"file_dnd_set_enabled","path":"extensions/FileDropper/FileDropper.yy",},

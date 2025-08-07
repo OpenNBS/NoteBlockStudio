@@ -160,6 +160,7 @@
         {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libxprocess_arm.so","TargetMask":7,},
         {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libxprocess_arm64.so","TargetMask":7,},
         {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libxprocess.so","TargetMask":7,},
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libxprocess_x64.dll","TargetMask":6,},
       ],"copyToTargets":194,"usesRunnerInterface":false,"order":[
         {"name":"ProcessExecute","path":"extensions/libxprocess/libxprocess.yy",},
         {"name":"ProcessExecuteAsync","path":"extensions/libxprocess/libxprocess.yy",},

@@ -228,6 +228,7 @@
         {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libdlgmod.so","TargetMask":7,},
         {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libdlgmod_arm.so","TargetMask":7,},
         {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libdlgmod_arm64.so","TargetMask":7,},
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libdlgmod_x64.dll","TargetMask":6,},
       ],"copyToTargets":202375362,"usesRunnerInterface":false,"order":[
         {"name":"show_message","path":"extensions/libdlgmod/libdlgmod.yy",},
         {"name":"show_question","path":"extensions/libdlgmod/libdlgmod.yy",},
