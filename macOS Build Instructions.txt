@@ -10,7 +10,7 @@ To make a TestFlight or App Store build for macOS (You need a developer subscrip
    - Added capability "Hardened Runtime"
  - In General, 
    - Change the field at App Icons and Launch Screen -> App Icon to "NBS Icon macOS"
-   - Add the file "libGMmacOSTools.dylib" to Frameworks, Libraries, and Embedded Content
+   - Add the file "libGMmacOSTools.dylib" and "libGMaudioTools.dylib" to Frameworks, Libraries, and Embedded Content
  - In Build Settings,
    - Change Packaging -> Product Name to "Note Block Studio"
 4. On the Xcode menu bar on the top of the screen, click Product -> Archive
