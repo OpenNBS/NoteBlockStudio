@@ -157,11 +157,12 @@ function control_step() {
 
 	if (!isplayer) {
 	// Autosave
-	if (autosave && filename_ext(current_song.filename) = ".nbs") {
+	if (autosave && string_lower(filename_ext(current_song.filename)) == ".nbs") {
 	    tonextsave -= 1 / room_speed / 60 * (1 / currspeed)
 	    if (tonextsave <= 0 && playing == 0) {
 			tonextsave = autosavemins
-			save_song(current_song.filename, true)
+			log("Auto saving song", current_song.filename)
+			save_song(current_song.filename)
 		}
 	}
 

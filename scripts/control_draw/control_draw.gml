@@ -2250,7 +2250,7 @@ function control_draw() {
 			}
 			if (!hovernote) {
 				// Auto-save remaining time
-				if (autosave && filename_ext(current_song.filename) = ".nbs") {
+				if (autosave && string_lower(filename_ext(current_song.filename)) = ".nbs") {
 					draw_theme_color()
 					xx += 4
 					if (language != 1) draw_text_dynamic(xx, rh - 18, "Next auto-save: " + string(ceil(tonextsave)) + " minute" + condstr(ceil(tonextsave)<>1, "s"))
@@ -2761,8 +2761,9 @@ function control_draw() {
 		if (macos_url_pending_count() > 0) {
 			var temp_url = macos_url_take_pending()
 			if (string_count("nbs://", temp_url) = 0) {
-				var file = string_replace_all(temp_url, "file://", "")
-				if (file != "" && (filename_ext(file) = ".mid" || filename_ext(file) = ".midi" || filename_ext(file) = ".schematic" || filename_ext(file) = ".nbs" || filename_ext(file) = ".zip")) {
+				var file = string_replace_all(temp_url, "file://", "");
+				var file_ext = string_lower(filename_ext(file));
+				if (file != "" && (file_ext == ".mid" || file_ext == ".midi" || file_ext == ".schematic" || file_ext == ".nbs" || file_ext == ".zip")) {
 					load_song(file, 0, isplayer, 0)
 				}
 			} else {

@@ -39,8 +39,8 @@ function control_social(){
 			w_isdragging = 0
 		}
 	} else if (async_load[? "id"] == "FILE_OPEN"){
-		var file = async_load[? "path"]
-		if (file != "" && (filename_ext(file) = ".mid" || filename_ext(file) = ".midi" || filename_ext(file) = ".schematic" || filename_ext(file) = ".nbs" || filename_ext(file) = ".zip")) {
+		var file = async_load[? "path"], file_ext =  string_lower(filename_ext(file));
+		if (file != "" && (file_ext == ".mid" || file_ext == ".midi" || file_ext == ".schematic" || file_ext == ".nbs" || file_ext == ".zip")) {
 			load_song(file)
 		}
 	}

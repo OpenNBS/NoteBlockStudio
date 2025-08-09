@@ -8,7 +8,7 @@ function save_song() {
 		backup = argument[1]
 	}
 	if (isplayer) return 0
-	if ((!backup) && (fn = "" || filename_ext(cursong.filename) != ".nbs")) {
+	if ((!backup) && (fn = "" || string_lower(filename_ext(cursong.filename)) != ".nbs")) {
 	    playing = 0
 	    fsave = filename_name(cursong.filename)
 	    if (!directory_exists_lib(songfolder)) songfolder = songs_directory
