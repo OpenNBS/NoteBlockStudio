@@ -574,7 +574,7 @@ function control_create() {
 	// Settings
 	if (!check_args("--prefreset")) load_settings()
 	if (os_type = os_macosx) macos_enable_system_settings_menu()
-	tonextsave = autosavemins; // Defining autosavemins here to avoid the autosave when the first song is loaded after open the game.
+	tonextsave = autosave ? autosavemins : 0; // Defining autosavemins here to avoid the autosave when the first song is loaded after open the game.
 	menu_macos_init()
 	switch(language) {
 		default:
