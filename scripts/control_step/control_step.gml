@@ -162,7 +162,7 @@ function control_step() {
 	    if (tonextsave <= 0 && playing == 0) {
 			tonextsave = autosavemins
 			log("Auto saving song", current_song.filename)
-			save_song(current_song.filename)
+			save_song(current_song.filename, false, true)
 		}
 	}
 
