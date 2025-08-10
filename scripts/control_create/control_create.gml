@@ -178,7 +178,6 @@ function control_create() {
 	fullscreen = 0
 	autosave = 0
 	autosavemins = 10
-	tonextsave = 0
 	backupmins = 1
 	tonextbackup = 0
 	language = 1 * (os_get_language() = "zh" && os_get_region() = "CN")
@@ -575,6 +574,7 @@ function control_create() {
 	// Settings
 	if (!check_args("--prefreset")) load_settings()
 	if (os_type = os_macosx) macos_enable_system_settings_menu()
+	tonextsave = autosavemins; // Defining autosavemins here to avoid the autosave when the first song is loaded after open the game.
 	menu_macos_init()
 	switch(language) {
 		default:
