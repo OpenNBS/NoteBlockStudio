@@ -15,9 +15,9 @@ function control_create() {
 	// Window
 	#macro NOT_RUN_FROM_IDE !string_count("GMS2TEMP", get_execution_command()) // THIS CONSTANT IS A REVERSE BOOLEAN (0 is from IDE)
 	//show_message(get_execution_command() + "IDE: " + string(NOT_RUN_FROM_IDE))
-	p_num = parameter_count()
-	isplayer = (check_args("-player"))
-	filenamearg = check_args()
+	p_num = parameter_count();
+	isplayer = (check_args("-player"));
+	filenamearg = check_args();
 	for (var i = 0; i < p_num; i += 1) {
 		if (parameter_string(i) = "-player" || parameter_string(i) == "--protocol-launcher") isplayer = 1
 	}
@@ -28,8 +28,10 @@ function control_create() {
 	if (!isplayer) server_socket = network_create_server(network_socket_tcp, 30010, 1)
 	client_socket = -1
 	if (server_socket < 0 && !isplayer) {port_taken = 1; client_socket = network_create_socket(network_socket_tcp)}
-	if (parameter_count() > 0) {
-		if (filenamearg != "" && (filename_ext(filenamearg) = ".mid" || filename_ext(filenamearg) = ".midi" || filename_ext(filenamearg) = ".schematic" || filename_ext(filenamearg) = ".nbs" || filename_ext(filenamearg) = ".zip")) {
+	if (p_num > 0) {
+		if (filenamearg != "" && (string_lower(filename_ext(filenamearg)) == ".mid" || string_lower(filename_ext(filenamearg)) == ".midi" ||
+			string_lower(filename_ext(filenamearg)) == ".schematic" || string_lower(filename_ext(filenamearg)) == ".nbs" ||
+			string_lower(filename_ext(filenamearg)) == ".zip")) {
 			if (port_taken) {
 				network_connect(client_socket, "127.0.0.1", 30010)
 				var temp_buffer = buffer_create(0, buffer_grow, 1)
@@ -693,12 +695,15 @@ function control_create() {
 	//		}
 	
 	if (os_type = os_macosx && macos_url_pending_count() > 0) {
-		var temp_url = macos_url_take_pending()
+		var temp_url = macos_url_take_pending();
 		if (string_count("nbs://", temp_url) = 0) {
-			var file = string_replace_all(temp_url, "file://", "")
-			if (file != "" && (filename_ext(file) = ".mid" || filename_ext(file) = ".midi" || filename_ext(file) = ".schematic" || filename_ext(file) = ".nbs" || filename_ext(file) = ".zip")) {
-				songs[song].filename = file
-				load_song(file, 0, 1, 1)
+			var file = string_replace_all(temp_url, "file://", "");
+			if (file != "" && 
+				(string_lower(filename_ext(file)) == ".mid" || string_lower(filename_ext(file)) == ".midi" || string_lower(filename_ext(file)) == ".schematic" ||
+				string_lower(filename_ext(file)) == ".nbs" || string_lower(filename_ext(file)) == ".zip")) {
+				songs[song].filename = file;
+				songs[song].file_ext = file_ext;
+				load_song(file, 0, 1, 1);
 			}
 		} else {
 			isplayer = 1
@@ -781,9 +786,12 @@ function control_create() {
 		download_song_start(download_url)
 	}
 	// Open song
-	if (os_type != os_macosx && parameter_count() > 0) {
-		songs[song].filename = filenamearg
-		if (songs[song].filename != "" && (filename_ext(songs[song].filename) = ".mid" || filename_ext(songs[song].filename) = ".midi" || filename_ext(songs[song].filename) = ".schematic" || filename_ext(songs[song].filename) = ".nbs" || filename_ext(songs[song].filename) = ".zip")) {
+	if (os_type != os_macosx && p_num > 0) {
+		songs[song].filename = filenamearg;
+		if (songs[song].filename != "" &&
+			(string_lower(filename_ext(songs[song].filename)) == ".mid" || string_lower(filename_ext(songs[song].filename)) == ".midi" ||
+			string_lower(filename_ext(songs[song].filename)) == ".schematic" || string_lower(filename_ext(songs[song].filename)) == ".nbs" ||
+			string_lower(filename_ext(songs[song].filename)) == ".zip")) {
 			if (!port_taken) {
 				load_song(songs[song].filename, 0, 1, 1)
 			}
