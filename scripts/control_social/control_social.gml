@@ -39,7 +39,7 @@ function control_social(){
 			w_isdragging = 0
 		}
 	} else if (async_load[? "id"] == "FILE_OPEN"){
-		var file = async_load[? "path"],
+		var file = async_load[? "path"];
 		if (file != "" && (string_lower(filename_ext(file)) == ".mid" || string_lower(filename_ext(file)) == ".midi" ||
 		string_lower(filename_ext(file)) == ".schematic" || string_lower(filename_ext(file)) == ".nbs" || string_lower(filename_ext(file)) == ".zip")) {
 			load_song(file)

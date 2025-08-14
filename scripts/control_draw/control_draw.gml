@@ -2707,7 +2707,7 @@ function control_draw() {
 	if (showmsg) draw_msg()
 	if (rainbowtoggle) draw_accent_rainbow()
 	if (dndfile != "") {
-		if (filename_ext(dndfile) = ".nbp") pattern_import(dndfile, 1)
+		if (string_lower(filename_ext(dndfile)) = ".nbp") pattern_import(dndfile, 1)
 		else if (lastfile != dndfile) {
 			load_song(dndfile)
 			if (os_type = os_macosx) macos_bookmark_store(dndfile, dndfile, 0)

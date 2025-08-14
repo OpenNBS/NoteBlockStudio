@@ -11,9 +11,9 @@ function load_reference_audio(){
 	songs[song].reference_volume = 100
 	songs[song].reference_audio_file = string(get_open_filename_ext("Supported sounds (*.ogg;*.wav)|*.ogg;*.wav", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
 	songs[song].reference_audio = -1
-	if (filename_ext(songs[song].reference_audio_file) == ".ogg") {
+	if (string_lower(filename_ext(songs[song].reference_audio_file)) == ".ogg") {
 		songs[song].reference_audio = audio_create_stream(songs[song].reference_audio_file)
-	} else if (filename_ext(songs[song].reference_audio_file) == ".wav") {
+	} else if (string_lower(filename_ext(songs[song].reference_audio_file)) == ".wav") {
 		songs[song].reference_audio = wav_load_buffer(songs[song].reference_audio_file)
 	}
 	if (songs[song].reference_audio < 0) {
