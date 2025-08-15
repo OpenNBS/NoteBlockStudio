@@ -36,6 +36,7 @@ function instrument_load(custom_sounds_path = "") {
 		log("audio_file_decode")
 		if (file_exists(temp_file)) file_delete(temp_file)
 		var ret = audio_file_decode_ogg(fn, temp_file);
+		if (ret < 0) ret = audio_file_decode_ogg(string_replace_all(game_save_id + "data/sounds/" + filename, "/", "\\"), temp_file);
 		log ("wrote to: " + temp_file)
 		if (ret < 0) {
 		    if (obj_controller.language != 1) message("Couldn't load the file " + fn + "! Error: " + string(ret), "Error")
