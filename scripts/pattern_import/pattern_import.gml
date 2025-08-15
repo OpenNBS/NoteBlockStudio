@@ -19,9 +19,9 @@ function pattern_import() {
 	}
 	if (fn = "" || !file_exists_lib(fn)) return 0
 
-	file_ext = filename_ext(fn)
+	file_ext = string_lower(filename_ext(fn));
 	if (file_ext != ".nbp") {message(condstr(language != 1, "Error: This file is not a pattern.", "错误：该文件不是分段文件。"), condstr(language != 1, "Error", "错误")) return 0}
-	if (file_ext = ".nbp") {
+	if (file_ext == ".nbp") {
 		buffer = buffer_import(fn)
 	
 		song_pat_version = buffer_read_byte()

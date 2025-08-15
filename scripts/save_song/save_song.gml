@@ -1,14 +1,18 @@
 function save_song() {
-	// save_song(fn[, backup])
-	var fn, backup, nbsver, f, a, ca, cb, fsave;
-	fn = argument[0]
-	backup = false
-	var cursong = songs[song]
+	// save_song(fn[, backup, is_autosave])
+	var fn, backup, nbsver, f, a, ca, cb, fsave, asave;
+	fn = argument[0];
+	backup = false;
+	asave = false;
+	var cursong = songs[song];
 	if (argument_count > 1) {
-		backup = argument[1]
+		backup = argument[1];
+	}
+	if (argument_count > 2) {
+		asave = argument[2];
 	}
 	if (isplayer) return 0
-	if ((!backup) && (fn = "" || filename_ext(cursong.filename) != ".nbs")) {
+	if ((!backup) && (fn = "" || string_lower(filename_ext(cursong.filename)) != ".nbs")) {
 	    playing = 0
 	    fsave = filename_name(cursong.filename)
 	    if (!directory_exists_lib(songfolder)) songfolder = songs_directory
@@ -16,7 +20,7 @@ function save_song() {
 		log(string_char_at(fn, string_length(fn) - 3))
 	    if (fn = "") return 0
 	}
-	if ((!backup) && (cursong.selected > 0)) selection_place(0)
+	if ((!backup) && (cursong.selected > 0) && (!asave)) selection_place(0)
 
 	if (backup) {
 		nbsver = nbs_version
@@ -120,17 +124,21 @@ function save_song() {
 	buffer_delete(buffer)
 
 	if (!backup) {
-		cursong.filename = fn
-		update_backup_name()
-		cursong.changed = false
-		if (autosave) tonextsave = autosavemins
-		add_to_recent(fn)
-		if (language != 1) set_msg("Song saved")
-		else set_msg("歌曲已保存")
+		cursong.filename = fn;
+		update_backup_name();
+		cursong.changed = false;
+		if (autosave) tonextsave = autosavemins;
+		add_to_recent(fn);
+		if (asave) {	
+			if (language != 1) set_msg("Song auto saved");
+			else set_msg("歌曲自动保存");
+		} else {
+			if (language != 1) set_msg("Song saved");
+			else set_msg("歌曲已保存");
+		}
 	} else {
 		tonextbackup = backupmins
 	}
-
 	return true
 
 
