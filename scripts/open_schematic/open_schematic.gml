@@ -14,6 +14,7 @@ function open_schematic(argument0) {
 	io_clear()
 	array_push(songs, create(obj_song))
 	set_song(array_length(songs) - 1)
+	var currsong = obj_controller.songs[obj_controller.song]
 	with (create(obj_dummy)) {
 	    window = -1
 	    d = sqrt(2000 * 256 * 2000)
@@ -73,9 +74,9 @@ function open_schematic(argument0) {
 	        instance_destroy()
 	        return 0
 	    }
-	    log("[Open Schematic] w=" + sch_width)
-	    log("[Open Schematic] l=" + sch_length)
-	    log("[Open Schematic] h=" + sch_height)
+	    log("[Open Schematic] w=" + string(sch_width))
+	    log("[Open Schematic] l=" + string(sch_length))
+	    log("[Open Schematic] h=" + string(sch_height))
 	    if (blockspos < 0) {
 	        message("Failed to load Schematic.\n\nERROR: No Blocks array found.", "Error")
 	        window = 0
@@ -170,7 +171,7 @@ function open_schematic(argument0) {
 	        queuex[0] = inputx[i]
 	        queuey[0] = inputy[i]
 	        queuez[0] = inputz[i]
-	        start = obj_controller.enda + (16 * (i > 0))
+	        start = currsong.enda + (16 * (i > 0))
 	        queuedel[0] = 0
 	        queueinput[0] = 0
 	        t = inputx[i] * 2000 * 256 + inputz[i] * 2000 + inputy[i]
@@ -447,7 +448,7 @@ function open_schematic(argument0) {
 	                    if (debugstr) str += chr(13) + chr(10) + "Added note block no. " + string(queuenoteblocks) + "!"
 	                    with (obj_controller) {
 	                        d = sqrt(2000 * 256 * 2000)
-	                        while (!add_block(start + cd, b, obj_controller.songs[obj_controller.song].instrument_list[| a], c, 100, 100, 0)) b += 1
+	                        while (!add_block(start + cd, b, currsong.instrument_list[| a], c, 100, 100, 0)) b += 1
 	                    }
 	                    break
 	                }
@@ -580,8 +581,8 @@ function open_schematic(argument0) {
 	        return 0
 	    }
 	    if (inputam > 1) message("The Schematic contained more than one input.\n\nAs a result, the songs of the inputs have been put after each other.", "Schematic import")
-	    obj_controller.songs[obj_controller.song].filename = fn
-	    obj_controller.songs[obj_controller.song].midifile = filename_name(fn)
+	    currsong.filename = fn
+	    currsong.midifile = filename_name(fn)
 	    instance_destroy()
 	}
 
