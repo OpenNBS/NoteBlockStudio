@@ -1,19 +1,28 @@
 To make a TestFlight or App Store build for macOS (You need a developer subscription):
-1. Use the Create Executable function in GameMaker
-2. Navigate to the generated Xcode project and open it
-3. In Xcode, 
+
+1. Download "python3-macos-3.8.13-universal2.zip" from https://github.com/lmbelo/python3-embeddable/releases/tag/v1.0.0, extract and rename it to "python38_darwin_universal" and put it in datafiles/data/python/ and then install the site packages it requires (for arm64 macos)
+
+2. Use the Create Executable function in GameMaker
+
+3. Navigate to the generated Xcode project and open it
+
+4. In Xcode, 
  - drag the files "NBS Icon macOS" and "Icon.xcassets" into Resources
- - drag the file "Minecraft_Note_Block_Studio-Info.plist", "Minecraft_Note_Block_Studio.entitlements" and "extensions/gmmacostools/libGMmacOSTools.dylib" to replace the ones in xcode project
+ - drag the file "Minecraft_Note_Block_Studio-Info.plist" and "Minecraft_Note_Block_Studio.entitlements" to replace the ones in xcode project
  - In Signing & Capabilities, 
    - Turn off Automatically manage signing
    - Choose a working provisioning profile
-   - Added capability "Hardened Runtime"
+   - Add capability "Hardened Runtime"
  - In General, 
    - Change the field at App Icons and Launch Screen -> App Icon to "NBS Icon macOS"
-   - Add the file "libGMmacOSTools.dylib" and "libGMaudioTools.dylib" to Frameworks, Libraries, and Embedded Content
+   - Add the file "libGMmacOSTools.dylib", "libGMaudioTools.dylib", "libPygml.dylib" and "libPython3.8.dylib" to Frameworks, Libraries, and Embedded Content (make sure there is at least one capital letter in the filename otherwise it will not be added in)
  - In Build Settings,
    - Change Packaging -> Product Name to "Note Block Studio"
-4. On the Xcode menu bar on the top of the screen, click Product -> Archive
-5. In the Archives screen, choose the build, click Distribute App
-5. If you want to distribute it as a file, choose Direct Distribution to notarize it
-6. If you want to distribute it to TestFlight or App Store, choose App Store Connect
+
+5. On the Xcode menu bar on the top of the screen, click Product -> Archive
+
+6. In the Archives screen, choose the build, click Distribute App
+
+7. If you want to distribute it as a file, choose Direct Distribution to notarize it
+
+8. If you want to distribute it to TestFlight or App Store, choose App Store Connect

@@ -224,6 +224,17 @@ function control_create() {
 	sound_import_download_version_url_list = []
 	sound_import_download_files_list = []
 	sound_import_download_files_index = 0
+	if (os_type == os_macosx) {
+		EnvironmentSetVariable("PYTHONHOME", current_directory + "data/python/python38_darwin_universal/");
+		EnvironmentSetVariable("PYTHONPATH", current_directory + "data/python/" + ":" + 
+											 current_directory + "data/python/lib/site-packages/" + ":" + 
+											 current_directory + "data/python/lib/site-packages.zip/");
+		EnvironmentSetVariable("PYTHONDONTWRITEBYTECODE", "1");
+		EnvironmentSetVariable("PYTHONNOUSERSITE", "1");
+		var tempenvpath = EnvironmentGetVariable("PATH")
+		EnvironmentSetVariable("PATH", tempenvpath + ":" + current_directory)
+	}
+	_python_initialize()
 
 	// Instruments
 	current_resource = "Vanilla"

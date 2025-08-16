@@ -31,12 +31,12 @@
             2,
           ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"python_set_buffer_size","externalName":"python_set_buffer_size","kind":2,"help":"python_set_buffer_size(bytes)","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
-      ],"constants":[],"ProxyFiles":[],"copyToTargets":144150411102650596,"usesRunnerInterface":false,"order":[
+      ],"constants":[],"ProxyFiles":[],"copyToTargets":194,"usesRunnerInterface":false,"order":[
         {"name":"python_call_function","path":"extensions/pygml/pygml.yy",},
         {"name":"_python_prepare_buffer","path":"extensions/pygml/pygml.yy",},
         {"name":"python_set_buffer_size","path":"extensions/pygml/pygml.yy",},
       ],},
-    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"pygml.dll","origname":"","init":"_python_initialize","final":"_python_finalize","kind":1,"uncompress":false,"functions":[
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"pygml.dll","origname":"","init":"","final":"_python_finalize","kind":1,"uncompress":false,"functions":[
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"_python_call_function","externalName":"_python_call_function","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
           ],"documentation":"",},
@@ -54,6 +54,7 @@
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"python38._pth","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":64,"usesRunnerInterface":false,"order":[],},
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"ffprobe","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":2,"usesRunnerInterface":false,"order":[],},
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"ffmpeg","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":9007216434610178,"usesRunnerInterface":false,"order":[],},
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"libpython3.8.dylib","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":2,"usesRunnerInterface":false,"order":[],},
   ],
   "HTML5CodeInjection": "",
   "classname": "",

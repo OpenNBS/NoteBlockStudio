@@ -1662,7 +1662,7 @@ function control_draw() {
 										 "Export...|\\|" +
 											inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "Song with custom sounds...|" +
 											inactive(current_song.selected = 0)+"Pattern...|" +
-											inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Audio track...|"+
+											inactive(current_song.totalblocks = 0) + "Audio track...|"+
 											inactive(current_song.totalblocks = 0) + "Schematic...|"+
 											inactive(current_song.totalblocks = 0) + "Track schematic...|"+
 											inactive(current_song.totalblocks = 0) + "Branch schematic...|"+
@@ -1757,7 +1757,7 @@ function control_draw() {
 										 "导出......|\\|"+
 											inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "带自定义音色的歌曲......|"+
 											inactive(current_song.selected = 0)+"片段......|"+
-											inactive(current_song.totalblocks = 0 || os_type != os_windows) + "音频文件......|"+
+											inactive(current_song.totalblocks = 0) + "音频文件......|"+
 											inactive(current_song.totalblocks = 0) + "结构......|"+
 											inactive(current_song.totalblocks = 0) + "直轨结构......|"+
 											inactive(current_song.totalblocks = 0) + "分支结构......|"+
