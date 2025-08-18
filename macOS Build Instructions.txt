@@ -1,6 +1,6 @@
 To make a TestFlight or App Store build for macOS (You need a developer subscription):
 
-1. Download "python3-macos-3.8.13-universal2.zip" from https://github.com/lmbelo/python3-embeddable/releases/tag/v1.0.0, extract and rename it to "python38_darwin_universal" and put it in datafiles/data/python/ and then install the site packages it requires (for arm64 macos)
+1. Download "python3-macos-3.8.13-universal2.zip" from https://github.com/lmbelo/python3-embeddable/releases/tag/v1.0.0, extract and rename it to "python38_darwin_universal" and put it in datafiles/data/python/ and then install the site packages it requires (or just grab them from the release bundle)
 
 2. Use the Create Executable function in GameMaker
 
