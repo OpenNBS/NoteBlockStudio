@@ -467,9 +467,16 @@ function menu_click(argument0) {
 			update_asset_index_menu();
 			break;
 		}
-		case "add_tempo_changer": {
+		case "add_event_ins": {
 			songs[song].changed = true
-		    ds_list_add(songs[song].instrument_list, new_instrument("Tempo Changer", "", true))
+			switch (sel) {
+				case 0:
+					ds_list_add(songs[song].instrument_list, new_instrument("Tempo Changer", "", true))
+					break;
+				case 1:
+					ds_list_add(songs[song].instrument_list, new_instrument("Sound Stopper", "", true))
+					break;
+			}
 		}
 	}
 	mouse_clear(mb_left)

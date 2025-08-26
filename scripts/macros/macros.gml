@@ -1,6 +1,6 @@
 function macros() {
 #macro gm_runtime_version "2022.0.3 LTS"
-#macro version_date "2025.8.15"
+#macro version_date "2025.8.26"
 #macro version "3.12.0-dev"
 #macro is_prerelease 1 // remember to change to 0 in the release!
 #macro is_development 1 // the more frequent versions that are not on github (no auto update)
@@ -111,6 +111,7 @@ function macros() {
 #macro w_dragtab 47
 #macro w_sound_import 48
 #macro w_edit_tempo_changer 49
+#macro w_edit_sound_stopper 50
 
 #macro br "\r\n"
 

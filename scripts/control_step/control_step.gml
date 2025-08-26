@@ -248,20 +248,20 @@ function control_step() {
 		                    if (current_time - current_song.song_added[xx, b] < 1000) a = 0
 		                }
 						var insname = current_song.instrument_list[| ds_list_find_index(current_song.instrument_list, current_song.song_ins[xx, b])].name
-		                if (a) {
+						if (insname = "Tempo Changer") current_song.tempo = floor(abs(e)) / 15
+						else if (insname = "Toggle Rainbow") {rainbowtoggle = !rainbowtoggle draw_accent_init()}
+						else if (insname = "Sound Stopper") {remove_emitters_all(floor(e), panning_velocity_to_short(d, c))}
+						else if (insname = "Show Save Popup") set_msg("Song saved")
+						else if (string_count(string_lower("Change Color to #"), string_lower(insname)) = 1) {
+							draw_set_accent(real("0x" + string_copy(insname, 18, 2)), real("0x" + string_copy(insname, 20, 2)), real("0x" + string_copy(insname, 22, 2)))
+							log("Change Color to " + string_copy(insname, 18, 2) + " " + string_copy(insname, 20, 2) + " " + string_copy(insname, 22, 2))
+						}
+						else if (insname = "Toggle Background Accent") backgroundaccent = !backgroundaccent
+		                else if (a) {
 		                    if (current_song.song_ins[xx, b].loaded && c > 0 && current_song.reference_option != 1) play_sound(current_song.song_ins[xx, b], current_song.song_key[xx, b], c , d, e, b + 1)
 		                    if (current_song.song_ins[xx, b].press || isplayer) key_played[current_song.song_key[xx, b]] = current_time
 		                    current_song.song_played[xx, b] = current_time
 		                }
-						if (insname = "Tempo Changer") current_song.tempo = floor(abs(e)) / 15
-						if (insname = "Toggle Rainbow") {rainbowtoggle = !rainbowtoggle draw_accent_init()}
-						if (insname = "Sound Stopper") {remove_emitters_all(floor(e), floor(d - 100))}
-						if (insname = "Show Save Popup") set_msg("Song saved")
-						if (string_count(string_lower("Change Color to #"), string_lower(insname)) = 1) {
-							draw_set_accent(real("0x" + string_copy(insname, 18, 2)), real("0x" + string_copy(insname, 20, 2)), real("0x" + string_copy(insname, 22, 2)))
-							log("Change Color to " + string_copy(insname, 18, 2) + " " + string_copy(insname, 20, 2) + " " + string_copy(insname, 22, 2))
-						}
-						if (insname = "Toggle Background Accent") backgroundaccent = !backgroundaccent
 		            }
 		        }
 		    }

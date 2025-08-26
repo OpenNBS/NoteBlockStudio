@@ -5,13 +5,18 @@ function draw_icon_customins(xx, yy, ins, alpha, large, scale) {
 	num2 = display % 10
 	color1 = make_color_hsv((ins * 16) % 256, 192, 255)
 	color2 = make_color_hsv((ins * 16) % 256, 255, 128)
+	var insname = ""
 	if (large) {
 		if (hires && theme = 3) gpu_set_texfilter(false)
 		draw_sprite_ext(spr_instrumenticons, first_custom_index, xx, yy, 1, 1, 0, color1, alpha)
 		try {
-			if (songs[song].instrument_list[| ins + first_custom_index].name == "Tempo Changer") {
+			insname = songs[song].instrument_list[| ins + first_custom_index].name
+			if (insname == "Tempo Changer") {
 				draw_sprite_ext(spr_tempo_changer_label_mc, 0, xx + 3, yy + 3, 1, 1, 0, color2, alpha)
 				draw_sprite_ext(spr_tempo_changer_label_mc, 0, xx + 2, yy + 2, 1, 1, 0, -1, alpha)
+			} else if (insname == "Sound Stopper") {
+				draw_sprite_ext(spr_tempo_changer_label_mc, 1, xx + 3, yy + 3, 1, 1, 0, color2, alpha)
+				draw_sprite_ext(spr_tempo_changer_label_mc, 1, xx + 2, yy + 2, 1, 1, 0, -1, alpha)
 			} else {
 				draw_sprite_ext(spr_numbers_mc, num1, xx + 3, yy + 5, 1, 1, 0, color2, alpha)
 				draw_sprite_ext(spr_numbers_mc, num2, xx + 9, yy + 5, 1, 1, 0, color2, alpha)
@@ -35,9 +40,13 @@ function draw_icon_customins(xx, yy, ins, alpha, large, scale) {
 		}
 		if (hires && theme = 3) gpu_set_texfilter(false)
 		try {
-			if (songs[song].instrument_list[| ins + first_custom_index].name == "Tempo Changer") {
+			insname = songs[song].instrument_list[| ins + first_custom_index].name
+			if (insname == "Tempo Changer") {
 				draw_sprite_ext(spr_tempo_changer_label, 0, xx + 12, yy + 12, 1, 1, 0, color2, 1)
 				draw_sprite(spr_tempo_changer_label, 0, xx + 11, yy + 11)
+			} else if (insname == "Sound Stopper") {
+				draw_sprite_ext(spr_tempo_changer_label, 1, xx + 12, yy + 12, 1, 1, 0, color2, 1)
+				draw_sprite(spr_tempo_changer_label, 1, xx + 11, yy + 11)
 			} else {
 				draw_sprite_ext(spr_numbers, num1, xx + 12, yy + 13, 1, 1, 0, color2, 1)
 				draw_sprite_ext(spr_numbers, num2, xx + 16, yy + 13, 1, 1, 0, color2, 1)

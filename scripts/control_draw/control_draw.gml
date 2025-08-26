@@ -9,7 +9,7 @@ function control_draw() {
 	var tabwidth = 180
 	if (179 * array_length(songs) + 30 > rw - 14) tabwidth = (rw - 14 - 30) / array_length(songs) + 1
 	
-	var song_tab_offset = get_tab_offset()
+	song_tab_offset = get_tab_offset()
 	
 	var song_tab_texty = get_tab_texty()
 	
