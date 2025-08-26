@@ -102,8 +102,8 @@ function draw_block(argument0, argument1, argument2, argument3, argument4, argum
 				draw_text_transformed(xx + 16 - 8 * (use_icons), yy + 16, string(abs(pit)) + "-" + string(panning_velocity_to_short(pan, vel)), 0.25, 0.25, 0)
 			}
 			if (!isplayer && xx > x1 + 2 && abs(pit) <= panning_velocity_to_short(pan, vel)) {
-				if (theme = 0 || theme = 1 || (theme = 3 && !fdark)) draw_sprite_ext(spr_wall, 2, xx - 1, y1 + 2 + 32 * abs(pit), 1, 32 * (panning_velocity_to_short(pan, vel) - abs(pit) + 1), 0, -1, 1)
-				if (theme = 2 || (theme = 3 && fdark)) draw_sprite_ext(spr_wall, 3, xx - 1, y1 + 2 + 32 * abs(pit), 1, 32 * (panning_velocity_to_short(pan, vel) - abs(pit) + 1), 0, -1, 1)
+				if (theme = 0 || theme = 1 || (theme = 3 && !fdark)) draw_sprite_ext(spr_wall, 2, xx - 1, y1 + 2 + 32 * (abs(pit) - songs[song].startb), 1, 32 * (panning_velocity_to_short(pan, vel) - abs(pit) + 1), 0, -1, 1)
+				if (theme = 2 || (theme = 3 && fdark)) draw_sprite_ext(spr_wall, 3, xx - 1, y1 + 2 + 32 * (abs(pit) - songs[song].startb), 1, 32 * (panning_velocity_to_short(pan, vel) - abs(pit) + 1), 0, -1, 1)
 			}
 		} else {
 			if (!hires || obj_controller.theme != 3) {
