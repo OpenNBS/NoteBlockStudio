@@ -33,15 +33,16 @@ function draw_window_set_tempo() {
 		try {
 			songs[song].real_tempo = real(string_digits_symbol(string_replace(input, ",", "."), ".") / bpm_multiplier)
 		} catch (e) {
-			// Input is invalid, don't change the tempo!
-		} finally {
-			if (songs[song].real_tempo >= 1000) {
-				songs[song].real_tempo /= 100
-			} else if (songs[song].real_tempo >= 100) {
-				songs[song].real_tempo /= 10
-			}
-			songs[song].real_tempo = median(0.25, songs[song].real_tempo, 60)
+			songs[song].real_tempo = otempo
 		}
+		
+		if (songs[song].real_tempo >= 1000) {
+			songs[song].real_tempo /= 100
+		} else if (songs[song].real_tempo >= 100) {
+			songs[song].real_tempo /= 10
+		}
+		songs[song].real_tempo = median(0.25, songs[song].real_tempo, 60)
+			
 		if (songs[song].real_tempo != otempo) {
 			changed = 1
 		}
