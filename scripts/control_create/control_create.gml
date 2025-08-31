@@ -383,6 +383,9 @@ function control_create() {
 	select_pressb = -1
 
 	selection_copied = ""
+	copied_arrayheight = 0
+	copied_arraylength = 0
+	clipboard = ""
 	
 	tempo_changer_sel_x = -1
 	tempo_changer_sel_y = -1
