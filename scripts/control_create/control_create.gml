@@ -308,7 +308,7 @@ function control_create() {
 	songs = []
 	array_push(songs, create(obj_song))
 	song = 0
-	for (a = 0; a < 11; a += 1) {
+	for (a = 0; a < first_custom_index; a += 1) {
 	    mididevice_instrument[a] = -3
 	    recent_song[a] = ""
 	    recent_song_time[a] = 0
