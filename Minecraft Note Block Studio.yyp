@@ -446,6 +446,7 @@
     {"id":{"name":"selection_changeins","path":"scripts/selection_changeins/selection_changeins.yy",},"order":6,},
     {"id":{"name":"selection_changekey","path":"scripts/selection_changekey/selection_changekey.yy",},"order":7,},
     {"id":{"name":"update_window_scale","path":"scripts/update_window_scale/update_window_scale.yy",},"order":45,},
+    {"id":{"name":"macos_is_retina","path":"scripts/macos_is_retina/macos_is_retina.yy",},"order":21,},
     {"id":{"name":"selection_changevel","path":"scripts/selection_changevel/selection_changevel.yy",},"order":8,},
     {"id":{"name":"selection_changepan","path":"scripts/selection_changepan/selection_changepan.yy",},"order":9,},
     {"id":{"name":"obj_removeeff","path":"objects/obj_removeeff/obj_removeeff.yy",},"order":8,},

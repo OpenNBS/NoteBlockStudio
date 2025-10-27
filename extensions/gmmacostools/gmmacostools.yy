@@ -10,7 +10,7 @@
   "packageId": "",
   "productId": "",
   "author": "",
-  "date": "2025-08-04T17:13:55.543241+08:00",
+  "date": "2025-08-04T04:13:55.543241-05:00",
   "license": "",
   "description": "",
   "helpfile": "",

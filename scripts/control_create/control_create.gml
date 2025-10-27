@@ -628,9 +628,17 @@ function control_create() {
 	}
 	if (show_welcome) window = w_greeting
 	draw_accent_init()
-	if (isplayer) window_set_size(floor(800 * window_scale), floor(500 * window_scale))
-	window_set_min_width(800 * window_scale)
-	window_set_min_height(500 * window_scale)
+	if (isplayer) {
+		if (os_type != os_macosx) window_set_size(floor(800 * window_scale), floor(500 * window_scale))
+		else window_setnormal()
+	}
+	if (!macos_is_retina()) {
+		window_set_min_width(800 * window_scale)
+		window_set_min_height(500 * window_scale)
+	} else {
+		window_set_min_width(800 * window_scale / 2)
+		window_set_min_height(500 * window_scale / 2)
+	}
 	if ((theme = 3 && fdark) || theme = 2) window_set_darkmode()
 	if (keynames_flat) keynames = ["A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"]
 	
@@ -722,7 +730,8 @@ function control_create() {
 			}
 		} else {
 			isplayer = 1
-			window_set_size(floor(800 * window_scale), floor(500 * window_scale))
+			if (os_type != os_macosx) window_set_size(floor(800 * window_scale), floor(500 * window_scale))
+			else window_setnormal()
 			protocol_data = temp_url
 		}
 	}
