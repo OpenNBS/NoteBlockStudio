@@ -9,7 +9,6 @@ function midi_add_note(argument0, argument1, argument2, argument3, argument4) {
 
 	n = midi_trackamount[track]
 	if (n = 31999) return 0
-	if (channel = 9 && (note < 24 || note > 84)) return 0
 
 	if (pos < midi_minpos || midi_minpos = -1) midi_minpos = pos
 	midi_maxpos = max(midi_maxpos, pos)
