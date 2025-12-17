@@ -99,7 +99,7 @@ function save_settings() {
 	    ini_write_real_clean("midi_import", "ins_" + string(a) + "_oct", midi_ins[a, 2]) // Octave
 	}
 	// drums
-	for (a = 24; a < 88; a += 1) {
+	for (a = 0; a < 128; a += 1) {
 	    ini_write_real_clean("midi_import", "drum_" + string(a),          midi_drum[a, 1]) // Instrument
 	    ini_write_real_clean("midi_import", "drum_" + string(a) + "_key", midi_drum[a, 2]) // Key
 	}

@@ -105,7 +105,7 @@ function load_settings() {
 	      midi_ins[a, 2] = -1
 	}
 	// drums
-	for (a = 24; a < 88; a += 1) {
+	for (a = 0; a < 128; a += 1) {
 	    midi_drum[a, 1] = ini_read_real(  "midi_import", "drum_" + string(a),          midi_drum[a, 1]) // Instrument
 	   if (midi_drum[a, 1] = 255) // -1
 	      midi_drum[a, 1] = -1
