@@ -139,7 +139,7 @@ function midi_instruments() {
 	midi_ins[a, 0] = "Viola" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	midi_ins[a, 0] = "Cello" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
+	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	midi_ins[a, 0] = "Contrabass" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
 	midi_ins[a, 0] = "Tremolo Strings" midi_ins[a, 3] = "Tremolo Str."
