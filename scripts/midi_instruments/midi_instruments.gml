@@ -31,9 +31,9 @@ function midi_instruments() {
 	2 = octave difference
 	   0  Harp                        | 0   | 47 Orchestral Harp
 	   1  Bass (String Bass)          | +2  | 33 Acoustic Bass
-	   2  Bass Drum (Kick)            | *0* | *117*
-	   3  Snare Drum                  | *0* | *118*
-	   4  Clicks and Sticks (Hi-hat)  | *0* | *116*
+	   2  Bass Drum (Kick)            | *0* | *117 Taiko Drum*
+	   3  Snare Drum                  | *0* | *118 Melodic Tom*
+	   4  Clicks and Sticks (Hi-hat)  | *0* | *116 Woodblock*
 	   5  Guitar                      | +1  | 25 Acoustic Guitar (nylon)
 	   6  Flute                       | -1  | 74 Flute
 	   7  Bells (Glockenspiel)        | -2  | 10 Glockenspiel
