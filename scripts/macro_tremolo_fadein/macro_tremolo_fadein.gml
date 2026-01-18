@@ -88,6 +88,7 @@ function macro_tremolo_fadein() {
 	selection_delete(true)
 	selection_load_from_array(sel_x, sel_y, arr_data)
 	history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
+	songs[song].changed = 1
 	if(!keyboard_check(vk_alt)) selection_place(false)
 
 

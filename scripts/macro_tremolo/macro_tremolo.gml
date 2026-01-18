@@ -53,6 +53,7 @@ function macro_tremolo() {
 	selection_delete(true)
 	selection_load_from_array(songs[song].selection_x, songs[song].selection_y, arr_data)
 	history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, try_compress_selection(songs[song].selection_code), songs[song].selection_x, songs[song].selection_y, try_compress_selection(str))
+	songs[song].changed = 1
 	if(!keyboard_check(vk_alt)) selection_place(false)
 
 

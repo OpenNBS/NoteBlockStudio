@@ -7,5 +7,6 @@ function macro_replacekey() {
 	var arr_data = selection_to_array_ext()
 	key = arr_data[3]
 	selection_change(m_key, key, false)
+	songs[song].changed = 1
 	if(!keyboard_check(vk_alt)) selection_place(false)
 }

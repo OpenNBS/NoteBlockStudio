@@ -91,6 +91,7 @@ function draw_window_macro_stagger() {
 		selection_delete(true)
 		selection_load_from_array(sel_x, sel_y, arr_data)
 		history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
+		songs[song].changed = 1
 		if(!keyboard_check(vk_alt)) selection_place(false)
 	}
 	if (draw_button2(x1 + 75, y1 + 128, 60, condstr(language != 1, "Cancel", "取消")) && (windowopen = 1 || theme != 3)) {windowclose = 1}

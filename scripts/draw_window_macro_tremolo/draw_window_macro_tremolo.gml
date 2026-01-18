@@ -70,6 +70,7 @@ function draw_window_macro_tremolo() {
 		if tremolotype = 0 macro_tremolo()
 		else if tremolotype = 1 macro_tremolo_fadein()
 		else if tremolotype = 2 macro_tremolo_fadeout()
+		songs[song].changed = 1
 		windowalpha = 0
 		windowclose = 0
 		windowopen = 0

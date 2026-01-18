@@ -34,6 +34,7 @@ function draw_window_macro_setpanning() {
 		windowopen = 0
 		window = 0
 		selection_change(m_pan, setpan + 100, false)
+		songs[song].changed = 1
 		if(!keyboard_check(vk_alt)) selection_place(false)
 	}
 	if (draw_button2(x1 + 70, y1 + 98, 60, condstr(language !=1, "Cancel", "取消")) && (windowopen = 1 || theme != 3)) {windowclose = 1}

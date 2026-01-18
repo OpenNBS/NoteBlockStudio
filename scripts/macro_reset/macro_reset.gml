@@ -15,5 +15,6 @@ function macro_reset() {
 	}
 	selection_code_update()
 	history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
+	songs[song].changed = 1
 	if(!keyboard_check(vk_alt)) selection_place(false)
 }
