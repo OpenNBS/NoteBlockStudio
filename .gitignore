@@ -6,6 +6,8 @@
 /shaders/__ba_sh_downscale/
 /scripts/blur_scripts/
 /scripts/__blur_area_functions/
+/extensions/pygml/ffmpeg
+/extensions/pygml/ffprobe
 /__MACOSX/shaders/sh_blur_realtime/
 /__MACOSX/shaders/sh_blur_static/
 /__MACOSX/shaders/__ba_sh_blur_baked/
