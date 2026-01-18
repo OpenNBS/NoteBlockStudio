@@ -111,9 +111,12 @@ function draw_window_sound_import() {
 		// Get button
 		x1 = startx + width - 72 - 20;
 		if (draw_button2(x1, y1, 72, ((language == 0) ? "Get" : "获取"), (sound_import_download_toggle && sound_import_status == 1), true)) {
-			sound_import_download_stage = 1
-			sound_import_download_status = http_get("https://launchermeta.mojang.com/mc/game/version_manifest.json")
-			sound_import_download_files_index = 0
+			if (question(((language == 0) ? "By pressing \"Yes\", you agree to the Minecraft EULA and the Microsoft Service Agreement:\nhttps://www.minecraft.net/eula\nhttps://www.microsoft.com/en-us/servicesagreement" : 
+			                                "如果你选择“是”，即代表你同意 Minecraft EULA 及 Microsoft 服务协议：\nhttps://www.minecraft.net/zh-hans/eula\nhttps://www.microsoft.com/zh-cn/servicesagreement"), ((language == 0) ? "Import sounds" : "导入音效"))) {
+				sound_import_download_stage = 1
+				sound_import_download_status = http_get("https://launchermeta.mojang.com/mc/game/version_manifest.json")
+				sound_import_download_files_index = 0
+			}
 		}
 		y1 += 28;
 		y1 += 4
