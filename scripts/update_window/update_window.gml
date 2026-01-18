@@ -12,7 +12,7 @@ function update_window() {
 	    xx = window_get_x()
 	    yy = window_get_y()
 	    display_reset(0, false)
-	    if (!macos_is_retina()) window_set_rectangle(xx, yy, ww, hh)
+	    if (!macos_is_retina() || (os_type = os_macosx && !NOT_RUN_FROM_IDE)) window_set_rectangle(xx, yy, ww, hh)
 	    else window_set_rectangle(xx, yy, ww / 2, hh / 2)
 		show_debug_message("Set window size to " + string(ww) + " x " + string(hh))
 	    surface_resize(application_surface, ww, hh)
