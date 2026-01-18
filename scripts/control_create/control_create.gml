@@ -507,6 +507,7 @@ function control_create() {
 	dropmode = 0
 	dropalpha = 1
 	dropalphawait = 0
+	autoplay = 1
 	draw_set_circle_precision(64);
 	macos_menu_last_refresh = -1
 	unsaved_status = 0

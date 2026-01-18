@@ -52,6 +52,7 @@ function save_settings() {
 	ini_write_real_clean("preferences", "show_layer_volumes", realvolume)
 	ini_write_real_clean("preferences", "use_stereo",         realstereo)
 	//ini_write_real_clean("preferences", "loop_to_bar_end",    looptobarend)
+	ini_write_real_clean("preferences", "autoplay",           autoplay)
 	ini_write_real_clean("preferences", "show_soundcount",    show_soundcount)
 	ini_write_real_clean("preferences", "use_bpm",            use_bpm)
 	ini_write_real_clean("preferences", "save_version",       save_version)

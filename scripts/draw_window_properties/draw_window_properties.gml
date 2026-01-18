@@ -1,7 +1,7 @@
 function draw_window_properties() {
 	// draw_window_properties()
 	
-	if (window != prevwindow) {
+	if (window != prevwindow || loopend = 0) {
 		// Initialize loop end to current last tick of the song
 		songs[song].loopend = songs[song].enda + 1
 	}
@@ -100,7 +100,7 @@ function draw_window_properties() {
 	} else {
 		draw_text_dynamic(x1 + 340, y1 + 325, cursong.loopend)
 	}
-	if (cursong.loopend != cursong.enda + 1) {
+	if (cursong.loop && cursong.loopend > cursong.enda + 1) {
 		draw_set_color(c_orange)
 		draw_theme_font(font_small_bold)
 		draw_text_dynamic(x1 + 25, y1 + 390, "[!]")
