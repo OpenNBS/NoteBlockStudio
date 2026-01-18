@@ -1,5 +1,5 @@
 function block_other_track(x, y, z, id, data){
-	var insnum = ds_list_size(instrument_list)
+	var insnum = ds_list_size(obj_controller.songs[obj_controller.song].instrument_list)
 	if (id = 0) TAG_Int("state", insnum * 26 + 4) //air
 	else if (id = 35 && data = 11) TAG_Int("state", insnum * 26 + 3) //blue_wool
 	else if (id = 65) TAG_Int("state", insnum * 26 + 5) //ladder

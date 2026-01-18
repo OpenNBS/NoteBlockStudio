@@ -1,7 +1,7 @@
 function draw_window_macro_tremolo() {
 	// draw_window_macro_tremolo()
 	var x1, y1;
-	if (selected == 0) {
+	if (songs[song].selected == 0) {
 		window = 0
 		return 0
 	}

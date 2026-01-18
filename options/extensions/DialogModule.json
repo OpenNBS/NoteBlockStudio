@@ -1,0 +1,9 @@
+{
+  "extensionId": {
+    "name": "DialogModule",
+    "path": "extensions/DialogModule/DialogModule.yy"
+  },
+  "resourceVersion": "1.0",
+  "resourceType": "GMExtensionConfigSet",
+  "configurables": null
+}

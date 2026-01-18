@@ -12,8 +12,8 @@ function draw_window_mididevices() {
 	if (language != 1) draw_text_dynamic(x1 + 8, y1 + 8, "MIDI device manager")
 	else draw_text_dynamic(x1 + 8, y1 + 8, "MIDI 设备管理器")
 	draw_theme_font(font_main)
-	if (language != 1) draw_text_dynamic(x1 + 12, y1 + 32, "Here you can see the MIDI devices connected via USB.\nMore than one device can be connected at the same time.")
-	else draw_text_dynamic(x1 + 12, y1 + 32, "你可以查看通过 USB 连接的 MIDI 设备。可以同时连接多个设备。")
+	if (language != 1) draw_text_dynamic(x1 + 12, y1 + 32, "Here you can see and select the MIDI devices connected via USB.")
+	else draw_text_dynamic(x1 + 12, y1 + 32, "你可以查看和选择通过 USB 连接的 MIDI 设备。")
 	draw_set_color(c_white)
 	if(theme = 2) draw_set_color(c_dark)
 	if (fdark && theme = 3) draw_set_color(2829099)
@@ -36,6 +36,7 @@ function draw_window_mididevices() {
 	draw_text_dynamic(x1 + 18, y1 + 70, "Name")
 
 	if (draw_button2(x1 + 408, y1 + 318, 80, "OK") && wmenu = 0 && (windowopen = 1 || theme != 3)) windowclose = 1
+	if (draw_button2(x1 + 12, y1 + 318, 80, "Refresh") && wmenu = 0 && (windowopen = 1 || theme != 3)) midi_refresh_device()
 	} else {
 	draw_window(x1 + 13 + 250 + 75, y1 + 67, x1 + 14 + 250 + 75 + 64 + 85 + 1, y1 + 67 + 20, 1) 
 	popup_set_window(x1 + 13 + 250 + 75, y1 + 67, 64 + 85, 20, "为该 MIDI 设备指定的音色。")
@@ -46,15 +47,16 @@ function draw_window_mididevices() {
 	draw_text_dynamic(x1 + 18, y1 + 70, "名称")
 
 	if (draw_button2(x1 + 408, y1 + 318, 80, "确定") && wmenu = 0 && (windowopen = 1 || theme != 3)) windowclose = 1
+	if (draw_button2(x1 + 12, y1 + 318, 80, "刷新设备") && wmenu = 0 && (windowopen = 1 || theme != 3)) midi_refresh_device()
 	}
 
 	// Instruments
 	for (a = 0; a < 11; a += 1) {
-	    if (a >= midi_input_devices()) break
+	    if (a >= midi_devices) break
 	    draw_set_color(12632256)
 	    draw_line(x1 + 14, y1 + 106 + 20 * a, x1 + 14 + 250 + 75 + 64 + 85, y1 + 106 + 20 * a)
 	    draw_theme_color()
-	    draw_text_dynamic(x1 + 18, y1 + 90 + 20 * a, midi_input_device_name(a))
+	    draw_text_dynamic(x1 + 18, y1 + 90 + 20 * a, midi_device_names[a])
 	    var insname;
 		if (language != 1) {
 	    if (mididevice_instrument[a] = -3) insname = "Disable device"
@@ -72,8 +74,8 @@ function draw_window_mididevices() {
 	        var inslist, menu;
 	        inslist = check(mididevice_instrument[a] = -3) + "Disable device|" + check(mididevice_instrument[a] = -2) + "None|" + check(mididevice_instrument[a] = -1) + "Use selected|-|"
 	        if (language = 1) inslist = check(mididevice_instrument[a] = -3) + "禁用设备|" + check(mididevice_instrument[a] = -2) + "无|" + check(mididevice_instrument[a] = -1) + "使用选择的|-|"
-	        for (b = 0; b < ds_list_size(instrument_list); b += 1) {
-	            var ins = instrument_list[| b];
+	        for (b = 0; b < ds_list_size(songs[song].instrument_list); b += 1) {
+	            var ins = songs[song].instrument_list[| b];
 	            if (b = first_custom_index) inslist += "-|"
 	            inslist += check(mididevice_instrument[a] = ins) + clean(ins.name) +"|"
 	        }

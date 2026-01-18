@@ -1,18 +1,18 @@
 function update_songsize() {
 	// update_songsize()
 	var xx, yy;
-	xx = enda
-	yy = endb
-	if (colamount[xx] = 0) {
+	xx = songs[song].enda
+	yy = songs[song].endb
+	if (songs[song].colamount[xx] = 0) {
 	    for (a = xx; a >= 0; a -= 1) {
-	        enda = a
-	        if (colamount[a] > 0) break
+	        songs[song].enda = a
+	        if (songs[song].colamount[a] > 0) break
 	    }
 	}
-	if (rowamount[yy] = 0) {
+	if (songs[song].rowamount[yy] = 0) {
 	    for (b = yy; b >= 0; b -= 1) {
-	        endb = b
-	        if (rowamount[b] > 0) break
+	        songs[song].endb = b
+	        if (songs[song].rowamount[b] > 0) break
 	    }
 	}
 

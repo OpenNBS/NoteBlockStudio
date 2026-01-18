@@ -2,9 +2,11 @@ function schematic_export() {
 	// schematic_export()
 	var fn, a, b, c, d, p, xx, yy, zz, len, wid, hei, o, chestx, chesty, chestz, signx, signy, signz, nblocks, layers, cyy, y1, insnum, ins;
 	var REPEATER, TORCHON, TORCHOFF, WIRE, LADDER, RAIL, POWEREDRAIL, noteblocks, noteblockx, noteblocky, noteblockz, noteblocknote, noteblockins, noteblockpit;
-	if (!structure) fn = string(get_save_filename_ext("Minecraft Schematics (*.schematic)|*.schematic", filename_new_ext(filename, "") + ".schematic", "", "Export Schematic"))
-	else fn = string(get_save_filename_ext("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(filename), " ", "_"), "") + ".nbt", "", "Export Schematic"))
+	if (!structure) fn = string(get_save_filename_ext("Minecraft Schematics (*.schematic)|*.schematic", filename_new_ext(songs[song].filename, "") + ".schematic", "", "Export Schematic"))
+	else fn = string(get_save_filename_ext("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(songs[song].filename), " ", "_"), "") + ".nbt", "", "Export Schematic"))
 	if (fn = "") return 0
+	if (!structure) fn = enforce_extension(fn, ".schematic")
+	else fn = enforce_extension(fn, ".nbt")
 	//fn = string_replace_all(fn, ".schematic", "")
 	//fn += ".schematic"
 	o = obj_controller
@@ -41,7 +43,7 @@ function schematic_export() {
 		for (var a = 0; a < 240; a++) {
 			ins[16 + a] = "harp"
 		}
-		instrument_list = o.instrument_list
+		instrument_list = o.songs[o.song].instrument_list
 	    layers = ceil(o.sch_exp_maxheight[o.sch_exp_compress] / 4)
 	    block_walkway_block = o.sch_exp_walkway_block
 	    block_walkway_data = o.sch_exp_walkway_data
@@ -193,18 +195,18 @@ function schematic_export() {
 	        lturnx = -1
 	        lturny = -1
 	        lturndel = 0
-	        for (a = 0; a <= o.enda; a += 1) {
+	        for (a = 0; a <= o.songs[o.song].enda; a += 1) {
 	            nblocks = 0
 	            rep += 1
 	            if (o.sch_exp_tempo = 1) rep += 1
 	            if (o.sch_exp_tempo = 2) rep += 3
-	            if (o.colamount[a] > 0) { // Calculate note blocks for this tick
-	                for (b = 0; b <= o.collast[a]; b += 1) {
-	                    if (o.song_exists[a, b] && (o.lockedlayer[b] = 0 || o.sch_exp_includelocked)) {
-	                        if ((o.song_key[a, b] > 32 && o.song_key[a, b] < 58) || (o.structure && o.command_block && o.song_key[a, b] >= 9 && o.song_key[a, b] <= 81)) {
-	                            nblockins[nblocks] = ds_list_find_index(other.instrument_list, o.song_ins[a, b])
-	                            nblockkey[nblocks] = o.song_key[a, b]
-	                            nblockpit[nblocks] = o.song_pit[a, b]
+	            if (o.songs[o.song].colamount[a] > 0) { // Calculate note blocks for this tick
+	                for (b = 0; b <= o.songs[o.song].collast[a]; b += 1) {
+	                    if (o.songs[o.song].song_exists[a, b] && (o.lockedlayer[b] = 0 || o.sch_exp_includelocked)) {
+	                        if ((o.songs[o.song].song_key[a, b] > 32 && o.songs[o.song].song_key[a, b] < 58) || (o.structure && o.command_block && o.songs[o.song].song_key[a, b] >= 9 && o.songs[o.song].song_key[a, b] <= 81)) {
+	                            nblockins[nblocks] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b])
+	                            nblockkey[nblocks] = o.songs[o.song].song_key[a, b]
+	                            nblockpit[nblocks] = o.songs[o.song].song_pit[a, b]
 	                            nblocks += 1
 	                        } else if (!o.sch_exp_compress) {
 	                            nblockins[nblocks] = -1
@@ -323,7 +325,7 @@ function schematic_export() {
 	                    if (dir = 1) turn = (yy >= wid - 3)
 	                    if (dir = -1) turn = (yy <= 2)
 	                }
-	                if (a = o.enda) turn = 0
+	                if (a = o.songs[o.song].enda) turn = 0
 	                if (turn) {
 	                    for (b = 0; b < layers; b += 1) { // Connect to new row
 	                        block_other(xx, yy, b * 3 + 1, WIRE, 0)
@@ -340,7 +342,7 @@ function schematic_export() {
 	                    if (circ = -1 && dir = 1) {
 	                        lturnx = xx
 	                        lturny = yy - 1
-	                        lturndel = (o.enda - a) - 8
+	                        lturndel = (o.songs[o.song].enda - a) - 8
 	                    }
 	                    xx += 3 * circ
 	                    if (xx <= 0) break
@@ -460,18 +462,18 @@ function schematic_export() {
 	        var rep, dir, nblocks, nblockins, nblockkey, nblockpit, turn;
 	        rep = 0
 	        dir = -1 // 1 or -1
-	        for (a = 0; a <= o.enda; a += 1) {
+	        for (a = 0; a <= o.songs[o.song].enda; a += 1) {
 	            nblocks = 0
 	            rep += 1
 	            if (o.sch_exp_tempo = 1) rep += 1
 	            if (o.sch_exp_tempo = 2) rep += 3
-	            if (o.colamount[a] > 0) { // Calculate note blocks for this tick
-	                for (b = 0; b <= o.collast[a]; b += 1) {
-	                    if (o.song_exists[a, b] && (o.lockedlayer[b] = 0 || o.sch_exp_includelocked)) {
-	                        if ((o.song_key[a, b] > 32 && o.song_key[a, b] < 58) || (o.structure && o.command_block && o.song_key[a, b] >= 9 && o.song_key[a, b] <= 81)) {
-	                            nblockins[nblocks] = ds_list_find_index(other.instrument_list, o.song_ins[a, b])
-	                            nblockkey[nblocks] = o.song_key[a, b]
-	                            nblockpit[nblocks] = o.song_pit[a, b]
+	            if (o.songs[o.song].colamount[a] > 0) { // Calculate note blocks for this tick
+	                for (b = 0; b <= o.songs[o.song].collast[a]; b += 1) {
+	                    if (o.songs[o.song].song_exists[a, b] && (o.lockedlayer[b] = 0 || o.sch_exp_includelocked)) {
+	                        if ((o.songs[o.song].song_key[a, b] > 32 && o.songs[o.song].song_key[a, b] < 58) || (o.structure && o.command_block && o.songs[o.song].song_key[a, b] >= 9 && o.songs[o.song].song_key[a, b] <= 81)) {
+	                            nblockins[nblocks] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b])
+	                            nblockkey[nblocks] = o.songs[o.song].song_key[a, b]
+	                            nblockpit[nblocks] = o.songs[o.song].song_pit[a, b]
 	                            nblocks += 1
 	                        } else if (!o.sch_exp_compress) {
 	                            nblockins[nblocks] = -1
@@ -562,7 +564,7 @@ function schematic_export() {
 	                turn = 0
 	                if (dir = 1) turn = (yy >= wid - 4)
 	                if (dir = -1) turn = (yy <= 2)
-	                if (a = o.enda) turn = 0
+	                if (a = o.songs[o.song].enda) turn = 0
 	                if (turn) {
 	                    for (b = 0; b < layers; b += 1) { // Connect to new row
 	                        block_other(xx, yy, b * 3 + 1, WIRE, 0)
@@ -625,13 +627,13 @@ function schematic_export() {
 	        if (o.sch_exp_minecraft_old) {
 	            TAG_String("Text1", "Song generated")
 	            TAG_String("Text2", "by the")
-	            TAG_String("Text3", "Minecraft Note")
-	            TAG_String("Text4", "Block Studio")
+	            TAG_String("Text3", "Note Block")
+	            TAG_String("Text4", "Studio")
 	        } else {
 	            TAG_String("Text1", "{\"text\": \"Song generated\"}")
 	            TAG_String("Text2", "{\"text\": \"by the\"}")
-	            TAG_String("Text3", "{\"text\": \"Minecraft Note\"}")
-	            TAG_String("Text4", "{\"text\": \"Block Studio\"}")
+	            TAG_String("Text3", "{\"text\": \"Note Block\"}")
+	            TAG_String("Text4", "{\"text\": \"Studio\"}")
 	        }
 	        TAG_End()
 	        if (sch_loop) {
@@ -920,8 +922,8 @@ function schematic_export() {
 				TAG_String("id", "minecraft:sign")
 	            TAG_String("Text1", "{\"text\": \"Song generated\"}")
 	            TAG_String("Text2", "{\"text\": \"by the\"}")
-	            TAG_String("Text3", "{\"text\": \"Minecraft Note\"}")
-	            TAG_String("Text4", "{\"text\": \"Block Studio\"}")
+	            TAG_String("Text3", "{\"text\": \"Note Block\"}")
+	            TAG_String("Text4", "{\"text\": \"Studio\"}")
 				TAG_End()
 			TAG_List("pos", 3, 3)
 				buffer_write_int_be(wid - 1 - signy)

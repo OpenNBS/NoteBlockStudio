@@ -51,6 +51,8 @@ function draw_windows() {
 	    case w_setaccent: draw_window_set_accent() break
 	    case w_track_export: draw_window_track_export() break
 		case w_sound_import: draw_window_sound_import() break
+		case w_edit_tempo_changer: draw_window_edit_tempo_changer() break
+		case w_edit_sound_stopper: draw_window_edit_sound_stopper() break
 	}
 	draw_set_alpha(1)
 }

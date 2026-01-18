@@ -6,7 +6,7 @@ function download_song_from_url() {
 
 	if (async_load[? "id"] == song_download_data) {
 		var status = async_load[? "status"];
-		show_debug_message("Status: " + string(status));
+		log("Status: " + string(status));
 		
 	    if (status == 1) { // Downloading, if multiple packets are returned. The status may never be 1 if the server responds immediately
 			song_downloaded_size = async_load[? "sizeDownloaded"];
@@ -21,7 +21,7 @@ function download_song_from_url() {
 			}
 		} else if (status == 0) {
 			// Download was interrupted, may have been successful or not (if connection was interrupted)
-			show_debug_message("Download interrupted; may have been successful our not");
+			log("Download interrupted; may have been successful our not");
 			song_download_data = -1;
 			song_download_status = 2;
 			
@@ -37,21 +37,21 @@ function download_song_from_url() {
 				contentType = headers[? "Content-Type"];
 			}
 			var writtenFileSize = file_get_size(song_download_file);
-			show_debug_message("Written file size: " + string(writtenFileSize));
+			log("Written file size: " + string(writtenFileSize));
 			
 			// Check mimetype to see if response is a valid file
 			var invalid_type = false;
 			if (!is_undefined(contentType)) {
 				if !(contentType == "application/zip" || contentType == "application/octet-stream") {
 					invalid_type = true
-					show_debug_message("Invalid file type");
+					log("Invalid file type");
 				}
 			}
 			
 			// Read file name from Content-Disposition header, if present
 			var override_fn = "";
 			if (!is_undefined(contentDisposition) && string_count("attachment; filename=", contentDisposition) > 0) { // attachment; filename="<song.nbs>"
-				show_debug_message("Content-Disposition: " + contentDisposition)
+				log("Content-Disposition: " + contentDisposition)
 				
 				var firstQuotePos = string_pos("\"", contentDisposition) + 1;
 				var lastQuotePos = string_last_pos("\"", contentDisposition);
@@ -59,23 +59,23 @@ function download_song_from_url() {
 			}
 			
 			if (!invalid_type && contentLength > 0 && writtenFileSize == contentLength) {
-				show_debug_message("Download complete!");
+				log("Download complete!");
 				song_downloaded_size = song_total_size; // prevent freezing under 100%
-				show_debug_message(override_fn);
+				log(override_fn);
 				load_song(song_download_file, true); // load as backup file (keep unsaved, don't add to recent etc.)
 				if (autoplay) {
 					window = 0
 					playing = 1
 				}
 				if (override_fn != "") {
-					song_download_display_name = filename_change_ext(override_fn, ""); // override title bar display name
+					songs[song].song_download_display_name = filename_change_ext(override_fn, ""); // override title bar display name
 				}
 				files_delete_lib(song_download_file);
 			} else {
 				if (language != 1) {
-					show_message("The song could not be downloaded! Please try again with a different song.");
+					message("The song could not be downloaded! Please try again with a different song.", "Note Block Studio");
 				} else {
-					show_message("歌曲下载失败！请更换歌曲重试。");
+					message("歌曲下载失败！请更换歌曲重试。", "Note Block Studio");
 				}
 				game_end();
 			}

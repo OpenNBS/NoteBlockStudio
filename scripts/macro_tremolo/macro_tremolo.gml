@@ -1,8 +1,8 @@
 function macro_tremolo() {
 	// macro_tremolo()
 	var k, l, d, c, e, str, total_vals, total_cols, val, replength, colcount;
-	if (selected = 0) return 0
-	str = selection_code
+	if (songs[song].selected = 0) return 0
+	str = songs[song].selection_code
 	var arr_temp = selection_to_array_ext()
 	total_vals = array_length(arr_temp)
 	//show_debug_message("total vals is "+string(total_vals))
@@ -48,11 +48,11 @@ function macro_tremolo() {
 	}
 	arr_data[0] = 0
 	//show_debug_message("Out of loop. arr_data has been changed to " + string(array_to_selection(arr_data, c)))
-	var sel_x = selection_x
-	var sel_y = selection_y
+	var sel_x = songs[song].selection_x
+	var sel_y = songs[song].selection_y
 	selection_delete(true)
-	selection_load_from_array(selection_x, selection_y, arr_data)
-	history_set(h_selectchange, selection_x, selection_y, try_compress_selection(selection_code), selection_x, selection_y, try_compress_selection(str))
+	selection_load_from_array(songs[song].selection_x, songs[song].selection_y, arr_data)
+	history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, try_compress_selection(songs[song].selection_code), songs[song].selection_x, songs[song].selection_y, try_compress_selection(str))
 	if(!keyboard_check(vk_alt)) selection_place(false)
 
 

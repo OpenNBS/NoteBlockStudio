@@ -8,37 +8,37 @@ function selection_delete(argument0) {
 		totalcols = floor(rw / 32) + 1
 	}
 	totalrows = floor((rh - rhval) / 32)
-	changed = 1
-	if (selected = 0) return 0
-	for (a = 0; a < selection_l; a += 1) {
-	    if (selection_colfirst[a] > -1) {
-	        for (b = selection_colfirst[a]; b <= selection_collast[a]; b += 1) {
-	            if (selection_exists[a, b]) {
-	                selection_exists[a, b] = 0
-	                selection_ins[a, b] = 0
-	                selection_key[a, b] = 0
-	                selection_vel[a, b] = 0
-	                selection_pan[a, b] = 0
-	                selection_pit[a, b] = 0
-	                selection_played[a, b] = 0
-					if (theme = 3 && remove_effect && selection_x + a >= starta && selection_x + a < starta + totalcols && selection_y + b >= startb && selection_y + b < startb + totalrows) {
+	songs[song].changed = 1
+	if (songs[song].selected = 0) return 0
+	for (a = 0; a < songs[song].selection_l; a += 1) {
+	    if (songs[song].selection_colfirst[a] > -1) {
+	        for (b = songs[song].selection_colfirst[a]; b <= songs[song].selection_collast[a]; b += 1) {
+	            if (songs[song].selection_exists[a, b]) {
+	                songs[song].selection_exists[a, b] = 0
+	                songs[song].selection_ins[a, b] = 0
+	                songs[song].selection_key[a, b] = 0
+	                songs[song].selection_vel[a, b] = 0
+	                songs[song].selection_pan[a, b] = 0
+	                songs[song].selection_pit[a, b] = 0
+	                songs[song].selection_played[a, b] = 0
+					if (theme = 3 && remove_effect && songs[song].selection_x + a >= songs[song].starta && songs[song].selection_x + a < songs[song].starta + totalcols && songs[song].selection_y + b >= songs[song].startb && songs[song].selection_y + b < songs[song].startb + totalrows) {
 						ani = create(obj_removeeff)
-						ani.xn = selection_x + a - starta
-						ani.yn = selection_y + b - startb
+						ani.xn = songs[song].selection_x + a - songs[song].starta
+						ani.yn = songs[song].selection_y + b - songs[song].startb
 					}
 	            }
 	        }
-	        selection_colfirst[a] = -1
-	        selection_collast[a] = -1
+	        songs[song].selection_colfirst[a] = -1
+	        songs[song].selection_collast[a] = -1
 	    }
 	}
-	selected = 0
-	if (!argument0) history_set(h_selectchange, 0, 0, "", selection_x, selection_y, selection_code)
-	selection_code = ""
-	selection_x = 0
-	selection_y = 0
-	selection_l = 0
-	selection_h = 0
+	songs[song].selected = 0
+	if (!argument0) history_set(h_selectchange, 0, 0, "", songs[song].selection_x, songs[song].selection_y, songs[song].selection_code)
+	songs[song].selection_code = ""
+	songs[song].selection_x = 0
+	songs[song].selection_y = 0
+	songs[song].selection_l = 0
+	songs[song].selection_h = 0
 	update_songsize()
 
 

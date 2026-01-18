@@ -1,5 +1,5 @@
 function block_repeater_track(x, y, z, delay, direction, powered){
-	var insnum = ds_list_size(instrument_list)
+	var insnum = ds_list_size(obj_controller.songs[obj_controller.song].instrument_list)
 	var dir
 	if (direction = 1) {
 		if (delay = 0) dir = 11

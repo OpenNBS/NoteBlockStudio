@@ -4,6 +4,7 @@ function midi_instruments() {
 	// https://jazz-soft.net/demo/GeneralMidi.html
 	// https://minecraft.wiki/w/Note_Block#Instruments
 	// https://openmidiproject.opal.ne.jp/documentations_en.html
+	// Mapping contributed by u3002 (v2025-12-16)
 	// https://gist.github.com/u3002/cf4daa83bc82b5917fc86fb23815578a
 	var a;
 	a = 0
@@ -28,22 +29,22 @@ function midi_instruments() {
 	   14 = Banjo
 	   15 = Pling
 	2 = octave difference
-	   0  0  Harp
-	   1  +2 Bass (String Bass)
-	   2  0  Bass Drum (Kick)
-	   3  0  Snare Drum
-	   4  0  Clicks and Sticks (Hi-hat)
-	   5  +1 Guitar
-	   6  -1 Flute
-	   7  -2 Bells (Glockenspiel)
-	   8  -2 Chimes
-	   9  -2 Xylophone
-	   10 0  Iron Xylophone (Vibraphone)
-	   11 -1 Cow Bell
-	   12 +2 Didgeridoo
-	   13 0  Bit (Synthesizer)
-	   14 0  Banjo
-	   15 0  Pling (Electric piano)
+	   0  Harp                        | 0   | 47 Orchestral Harp
+	   1  Bass (String Bass)          | +2  | 33 Acoustic Bass
+	   2  Bass Drum (Kick)            | *0* | *117 Taiko Drum*
+	   3  Snare Drum                  | *0* | *118 Melodic Tom*
+	   4  Clicks and Sticks (Hi-hat)  | *0* | *116 Woodblock*
+	   5  Guitar                      | +1  | 25 Acoustic Guitar (nylon)
+	   6  Flute                       | -1  | 74 Flute
+	   7  Bells (Glockenspiel)        | -2  | 10 Glockenspiel
+	   8  Chimes                      | -2  | 113 Tinkle Bell
+	   9  Xylophone                   | -2  | 14 Xylophone
+	   10 Iron Xylophone (Vibraphone) | 0   | 12 Vibraphone
+	   11 Cow Bell                    | -1  | 114 Agogo
+	   12 Didgeridoo                  | +2  | 59 Tuba
+	   13 Bit (Synthesizer)           | 0   | 81 Lead 1 (square)
+	   14 Banjo                       | 0   | 106 Banjo
+	   15 Pling (Electric piano)      | 0   | 3 Electric Grand Piano
 	3 = shortened name (optional)
 	*/
 
@@ -77,7 +78,7 @@ function midi_instruments() {
 	midi_ins[a, 1] = 10 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Xylophone" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 9 midi_ins[a, 2] = -2 a += 1
-	midi_ins[a, 0] = "Tubular Bells" midi_ins[a, 3] = ""
+	midi_ins[a, 0] = "Tubular Bells" midi_ins[a, 3] = "TubularBells"
 	midi_ins[a, 1] = 7 midi_ins[a, 2] = -2 a += 1
 	midi_ins[a, 0] = "Dulcimer" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 5 midi_ins[a, 2] = 1 a += 1
@@ -88,7 +89,7 @@ function midi_instruments() {
 	midi_ins[a, 1] = 10 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Rock Organ" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
-	midi_ins[a, 0] = "Church Organ" midi_ins[a, 3] = ""
+	midi_ins[a, 0] = "Church Organ" midi_ins[a, 3] = "ChurchOrgan"
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	midi_ins[a, 0] = "Reed Organ" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
@@ -111,18 +112,18 @@ function midi_instruments() {
 	midi_ins[a, 1] = 1 midi_ins[a, 2] = 2 a += 1
 	midi_ins[a, 0] = "Overdriven Guitar" midi_ins[a, 3] = "Overdrive Gt"
 	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
-	midi_ins[a, 0] = "Distortion Guitar" midi_ins[a, 3] = "Distortion Gt"
-	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
-	midi_ins[a, 0] = "Guitar Harmonics" midi_ins[a, 3] = "Gt Harmonics"
+	midi_ins[a, 0] = "Distortion Guitar" midi_ins[a, 3] = "DistortionGt"
+	midi_ins[a, 1] = 5 midi_ins[a, 2] = 1 a += 1
+	midi_ins[a, 0] = "Guitar Harmonics" midi_ins[a, 3] = "Gt.Harmonics"
 	midi_ins[a, 1] = 5 midi_ins[a, 2] = 3 a += 1
 	// Bass
-	midi_ins[a, 0] = "Acoustic Bass" midi_ins[a, 3] = ""
+	midi_ins[a, 0] = "Acoustic Bass" midi_ins[a, 3] = "AcousticBass"
 	midi_ins[a, 1] = 1 midi_ins[a, 2] = 2 a += 1
-	midi_ins[a, 0] = "Electric Bass (finger)" midi_ins[a, 3] = "Fingered Bass"
+	midi_ins[a, 0] = "Electric Bass (finger)" midi_ins[a, 3] = "FingeredBass"
 	midi_ins[a, 1] = 1 midi_ins[a, 2] = 2 a += 1
 	midi_ins[a, 0] = "Electric Bass (pick)" midi_ins[a, 3] = "Picked Bass"
 	midi_ins[a, 1] = 1 midi_ins[a, 2] = 2 a += 1
-	midi_ins[a, 0] = "Fretless Bass" midi_ins[a, 3] = ""
+	midi_ins[a, 0] = "Fretless Bass" midi_ins[a, 3] = "FretlessBass"
 	midi_ins[a, 1] = 1 midi_ins[a, 2] = 2 a += 1
 	midi_ins[a, 0] = "Slap Bass 1" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 5 midi_ins[a, 2] = 1 a += 1
@@ -140,7 +141,7 @@ function midi_instruments() {
 	midi_ins[a, 0] = "Cello" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	midi_ins[a, 0] = "Contrabass" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
 	midi_ins[a, 0] = "Tremolo Strings" midi_ins[a, 3] = "Tremolo Str."
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	midi_ins[a, 0] = "Pizzicato Strings" midi_ins[a, 3] = "Pizzicato"
@@ -164,24 +165,24 @@ function midi_instruments() {
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	midi_ins[a, 0] = "Synth Voice" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
-	midi_ins[a, 0] = "Orchestra Hit" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 3 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 0] = "Orchestra Hit" midi_ins[a, 3] = "OrchestraHit"
+	midi_ins[a, 1] = 3 midi_ins[a, 2] = 0 a += 1
 	// Brass
 	midi_ins[a, 0] = "Trumpet" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	midi_ins[a, 0] = "Trombone" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
 	midi_ins[a, 0] = "Tuba" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
-	midi_ins[a, 0] = "Muted Trumpet" midi_ins[a, 3] = ""
+	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
+	midi_ins[a, 0] = "Muted Trumpet" midi_ins[a, 3] = "Muted Tp."
 	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
 	midi_ins[a, 0] = "French Horn" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	midi_ins[a, 0] = "Brass Section" midi_ins[a, 3] = "Brass"
-	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
-	midi_ins[a, 0] = "Synth Brass 1" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
-	midi_ins[a, 0] = "Synth Brass 2" midi_ins[a, 3] = ""
+	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 0] = "Synth Brass 1" midi_ins[a, 3] = "Synth Brass1"
+	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 0] = "Synth Brass 2" midi_ins[a, 3] = "Synth Brass2"
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	// Reed
 	midi_ins[a, 0] = "Soprano Sax" midi_ins[a, 3] = ""
@@ -297,13 +298,13 @@ function midi_instruments() {
 	midi_ins[a, 0] = "Taiko Drum" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 2 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Melodic Tom" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 3 midi_ins[a, 2] = 0 a += 1
+	midi_ins[a, 1] = 2 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Synth Drum" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 3 midi_ins[a, 2] = 0 a += 1
+	midi_ins[a, 1] = 2 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Reverse Cymbal" midi_ins[a, 3] = "Reverse Cym."
-	midi_ins[a, 1] = 8 midi_ins[a, 2] = -2 a += 1
+	midi_ins[a, 1] = 3 midi_ins[a, 2] = 0 a += 1
 	// Sound Effects
-	midi_ins[a, 0] = "Guitar Fret Noise" midi_ins[a, 3] = "Gt Fret Noise"
+	midi_ins[a, 0] = "Guitar Fret Noise" midi_ins[a, 3] = "Gt FretNoise"
 	midi_ins[a, 1] = 4 midi_ins[a, 2] = 1 a += 1
 	midi_ins[a, 0] = "Breath Noise" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
@@ -325,144 +326,280 @@ function midi_instruments() {
 	// 1 = instrument
 	// 2 = instrument pitch
 
-	a = 24
-	midi_drum[a, 0] = "Cutting Noise(SFX)"
-	midi_drum[a, 1] = 13 midi_drum[a, 2] = 39 a += 1
-	midi_drum[a, 0] = "Snare Roll"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 8 a += 1
-	midi_drum[a, 0] = "Finger Snap"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 25 a += 1
+	a = 0
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	// 12
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	// 24
+	midi_drum[a, 0] = "[GS] Concert SD"
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 12 a += 1
+	midi_drum[a, 0] = "[GS] Snare Roll"
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 5 a += 1
+	midi_drum[a, 0] = "[GS] Finger Snap"
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 18 a += 1
 	midi_drum[a, 0] = "High Q"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 18 a += 1
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 2 a += 1
 	midi_drum[a, 0] = "Slap"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 27 a += 1
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 9 a += 1
 	midi_drum[a, 0] = "Scratch Push"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 16 a += 1
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 6 a += 1
 	midi_drum[a, 0] = "Scratch Pull"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 13 a += 1
-	midi_drum[a, 0] = "Sticks"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 9 a += 1
-	midi_drum[a, 0] = "Square Click"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 6 a += 1
-	midi_drum[a, 0] = "Metronome Click"
 	midi_drum[a, 1] = 4 midi_drum[a, 2] = 2 a += 1
+	midi_drum[a, 0] = "Sticks"
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 13 a += 1
+	midi_drum[a, 0] = "Square Click"
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 9 a += 1
+	midi_drum[a, 0] = "Metronome Click"
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 15 a += 1
 	midi_drum[a, 0] = "Metronome Bell"
-	midi_drum[a, 1] = 8 midi_drum[a, 2] = 17 a += 1
-	// 35
-	midi_drum[a, 0] = "Bass Drum 2"
-	midi_drum[a, 1] = 2 midi_drum[a, 2] = 10 a += 1
-	midi_drum[a, 0] = "Bass Drum 1"
-	midi_drum[a, 1] = 2 midi_drum[a, 2] = 6 a += 1
+	midi_drum[a, 1] = 8 midi_drum[a, 2] = 18 a += 1
+	midi_drum[a, 0] = "Acoustic Bass Drum"
+	midi_drum[a, 1] = 2 midi_drum[a, 2] = 4 a += 1
+	// 36
+	midi_drum[a, 0] = "Electric Bass Drum"
+	midi_drum[a, 1] = 2 midi_drum[a, 2] = 8 a += 1
 	midi_drum[a, 0] = "Side Stick"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 6 a += 1
-	midi_drum[a, 0] = "Snare Drum 1"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 8 a += 1
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 8 a += 1
+	midi_drum[a, 0] = "Acoustic Snare"
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 15 a += 1
 	midi_drum[a, 0] = "Hand Clap"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 6 a += 1
-	midi_drum[a, 0] = "Snare Drum 2"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 4 a += 1
-	midi_drum[a, 0] = "Low Tom 2"
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 19 a += 1
+	midi_drum[a, 0] = "Electric Snare"
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 16 a += 1
+	midi_drum[a, 0] = "Low Floor Tom"
 	midi_drum[a, 1] = 2 midi_drum[a, 2] = 6 a += 1
-	// 42
 	midi_drum[a, 0] = "Closed Hi-hat"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 22 a += 1
-	midi_drum[a, 0] = "Low Tom 1"
-	midi_drum[a, 1] = 2 midi_drum[a, 2] = 13 a += 1
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 21 a += 1
+	midi_drum[a, 0] = "High Floor Tom"
+	midi_drum[a, 1] = 2 midi_drum[a, 2] = 9 a += 1
 	midi_drum[a, 0] = "Pedal Hi-hat"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 22 a += 1
-	midi_drum[a, 0] = "Mid Tom 2"
-	midi_drum[a, 1] = 2 midi_drum[a, 2] = 15 a += 1
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 23 a += 1
+	midi_drum[a, 0] = "Low Tom"
+	midi_drum[a, 1] = 2 midi_drum[a, 2] = 14 a += 1
 	midi_drum[a, 0] = "Open Hi-hat"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 18 a += 1
-	midi_drum[a, 0] = "Mid Tom 1"
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 22 a += 1
+	midi_drum[a, 0] = "Low-Mid Tom"
+	midi_drum[a, 1] = 2 midi_drum[a, 2] = 17 a += 1
+	// 48
+	midi_drum[a, 0] = "High-Mid Tom"
 	midi_drum[a, 1] = 2 midi_drum[a, 2] = 20 a += 1
-	midi_drum[a, 0] = "High Tom 2"
-	midi_drum[a, 1] = 2 midi_drum[a, 2] = 23 a += 1
-	// 49
 	midi_drum[a, 0] = "Crash Cymbal 1"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 17 a += 1
-	midi_drum[a, 0] = "High Tom 1"
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 20 a += 1
+	midi_drum[a, 0] = "High Tom"
 	midi_drum[a, 1] = 2 midi_drum[a, 2] = 23 a += 1
 	midi_drum[a, 0] = "Ride Cymbal 1"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 24 a += 1
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 17 a += 1
 	midi_drum[a, 0] = "Chinese Cymbal"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 8 a += 1
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 14 a += 1
 	midi_drum[a, 0] = "Ride Bell"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 13 a += 1
+	midi_drum[a, 1] = 7 midi_drum[a, 2] = 17 a += 1
 	midi_drum[a, 0] = "Tambourine"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 18 a += 1
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 23 a += 1
 	midi_drum[a, 0] = "Splash Cymbal"
 	midi_drum[a, 1] = 3 midi_drum[a, 2] = 18 a += 1
-	// 56
 	midi_drum[a, 0] = "Cowbell"
-	midi_drum[a, 1] = 11 midi_drum[a, 2] = 5 a += 1
+	midi_drum[a, 1] = 11 midi_drum[a, 2] = 6 a += 1
 	midi_drum[a, 0] = "Crash Cymbal 2"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 13 a += 1
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 21 a += 1
 	midi_drum[a, 0] = "Vibraslap"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 2 a += 1
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 17 a += 1
 	midi_drum[a, 0] = "Ride Cymbal 2"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 13 a += 1
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 24 a += 1
+	// 60
 	midi_drum[a, 0] = "High Bongo"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 9 a += 1
+	midi_drum[a, 1] = 11 midi_drum[a, 2] = 16 a += 1
 	midi_drum[a, 0] = "Low Bongo"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 2 a += 1
-	midi_drum[a, 0] = "Mute High Conga"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 8 a += 1
-	// 63
-	midi_drum[a, 0] = "Open High Conga"
-	midi_drum[a, 1] = 2 midi_drum[a, 2] = 22 a += 1
+	midi_drum[a, 1] = 11 midi_drum[a, 2] = 9 a += 1
+	midi_drum[a, 0] = "Mute Hi Conga"
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = -3 a += 1
+	midi_drum[a, 0] = "Open Hi Conga"
+	midi_drum[a, 1] = 11 midi_drum[a, 2] = -1 a += 1
 	midi_drum[a, 0] = "Low Conga"
-	midi_drum[a, 1] = 2 midi_drum[a, 2] = 15 a += 1
+	midi_drum[a, 1] = 11 midi_drum[a, 2] = -9 a += 1
 	midi_drum[a, 0] = "High Timbale"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 13 a += 1
+	midi_drum[a, 1] = 11 midi_drum[a, 2] = 5 a += 1
 	midi_drum[a, 0] = "Low Timbale"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 8 a += 1
+	midi_drum[a, 1] = 11 midi_drum[a, 2] = -4 a += 1
 	midi_drum[a, 0] = "High Agogo"
 	midi_drum[a, 1] = 9 midi_drum[a, 2] = 12 a += 1
 	midi_drum[a, 0] = "Low Agogo"
 	midi_drum[a, 1] = 9 midi_drum[a, 2] = 5 a += 1
 	midi_drum[a, 0] = "Cabasa"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 20 a += 1
-	// 70
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 35 a += 1
 	midi_drum[a, 0] = "Maracas"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 23 a += 1
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 32 a += 1
 	midi_drum[a, 0] = "Short Whistle"
 	midi_drum[a, 1] = 6 midi_drum[a, 2] = 34 a += 1
+	// 72
 	midi_drum[a, 0] = "Long Whistle"
 	midi_drum[a, 1] = 6 midi_drum[a, 2] = 33 a += 1
 	midi_drum[a, 0] = "Short Guiro"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 17 a += 1
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 19 a += 1
 	midi_drum[a, 0] = "Long Guiro"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 11 a += 1
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 20 a += 1
 	midi_drum[a, 0] = "Claves"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 18 a += 1
-	midi_drum[a, 0] = "High Wood Block"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 10 a += 1
-	// 77
+	midi_drum[a, 1] = 9 midi_drum[a, 2] = 19 a += 1
+	midi_drum[a, 0] = "Hi Wood Block"
+	midi_drum[a, 1] = 9 midi_drum[a, 2] = 7 a += 1
 	midi_drum[a, 0] = "Low Wood Block"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 5 a += 1
+	midi_drum[a, 1] = 9 midi_drum[a, 2] = 1 a += 1
 	midi_drum[a, 0] = "Mute Cuica"
-	midi_drum[a, 1] = 12 midi_drum[a, 2] = 25 a += 1
+	midi_drum[a, 1] = 12 midi_drum[a, 2] = 22 a += 1
 	midi_drum[a, 0] = "Open Cuica"
-	midi_drum[a, 1] = 12 midi_drum[a, 2] = 26 a += 1
+	midi_drum[a, 1] = 12 midi_drum[a, 2] = 13 a += 1
 	midi_drum[a, 0] = "Mute Triangle"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 16 a += 1
+	midi_drum[a, 1] = 7 midi_drum[a, 2] = 19 a += 1
 	midi_drum[a, 0] = "Open Triangle"
 	midi_drum[a, 1] = 8 midi_drum[a, 2] = 19 a += 1
 	midi_drum[a, 0] = "Shaker"
-	midi_drum[a, 1] = 3 midi_drum[a, 2] = 22 a += 1
+	midi_drum[a, 1] = 4 midi_drum[a, 2] = 36 a += 1
 	midi_drum[a, 0] = "Jingle Bell"
-	midi_drum[a, 1] = 8 midi_drum[a, 2] = 6 a += 1
+	midi_drum[a, 1] = 7 midi_drum[a, 2] = 21 a += 1
 	// 84
 	midi_drum[a, 0] = "Bell Tree"
-	midi_drum[a, 1] = 8 midi_drum[a, 2] = 15 a += 1
+	midi_drum[a, 1] = 8 midi_drum[a, 2] = 17 a += 1
 	midi_drum[a, 0] = "Castanets"
-	midi_drum[a, 1] = 4 midi_drum[a, 2] = 21 a += 1
+	midi_drum[a, 1] = 9 midi_drum[a, 2] = 15 a += 1
 	midi_drum[a, 0] = "Mute Surdo"
-	midi_drum[a, 1] = 2 midi_drum[a, 2] = 14 a += 1
+	midi_drum[a, 1] = 2 midi_drum[a, 2] = 12 a += 1
 	midi_drum[a, 0] = "Open Surdo"
 	midi_drum[a, 1] = 2 midi_drum[a, 2] = 7 a += 1
+	midi_drum[a, 0] = "[GS] Applause"
+	midi_drum[a, 1] = 3 midi_drum[a, 2] = 10 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	// 96
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	// 108
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	// 120
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
+	midi_drum[a, 0] = "----"
+	midi_drum[a, 1] = -1 midi_drum[a, 2] = 0 a += 1
 
-
+	midi_fadeout = []
+	array_push(midi_fadeout, "Gunshot")
+	array_push(midi_fadeout, "Applause")
+	array_push(midi_fadeout, "Seashore")
+	
+	midi_fadein = []
+	array_push(midi_fadein, "Reverse Cymbal")
 
 }

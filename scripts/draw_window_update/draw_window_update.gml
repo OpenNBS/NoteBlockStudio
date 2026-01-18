@@ -6,8 +6,8 @@ function draw_window_update() {
 	if (window = w_update && theme != 3) windowopen = 1
 	fullstr = changelogstr
 	if (fullstr = 0) {
-		if (language != 1) show_message("Changelist not found!")
-		else show_message("找不到更新历史！")
+		if (language != 1) message("Changelist not found!", "Note Block Studio")
+		else message("找不到更新历史！", "Note Block Studio")
 		if (window = w_update) {
 	        window = w_greeting
 	    } else {
@@ -22,14 +22,14 @@ function draw_window_update() {
 	draw_theme_font(font_main_bold)
 	
 	if (language != 1) {
-	if (RUN_FROM_IDE != 1) {
+	if (NOT_RUN_FROM_IDE != 1) {
 		draw_text_dynamic(x1 + 8, y1 + 8, "Changelist (You're running from the IDE!)")
 	} else {
 		if (window = w_update) draw_text_dynamic(x1 + 8, y1 + 8, "Update")
 		else draw_text_dynamic(x1 + 8, y1 + 8, "Changelist")
 	}
 	} else {
-	if (RUN_FROM_IDE != 1) {
+	if (NOT_RUN_FROM_IDE != 1) {
 		draw_text_dynamic(x1 + 8, y1 + 8, "更新历史（正在 IDE 中运行！）")
 	} else {
 		if (window = w_update) draw_text_dynamic(x1 + 8, y1 + 8, "更新")
@@ -40,7 +40,7 @@ function draw_window_update() {
 	draw_theme_font(font_main)
 	
 	// Refresh changelog button (debug)
-	if (RUN_FROM_IDE != 1) {
+	if (NOT_RUN_FROM_IDE != 1) {
 		if (draw_button2(x1 + 500 - 144 - 16, y1 + 8 + 24, 72, "Open file")) {
 			open_url(data_directory + "changelog.txt");
 		}

@@ -5,20 +5,21 @@ function log_init() {
 	var f = file_text_open_write(log_file);
 	if (f < 0)
 	{
-	    show_message("Could not access file directory. Try running in administrator mode or re-install.")
+	    message("Could not access file directory. Try running in administrator mode or re-install.", "Note Block Studio")
 	    return false
 	}
 
 	file_text_write_string(f, "__ Note Block Studio log __");
 	file_text_writeln(f)
 	file_text_close(f)
+	log_strs = ["__ Note Block Studio log __"]
 
 	// System info
 	log("version", version)
 	log("version_date", version_date)
 	log("gm_runtime_version", gm_runtime_version)
 	log("YYC", code_is_compiled())
-	log("working_directory", working_directory)
+	log("working_directory", current_directory)
 	log("file_directory", file_directory)
 	log("OS", test(false, "Mac", "Windows"))
 	log("os_version", os_version)

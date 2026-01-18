@@ -74,7 +74,13 @@ function save_settings() {
 	ini_write_real_clean("preferences", "window_icon",        window_icon)
 	ini_write_real_clean("preferences", "keynames_flat",      keynames_flat)
 	ini_write_real_clean("preferences", "hires",              hires)
+	ini_write_string(    "preferences", "current_resource",   current_resource)
 	ini_write_real_clean("preferences", "acrylic_successful", acrylic_successful)
+	ini_write_real_clean("preferences", "advancedinterface",  advancedinterface)
+	ini_write_real_clean("preferences", "wpapernoblur",       wpapernoblur)
+	ini_write_real_clean("preferences", "wpapernodim",        wpapernodim)
+	ini_write_real_clean("preferences", "noeditingbackground",noeditingbackground)
+	ini_write_real_clean("preferences", "backgroundrainbow",  backgroundrainbow)
 
 	// Midi import settings
 	ini_write_real_clean("midi_import", "remember",        w_midi_remember)
@@ -87,13 +93,14 @@ function save_settings() {
 	ini_write_real_clean("midi_import", "octave",          w_midi_octave)
 	ini_write_real_clean("midi_import", "precision",       w_midi_precision)
 	ini_write_real_clean("midi_import", "tempo_changer",   w_midi_tempo_changer)
+	ini_write_real_clean("midi_import", "note_duration",   w_midi_note_duration)
 	// instruments
 	for (a = 0; a < 128; a += 1) {
 	    ini_write_real_clean("midi_import", "ins_" + string(a),          midi_ins[a, 1]) // Instrument
 	    ini_write_real_clean("midi_import", "ins_" + string(a) + "_oct", midi_ins[a, 2]) // Octave
 	}
 	// drums
-	for (a = 24; a < 88; a += 1) {
+	for (a = 0; a < 128; a += 1) {
 	    ini_write_real_clean("midi_import", "drum_" + string(a),          midi_drum[a, 1]) // Instrument
 	    ini_write_real_clean("midi_import", "drum_" + string(a) + "_key", midi_drum[a, 2]) // Key
 	}
@@ -161,7 +168,7 @@ function save_settings() {
 
 	// Default instrument presses
 	for (a = 0; a < first_custom_index; a += 1) {
-		var ins = ds_list_find_value(instrument_list, a)
+		var ins = ds_list_find_value(songs[song].instrument_list, a)
 		ini_write_real_clean("instruments", "ins_" + string(a) + "_press", ins.press)
 	}
 

@@ -22,7 +22,7 @@ function new_instrument() {
 	    ins.key = 45
 
 	if (ins.user)
-	    user_instruments++
+	    songs[song].user_instruments++
 
 	ins.loaded = false
 	ins.num_blocks = 0

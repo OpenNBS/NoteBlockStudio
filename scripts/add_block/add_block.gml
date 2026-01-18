@@ -13,53 +13,55 @@ function add_block() {
 	}
 	else
 		insnum = false
+		
+	if (xx < 0) return 0
 
 	// Initialize cells
-	if (xx >= arraylength) {
-		for (a = xx; a >= arraylength; --a) {
-		    colfirst[@ a] = -1
-		    collast[@ a] = -1
-		    colamount[@ a] = 0
-		    for (b = max(yy + 1, arrayheight) - 1; b >= 0; --b) song_exists[@ a, b] = 0
-		}
-		arraylength = xx + 1
+	if (xx >= songs[song].arraylength) {
+	    for (a = xx; a >= songs[song].arraylength; --a) {
+	        songs[song].colfirst[@ a] = -1
+	        songs[song].collast[@ a] = -1
+	        songs[song].colamount[@ a] = 0
+	        for (b = max(yy + 1, songs[song].arrayheight) - 1; b >= 0; --b) songs[song].song_exists[@ a, b] = 0
+	    }
+	    songs[song].arraylength = xx + 1
 	}
-	if (yy >= arrayheight) {
-	    for (a = arraylength - 1; a >= 0; --a) {
-	        for (b = yy; b >= arrayheight; --b) {
-	            rowamount[@ b] = 0
-	            song_exists[@ a, b] = 0
+	if (yy >= songs[song].arrayheight) {
+	    for (a = songs[song].arraylength - 1; a >= 0; --a) {
+	        for (b = yy; b >= songs[song].arrayheight; --b) {
+	            songs[song].rowamount[@ b] = 0
+	            songs[song].song_exists[@ a, b] = 0
 	        }
 	    }
-	    arrayheight = yy + 1
+	    songs[song].arrayheight = yy + 1
 	}
 
-	if (song_exists[xx, yy]) return 0
+	if (songs[song].song_exists[xx, yy]) return 0
 
 	// Add block
-	song_exists[@ xx, yy] = 1
-	song_ins[@ xx, yy] = ins
-	song_key[@ xx, yy] = key
-	song_vel[@ xx, yy] = vel
-	song_pan[@ xx, yy] = pan
-	song_pit[@ xx, yy] = pit
-	song_played[@xx, yy] = 0
-	song_added[@ xx, yy] = 0
-	colamount[@ xx] += 1
-	rowamount[@ yy] += 1
+	songs[song].song_exists[@ xx, yy] = 1
+	songs[song].song_ins[@ xx, yy] = ins
+	songs[song].song_key[@ xx, yy] = key
+	songs[song].song_vel[@ xx, yy] = vel
+	songs[song].song_pan[@ xx, yy] = pan
+	songs[song].song_pit[@ xx, yy] = pit
+	songs[song].song_played[@ xx, yy] = 0
+	songs[song].song_added[@ xx, yy] = 0
+	songs[song].colamount[@ xx] += 1
+	songs[song].rowamount[@ yy] += 1
 	if (!insnum) {
 	    ins.num_blocks++
-	    if (ins.user) block_custom += 1
+	    if (ins.user) songs[song].block_custom += 1
 	}
-	if (key < 33 || key > 57) block_outside += 1
-	if (pit != 0) block_pitched += 1
-	totalblocks += 1
+	if (key < 33 || key > 57) songs[song].block_outside += 1
+	if (pit != 0) songs[song].block_pitched += 1
+	songs[song].totalblocks += 1
 
-	if (colfirst[xx] = -1 || yy < colfirst[xx]) colfirst[xx] = yy
-	if (yy > collast[xx]) collast[@ xx] = yy
+	if (songs[song].colfirst[xx] = -1 || yy < songs[song].colfirst[xx]) songs[song].colfirst[xx] = yy
+	if (yy > songs[song].collast[xx]) songs[song].collast[@ xx] = yy
 
-	if (xx >= enda) enda = xx
-	if (yy >= endb) endb = yy
+	if (xx >= songs[song].enda) songs[song].enda = xx
+	if (yy >= songs[song].endb) songs[song].endb = yy
 	return 1
 
 

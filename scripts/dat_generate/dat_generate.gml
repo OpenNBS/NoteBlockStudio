@@ -8,17 +8,17 @@ function dat_generate(argument0, argument1, argument2) {
 	functiondir = argument1
 	objective = argument2
 	str = ""
-	for (a = 0; a <= o.enda; a++) { 	
-		if (o.colamount[a] > 0) {
+	for (a = 0; a <= o.songs[o.song].enda; a++) { 	
+		if (o.songs[o.song].colamount[a] > 0) {
 			str = ""
-		    for (b = 0; b <= o.collast[a]; b += 1) {
-		        if (o.song_exists[a, b] && (o.lockedlayer[b] = 0 || o.dat_includelocked)) {
-					key = o.song_key[a, b] + o.song_pit[a, b] / 100
+		    for (b = 0; b <= o.songs[o.song].collast[a]; b += 1) {
+		        if (o.songs[o.song].song_exists[a, b] && (o.lockedlayer[b] = 0 || o.dat_includelocked)) {
+					key = o.songs[o.song].song_key[a, b] + o.songs[o.song].song_pit[a, b] / 100
 		            if (key >= 33 && key <= 57 || (o.dat_includeoutofrange && key >= 9 && key <= 81)) {
-		                instrument = dat_instrument(ds_list_find_index(other.instrument_list, o.song_ins[a, b]))
+		                instrument = dat_instrument(ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]))
 		                pitch = dat_pitch(key)
-						blockvolume = o.layervol[b]/100 / 100 * o.song_vel[a, b] // Calculate volume of note
-						s = (o.layerstereo[b] + o.song_pan[a, b]) / 2 // Stereo values to X coordinates, calc'd from the average of both note and layer pan.
+						blockvolume = o.songs[o.song].layervol[b]/100 / 100 * o.songs[o.song].song_vel[a, b] // Calculate volume of note
+						s = (o.songs[o.song].layerstereo[b] + o.songs[o.song].song_pan[a, b]) / 2 // Stereo values to X coordinates, calc'd from the average of both note and layer pan.
 						if s > 100 blockposition=(s-100)/-100
 						if s = 100 blockposition=0
 						if s < 100 blockposition=((s-100)*-1)/100
@@ -34,7 +34,7 @@ function dat_generate(argument0, argument1, argument2) {
 					
 						if o.dat_visualizer = 1 {
 							
-							var ins_index = ds_list_find_index(o.instrument_list, o.song_ins[a, b]);
+							var ins_index = ds_list_find_index(o.songs[o.song].instrument_list, o.songs[o.song].song_ins[a, b]);
 							var team_number = string(ins_index + 1);
 							var numeric_id = o.sch_exp_ins_block[ins_index];
 							var block_id = block_get_namespaced_id(numeric_id);
@@ -117,11 +117,11 @@ function dat_generate(argument0, argument1, argument2) {
 					}
 		        }
 			}
-			if(a < o.enda) str += "scoreboard players set @s " + objective + "_t " + string(a)
+			if(a < o.songs[o.song].enda) str += "scoreboard players set @s " + objective + "_t " + string(a)
 			else { // Last tick
 				if(o.dat_enablelooping) {
-					str += "scoreboard players set @s " + objective + " " + string(o.loopstart*80) + br
-					str += "scoreboard players set @s " + objective + "_t " + string(o.loopstart-1)
+					str += "scoreboard players set @s " + objective + " " + string(o.songs[o.song].loopstart*80) + br
+					str += "scoreboard players set @s " + objective + "_t " + string(o.songs[o.song].loopstart-1)
 				}
 				else str += "function " + functionpath + "stop"
 			}
@@ -131,7 +131,7 @@ function dat_generate(argument0, argument1, argument2) {
  
 	// Generate binary tree to find the correct tick
 	var length, steps, pow, searchrange, segments, half, lower, min1, max1, min2, max2
-	length = o.enda
+	length = o.songs[o.song].enda
 	steps = floor(log2(length)) + 1
 	pow = power(2, steps)
 	for (step = 0; step < steps; step++) {
@@ -151,20 +151,20 @@ function dat_generate(argument0, argument1, argument2) {
 		
 			if (min1 <= length) {
 				if (step == steps-1) { // Last step, play the tick
-					if (o.colamount[min1] > 0) str += "execute as @s[scores={" + objective + "=" + string(min1*80) + ".." + string((max1+1)*80+160) + "," + objective + "_t=.." + string(min1-1) + "}] run function " + functionpath + "notes/" + string(min1) + br
+					if (o.songs[o.song].colamount[min1] > 0) str += "execute as @s[scores={" + objective + "=" + string(min1*80) + ".." + string((max1+1)*80+160) + "," + objective + "_t=.." + string(min1-1) + "}] run function " + functionpath + "notes/" + string(min1) + br
 					if min2 <= length {
-						if (o.colamount[min2] > 0) str += "execute as @s[scores={" + objective + "=" + string(min2*80) + ".." + string((max2+1)*80+160) + "," + objective + "_t=.." + string(min2-1) + "}] run function " + functionpath + "notes/" + string(min2) + br
+						if (o.songs[o.song].colamount[min2] > 0) str += "execute as @s[scores={" + objective + "=" + string(min2*80) + ".." + string((max2+1)*80+160) + "," + objective + "_t=.." + string(min2-1) + "}] run function " + functionpath + "notes/" + string(min2) + br
 					}
 				}
 				else { // Don't play yet, refine the search
 					for (i = min1; i <= min(max1, length); i++) {
-						if (o.colamount[i] > 0) {
+						if (o.songs[o.song].colamount[i] > 0) {
 							str += "execute as @s[scores={" + objective + "=" + string(min1*80) + ".." + string((max1+1)*80+160) + "}] run function " + functionpath + "tree/" + string(min1) + "_" + string(max1) + br
 							break
 						}
 					}
 					for (i = min2; i <= min(max2, length); i++) {
-						if (o.colamount[i] > 0) {
+						if (o.songs[o.song].colamount[i] > 0) {
 							str += "execute as @s[scores={" + objective + "=" + string(min2*80) + ".." + string((max2+2)*80+160) + "}] run function " + functionpath + "tree/" + string(min2) + "_" + string(max2) + br
 							break
 						}

@@ -1,10 +1,13 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "fnt_wslui_bold_hires",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
   "pointRounding": 0,
   "applyKerning": 0,
-  "fontName": "WeblySleek UI Semibold",
+  "fontName": "WeblySleek UI",
   "styleName": "Semibold",
   "size": 36.0,
   "bold": true,
@@ -22,6 +25,7 @@
   },
   "ascenderOffset": 0,
   "ascender": 47,
+  "lineHeight": 0,
   "glyphs": {
     "32": {"x":2,"y":2,"w":13,"h":64,"character":32,"shift":13,"offset":0,},
     "33": {"x":782,"y":134,"w":8,"h":64,"character":33,"shift":15,"offset":3,},
@@ -184,7 +188,7 @@
     "1102": {"x":544,"y":68,"w":36,"h":64,"character":1102,"shift":41,"offset":3,},
     "1103": {"x":582,"y":68,"w":22,"h":64,"character":1103,"shift":26,"offset":1,},
     "1105": {"x":126,"y":200,"w":22,"h":64,"character":1105,"shift":26,"offset":2,},
-    "9647": {"x":172,"y":266,"w":28,"h":64,"character":9647,"shift":47,"offset":9,},
+    "9647": {"x":172,"y":266,"w":15,"h":64,"character":9647,"shift":29,"offset":7,},
   },
   "kerningPairs": [
     {"first":34,"second":114,"amount":-1,},
@@ -2314,8 +2318,4 @@
     "name": "fnt_wslui_hires",
     "path": "folders/Fonts/fnt_wslui_hires.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "fnt_wslui_bold_hires",
-  "tags": [],
-  "resourceType": "GMFont",
 }

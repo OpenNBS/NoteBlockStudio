@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "fnt_info_med",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
@@ -22,6 +25,7 @@
   },
   "ascenderOffset": 0,
   "ascender": 0,
+  "lineHeight": 0,
   "glyphs": {
     "32": {"x":312,"y":344,"w":4,"h":17,"character":32,"shift":4,"offset":0,},
     "33": {"x":292,"y":363,"w":2,"h":17,"character":33,"shift":4,"offset":1,},
@@ -1245,8 +1249,4 @@
     "name": "fnt_classic",
     "path": "folders/Fonts/fnt_classic.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "fnt_info_med",
-  "tags": [],
-  "resourceType": "GMFont",
 }

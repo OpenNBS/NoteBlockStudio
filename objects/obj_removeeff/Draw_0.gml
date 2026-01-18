@@ -1,3 +1,7 @@
+var song_tab_offset = 0
+if (array_length(obj_controller.songs) > 1 && !obj_controller.fullscreen) {
+	song_tab_offset = 40
+}
 x1 = -2
 if (!obj_controller.fullscreen && obj_controller.show_layers) {
 	x1 = 264
@@ -5,7 +9,7 @@ if (!obj_controller.fullscreen && obj_controller.show_layers) {
 if (obj_controller.fullscreen) {
 	y1 = -2
 } else {
-	y1 = 52
+	y1 = 52 + song_tab_offset
 }
 draw_set_alpha(alpha)
 if (!obj_controller.fdark) draw_set_color(obj_controller.accent[0])

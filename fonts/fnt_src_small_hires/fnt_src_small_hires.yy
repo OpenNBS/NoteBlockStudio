@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "fnt_src_small_hires",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
@@ -22,6 +25,7 @@
   },
   "ascenderOffset": 0,
   "ascender": 23,
+  "lineHeight": 0,
   "glyphs": {
     "32": {"x":2,"y":2,"w":5,"h":31,"character":32,"shift":5,"offset":0,},
     "33": {"x":1536,"y":959,"w":3,"h":31,"character":33,"shift":7,"offset":2,},
@@ -6944,8 +6948,4 @@
     "name": "fnt_src_hires",
     "path": "folders/Fonts/fnt_src_hires.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "fnt_src_small_hires",
-  "tags": [],
-  "resourceType": "GMFont",
 }

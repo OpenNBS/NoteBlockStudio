@@ -94,9 +94,9 @@ function load_instruments(argument0) {
 	    var ins = new_instrument(name, filename, true, press, key)
 	    with (ins)
 	        instrument_load()
-	    ds_list_add(instrument_list, ins)
+	    ds_list_add(songs[song].instrument_list, ins)
 	}
-	changed = true
+	songs[song].changed = true
 
 
 

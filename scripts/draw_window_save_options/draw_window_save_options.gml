@@ -21,7 +21,7 @@ function draw_window_save_options() {
 	draw_theme_color()
 	
 	min_version = 0
-	if (user_instruments > 18) {
+	if (songs[song].user_instruments > 18) {
 		min_version = 5
 	}
 	save_version = max(save_version, min_version)
@@ -37,7 +37,7 @@ function draw_window_save_options() {
 
 	if (draw_button2(x1 + 40, y1 + 135, 60, "OK") && (windowopen = 1 || theme != 3)) {
 		if save_version != nbs_version question("Some of the song's data will be lost if you save in a previous version! Are you sure?", "Confirm")
-		changed = 1
+		songs[song].changed = 1
 		windowclose = 1
 		}
 	} else {
@@ -51,7 +51,7 @@ function draw_window_save_options() {
 
 	if (draw_button2(x1 + 40, y1 + 135, 60, "确定") && (windowopen = 1 || theme != 3)) {
 		if save_version != nbs_version question("如果你保存在旧版本的话一些歌曲信息将会丢失！你确定吗？", "确定")
-		changed = 1
+		songs[song].changed = 1
 		windowclose = 1
 		}
 	}

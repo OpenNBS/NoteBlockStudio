@@ -21,8 +21,8 @@ function draw_window_greeting() {
 			curs = cr_handpoint;
 			if (mouse_check_button_released(mb_left)) {
 				if (hover_x) { // X button
-					if (language != 1) show_message("Developing Note Block Studio takes a lot of unpaid volunteering time. If you can, please consider supporting us in the future! =)\n\n(You can find that option at any time in Help > Donate.)");
-					else show_message("开发Note Block Studio完全基于我们用爱发电。如果情况允许，请考虑在以后小小的支持我们一下！(～￣▽￣)～\n\n（您可以随时在帮助 > 捐赠中找到该选项。）")
+					if (language != 1) message("Developing Note Block Studio takes a lot of unpaid volunteering time. If you can, please consider supporting us in the future! =)\n\n(You can find that option at any time in Help > Donate.)", "Note Block Studio");
+					else message("开发Note Block Studio完全基于我们用爱发电。如果情况允许，请考虑在以后小小的支持我们一下！(～￣▽￣)～\n\n（您可以随时在帮助 > 捐赠中找到该选项。）", "Note Block Studio")
 					donate_banner_time = date_inc_month(date_current_datetime(), 1);
 					donate_banner = 0;
 					save_settings();
@@ -41,9 +41,17 @@ function draw_window_greeting() {
 	draw_text_center(x1 + 132, y1 + 213, "Note Block Studio")
 	draw_theme_font(font_main_bold)
 	var dev_label_offset = (is_prerelease) ? 15 : 0
-	if (RUN_FROM_IDE != 1) {
+	if (NOT_RUN_FROM_IDE != 1) {
 		if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Running from the GameMaker IDE.")
-		else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "在 IDE 中运行")	
+		else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "在 IDE 中运行")
+	} else if (is_development) {
+		if (os_type = os_windows || os_type = os_linux) {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking disabled.")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "检查更新不可用")
+		} else if (os_type = os_macosx) {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Updates managed by TestFlight app.")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "由 TestFlight 应用管理更新")
+		}
 	} else if (check_update) {
 		if (update_success) {
 	        draw_set_color(c_lime)
@@ -74,12 +82,12 @@ function draw_window_greeting() {
 		}
 	} else {
 	    draw_set_color(c_red)
-		if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking disabled by user")
+		if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking disabled by user.")
 	    else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "检查更新未开启")
 	}
 	draw_theme_font(font_main)
 	draw_theme_color()
-	if (RUN_FROM_IDE != 1) {
+	if (NOT_RUN_FROM_IDE != 1) {
 		if (language != 1) draw_text_center(x1 + 132, y1 + 233, "Version Local Release")
 		else draw_text_center(x1 + 132, y1 + 233, "本地版本")
 	} else {
@@ -177,7 +185,7 @@ function draw_window_greeting() {
 		windowalpha = 0
 		windowclose = 0
 		windowopen = 0
-	    load_song("")
+	    load_song("", 0, 1)
 	    return 1
 	}
 	b = x1 + 320
@@ -212,7 +220,7 @@ function draw_window_greeting() {
 				windowalpha = 0
 				windowclose = 0
 				windowopen = 0
-	            load_song(recent_song[a])
+	            load_song(recent_song[a], 0, 1)
 	        }
 	    }
 	    if (!hires || theme != 3) draw_sprite(spr_frame5, theme * 3 + m + 3 * (fdark && theme = 3), b, c)
@@ -251,9 +259,7 @@ function draw_window_greeting() {
 	draw_set_color(accent[4]);
 	b += (-16);
 	c += 8;
-	draw_circle(b + 300 - 10, c, 8, false);
-	draw_rectangle(b + 300 - 8, c - 7, b + 300 + 8, c + 8, false);
-	draw_circle(b + 300 + 10, c, 8, false);
+	draw_roundrect_ext(b + 300 - 18, c - 7, b + 300 + 20, c + 8, 15, 15, false);
 	draw_set_color(c_white);
 	draw_theme_font(font_main_bold);
 	draw_text_dynamic(b + 300 - 14, c - 6, "NEW!");
@@ -294,7 +300,7 @@ function draw_window_greeting() {
 		windowalpha = 0
 		windowclose = 0
 		windowopen = 0
-		open_midi("")
+		open_midi("", 1)
 	}
 
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) {

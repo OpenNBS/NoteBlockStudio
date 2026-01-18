@@ -42,7 +42,7 @@ function dat_instrument(argument0) {
 		}
 	}
 	if instrumentnumber >= 16 {
-		ins = ds_list_find_value(other.instrument_list,instrumentnumber)
+		ins = ds_list_find_value(other.songs[other.song].instrument_list,instrumentnumber)
 		return string("minecraft:"+ins.name)
 	}
 

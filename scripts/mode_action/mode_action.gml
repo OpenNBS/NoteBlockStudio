@@ -3,7 +3,7 @@ function mode_action(argument0) {
 	// Runs a particular action according to the currently selected edit mode
 
 	var num = argument0
-	changed = 1
+	songs[song].changed = 1
 	switch editmode {
 		case m_key: {
 			switch num {

@@ -1,7 +1,7 @@
 function draw_window_macro_arpeggio() {
 	// draw_window_macro_arpeggio()
 	var x1, y1, a, i, pattern, str, total_vals, val, arplen
-	if (selected == 0) {
+	if (songs[song].selected == 0) {
 		window = 0
 		return 0
 	}
@@ -39,7 +39,7 @@ function draw_window_macro_arpeggio() {
 	windowclose = 0
 	windowopen = 0
 	window = 0
-	str = selection_code
+	str = songs[song].selection_code
 	var arr_data = selection_to_array_ext()
 	total_vals = array_length(arr_data)
 	val = 0
@@ -66,8 +66,8 @@ function draw_window_macro_arpeggio() {
 			}
 		if val >= total_vals break
 		}
-		selection_load_from_array(selection_x, selection_y, arr_data)
-		history_set(h_selectchange, selection_x, selection_y, selection_code, selection_x, selection_y, str)
+		selection_load_from_array(songs[song].selection_x, songs[song].selection_y, arr_data)
+		history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
 		if(!keyboard_check(vk_alt)) selection_place(false)
 	}
 	if (draw_button2(x1 + 70, y1 + 98, 60, condstr(language !=1, "Cancel", "取消")) && (windowopen = 1 || theme != 3)) {windowclose = 1}

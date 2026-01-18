@@ -115,7 +115,7 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
         
 	        if (!readonly) deletetext = key_press[vk_backspace] - key_press[vk_delete] // 0 = Do nothing, 1 = Erase to left, -1 = Erase to right, 2 = Delete selected
 	        if (mouse_check_button_pressed(mb_left) && !keyboard_check(vk_shift)) text_focus = -1
-	        if (keyboard_check(vk_anykey) && !readonly) inserttext = keyboard_string
+	        if (keyboard_check(vk_anykey) && !readonly && ord(keyboard_string) != 127 && !check_ctrl()) inserttext = keyboard_string
 	        keyboard_string = ""
         
 	        // Controls
@@ -157,7 +157,7 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	            text_marker = current_time
 	        }
 	        menu = -1
-	        if (keyboard_check(vk_control)) {  // Ctrl commands
+	        if (check_ctrl()) {  // Ctrl commands
 	            if (!readonly && keyboard_check_pressed(ord("X"))) menu = 0
 	            if (keyboard_check_pressed(ord("C"))) menu = 1
 	            if (!readonly && key_press[ord("V")]) menu = 2
@@ -175,10 +175,10 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	                    if (!text_line_wrap[i, l + 1] && !text_line_single[i, l]) str += "\n"
 	                }
 	            }
-	            if (str != "") clipboard_set_text(str)
+	            if (str != "") if (os_type = os_windows) clipboard_set_text(str) else text_clipboard = str
 	            if (menu = 0) deletetext = 2
 	        } else if (menu = 2) {  // Paste text
-	            inserttext = clipboard_get_text()
+	            if (os_type = os_windows) inserttext = clipboard_get_text() else inserttext = text_clipboard
 	            inserttext = string_replace_all(inserttext, "\r\n", "\n")
 	        } else if (menu = 3) {  // Delete text
 	            deletetext = 2

@@ -25,6 +25,7 @@ function log() {
     
 	// Debug message
 	show_debug_message(timestr + cap + valstr)
+	array_push(obj_controller.log_strs, timestr + cap + valstr)
     
 	// Write to file
 	var f = file_text_open_append(log_file);

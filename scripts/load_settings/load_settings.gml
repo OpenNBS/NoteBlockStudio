@@ -76,7 +76,13 @@ function load_settings() {
 	window_icon =        ini_read_real(  "preferences", "window_icon",        window_icon)
 	keynames_flat =      ini_read_real(  "preferences", "keynames_flat",      keynames_flat)
 	hires =              ini_read_real(  "preferences", "hires",              hires)
+	current_resource =   ini_read_string("preferences", "current_resource",   current_resource)
 	acrylic_successful = ini_read_real(  "preferences", "acrylic_successful", acrylic_successful)
+	advancedinterface  = ini_read_real(  "preferences", "advancedinterface",  advancedinterface)
+	wpapernoblur       = ini_read_real(  "preferences", "wpapernoblur",       wpapernoblur)
+	wpapernodim        = ini_read_real(  "preferences", "wpapernodim",        wpapernodim)
+	noeditingbackground= ini_read_real(  "preferences", "noeditingbackground",noeditingbackground)
+	backgroundrainbow  = ini_read_real(  "preferences", "backgroundrainbow",  backgroundrainbow)
 
 	// Midi import settings
 	w_midi_remember =     ini_read_real(  "midi_import", "remember",        w_midi_remember)
@@ -89,6 +95,7 @@ function load_settings() {
 	w_midi_octave =       ini_read_real(  "midi_import", "octave",          w_midi_octave)
 	w_midi_precision =    ini_read_real(  "midi_import", "precision",       w_midi_precision)
 	w_midi_tempo_changer =ini_read_real(  "midi_import", "tempo_changer",   w_midi_tempo_changer)
+	w_midi_note_duration =ini_read_real(  "midi_import", "note_duration",   w_midi_note_duration)
 	// instruments
 	for (a = 0; a < 128; a += 1) {
 	    midi_ins[a, 1] =  ini_read_real(  "midi_import", "ins_" + string(a),          midi_ins[a, 1]) // Instrument
@@ -99,7 +106,7 @@ function load_settings() {
 	      midi_ins[a, 2] = -1
 	}
 	// drums
-	for (a = 24; a < 88; a += 1) {
+	for (a = 0; a < 128; a += 1) {
 	    midi_drum[a, 1] = ini_read_real(  "midi_import", "drum_" + string(a),          midi_drum[a, 1]) // Instrument
 	   if (midi_drum[a, 1] = 255) // -1
 	      midi_drum[a, 1] = -1
@@ -166,7 +173,7 @@ function load_settings() {
 
 	// Default instrument presses
 	for (a = 0; a < first_custom_index; a += 1) {
-		var ins = ds_list_find_value(instrument_list, a)
+		var ins = ds_list_find_value(songs[song].instrument_list, a)
 		ins.press = ini_read_real("instruments", "ins_" + string(a) + "_press", ins.press)
 	}
 

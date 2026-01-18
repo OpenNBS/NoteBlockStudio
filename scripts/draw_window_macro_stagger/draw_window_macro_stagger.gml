@@ -1,7 +1,7 @@
 function draw_window_macro_stagger() {
 	// draw_window_macro_stagger()
 	var x1, y1, a, b, i, pattern, str, total_vals, val, arplen, maxlength, conf;
-	if (selected == 0) {
+	if (songs[song].selected == 0) {
 		window = 0
 		return 0
 	}
@@ -46,7 +46,7 @@ function draw_window_macro_stagger() {
 		windowclose = 0
 		windowopen = 0
 		window = 0
-		str = selection_code
+		str = songs[song].selection_code
 		var arr_data = selection_to_array_ext()
 		total_vals = array_length(arr_data)
 		val = 0
@@ -64,13 +64,13 @@ function draw_window_macro_stagger() {
 		        maxlength = i;
 		    }
 		}
-		for (a = 0; a < selection_arraylength; a++) {  // Expand array entries by highest number
+		for (a = 0; a < songs[song].selection_arraylength; a++) {  // Expand array entries by highest number
 		    for (b = 0; b <= arp[maxlength]; b ++) {
-		        selection_exists[a, b] = 0
+		        songs[song].selection_exists[a, b] = 0
 		    }
 		}
 
-		selection_arrayheight = arp[maxlength]
+		songs[song].selection_arrayheight = arp[maxlength]
 
 		while (val < total_vals) {
 			for (i = 0; i < arplen; i++;) {
@@ -86,11 +86,11 @@ function draw_window_macro_stagger() {
 			}
 		if val >= total_vals break
 		}
-		var sel_x = selection_x
-		var sel_y = selection_y
+		var sel_x = songs[song].selection_x
+		var sel_y = songs[song].selection_y
 		selection_delete(true)
 		selection_load_from_array(sel_x, sel_y, arr_data)
-		history_set(h_selectchange, selection_x, selection_y, selection_code, selection_x, selection_y, str)
+		history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
 		if(!keyboard_check(vk_alt)) selection_place(false)
 	}
 	if (draw_button2(x1 + 75, y1 + 128, 60, condstr(language != 1, "Cancel", "取消")) && (windowopen = 1 || theme != 3)) {windowclose = 1}

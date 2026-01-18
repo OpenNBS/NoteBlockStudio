@@ -10,7 +10,7 @@ function nbt_tag_end(argument0) {
 	var file;
 	file = argument0;
 
-	external_call(global.dll_WriteByte, file, 0);
+	buffer_write(file, buffer_s8, 0);
 
 
 }

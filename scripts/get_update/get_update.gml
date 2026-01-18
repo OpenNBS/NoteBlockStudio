@@ -14,10 +14,10 @@ function get_update() {
 			// Download was interrupted, may have been successful or not (if connection was interrupted)
 			update = 5
 			if (file_get_size(update_file) == total_size) {
-				if (language != 1) show_message("Download complete! Click OK to begin installing the update.")
-				else show_message("下载完成！点击“OK”来安装更新。")
+				if (language != 1) message("Download complete! Click OK to begin installing the update.", "Note Block Studio")
+				else message("下载完成！点击“OK”来安装更新。", "Note Block Studio")
 				// At this point, the game is paused until the user dismisses the message
-				ExecuteShell("\"" + update_file + "\"", false, true)
+				execute_program(update_file, "", false)
 				game_end()
 			} else {
 				if (language != 1) {

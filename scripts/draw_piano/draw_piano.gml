@@ -10,16 +10,16 @@ function draw_piano(argument0, argument1, argument2, argument3) {
 	d = -1
 	selectedkey = -1
 	alpha = max(0, 3 - startkey) * !isplayer + 3 * isplayer
-	midi_devices = midi_input_devices()
 	for (a = 0; a < midi_devices; a += 1) {
-	    midi_keys[a] = midi_input_key_presses(a)
-	    midi_releases[a] = midi_input_key_releases(a)
+		midi_keys[a] = midi_input_key_presses(a)
+		midi_releases[a] = midi_input_key_releases(a)
 	}
 	for (a = 0; a < k; a += 1) {
 	    c = (startkey + a) mod 7
 	    if (a > 0 && c != 2 && c != 5) { // Sharp key to the left
 	        c1 = startkey + sharpkeys + b
 	        c2 = startkey + sharpkeys + b + 1
+			if (c1 >= 88) continue
 	        k1 = show_keyboard && piano_key[c1] > 0
 	        k2 = show_keyboard && piano_key[c2] > 0
 	        if (window = 0 && mouse_rectangle(xx + 39 * a, yy, 39, 128)) {
@@ -31,7 +31,7 @@ function draw_piano(argument0, argument1, argument2, argument3) {
 	                key_click[c2] = (mouse_check_button(mb_left))
 	                if (t = 0 && key_click[c2]) {
 	                    selectedkey = c2
-	                    play_sound(instrument, c2, 100 ,100, 0)
+	                    play_sound(songs[song].instrument, c2, 100 ,100, 0)
 	                }
 	                if (a = k - 1) d = 1
 	                if (a = 0) d = 0
@@ -49,7 +49,7 @@ function draw_piano(argument0, argument1, argument2, argument3) {
 	            key_click[c1] = mouse_check_button(mb_left)
 	            if (t = 0 && key_click[c1]) {
 	                selectedkey = c1
-	                play_sound(instrument, c1, 100 ,100, 0)
+	                play_sound(songs[song].instrument, c1, 100 ,100, 0)
 	            }
 	        } else {
 	            key_click[c1] = 0
@@ -93,7 +93,7 @@ function draw_piano(argument0, argument1, argument2, argument3) {
 	                key_click[c1] = mouse_check_button(mb_left)
 	                if (t = 0 && key_click[c1]) {
 	                    selectedkey = c1
-	                    play_sound(instrument, c1, 100 ,100, 0)
+	                    play_sound(songs[song].instrument, c1, 100 ,100, 0)
 	                }
 	                if (a = k - 1) d = 1
 	                if (a = 0) d = 0
@@ -138,17 +138,17 @@ function draw_piano(argument0, argument1, argument2, argument3) {
 	    }
 	}
 	// Check key presses
-	if (window = 0 && text_focus = -1 && key_edit = -1 && !keyboard_check(vk_control)) {
+	if (window = 0 && text_focus = -1 && key_edit = -1 && !check_ctrl()) {
 	for (a = 0; a <= 87; a += 1) {
 	    if (piano_key[a] > 0) {
 	        if (key_press[a] = 0 && keyboard_check(piano_key[a])) {
 	            if (select_lastpressed) {selected_key = a; selected_vel = 100; selected_pan = 100; selected_pit = 0}
-	            if (record = 0) play_sound(instrument, a, 100 ,100, 0)
+	            if (record = 0) play_sound(songs[song].instrument, a, 100 ,100, 0)
 	            if (playing = 0.25) toggle_playing(totalcols)
 	            if (playing && record) {
 	                b = 0
-	                while (!add_block_manual(ceil(marker_pos), b, instrument, a, 100, 100, 0)) b += 1
-	                song_played[round(marker_pos), b] = current_time
+	                while (!add_block_manual(ceil(songs[song].marker_pos), b, songs[song].instrument, a, 100, 100, 0)) b += 1
+	                songs[song].song_played[round(songs[song].marker_pos), b] = current_time
 	            }
 	        }
 	        key_press[a] = keyboard_check(piano_key[a])
@@ -156,6 +156,8 @@ function draw_piano(argument0, argument1, argument2, argument3) {
 	    midi_input_set_key(a, totalcols)
 	}
 	}
+	ds_list_clear(midi_keypresses)
+	ds_list_clear(midi_keyreleases)
 	draw_set_color(0)
 
 

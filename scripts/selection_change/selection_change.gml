@@ -6,51 +6,51 @@ function selection_change(argument0, argument1, argument2) {
 	property = argument0
 	amount = argument1
 	add = argument2
-	str = selection_code
-	if (selected = 0) return 0
-	for (a = 0; a < selection_l; a += 1) {
-	    if (selection_colfirst[a] > -1) {
-	        for (b = selection_colfirst[a]; b <= selection_collast[a]; b += 1) {
-	            if (selection_exists[a, b]) {
+	str = songs[song].selection_code
+	if (songs[song].selected = 0) return 0
+	for (a = 0; a < songs[song].selection_l; a += 1) {
+	    if (songs[song].selection_colfirst[a] > -1) {
+	        for (b = songs[song].selection_colfirst[a]; b <= songs[song].selection_collast[a]; b += 1) {
+	            if (songs[song].selection_exists[a, b]) {
 					switch property {
 						case m_key: {
 							if (add) {
-								val = selection_key[a, b]
+								val = songs[song].selection_key[a, b]
 								val += amount
 							} else {
 								val = amount
 							}
-							if (val >= 0 && val <= 87) selection_key[a, b] = val
+							if (val >= 0 && val <= 87) songs[song].selection_key[a, b] = val
 							break
 						}
 						case m_vel: {
 							if (add) {
-								val = selection_vel[a, b]
+								val = songs[song].selection_vel[a, b]
 								val += amount
 							} else {
 								val = amount
 							}
-							if (val >= 0 && val <= 100) selection_vel[a, b] = val
+							if (val >= 0 && val <= 100) songs[song].selection_vel[a, b] = val
 							break
 						}
 						case m_pan: {
 							if (add) {
-								val = selection_pan[a, b]
+								val = songs[song].selection_pan[a, b]
 								val += amount
 							} else {
 								val = amount
 							}
-							if (val >= 0 && val <= 200) selection_pan[a, b] = val
+							if (val >= 0 && val <= 200) songs[song].selection_pan[a, b] = val
 							break
 						}
 						case m_pit: {
 							if (add) {
-								val = selection_pit[a, b]
+								val = songs[song].selection_pit[a, b]
 								val += amount
 							} else {
 								val = amount
 							}
-							if (val >= -1200 && val <= 1200) selection_pit[a, b] = val
+							if (val >= -1200 && val <= 1200) songs[song].selection_pit[a, b] = val
 							break
 						}
 					}
@@ -59,7 +59,7 @@ function selection_change(argument0, argument1, argument2) {
 	    }
 	}
 	selection_code_update()
-	history_set(h_selectchange, selection_x, selection_y, selection_code, selection_x, selection_y, str)
+	history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
 
 
 

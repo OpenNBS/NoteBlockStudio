@@ -125,7 +125,7 @@ function draw_window_branch_export() {
 	    if (draw_checkbox(x1 + 170, y1 + 320, sch_exp_circuitry, "Export circuitry", "Whether to export the ground, repeaters, and redstone.", true, true)) sch_exp_circuitry=!sch_exp_circuitry
 		draw_text_dynamic(x1 + 380, y1 + 240 + 16, "Size:")
 	    draw_set_halign(fa_right)
-	    draw_text_dynamic(x1 + 520, y1 + 240 + 16, string(enda * 2 + 4) + "x" + string(2) + "x" + string(schwidth))
+	    draw_text_dynamic(x1 + 520, y1 + 240 + 16, string(songs[song].enda * 2 + 4) + "x" + string(2) + "x" + string(schwidth))
 		draw_set_halign(fa_left)
 		draw_text_dynamic(x1 + 380, y1 + 280, "Range:")
 		sch_exp_range_start = draw_inputbox(55,x1 + 380, y1 + 300,40,sch_exp_range_start,"Start Tick")
@@ -164,7 +164,7 @@ function draw_window_branch_export() {
 	    if (draw_checkbox(x1 + 170, y1 + 320, sch_exp_circuitry, "导出电路", "是否导出地面、中继器和红石。", true, true)) sch_exp_circuitry=!sch_exp_circuitry
 		draw_text_dynamic(x1 + 380, y1 + 240 + 16, "大小：")
 	    draw_set_halign(fa_right)
-	    draw_text_dynamic(x1 + 520, y1 + 240 + 16, string(enda * 2 + 4) + "x" + string(2) + "x" + string(schwidth))
+	    draw_text_dynamic(x1 + 520, y1 + 240 + 16, string(songs[song].enda * 2 + 4) + "x" + string(2) + "x" + string(schwidth))
 		draw_set_halign(fa_left)
 		draw_text_dynamic(x1 + 380, y1 + 280, "范围：")
 		sch_exp_range_start = draw_inputbox(55,x1 + 380, y1 + 300,40,sch_exp_range_start,"起始刻")
@@ -207,8 +207,8 @@ function draw_window_branch_export() {
 		}
 	    for (a = 0; a < 9; a += 1) {
 	        b = floor(sb_val[sch_exp_scrollbar] + a)
-	        if (b >= ds_list_size(instrument_list)) break
-	        var ins = instrument_list[| b];
+	        if (b >= ds_list_size(songs[song].instrument_list)) break
+	        var ins = songs[song].instrument_list[| b];
 	        draw_theme_color()
 	        draw_text_dynamic(x1 + 12 + 4, y1 + 74 + 20 * a, ins.name)
 	        draw_text_dynamic(x1 + 12 + 4 + tabw[0], y1 + 74 + 20 * a, string(sch_exp_ins_block[b]) + ", " + string(sch_exp_ins_data[b]))
@@ -224,7 +224,7 @@ function draw_window_branch_export() {
 	    draw_set_color(12632256)
 	    draw_line(x1 + 9 + tabw[0], y1 + 70, x1 + 9 + tabw[0], y1 + 70 + 20 * a)
 	    draw_line(x1 + 8 + tabw[0] + tabw[1], y1 + 70, x1 + 8 + tabw[0] + tabw[1], y1 + 70 + 20 * a)
-	    draw_scrollbar(sch_exp_scrollbar, x1 + 524, y1 + 71, 17, 9, ds_list_size(instrument_list), 0, 1)
+	    draw_scrollbar(sch_exp_scrollbar, x1 + 524, y1 + 71, 17, 9, ds_list_size(songs[song].instrument_list), 0, 1)
 	    xx = x1 + 524 + 16
 	    for (a = tabs - 1; a >= 0; a -= 1) {
 	        draw_window(xx - tabw[a], y1 + 51, xx, y1 + 51 + 20, 1)
@@ -259,8 +259,8 @@ function draw_window_branch_export() {
 			message("Please enter a range!", "Branch export")
 		} else if real(sch_exp_range_start) > real(sch_exp_range_end) {
 			message("Starting tick must be lower than ending tick!", "Branch export")
-		} else if real(sch_exp_range_end) > enda {
-			message("The ending tick is larger than the song!\nThe size of the song is " + string(enda) + ".", "Branch export")
+		} else if real(sch_exp_range_end) > songs[song].enda {
+			message("The ending tick is larger than the song!\nThe size of the song is " + string(songs[song].enda) + ".", "Branch export")
 		}
 		else {
 			sch_exp_range_start = real(sch_exp_range_start)
@@ -283,8 +283,8 @@ function draw_window_branch_export() {
 			message("请输入范围！", "导出分支")
 		} else if real(sch_exp_range_start) > real(sch_exp_range_end) {
 			message("起始刻必须小于结束刻！", "导出分支")
-		} else if real(sch_exp_range_end) > enda {
-			message("结束刻超出歌曲长度！\n歌曲长度为" + string(enda) + "。", "导出分支")
+		} else if real(sch_exp_range_end) > songs[song].enda {
+			message("结束刻超出歌曲长度！\n歌曲长度为" + string(songs[song].enda) + "。", "导出分支")
 		}
 		else {
 			sch_exp_range_start = real(sch_exp_range_start)

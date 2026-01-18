@@ -6,12 +6,12 @@ function remove_layer(argument0, argument1) {
 	num = argument0
 
 	// Update solo
-	solostr = string_replace_all(solostr, "|" + string(num) + "|", "")
+	songs[song].solostr = string_replace_all(songs[song].solostr, "|" + string(num) + "|", "")
 	solonum = ""
-	solostrnew = solostr
-	if (solostr != "") {
-		for (i = 1; i <= string_length(solostr); i++) {
-			char = string_char_at(solostr, i)
+	solostrnew = songs[song].solostr
+	if (songs[song].solostr != "") {
+		for (i = 1; i <= string_length(songs[song].solostr); i++) {
+			char = string_char_at(songs[song].solostr, i)
 			if (char = string_digits(char)) {
 				solonum += char
 			} else if ((char = "|") && (solonum != "") && (real(solonum) > num)) {
@@ -21,43 +21,43 @@ function remove_layer(argument0, argument1) {
 			}
 		}
 	}
-	solostr = solostrnew
+	songs[song].solostr = solostrnew
 
 	// Remove blocks
 	selection_place(false)
-	selection_add(0, num, enda, num, 0, true, true)
-	blocks = selection_code
-	xx = selection_x
-	name = layername[num]
-	lock = layerlock[num]
-	vol = layervol[num]
-	pan = layerstereo[num]
+	selection_add(0, num, songs[song].enda, num, 0, true, true)
+	blocks = songs[song].selection_code
+	xx = songs[song].selection_x
+	name = songs[song].layername[num]
+	lock = songs[song].layerlock[num]
+	vol = songs[song].layervol[num]
+	pan = songs[song].layerstereo[num]
 	selection_delete(true)
 
 	// Remove properties
 	text_str[num + 100] = ""
-	layername[num] = ""
-	layerlock[num] = 0
-	layervol[num] = 100
-	layerstereo[num] = 100
+	songs[song].layername[num] = ""
+	songs[song].layerlock[num] = 0
+	songs[song].layervol[num] = 100
+	songs[song].layerstereo[num] = 100
 
 	// Shift blocks up
-	selection_add(0, num + 1, enda, endb2, 0, true, true)
-	selection_y -= 1
+	selection_add(0, num + 1, songs[song].enda, songs[song].endb2, 0, true, true)
+	songs[song].selection_y -= 1
 	selection_place(true)
 
 	// Shift properties
-	for (l = num; l < endb2 - 1; l++) {
-		layername[l] = layername[l + 1]
-		layerlock[l] = layerlock[l + 1]
-		layervol[l] = layervol[l + 1]
-		layerstereo[l] = layerstereo[l + 1]
+	for (l = num; l < songs[song].endb2 - 1; l++) {
+		songs[song].layername[l] = songs[song].layername[l + 1]
+		songs[song].layerlock[l] = songs[song].layerlock[l + 1]
+		songs[song].layervol[l] = songs[song].layervol[l + 1]
+		songs[song].layerstereo[l] = songs[song].layerstereo[l + 1]
 		swap_text_edit(400 + l, 400 + l + 1)
 	}
 
-	endb2 -= 1
+	songs[song].endb2 -= 1
 
-	changed = 1
+	songs[song].changed = 1
 	if (!argument1) history_set(h_removelayer, num, blocks, xx, name, lock, vol, pan)
 
 

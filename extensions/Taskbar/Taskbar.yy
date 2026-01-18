@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMExtension",
+  "resourceVersion": "1.2",
+  "name": "Taskbar",
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
@@ -14,30 +17,32 @@
   "iosProps": false,
   "tvosProps": false,
   "androidProps": false,
+  "html5Props": false,
   "installdir": "",
   "files": [
-    {"filename":"ClassLibrary1.dll","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[
-        {"externalName":"window_normal","kind":1,"help":"window_normal(window_handle)","hidden":false,"returnType":2,"argCount":0,"args":[
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"ClassLibrary1.dll","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"window_normal","externalName":"window_normal","kind":1,"help":"window_normal(window_handle)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"window_normal","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"window_noprogress","kind":1,"help":"window_noprogress(window_handle)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"window_noprogress","externalName":"window_noprogress","kind":1,"help":"window_noprogress(window_handle)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"window_noprogress","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"window_paused","kind":1,"help":"window_paused(window_handle)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"window_paused","externalName":"window_paused","kind":1,"help":"window_paused(window_handle)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"window_paused","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"window_value","kind":1,"help":"window_value(window_handle,value,max)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"window_value","externalName":"window_value","kind":1,"help":"window_value(window_handle,value,max)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
             2,
             2,
-          ],"resourceVersion":"1.0","name":"window_value","tags":[],"resourceType":"GMExtensionFunction",},
-      ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[
+          ],"documentation":"",},
+      ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"usesRunnerInterface":false,"order":[
         {"name":"window_normal","path":"extensions/Taskbar/Taskbar.yy",},
         {"name":"window_noprogress","path":"extensions/Taskbar/Taskbar.yy",},
         {"name":"window_paused","path":"extensions/Taskbar/Taskbar.yy",},
         {"name":"window_value","path":"extensions/Taskbar/Taskbar.yy",},
-      ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
+      ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "",
   "tvosclassname": null,
   "tvosdelegatename": null,
@@ -75,8 +80,4 @@
     "name": "Extensions",
     "path": "folders/Extensions.yy",
   },
-  "resourceVersion": "1.2",
-  "name": "Taskbar",
-  "tags": [],
-  "resourceType": "GMExtension",
 }

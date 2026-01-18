@@ -16,7 +16,7 @@ function try_compress_selection(str){
 			ret = base64_str
 		}
 	} else {
-		show_debug_message("Cannot compress buffer")
+		log("Cannot compress buffer")
 	}
 	if (compress_buffer != -1) {
 		buffer_delete(compress_buffer)

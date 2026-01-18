@@ -1,6 +1,6 @@
-function open_song_zip(filename) {
+function open_song_zip(filename, replace = false) {
 
-	var dst_path = temp_directory + "nbs\\";
+	var dst_path = temp_directory_included + "nbs" + condstr(os_type = os_windows, "\\", "/");
 	
 	if (directory_exists_lib(dst_path)) {
 		directory_delete_lib(dst_path);
@@ -12,11 +12,11 @@ function open_song_zip(filename) {
 	}
 	
 	var song_path = dst_path + "song.nbs";
-	var sounds_path = dst_path + "sounds\\";
+	var sounds_path = dst_path + "sounds" + condstr(os_type = os_windows, "\\", "/");
 	
 	if (!file_exists_lib(song_path)) {
 		throw("This is not a valid zipped song file!");
 	}
 	
-	open_song_nbs(song_path, sounds_path);
+	return open_song_nbs(song_path, sounds_path, 0, replace);
 }

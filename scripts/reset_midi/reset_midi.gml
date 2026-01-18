@@ -11,6 +11,7 @@ function reset_midi() {
 	        midi_eventx[a, b] = 0
 	        midi_eventnote[a, b] = 0
 	        midi_eventchannel[a, b] = 0
+			midi_eventuntil[a, b] = -1
 	    }
 	    midi_trackname[a] = ""
 	    midi_trackamount[a] = 0

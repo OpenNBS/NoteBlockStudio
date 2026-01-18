@@ -23,45 +23,49 @@ function add_layer() {
 
 	// Update solo
 	solonum = ""
-	solostrnew = solostr
-	if (solostr != "") {
-		for (i = 1; i <= string_length(solostr); i++) {
-			char = string_char_at(solostr, i)
+	solostrnew = ""
+	if (songs[song].solostr != "") {
+		for (i = 1; i <= string_length(songs[song].solostr); i++) {
+			char = string_char_at(songs[song].solostr, i)
 			if (char = string_digits(char)) {
 				solonum += char
-			} else if ((char = "|") && (solonum != "") && (real(solonum) > num)) {
-				// if number is greater than the layer being added, add one to it
-				solostrnew = string_replace_all(solostrnew, "|" + solonum + "|", "|" + string(real(solonum) + 1) + "|")
+			} else if ((char = "|") && (solonum != "")) {
+				if (real(solonum) > num) {
+					// if number is greater than the layer being added, add one to it
+					solostrnew += "|" + string(real(solonum) + 1) + "|"
+				} else {
+					solostrnew += "|" + solonum + "|"
+				}
 				solonum = ""
 			}
 		}
 	}
 	if (lock == 2) solostrnew += "|" + string(num) + "|"
-	solostr = solostrnew
+	songs[song].solostr = solostrnew
 
 	// Shift blocks down
 	selection_place(false)
-	selection_add(0, num, enda, endb2, 0, true, true)
-	selection_y += 1
+	selection_add(0, num, songs[song].enda, songs[song].endb2, 0, true, true)
+	songs[song].selection_y += 1
 	selection_place(true)
 
 	// Set properties on last layer (will be shifted up)
-	text_str[endb2 + 400] = ""
-	layername[endb2] = ""
-	layerlock[endb2] = 0
-	layervol[endb2] = 100
-	layerstereo[endb2] = 100
-	endb2 += 1
+	text_str[songs[song].endb2 + 400] = ""
+	songs[song].layername[songs[song].endb2] = ""
+	songs[song].layerlock[songs[song].endb2] = 0
+	songs[song].layervol[songs[song].endb2] = 100
+	songs[song].layerstereo[songs[song].endb2] = 100
+	songs[song].endb2 += 1
 
 	// Shift properties
-	for (l = endb2; l > num; l--) {
-		layername[l] = layername[l - 1]
-		layerlock[l] = layerlock[l - 1]
-		layervol[l] = layervol[l - 1]
-		layerstereo[l] = layerstereo[l - 1]
+	for (l = songs[song].endb2; l > num; l--) {
+		songs[song].layername[l] = songs[song].layername[l - 1]
+		songs[song].layerlock[l] = songs[song].layerlock[l - 1]
+		songs[song].layervol[l] = songs[song].layervol[l - 1]
+		songs[song].layerstereo[l] = songs[song].layerstereo[l - 1]
 		swap_text_edit(400 + l, 400 + l - 1)
 	}
-	solostr = string_replace_all(solostr, "|" + string(num) + "|", "|" + string(num + 1) + "|")
+	songs[song].solostr = string_replace_all(songs[song].solostr, "|" + string(num) + "|", "|" + string(num + 1) + "|")
 
 	// Place layer back
 	if (blocks != "") {
@@ -69,12 +73,12 @@ function add_layer() {
 		selection_place(true)
 	}
 	text_str[num + 400] = name
-	layername[num] = name
-	layerlock[num] = lock
-	layervol[num] = vol
-	layerstereo[num] = pan
+	songs[song].layername[num] = name
+	songs[song].layerlock[num] = lock
+	songs[song].layervol[num] = vol
+	songs[song].layerstereo[num] = pan
 
-	changed = 1
+	songs[song].changed = 1
 	if (!argument[1]) history_set(h_addlayer, num, blocks, xx, name, lock, vol, pan)
 
 

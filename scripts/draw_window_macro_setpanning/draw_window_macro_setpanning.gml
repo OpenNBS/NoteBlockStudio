@@ -1,7 +1,7 @@
 function draw_window_macro_setpanning() {
 	// draw_window_setpanning()
 	var x1, y1, a, b, str, total_vals, val, decr, inc;
-	if (selected == 0) {
+	if (songs[song].selected == 0) {
 		window = 0
 		return 0
 	}

@@ -1,6 +1,7 @@
 function draw_window_instruments() {
 	// draw_window_instruments()
-	var x1, y1, a, b, c, str, menun, menua, menub, prev;
+	var x1, y1, a, b, c, str, menun, menua, menub, prev, tempo_changer_exists, sound_stopper_exists;
+	var cursong = songs[song]
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
@@ -25,6 +26,17 @@ function draw_window_instruments() {
 	    if (theme != 3) draw_area(x1 + 11, y1 + 65, x1 + 535, y1 + 312)
 	    else draw_area(x1 + 11, y1 + 67, x1 + 535, y1 + 312)
 	}
+	tempo_changer_exists = 0
+	sound_stopper_exists = 0
+	for (a = 0; a < ds_list_size(songs[song].instrument_list); a++) {
+		if (songs[song].instrument_list[| a].name == "Tempo Changer") {
+			tempo_changer_exists = 1
+		}
+		if (songs[song].instrument_list[| a].name == "Sound Stopper") {
+			sound_stopper_exists = 1
+		}
+	}
+	if (mouse_rectangle(x1 + 11, y1 + 67, 524, 245) && mouse_check_button_released(mb_right)) show_menu_ext("add_event_ins", mouse_x, mouse_y, inactive(tempo_changer_exists) + condstr(language != 1, "Add tempo changer", "添加变速器") + "|" + inactive(sound_stopper_exists) + condstr(language != 1, "Add sound stopper", "添加声音抑制器"))
 	if (language != 1) {
 	if (draw_button2(x1 + 455, y1 + 9, 80, "Import", 0, 1)) load_instruments("")
 	if (draw_button2(x1 + 455, y1 + 36, 80, "Open Folder", 0, 1)) open_url(sounds_directory)
@@ -59,51 +71,51 @@ function draw_window_instruments() {
 	}
 	
 	var sounds = 0;
-	for (var i = first_custom_index; i <= ds_list_size(instrument_list) - 1; i++) {
-		var ins = ds_list_find_value(instrument_list, i)
+	for (var i = first_custom_index; i <= ds_list_size(cursong.instrument_list) - 1; i++) {
+		var ins = ds_list_find_value(cursong.instrument_list, i)
 		if (ins.filename != "" && ins.loaded) {
 			sounds++
 		}
 	}
-	if (language != 1) {if (draw_button2(x1 + 12, y1 + 318, 86, "Export sounds", (user_instruments == 0 || sounds == 0))) pack_instruments()}
-	else {if (draw_button2(x1 + 12, y1 + 318, 86, "导出音色", (user_instruments == 0 || sounds == 0))) pack_instruments()}
+	if (language != 1) {if (draw_button2(x1 + 12, y1 + 318, 86, "Export sounds", (cursong.user_instruments == 0 || sounds == 0))) pack_instruments()}
+	else {if (draw_button2(x1 + 12, y1 + 318, 86, "导出音色", (cursong.user_instruments == 0 || sounds == 0))) pack_instruments()}
 	c = 0
-	if (draw_button2(x1 + 110, y1 + 318, 80, condstr(language != 1, "Add", "添加"), user_instruments >= 240) && wmenu = 0) {
-	    changed = true
-	    insselect = ds_list_size(instrument_list)
-	    ds_list_add(instrument_list, new_instrument("Custom instrument #" + string(user_instruments + 1), "", true))
+	if (draw_button2(x1 + 110, y1 + 318, 80, condstr(language != 1, "Add", "添加"), cursong.user_instruments >= 240) && wmenu = 0) {
+	    cursong.changed = true
+	    insselect = ds_list_size(cursong.instrument_list)
+	    ds_list_add(cursong.instrument_list, new_instrument("Custom instrument #" + string(cursong.user_instruments + 1), "", true))
 	    c = 1
 	}
 	var userselect = -1;
-	if (insselect > -1 && instrument_list[| insselect].user)
-	    userselect = instrument_list[| insselect]
+	if (insselect > -1 && cursong.instrument_list[| insselect].user)
+	    userselect = cursong.instrument_list[| insselect]
 	if (language != 1) {
 	if (draw_button2(x1 + 194, y1 + 318, 80, "Remove", userselect < 0) && wmenu = 0) {
 		if ((userselect.num_blocks == 0) || (message_yesnocancel("This will remove " + string(userselect.num_blocks) + " block" + condstr(userselect.num_blocks > 1, "s") + " using this instrument and cannot be undone. Confirm?", "Warning"))) {
 			instrument_remove(userselect)
-			insselect = min(ds_list_size(instrument_list) - 1, insselect)
-			if (instrument = userselect)
-				instrument = instrument_list[| 0]
+			insselect = min(ds_list_size(cursong.instrument_list) - 1, insselect)
+			if (cursong.instrument = userselect)
+				cursong.instrument = cursong.instrument_list[| 0]
 				selected_vel = 100
 				selected_pan = 100
 				selected_pit = 0
 			c = 1
 		}
 	}
-	if (draw_button2(x1 + 278, y1 + 318, 80, "Shift up", (userselect < 0) || (user_instruments <= 1) || (insselect == first_custom_index)) && wmenu = 0) {
+	if (draw_button2(x1 + 278, y1 + 318, 80, "Shift up", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == first_custom_index)) && wmenu = 0) {
 		insselect -= 1
-		instrument_swap(userselect, instrument_list[| insselect])
+		instrument_swap(userselect, cursong.instrument_list[| insselect])
 		c = 1
 	}
-	if (draw_button2(x1 + 362, y1 + 318, 80, "Shift down", (userselect < 0) || (user_instruments <= 1) || (insselect == ds_list_size(instrument_list) - 1) && wmenu = 0)) {
+	if (draw_button2(x1 + 362, y1 + 318, 80, "Shift down", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == ds_list_size(cursong.instrument_list) - 1) && wmenu = 0)) {
 		insselect += 1
-		instrument_swap(userselect, instrument_list[| insselect])
+		instrument_swap(userselect, cursong.instrument_list[| insselect])
 		c = 1
 	}
 	if (draw_button2(x1 + 456, y1 + 318, 80, "OK") && wmenu = 0 && (windowopen = 1 || theme != 3)) {
 		windowclose = 1
-		if (save_version < 5 && user_instruments > 18) {
-			show_message("This song contains more than 18 instruments and cannot be saved in version " + string(save_version) + ". The save version will be changed to " + string(nbs_version) + ".")
+		if (save_version < 5 && cursong.user_instruments > 18) {
+			message("This song contains more than 18 instruments and cannot be saved in version " + string(save_version) + ". The save version will be changed to " + string(nbs_version) + ".", "Note Block Studio")
 			save_version = nbs_version
 		}
 		save_settings()
@@ -112,29 +124,29 @@ function draw_window_instruments() {
 	if (draw_button2(x1 + 194, y1 + 318, 80, "移除", userselect < 0) && wmenu = 0) {
 		if ((userselect.num_blocks == 0) || (message_yesnocancel("这将移除使用该音色的 " + string(userselect.num_blocks) + " 个方块并且不能撤销。确定吗？", "警告"))) {
 			instrument_remove(userselect)
-			insselect = min(ds_list_size(instrument_list) - 1, insselect)
-			if (instrument = userselect)
-				instrument = instrument_list[| 0]
+			insselect = min(ds_list_size(cursong.instrument_list) - 1, insselect)
+			if (cursong.instrument = userselect)
+				cursong.instrument = cursong.instrument_list[| 0]
 				selected_vel = 100
 				selected_pan = 100
 				selected_pit = 0
 			c = 1
 		}
 	}
-	if (draw_button2(x1 + 278, y1 + 318, 80, "上移", (userselect < 0) || (user_instruments <= 1) || (insselect == first_custom_index)) && wmenu = 0) {
+	if (draw_button2(x1 + 278, y1 + 318, 80, "上移", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == first_custom_index)) && wmenu = 0) {
 		insselect -= 1
-		instrument_swap(userselect, instrument_list[| insselect])
+		instrument_swap(userselect, cursong.instrument_list[| insselect])
 		c = 1
 	}
-	if (draw_button2(x1 + 362, y1 + 318, 80, "下移", (userselect < 0) || (user_instruments <= 1) || (insselect == ds_list_size(instrument_list) - 1) && wmenu = 0)) {
+	if (draw_button2(x1 + 362, y1 + 318, 80, "下移", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == ds_list_size(cursong.instrument_list) - 1) && wmenu = 0)) {
 		insselect += 1
-		instrument_swap(userselect, instrument_list[| insselect])
+		instrument_swap(userselect, cursong.instrument_list[| insselect])
 		c = 1
 	}
 	if (draw_button2(x1 + 456, y1 + 318, 80, "确定") && wmenu = 0 && (windowopen = 1 || theme != 3)) {
 		windowclose = 1
-		if (save_version < 5 && user_instruments > 18) {
-			show_message("此歌曲含有多于18个音色，无法保存为版本 " + string(save_version) + "。将保存为版本 " + string(nbs_version) + "。")
+		if (save_version < 5 && cursong.user_instruments > 18) {
+			message("此歌曲含有多于18个音色，无法保存为版本 " + string(save_version) + "。将保存为版本 " + string(nbs_version) + "。", "Note Block Studio")
 			save_version = nbs_version
 		}
 		save_settings()
@@ -144,15 +156,15 @@ function draw_window_instruments() {
 	    insedit = -1
 	}
 	if (mouse_check_button_released(mb_left) && c = 0) {
-	    if (!mouse_rectangle(x1 + 14, y1 + 88, 476, min(ds_list_size(instrument_list) * 20, 220)) && (!mouse_rectangle(x1 + 14, y1 + 318, 476, 24))) {
+	    if (!mouse_rectangle(x1 + 14, y1 + 88, 476, min(ds_list_size(cursong.instrument_list) * 20, 220)) && (!mouse_rectangle(x1 + 14, y1 + 318, 476, 24))) {
 			insselect = -1
 		}
 	}
 	// Instruments
 	for (a = 0; a <= 10; a += 1) {
 	    b = floor(sb_val[3]) + a
-	    if (b >= ds_list_size(instrument_list)) break
-	    var ins = instrument_list[| b];
+	    if (b >= ds_list_size(cursong.instrument_list)) break
+	    var ins = cursong.instrument_list[| b];
 	    if (insselect = b) {
 	        draw_set_color(10512468)
 	        draw_rectangle(x1 + 14, y1 + 106 + 20 * a - 20, x1 + 520, y1 + 106 + 20 * a, 0)
@@ -165,7 +177,7 @@ function draw_window_instruments() {
 	    // INS NAME
 		prev = ins.name
 	    ins.name = draw_text_edit(70 + b, ins.name, x1 + 18, y1 + 90 + 20 * a, 178, 20, 1, b < first_custom_index)
-		if (ins.name != prev) changed = 1
+		if (ins.name != prev) cursong.changed = 1
 	    // INS SOUND
 	    draw_set_color(make_color_rgb(120, 120, 120))
 	    if (ins.user) {draw_theme_color()}
@@ -240,7 +252,7 @@ function draw_window_instruments() {
 	draw_line(x1 + 13 + 194, y1 + 87, x1 + 13 + 194, y1 + 86 + 20 * a)
 	draw_line(x1 + 13 + 194 + 160, y1 + 87, x1 + 13 + 194 + 160, y1 + 86 + 20 * a)
 	draw_line(x1 + 13 + 194 + 160 + 80, y1 + 87, x1 + 13 + 194 + 160 + 80, y1 + 86 + 20 * a)
-	draw_scrollbar(insscrollbar, x1 + 14 + 194 + 160 + 80 + 70, y1 + 88, 21, 9, ds_list_size(instrument_list) - 2, 0, 1)
+	draw_scrollbar(insscrollbar, x1 + 14 + 194 + 160 + 80 + 70, y1 + 88, 21, 9, ds_list_size(cursong.instrument_list) - 2, 0, 1)
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) {
 		window_set_cursor(curs)
 		if (array_length(text_mouseover) = 0) window_set_cursor(cr_default)

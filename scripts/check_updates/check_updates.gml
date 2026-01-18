@@ -49,9 +49,15 @@ function check_updates() {
 						update = 2;
 					} else {
 						if (question(condstr(language != 1, "Version " + new_version + " is available! Do you want to download it?", "版本 " + new_version + " 可用！是否现在下载？"), condstr(language != 1, "Update available!", "更新可用！"))) {
-							var download_url = release.assets[0].browser_download_url;
-							update_download = http_get_file(download_url, update_file);
-							update = 4;
+							if (os_type = os_windows) {
+								var download_url = release.assets[0].browser_download_url;
+								update_download = http_get_file(download_url, update_file);
+								update = 4;
+							} else if (os_type = os_macosx) {
+								open_url("https://testflight.apple.com/join/hg58hwbM")
+							} else {
+								open_url("https://github.com/OpenNBS/NoteBlockStudio/releases")
+							}
 						} else {
 							update = 1;
 						}

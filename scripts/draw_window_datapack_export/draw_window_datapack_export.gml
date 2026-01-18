@@ -95,8 +95,8 @@ function draw_window_datapack_export() {
 
 		//Name
 		draw_text_dynamic(x1 + 16, y1 + 208, "Unique name:")
-		if (song_name != "") dat_name = song_name
-		else if (filename != "" && filename != "-player") dat_name = string_copy(filename_name(filename), 1, string_length(filename_name(filename))-4)
+		if (songs[song].song_name != "") dat_name = songs[song].song_name
+		else if (songs[song].filename != "" && songs[song].filename != "-player") dat_name = string_copy(filename_name(songs[song].filename), 1, string_length(filename_name(songs[song].filename))-4)
 		else dat_name = ""
 		dat_name = draw_inputbox(50,x1 + 16, y1 + 225,145,dat_name,"This name will be used in the command"+br+"for playing the song inside the game.")
 
@@ -164,9 +164,9 @@ function draw_window_datapack_export() {
 		//Looping
 		if (draw_checkbox(x1 + 362, y1 + 313, dat_enablelooping, "Enable looping", "If enabled, the song will loop at the"+br+"end of playback instead of stopping.", false, true)) dat_enablelooping = !dat_enablelooping
 		if(dat_enablelooping) { 
-			loopstart = median(0, draw_dragvalue(7, x1 + 490, y1 + 333, loopstart, 0.5), obj_controller.enda)
+			songs[song].loopstart = median(0, draw_dragvalue(7, x1 + 490, y1 + 333, songs[song].loopstart, 0.5), obj_controller.songs[song].enda)
 		}
-		else draw_set_color(c_gray) draw_text_dynamic(x1 + 490, y1 + 333, loopstart)
+		else draw_set_color(c_gray) draw_text_dynamic(x1 + 490, y1 + 333, songs[song].loopstart)
 		draw_text_dynamic(x1 + 380, y1 + 333, "Loop start:")
 		popup_set_window(x1 + 380, y1 + 329, 125, 21, "Tick the song will jump to at the end of playback")
 		draw_theme_color()
@@ -235,8 +235,8 @@ function draw_window_datapack_export() {
 
 		//Name
 		draw_text_dynamic(x1 + 16, y1 + 208, "唯一名称:")
-		if (song_name != "") dat_name = song_name
-		else if (filename != "" && filename != "-player") dat_name = string_copy(filename_name(filename), 1, string_length(filename_name(filename))-4)
+		if (songs[song].song_name != "") dat_name = songs[song].song_name
+		else if (songs[song].filename != "" && songs[song].filename != "-player") dat_name = string_copy(filename_name(songs[song].filename), 1, string_length(filename_name(songs[song].filename))-4)
 		else dat_name = ""
 		dat_name = draw_inputbox(50,x1 + 16, y1 + 225,145,dat_name,"该名称会作为在游戏里播放使用的命令名称。")
 
@@ -304,9 +304,9 @@ function draw_window_datapack_export() {
 		//Looping
 		if (draw_checkbox(x1 + 362, y1 + 313, dat_enablelooping, "启用循环", "如果开启，歌曲播放到最后将会循环。", false, true)) dat_enablelooping = !dat_enablelooping
 		if(dat_enablelooping) { 
-			loopstart = median(0, draw_dragvalue(7, x1 + 490, y1 + 333, loopstart, 0.5), obj_controller.enda)
+			songs[song].loopstart = median(0, draw_dragvalue(7, x1 + 490, y1 + 333, songs[song].loopstart, 0.5), obj_controller.songs[song].enda)
 		}
-		else draw_set_color(c_gray) draw_text_dynamic(x1 + 490, y1 + 333, loopstart)
+		else draw_set_color(c_gray) draw_text_dynamic(x1 + 490, y1 + 333, songs[song].loopstart)
 		draw_text_dynamic(x1 + 380, y1 + 333, "循环开始:")
 		popup_set_window(x1 + 380, y1 + 329, 125, 21, "播放完循环时回到的时刻。")
 		draw_theme_color()

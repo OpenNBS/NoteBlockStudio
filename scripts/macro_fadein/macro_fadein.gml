@@ -1,8 +1,8 @@
 function macro_fadein() {
 	// macro_fadein()
 	var str, total_vals, val, decr, maxdecr
-	str = selection_code
-	if (selected = 0) return 0
+	str = songs[song].selection_code
+	if (songs[song].selected = 0) return 0
 	var arr_data = selection_to_array_ext()
 	total_vals = array_length(arr_data)
 	val = 0
@@ -26,8 +26,8 @@ function macro_fadein() {
 		current_factor += decr
 		val ++
 	}
-	selection_load_from_array(selection_x, selection_y, arr_data)
-	history_set(h_selectchange, selection_x, selection_y, selection_code, selection_x, selection_y, str)
+	selection_load_from_array(songs[song].selection_x, songs[song].selection_y, arr_data)
+	history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
 	if(!keyboard_check(vk_alt)) selection_place(false)
 
 

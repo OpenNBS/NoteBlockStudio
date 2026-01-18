@@ -10,7 +10,7 @@ encode42
 
 *Developers
 Bentroen
-chenxi050402
+OctoFlare
 
 *Former developers
 Hielke

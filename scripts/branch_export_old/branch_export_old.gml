@@ -1,7 +1,7 @@
 function branch_export_old() {
 	// branch_export()
 	var fn, a, b, o, z, sch_len, nblocks, nblockins, nblockvel, zvel, pass, tags, sch_layer1, sch_layer2, sch_layer3, entries
-	fn = string(get_save_filename_ext("Minecraft Schematics (*.schematic)|*.schematic", filename_new_ext(filename, ""), "", "Export Schematic"))
+	fn = string(get_save_filename_ext("Minecraft Schematics (*.schematic)|*.schematic", filename_new_ext(songs[song].filename, ""), "", "Export Schematic"))
 	if (fn = "") return 0
 	//fn = string_replace_all(fn, ".schematic", "")
 	//fn += ".schematic"
@@ -12,9 +12,9 @@ function branch_export_old() {
 	var mySchematic = schematic_create();
 	var rangestart = sch_exp_range_start
 	var rangeend = sch_exp_range_end
-	show_debug_message("rangestart " + string(rangestart))
-	show_debug_message("rangeend " + string(rangeend))
-	show_debug_message("enda " + string(enda))
+	log("rangestart " + string(rangestart))
+	log("rangeend " + string(rangeend))
+	log("enda " + string(songs[song].enda))
 	tags = 0
 	sch_len = (rangeend - rangestart) * 2 + 4
 	if sch_exp_polyphony = 1 && sch_exp_velocity = 0 schematic_size(mySchematic, 1, sch_len, 2 )
@@ -50,27 +50,27 @@ function branch_export_old() {
 		nblocks = 0
 
 		for (a = rangestart; a <= rangeend; a ++) {
-			if (o.song_exists[a, sellayer]) {
-					if (o.song_key[a, sellayer] > 32 && o.song_key[a, sellayer] < 58) {
+			if (o.songs[o.song].song_exists[a, sellayer]) {
+					if (o.songs[o.song].song_key[a, sellayer] > 32 && o.songs[o.song].song_key[a, sellayer] < 58) {
 						if sch_exp_stereo = 4 { // Add all note blocks
-							nblockkey[z, nblocks] = o.song_key[a, sellayer]
-							nblockins[z, nblocks] = o.song_ins[a, sellayer] - 100002
-							nblockvel[z, nblocks] = o.song_vel[a, sellayer]
+							nblockkey[z, nblocks] = o.songs[o.song].song_key[a, sellayer]
+							nblockins[z, nblocks] = o.songs[o.song].song_ins[a, sellayer] - 100002
+							nblockvel[z, nblocks] = o.songs[o.song].song_vel[a, sellayer]
 							nblocks ++
-						} else if sch_exp_stereo = 3 && o.song_pan[a, sellayer] = 100 { // Add centered note blocks
-							nblockkey[z, nblocks] = o.song_key[a, sellayer]
-							nblockins[z, nblocks] = o.song_ins[a, sellayer] - 100002
-							nblockvel[z, nblocks] = o.song_vel[a, sellayer]
+						} else if sch_exp_stereo = 3 && o.songs[o.song].song_pan[a, sellayer] = 100 { // Add centered note blocks
+							nblockkey[z, nblocks] = o.songs[o.song].song_key[a, sellayer]
+							nblockins[z, nblocks] = o.songs[o.song].song_ins[a, sellayer] - 100002
+							nblockvel[z, nblocks] = o.songs[o.song].song_vel[a, sellayer]
 							nblocks ++
-						} else if  sch_exp_stereo = 2 && o.song_pan[a, sellayer] < 100 { // Add left note blocks
-							nblockkey[z, nblocks] = o.song_key[a, sellayer]
-							nblockins[z, nblocks] = o.song_ins[a, sellayer] - 100002
-							nblockvel[z, nblocks] = o.song_vel[a, sellayer]
+						} else if  sch_exp_stereo = 2 && o.songs[o.song].song_pan[a, sellayer] < 100 { // Add left note blocks
+							nblockkey[z, nblocks] = o.songs[o.song].song_key[a, sellayer]
+							nblockins[z, nblocks] = o.songs[o.song].song_ins[a, sellayer] - 100002
+							nblockvel[z, nblocks] = o.songs[o.song].song_vel[a, sellayer]
 							nblocks ++
-						} else if sch_exp_stereo = 1 && o.song_pan[a, sellayer] > 100 { //Add right note blocks
-							nblockkey[z, nblocks] = o.song_key[a, sellayer]
-							nblockins[z, nblocks] = o.song_ins[a, sellayer] - 100002
-							nblockvel[z, nblocks] = o.song_vel[a, sellayer]
+						} else if sch_exp_stereo = 1 && o.songs[o.song].song_pan[a, sellayer] > 100 { //Add right note blocks
+							nblockkey[z, nblocks] = o.songs[o.song].song_key[a, sellayer]
+							nblockins[z, nblocks] = o.songs[o.song].song_ins[a, sellayer] - 100002
+							nblockvel[z, nblocks] = o.songs[o.song].song_vel[a, sellayer]
 							nblocks ++
 						} else {
 							nblockkey[z, nblocks] = 0
@@ -183,27 +183,27 @@ function branch_export_old() {
 		nblocks = 0
 
 		for (a = rangestart; a <= rangeend; a ++) {
-			if (o.song_exists[a, sellayer]) {
-					if (o.song_key[a, sellayer] > 32 && o.song_key[a, sellayer] < 58) {
+			if (o.songs[o.song].song_exists[a, sellayer]) {
+					if (o.songs[o.song].song_key[a, sellayer] > 32 && o.songs[o.song].song_key[a, sellayer] < 58) {
 						if sch_exp_stereo = 4 { // Add all note blocks
-							nblockkey[z, nblocks] = o.song_key[a, sellayer]
-							nblockins[z, nblocks] = o.song_ins[a, sellayer] - 100002
-							nblockvel[z, nblocks] = o.song_vel[a, sellayer]
+							nblockkey[z, nblocks] = o.songs[o.song].song_key[a, sellayer]
+							nblockins[z, nblocks] = o.songs[o.song].song_ins[a, sellayer] - 100002
+							nblockvel[z, nblocks] = o.songs[o.song].song_vel[a, sellayer]
 							nblocks ++
-						} else if sch_exp_stereo = 3 && o.song_pan[a, sellayer] = 100 { // Add centered note blocks
-							nblockkey[z, nblocks] = o.song_key[a, sellayer]
-							nblockins[z, nblocks] = o.song_ins[a, sellayer] - 100002
-							nblockvel[z, nblocks] = o.song_vel[a, sellayer]
+						} else if sch_exp_stereo = 3 && o.songs[o.song].song_pan[a, sellayer] = 100 { // Add centered note blocks
+							nblockkey[z, nblocks] = o.songs[o.song].song_key[a, sellayer]
+							nblockins[z, nblocks] = o.songs[o.song].song_ins[a, sellayer] - 100002
+							nblockvel[z, nblocks] = o.songs[o.song].song_vel[a, sellayer]
 							nblocks ++
-						} else if  sch_exp_stereo = 2 && o.song_pan[a, sellayer] < 100 { // Add left note blocks
-							nblockkey[z, nblocks] = o.song_key[a, sellayer]
-							nblockins[z, nblocks] = o.song_ins[a, sellayer] - 100002
-							nblockvel[z, nblocks] = o.song_vel[a, sellayer]
+						} else if  sch_exp_stereo = 2 && o.songs[o.song].song_pan[a, sellayer] < 100 { // Add left note blocks
+							nblockkey[z, nblocks] = o.songs[o.song].song_key[a, sellayer]
+							nblockins[z, nblocks] = o.songs[o.song].song_ins[a, sellayer] - 100002
+							nblockvel[z, nblocks] = o.songs[o.song].song_vel[a, sellayer]
 							nblocks ++
-						} else if sch_exp_stereo = 1 && o.song_pan[a, sellayer] > 100 { //Add right note blocks
-							nblockkey[z, nblocks] = o.song_key[a, sellayer]
-							nblockins[z, nblocks] = o.song_ins[a, sellayer] - 100002
-							nblockvel[z, nblocks] = o.song_vel[a, sellayer]
+						} else if sch_exp_stereo = 1 && o.songs[o.song].song_pan[a, sellayer] > 100 { //Add right note blocks
+							nblockkey[z, nblocks] = o.songs[o.song].song_key[a, sellayer]
+							nblockins[z, nblocks] = o.songs[o.song].song_ins[a, sellayer] - 100002
+							nblockvel[z, nblocks] = o.songs[o.song].song_vel[a, sellayer]
 							nblocks ++
 						} else {
 							nblockkey[z, nblocks] = 0
@@ -319,28 +319,28 @@ function branch_export_old() {
 		nblocks = 0
 
 		for (a = rangestart; a <= rangeend; a ++) {
-			if (o.song_exists[a, sellayer]) {
-					if (o.song_key[a, sellayer] > 32 && o.song_key[a, sellayer] < 58) {
+			if (o.songs[o.song].song_exists[a, sellayer]) {
+					if (o.songs[o.song].song_key[a, sellayer] > 32 && o.songs[o.song].song_key[a, sellayer] < 58) {
 						if sch_exp_stereo = 4 { // Add all note blocks
-							nblockkey[z, nblocks] = o.song_key[a, sellayer]
-							nblockins[z, nblocks] = o.song_ins[a, sellayer] - 100002
-							nblockvel[z, nblocks] = o.song_vel[a, sellayer]
+							nblockkey[z, nblocks] = o.songs[o.song].song_key[a, sellayer]
+							nblockins[z, nblocks] = o.songs[o.song].song_ins[a, sellayer] - 100002
+							nblockvel[z, nblocks] = o.songs[o.song].song_vel[a, sellayer]
 							nblocks ++
-						} else if sch_exp_stereo = 3 && o.song_pan[a, sellayer] != 100 { // Add centered note blocks
-							nblockkey[z, nblocks] = o.song_key[a, sellayer]
-							nblockins[z, nblocks] = o.song_ins[a, sellayer] - 100002
-							nblockvel[z, nblocks] = o.song_vel[a, sellayer]
+						} else if sch_exp_stereo = 3 && o.songs[o.song].song_pan[a, sellayer] != 100 { // Add centered note blocks
+							nblockkey[z, nblocks] = o.songs[o.song].song_key[a, sellayer]
+							nblockins[z, nblocks] = o.songs[o.song].song_ins[a, sellayer] - 100002
+							nblockvel[z, nblocks] = o.songs[o.song].song_vel[a, sellayer]
 							nblocks ++
-						} else if  sch_exp_stereo = 2 && o.song_pan[a, sellayer] < 100 { // Add left note blocks
-							nblockkey[z, nblocks] = o.song_key[a, sellayer]
-							nblockins[z, nblocks] = o.song_ins[a, sellayer] - 100002
-							nblockvel[z, nblocks] = o.song_vel[a, sellayer]
+						} else if  sch_exp_stereo = 2 && o.songs[o.song].song_pan[a, sellayer] < 100 { // Add left note blocks
+							nblockkey[z, nblocks] = o.songs[o.song].song_key[a, sellayer]
+							nblockins[z, nblocks] = o.songs[o.song].song_ins[a, sellayer] - 100002
+							nblockvel[z, nblocks] = o.songs[o.song].song_vel[a, sellayer]
 							//show_debug_message(nblockkey[z, nblocks])
 							nblocks ++
-						} else if sch_exp_stereo = 1 && o.song_pan[a, sellayer] > 100 { //Add right note blocks
-							nblockkey[z, nblocks] = o.song_key[a, sellayer]
-							nblockins[z, nblocks] = o.song_ins[a, sellayer] - 100002
-							nblockvel[z, nblocks] = o.song_vel[a, sellayer]
+						} else if sch_exp_stereo = 1 && o.songs[o.song].song_pan[a, sellayer] > 100 { //Add right note blocks
+							nblockkey[z, nblocks] = o.songs[o.song].song_key[a, sellayer]
+							nblockins[z, nblocks] = o.songs[o.song].song_ins[a, sellayer] - 100002
+							nblockvel[z, nblocks] = o.songs[o.song].song_vel[a, sellayer]
 							nblocks ++
 						} else {
 							nblockkey[z, nblocks] = 0
@@ -471,60 +471,60 @@ function branch_export_old() {
 		if sch_exp_polyphony = 1 {
 			if nblockkey[real(sch_exp_layer1) - 1, a] != 0 { 
 				if sch_exp_stereo = 4 noteblocks++
-				if sch_exp_stereo = 3 && o.song_pan[a, real(sch_exp_layer1) - 1] = 100 noteblocks++
-				if sch_exp_stereo = 2 && o.song_pan[a, real(sch_exp_layer1) - 1] < 100 noteblocks++
-				if sch_exp_stereo = 1 && o.song_pan[a, real(sch_exp_layer1) - 1] > 100 noteblocks++
+				if sch_exp_stereo = 3 && o.songs[o.song].song_pan[a, real(sch_exp_layer1) - 1] = 100 noteblocks++
+				if sch_exp_stereo = 2 && o.songs[o.song].song_pan[a, real(sch_exp_layer1) - 1] < 100 noteblocks++
+				if sch_exp_stereo = 1 && o.songs[o.song].song_pan[a, real(sch_exp_layer1) - 1] > 100 noteblocks++
 			}
 		}
 		if sch_exp_polyphony = 2 {
 			if nblockkey[real(sch_exp_layer1) - 1, a] != 0 {
 				if sch_exp_stereo = 4 noteblocks++
-				if sch_exp_stereo = 3 && o.song_pan[a, real(sch_exp_layer1) - 1] = 100 noteblocks++
-				if sch_exp_stereo = 2 && o.song_pan[a, real(sch_exp_layer1) - 1] < 100 noteblocks++
-				if sch_exp_stereo = 1 && o.song_pan[a, real(sch_exp_layer1) - 1] > 100 noteblocks++
+				if sch_exp_stereo = 3 && o.songs[o.song].song_pan[a, real(sch_exp_layer1) - 1] = 100 noteblocks++
+				if sch_exp_stereo = 2 && o.songs[o.song].song_pan[a, real(sch_exp_layer1) - 1] < 100 noteblocks++
+				if sch_exp_stereo = 1 && o.songs[o.song].song_pan[a, real(sch_exp_layer1) - 1] > 100 noteblocks++
 			}
-			if o.song_exists[a, real(sch_exp_layer2) - 1] { 
+			if o.songs[o.song].song_exists[a, real(sch_exp_layer2) - 1] { 
 				if sch_exp_stereo = 4 noteblocks++
-				if sch_exp_stereo = 3 && o.song_pan[a, real(sch_exp_layer2) - 1] = 100 noteblocks++
-				if sch_exp_stereo = 2 && o.song_pan[a, real(sch_exp_layer2) - 1] < 100 noteblocks++
-				if sch_exp_stereo = 1 && o.song_pan[a, real(sch_exp_layer2) - 1] > 100 noteblocks++
+				if sch_exp_stereo = 3 && o.songs[o.song].song_pan[a, real(sch_exp_layer2) - 1] = 100 noteblocks++
+				if sch_exp_stereo = 2 && o.songs[o.song].song_pan[a, real(sch_exp_layer2) - 1] < 100 noteblocks++
+				if sch_exp_stereo = 1 && o.songs[o.song].song_pan[a, real(sch_exp_layer2) - 1] > 100 noteblocks++
 			}
 		}
 		if sch_exp_polyphony = 3 {
-			if o.song_exists[a, real(sch_exp_layer1) - 1] { 
+			if o.songs[o.song].song_exists[a, real(sch_exp_layer1) - 1] { 
 				if sch_exp_stereo = 4 noteblocks++
-				if sch_exp_stereo = 3 && o.song_pan[a, real(sch_exp_layer1) - 1] = 100 {
+				if sch_exp_stereo = 3 && o.songs[o.song].song_pan[a, real(sch_exp_layer1) - 1] = 100 {
 					noteblocks++ 
 					//show_debug_message(string(a) + " " + string(real(sch_exp_layerX) - 1) + " hit")
 				}
-				if sch_exp_stereo = 2 && o.song_pan[a, real(sch_exp_layer1) - 1] < 100 {
+				if sch_exp_stereo = 2 && o.songs[o.song].song_pan[a, real(sch_exp_layer1) - 1] < 100 {
 					noteblocks++ 
 				}
-				if sch_exp_stereo = 1 && o.song_pan[a, real(sch_exp_layer1) - 1] > 100 {
-					noteblocks++ 
-				}
-			}
-			if o.song_exists[a, real(sch_exp_layer2) - 1] { 
-				if sch_exp_stereo = 4 noteblocks++
-				if sch_exp_stereo = 3 && o.song_pan[a, real(sch_exp_layer2) - 1] = 100 {
-					noteblocks++ 
-				}
-				if sch_exp_stereo = 2 && o.song_pan[a, real(sch_exp_layer2) - 1] < 100 {
-					noteblocks++ 
-				}
-				if sch_exp_stereo = 1 && o.song_pan[a, real(sch_exp_layer2) - 1] > 100 {
+				if sch_exp_stereo = 1 && o.songs[o.song].song_pan[a, real(sch_exp_layer1) - 1] > 100 {
 					noteblocks++ 
 				}
 			}
-			if o.song_exists[a, real(sch_exp_layer3) - 1] { 
+			if o.songs[o.song].song_exists[a, real(sch_exp_layer2) - 1] { 
 				if sch_exp_stereo = 4 noteblocks++
-				if sch_exp_stereo = 3 && o.song_pan[a, real(sch_exp_layer3) - 1] = 100 {
+				if sch_exp_stereo = 3 && o.songs[o.song].song_pan[a, real(sch_exp_layer2) - 1] = 100 {
 					noteblocks++ 
 				}
-				if sch_exp_stereo = 2 && o.song_pan[a, real(sch_exp_layer3) - 1] < 100 {
+				if sch_exp_stereo = 2 && o.songs[o.song].song_pan[a, real(sch_exp_layer2) - 1] < 100 {
 					noteblocks++ 
 				}
-				if sch_exp_stereo = 1 && o.song_pan[a, real(sch_exp_layer3) - 1] > 100 {
+				if sch_exp_stereo = 1 && o.songs[o.song].song_pan[a, real(sch_exp_layer2) - 1] > 100 {
+					noteblocks++ 
+				}
+			}
+			if o.songs[o.song].song_exists[a, real(sch_exp_layer3) - 1] { 
+				if sch_exp_stereo = 4 noteblocks++
+				if sch_exp_stereo = 3 && o.songs[o.song].song_pan[a, real(sch_exp_layer3) - 1] = 100 {
+					noteblocks++ 
+				}
+				if sch_exp_stereo = 2 && o.songs[o.song].song_pan[a, real(sch_exp_layer3) - 1] < 100 {
+					noteblocks++ 
+				}
+				if sch_exp_stereo = 1 && o.songs[o.song].song_pan[a, real(sch_exp_layer3) - 1] > 100 {
 					noteblocks++ 
 				}
 			}
@@ -534,7 +534,7 @@ function branch_export_old() {
 	entries = rangeend - rangestart
 	for (c = 0; c < sch_exp_polyphony; c ++) { // Corrections hack
 		for (a = 0; a <= entries; a ++) {
-			if o.song_exists[rangestart + a, c] { 
+			if o.songs[o.song].song_exists[rangestart + a, c] { 
 				if (schematic_block_get(mySchematic, noteblockz[c, a], noteblockx[c, a], 1) = 25) {
 					schematic_block_set(mySchematic, noteblockz[c, a], noteblockx[c, a], 2, 0)
 				}
@@ -551,11 +551,11 @@ function branch_export_old() {
 		}
 	}	
 
-	show_debug_message(sch_layer1)
-	show_debug_message(sch_layer2)
-	show_debug_message(sch_layer3)
-	show_debug_message(entries)
-	show_debug_message(noteblocks)
+	log(sch_layer1)
+	log(sch_layer2)
+	log(sch_layer3)
+	log(entries)
+	log(noteblocks)
 	schematic_save(mySchematic, fn);
 	schematic_destroy(mySchematic);
 	schematic_end();

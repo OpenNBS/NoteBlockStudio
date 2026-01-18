@@ -1,11 +1,11 @@
 function macro_chorus() {
 	// macro_chorus()
 	var str, total_vals, val;
-	str = selection_code
+	str = songs[song].selection_code
 	var arr_data = selection_to_array_ext()
 	window = 0
 	total_vals = array_length(arr_data)
-	show_debug_message(str)
+	log(str)
 	val = 0
 	while (val < total_vals) {
 		val += 5
@@ -41,8 +41,8 @@ function macro_chorus() {
 			}
 		}
 	}
-	selection_load_from_array(selection_x, selection_y, arr_data)
-	history_set(h_selectchange, selection_x, selection_y, selection_code, selection_x, selection_y, str)
+	selection_load_from_array(songs[song].selection_x, songs[song].selection_y, arr_data)
+	history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
 	if(!keyboard_check(vk_alt)) selection_place(false)
 
 

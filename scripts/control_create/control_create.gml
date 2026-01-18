@@ -8,30 +8,59 @@ function control_create() {
 	log_init()
 
 	// Initialize DLLs
-	lib_init()
+	if (os_type = os_windows) lib_init()
+	rtmidi_init()
+	midiMessages = ds_list_create()
 
 	// Window
-	#macro RUN_FROM_IDE !string_count("GMS2TEMP", get_execution_command()) // THIS CONSTANT IS A REVERSE BOOLEAN (0 is from IDE)
-	//show_message(get_execution_command() + "IDE: " + string(RUN_FROM_IDE))
-	p_num = parameter_count()
-	isplayer = 0
+	#macro NOT_RUN_FROM_IDE !string_count("GMS2TEMP", get_execution_command()) // THIS CONSTANT IS A REVERSE BOOLEAN (0 is from IDE)
+	//show_message(get_execution_command() + "IDE: " + string(NOT_RUN_FROM_IDE))
+	p_num = parameter_count();
+	isplayer = (check_args("-player"));
+	filenamearg = check_args();
 	for (var i = 0; i < p_num; i += 1) {
 		if (parameter_string(i) = "-player" || parameter_string(i) == "--protocol-launcher") isplayer = 1
 	}
-	//if (RUN_FROM_IDE != 1) isplayer = 1
+	//if (NOT_RUN_FROM_IDE != 1) isplayer = 1
 	destroy_self = 0
 	port_taken = 0
 	server_socket = -1
 	if (!isplayer) server_socket = network_create_server(network_socket_tcp, 30010, 1)
 	client_socket = -1
 	if (server_socket < 0 && !isplayer) {port_taken = 1; client_socket = network_create_socket(network_socket_tcp)}
+	if (p_num > 0) {
+		if (filenamearg != "" && (string_lower(filename_ext(filenamearg)) == ".mid" || string_lower(filename_ext(filenamearg)) == ".midi" ||
+			string_lower(filename_ext(filenamearg)) == ".schematic" || string_lower(filename_ext(filenamearg)) == ".nbs" ||
+			string_lower(filename_ext(filenamearg)) == ".zip")) {
+			if (port_taken) {
+				network_connect(client_socket, "127.0.0.1", 30010)
+				var temp_buffer = buffer_create(0, buffer_grow, 1)
+				buffer_write(temp_buffer, buffer_s8, 10)
+				buffer_write(temp_buffer, buffer_string, filenamearg)
+				network_send_packet(client_socket, temp_buffer, buffer_get_size(temp_buffer))
+				buffer_delete(temp_buffer)
+				destroy_self = 1
+				log("Sended opening song path, closing...")
+				game_end()
+			}
+		}
+	}
+	if (!destroy_self) {
 	window_width = 0
 	window_height = 0
 	if (!isplayer) window_maximize()
 	window_set_focus()
 	window_set_min_width(800)
 	window_set_min_height(500)
+	if (os_browser != browser_not_a_browser) window_set_size(browser_width - 5, browser_height - 5)
 	window_scale = get_default_window_scale()
+	if (os_type = os_macosx){
+		if (window_scale > 1.1) window_scale = 2
+	    else window_scale = 1
+	}
+	if (window_scale > 2 && is_mobile()) window_scale = 2
+	var temp_font_size = floor(15 * window_scale * (1 + (os_type != os_macosx || window_scale = 1)))
+	if (temp_font_size > 40) temp_font_size = 40
 	cam_window = camera_create()
 	view_set_camera(0, cam_window)
 	window_background = c_white
@@ -56,12 +85,14 @@ function control_create() {
 	mouseover = 0
 	display_width = display_get_width()
 	display_height = display_get_height()
-	window_icon = 0
-	icon_buffer = window_set_icon_impl_load(data_directory + "icon.ico")
-	icon_size_buffer = window_set_icon_impl_argbuf()
-	buffer_write(icon_size_buffer, buffer_u32, buffer_get_size(icon_buffer))
-	buffer_write(icon_size_buffer, buffer_u32, $80004005)
-	buffer_write(icon_size_buffer, buffer_string, "DLL is not loaded")
+	window_icon = (os_type = os_macosx)
+	if (os_type = os_windows) {
+		icon_buffer = window_set_icon_impl_load(data_directory + "icon.ico")
+		icon_size_buffer = window_set_icon_impl_argbuf()
+		buffer_write(icon_size_buffer, buffer_u32, buffer_get_size(icon_buffer))
+		buffer_write(icon_size_buffer, buffer_u32, $80004005)
+		buffer_write(icon_size_buffer, buffer_string, "DLL is not loaded")
+	}
 	icon_time = -1
 	last_icon = -1
 	icon_display = 1
@@ -80,7 +111,8 @@ function control_create() {
 			[ fnt_info_big,      fnt_wslui_info_big,      fnt_src_info_big      ], // font_info_big
 			[ fnt_info_med,      fnt_wslui_info_med,      fnt_src_info_med      ], // font_info_med
 			[ fnt_info_med_bold, fnt_wslui_info_med_bold, fnt_src_info_med_bold ], // font_info_med_bold
-			[ fnt_wslui_med,     fnt_wslui_med,           fnt_src_med           ]  // font_med
+			[ fnt_wslui_med,     fnt_wslui_med,           fnt_src_med           ], // font_med
+			[ fnt_symbol_small,  fnt_symbol_small,        fnt_symbol_small      ]
 		],
 		[ // hires fonts
 			[ fnt_main,          fnt_wslui_hires,               fnt_src_hires               ], // font_main
@@ -90,7 +122,8 @@ function control_create() {
 			[ fnt_info_big,      fnt_wslui_info_big_hires,      fnt_src_info_big_hires      ], // font_info_big
 			[ fnt_info_med,      fnt_wslui_info_med_hires,      fnt_src_info_med_hires      ], // font_info_med
 			[ fnt_info_med_bold, fnt_wslui_info_med_bold_hires, fnt_src_info_med_bold_hires ], // font_info_med_bold
-			[ fnt_wslui_med,     fnt_wslui_med_hires,           fnt_src_med_hires           ]  // font_med
+			[ fnt_wslui_med,     fnt_wslui_med_hires,           fnt_src_med_hires           ], // font_med
+			[ fnt_symbol_small,  fnt_symbol_small_hires,        fnt_symbol_small_hires      ]
 		]
 	]
 	
@@ -100,10 +133,21 @@ function control_create() {
 	wpaperside = 0
 	wpaperwidth = 0
 	wpaperblur = 0
+	
+	wpaperanchor = 0
+	wpapernoblur = 0
+	wpapernodim = 0
+	
+	backgroundrainbow = 0
+	backgroundaccent = 0
+	
+	noeditingbackground = 0
+	
+	advancedinterface = 0
 
 	// Audio
-	channels = 256
-	channelstoggle = 0
+	channels = 1024
+	channelstoggle = 1
 	sounds = 0
 	audio_channel_num(channels)
 	show_soundcount = 0
@@ -127,13 +171,12 @@ function control_create() {
 	songfolder = songs_directory
 	patternfolder = pattern_directory
 	icons_init()
-	refreshrate = 0 //0 = 30fps, 1 = 60fps, 2 = 120fps, 3 = 144fps, 4 = Unlimited
+	refreshrate = 2 //0 = 30fps, 1 = 60fps, 2 = 120fps, 3 = 144fps, 4 = 240fps
 	fade = 0
 	rhval = 270
 	fullscreen = 0
 	autosave = 0
 	autosavemins = 10
-	tonextsave = 0
 	backupmins = 1
 	tonextbackup = 0
 	language = 1 * (os_get_language() = "zh" && os_get_region() = "CN")
@@ -154,7 +197,9 @@ function control_create() {
 	rainbow = 0
 	rainbowtoggle = 0
 	pingtime = current_time
-	debug_overlay = 0
+	debug_overlay = check_args("--debug")
+	debug_overlay_ingame = 0
+	logs_overlay = check_args("--logs")
 	debug_option = 0
 	os_info = os_get_info()
 	is_yyc = code_is_compiled()
@@ -162,22 +207,116 @@ function control_create() {
 	else output_format = "VM"
 	volume_scroll = 0
 	remove_effect = 1
+	dragincxr = 0
+	dragincxl = 0
+	dragincyd = 0
+	dragincyu = 0
+	tabdrag = 0
+	draggingtab = -1
+	tabdest = -1
+	if (directory_exists(temp_directory_included)) directory_destroy(temp_directory_included)
+	sound_import_download_toggle = 0
+	sound_import_download_status = pointer_null
+	sound_import_downloaded_size = -1
+	sound_import_total_size = -1
+	sound_import_download_file = pointer_null
+	sound_import_download_stage = 0
+	sound_import_download_version_url_list = []
+	sound_import_download_files_list = []
+	sound_import_download_files_index = 0
+	if (os_type == os_macosx) {
+		EnvironmentSetVariable("PYTHONHOME", current_directory + "data/python/python38_darwin_universal/");
+		EnvironmentSetVariable("PYTHONPATH", current_directory + "data/python/" + ":" + 
+											 current_directory + "data/python/lib/site-packages/" + ":" + 
+											 current_directory + "data/python/lib/site-packages.zip/");
+		EnvironmentSetVariable("PYTHONDONTWRITEBYTECODE", "1");
+		EnvironmentSetVariable("PYTHONNOUSERSITE", "1");
+		var tempenvpath = EnvironmentGetVariable("PATH")
+		EnvironmentSetVariable("PATH", tempenvpath + ":" + current_directory)
+	}
+	_python_initialize()
+
+	// Instruments
+	current_resource = "Vanilla"
+	resourcepacks = []
+	refresh_resourcepacks()
+	
+	original_instruments = []
+	array_push(original_instruments, new_instrument("Harp",          "harp.ogg",     false, true))
+	array_push(original_instruments, new_instrument("Double Bass",   "dbass.ogg",    false, true))
+	array_push(original_instruments, new_instrument("Bass Drum",     "bdrum.ogg",    false))
+	array_push(original_instruments, new_instrument("Snare Drum",    "sdrum.ogg",    false))
+	array_push(original_instruments, new_instrument("Click",         "click.ogg",    false))
+	array_push(original_instruments, new_instrument("Guitar",        "guitar.ogg",   false, true))
+	array_push(original_instruments, new_instrument("Flute",         "flute.ogg",    false, true))
+	array_push(original_instruments, new_instrument("Bell",          "bell.ogg",     false, true))
+	array_push(original_instruments, new_instrument("Chime",         "icechime.ogg", false, true))
+	array_push(original_instruments, new_instrument("Xylophone",     "xylobone.ogg", false, true))
+	array_push(original_instruments, new_instrument("Iron Xylophone","iron_xylophone.ogg", false, true))
+	array_push(original_instruments, new_instrument("Cow Bell",      "cow_bell.ogg", false, true))
+	array_push(original_instruments, new_instrument("Didgeridoo",    "didgeridoo.ogg", false, true))
+	array_push(original_instruments, new_instrument("Bit",           "bit.ogg", false, true))
+	array_push(original_instruments, new_instrument("Banjo",         "banjo.ogg", false, true))
+	array_push(original_instruments, new_instrument("Pling",         "pling.ogg", false, true))
+	
+	// Navigating sounds
+	str = ""
+	soundinvoke = create(obj_instrument)
+	soundinvoke.key = 45
+	soundinvoke.filename = "ui/invoke.ogg"
+	soundinvoke.user = 0
+	soundshow =   create(obj_instrument)
+	soundshow.key =   45
+	soundshow.filename =     "ui/show.ogg"
+	soundshow.user =   0
+	soundhide =   create(obj_instrument)
+	soundhide.key =   45
+	soundhide.filename =     "ui/hide.ogg"
+	soundhide.user =   0
+	soundgoback = create(obj_instrument)
+	soundgoback.key = 45
+	soundgoback.filename = "ui/goback.ogg"
+	soundgoback.user = 0
+	soundmetronome = create(obj_instrument)
+	soundmetronome.key = 45
+	soundmetronome.filename = "ui/metronome.ogg"
+	soundmetronome.user = 0
+	soundding = create(obj_instrument)
+	soundding.key = 45
+	soundding.filename = "ui/ding.ogg"
+	soundding.user = 0
+	soundmetronomeclick = create(obj_instrument)
+	soundmetronomeclick.key = 45
+	soundmetronomeclick.filename = "ui/metronome_click.ogg"
+	soundmetronomeclick.user = 0
+
+	first_custom_index = array_length(original_instruments)
+
+	insmenu = 0
+	emitters_to_remove = ds_list_create()
+	
+	// Initialize instruments
+	str = ""
+	with (obj_instrument)
+	    if (!instrument_load())
+	        str += filename + "\n"
+	if (str != "") message("The following file(s) could not be found:\n\n" + str + "\n\nSome sounds might not play.", "Error")
+
+	log("Instruments loaded")
 
 	// File
-	filename = ""
-	changed = 0
-	midifile = ""
-	midiname = ""
-	song_midi = ""
-	for (a = 0; a < 11; a += 1) {
-	    mididevice_instrument[a] = -1
+	songs = []
+	array_push(songs, create(obj_song))
+	song = 0
+	for (a = 0; a < first_custom_index; a += 1) {
+	    mididevice_instrument[a] = -3
 	    recent_song[a] = ""
 	    recent_song_time[a] = 0
 	}
-	timesignature = 4
-	randomise()
-	song_backupid = string(floor(random(800000)))
-	song_backupname = "Unsaved song " + song_backupid + ".nbs"
+	//timesignature = 4
+	//randomise()
+	//song_backupid = string(floor(random(800000)))
+	//song_backupname = "Unsaved song " + song_backupid + ".nbs"
 	if (!directory_exists_lib(backup_directory)) {
 		directory_create_lib(backup_directory);
 	}
@@ -185,61 +324,40 @@ function control_create() {
 	file_dnd_set_enabled(true)
 	dndfile = ""
 	lastfile = ""
+	menutab = -1
 
 	// Playback
 	audio_listener_orientation(0,1,0, 0,0,1)
 	audio_listener_position(100,0,1)
 	playing = 0
+	playing_prev = playing
 	record = 0
 	mastervol = 1
-	tempo = 10
 	tempodrag = 10
 	bpm = 0
 	use_bpm = 0
 	metronome = 0
 	metronome_played = -1
-	marker_pos = 0
-	marker_prevpos = 0
 	marker_follow = 1
 	marker_pagebypage = 1
 	marker_start = 1
 	marker_end = 0
 	marker_return = 1
 	forward = 0
-	section_exists = 0
-	section_start = 0
-	section_end = 0
 	timeline_pressa = -1
 	for (a = 0; a < 10000; a += 1) text_exists[a] = 0
 	currspeed = 0
 	taskbar = 1
+	global.__temp_audio_buffer__ = -1
 
 	// Note blocks
-	starta = 0
-	startb = 0
-	enda = 0
-	endb = 0
-	arraylength = 0
-	arrayheight = 0
-	endb2 = 0
-	compatible = 0
-	song_exists[0, 0] = 0
-	song_ins[0, 0] = 0
-	song_key[0, 0] = 0
-	song_vel[0, 0] = 0
-	song_pan[0, 0] = 0
-	song_pit[0, 0] = 0
-	song_played[0, 0] = 0
-	song_added[0, 0] = 0
-	block_outside = 0
-	block_custom = 0
-	block_pitched = 0
 	midi_devices = 0
-
-	colamount[0] = 0
-	rowamount[0] = 0
-	colfirst[0] = -1
-	collast[0] = -1
+	midi_devices_old = 0
+	midi_device_current = 0
+	midi_keypresses = ds_list_create()
+	midi_keyreleases = ds_list_create()
+	midi_device_names = []
+	midi_refresh_device()
 
 	show_numbers = 1
 	show_octaves = 0
@@ -247,18 +365,12 @@ function control_create() {
 	use_icons = 0
 	use_shapes = 0
 	show_incompatible = 1
-	totalblocks = 0
 
 	mousewheel = 0
 	changepitch = 1
 	
 	keynames = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
 	keynames_flat = 0
-
-	// History
-	historypos = 0
-	historylen = 0
-	for (a = 0; a < 16; a += 1) history[0, 15] = 0
 
 	// Selecting
 	select = 0
@@ -270,44 +382,28 @@ function control_create() {
 	select_pressa = -1
 	select_pressb = -1
 
-	selected = 0
 	selection_copied = ""
-	selection_code = ""
-	selection_x = 0
-	selection_y = 0
-	selection_l = 0
-	selection_h = 0
-	selection_exists[0, 0] = 0
-	selection_ins[0, 0] = 0
-	selection_key[0, 0] = 0
-	selection_vel[0, 0] = 0
-	selection_pan[0, 0] = 0
-	selection_pit[0, 0] = 0
-	selection_played[0, 0] = 0
-	selection_arraylength = 0
-	selection_arrayheight = 0
-	selection_colfirst[0] = -1
-	selection_collast[0] = -1
-
-	dragincxr = 0
-	dragincxl = 0
-	dragincyd = 0
-	dragincyu = 0
+	copied_arrayheight = 0
+	copied_arraylength = 0
+	clipboard = ""
+	
+	tempo_changer_sel_x = -1
+	tempo_changer_sel_y = -1
+	tempo_changer_set_tempo = -1
+	tempo_changer_sel_ins = -1
+	
+	sound_stopper_set_start = -1
+	sound_stopper_set_until = -1
 
 	// Layers
 	show_layers = 1
 	realvolume = 1
 	realstereo = 0
-	layername[0] = ""
-	layerlock[0] = 0
-	layervol[0] = 100
-	layerstereo[0] = 100
-	solostr = ""
 	dragvolb = 0
 	dragvol = 0
 	dragstereob = 0
 	dragstereo = 0
-	selected_layers = ds_list_create()
+	//selected_layers = ds_list_create()
 
 	// Piano
 	show_piano = 1
@@ -317,6 +413,13 @@ function control_create() {
 	show_notechart = 0
 	show_outofrange = 1
 	editline = 0
+	for (i = 0; i < 88; i++) {
+		piano_key[i] = 0
+		key_press[i] = 0
+		key_midipress[i] = 0
+		key_click[i] = 0
+		key_played[i] = 0
+	}
 	piano_key[87] = 0
 	key_press[87] = 0
 	key_midipress[87] = 0
@@ -345,10 +448,10 @@ function control_create() {
 	prevwindow = 0
 	selected_tab = 0
 	global.popup = 0
-	globalvar text_focus;
+	globalvar text_focus, text_focus_last;
 	globalvar text_select, text_exists, text_str, text_start, text_line, text_line_wrap, text_line_single, text_lines;
 	globalvar text_sline, text_spos, text_eline, text_epos, text_cline, text_cpos, text_mline, text_mpos;
-	globalvar text_click, text_marker, text_key_delay, text_lastwidth, text_laststr, text_lastfocus, text_mouseover, text_chars;
+	globalvar text_click, text_marker, text_key_delay, text_lastwidth, text_laststr, text_lastfocus, text_mouseover, text_chars, text_clipboard;
 	text_select = -1
 	text_exists[10000] = 0
 	text_click = current_time
@@ -357,6 +460,8 @@ function control_create() {
 	text_lastfocus = -1
 	text_mouseover = []
 	text_focus = -1
+	text_focus_last = -1
+	text_clipboard = ""
 
 	globalvar sb_count, sb_drag, sb_mprev, sb, sb_press, sb_sel;
 	sb_count = 0
@@ -389,13 +494,8 @@ function control_create() {
 	asso_sch = 0
 	w_asso_start = 1
 	wmenu = 0
-	loop_session = 0
-	loop = 0
-	loopmax = 0
-	loopstart = 0
-	loopend = 0
 	//looptobarend = 1
-	timestoloop = loopmax
+	timestoloop = songs[song].loopmax
 	settempo = 0 // Tempo input box clicked
 	taptempo = 0 // Tempo in measuring
 	tapping = 0 // Is tapping?
@@ -409,6 +509,8 @@ function control_create() {
 	dropalphawait = 0
 	autoplay = 1
 	draw_set_circle_precision(64);
+	macos_menu_last_refresh = -1
+	unsaved_status = 0
 
 	// Midi export / import
 	w_midi_remember = 1
@@ -422,92 +524,17 @@ function control_create() {
 	w_midi_vel = 1
 	w_midi_precision = 1
 	w_midi_tempo_changer = 0
+	w_midi_note_duration = 0
 	w_isdragging = 0
 	w_dragvalue = 0
 	init_midi()
-
-	// Song properties
-	song_name = ""
-	song_author = ""
-	song_orauthor = ""
-	song_desc = ""
-	work_mins = 0
-	work_left = 0
-	work_right = 0
-	work_add = 0
-	work_remove = 0
-
-	// Instruments
-	instrument_list = ds_list_create()
-
-	ds_list_add(instrument_list, new_instrument("Harp",          "harp.ogg",     false, true))
-	ds_list_add(instrument_list, new_instrument("Double Bass",   "dbass.ogg",    false, true))
-	ds_list_add(instrument_list, new_instrument("Bass Drum",     "bdrum.ogg",    false))
-	ds_list_add(instrument_list, new_instrument("Snare Drum",    "sdrum.ogg",    false))
-	ds_list_add(instrument_list, new_instrument("Click",         "click.ogg",    false))
-	ds_list_add(instrument_list, new_instrument("Guitar",        "guitar.ogg",   false, true))
-	ds_list_add(instrument_list, new_instrument("Flute",         "flute.ogg",    false, true))
-	ds_list_add(instrument_list, new_instrument("Bell",          "bell.ogg",     false, true))
-	ds_list_add(instrument_list, new_instrument("Chime",         "icechime.ogg", false, true))
-	ds_list_add(instrument_list, new_instrument("Xylophone",     "xylobone.ogg", false, true))
-	ds_list_add(instrument_list, new_instrument("Iron Xylophone","iron_xylophone.ogg", false, true))
-	ds_list_add(instrument_list, new_instrument("Cow Bell",      "cow_bell.ogg", false, true))
-	ds_list_add(instrument_list, new_instrument("Didgeridoo",    "didgeridoo.ogg", false, true))
-	ds_list_add(instrument_list, new_instrument("Bit",           "bit.ogg", false, true))
-	ds_list_add(instrument_list, new_instrument("Banjo",         "banjo.ogg", false, true))
-	ds_list_add(instrument_list, new_instrument("Pling",         "pling.ogg", false, true))
 	
-	// Navigating sounds
-	soundinvoke = create(obj_instrument)
-	soundinvoke.key = 45
-	soundinvoke.filename = "UI/invoke.ogg"
-	soundinvoke.user = 0
-	soundshow =   create(obj_instrument)
-	soundshow.key =   45
-	soundshow.filename =     "UI/show.ogg"
-	soundshow.user =   0
-	soundhide =   create(obj_instrument)
-	soundhide.key =   45
-	soundhide.filename =     "UI/hide.ogg"
-	soundhide.user =   0
-	soundgoback = create(obj_instrument)
-	soundgoback.key = 45
-	soundgoback.filename = "UI/goback.ogg"
-	soundgoback.user = 0
-	soundmetronome = create(obj_instrument)
-	soundmetronome.key = 45
-	soundmetronome.filename = "UI/metronome.ogg"
-	soundmetronome.user = 0
-	soundding = create(obj_instrument)
-	soundding.key = 45
-	soundding.filename = "UI/ding.ogg"
-	soundding.user = 0
-	soundmetronomeclick = create(obj_instrument)
-	soundmetronomeclick.key = 45
-	soundmetronomeclick.filename = "UI/metronome_click.ogg"
-	soundmetronomeclick.user = 0
-
-	instrument = instrument_list[| 0]
-	insbox_start = 0
-	insmenu = 0
-	first_custom_index = ds_list_size(instrument_list)
-	user_instruments = 0
-	emitters_to_remove = ds_list_create()
-
-	// Initialize instruments
-	str = ""
-	with (obj_instrument)
-	    if (!instrument_load())
-	        str += filename + "\n"
-	if (str != "") message("The following file(s) could not be found:\n\n" + str + "\n\nSome sounds might not play.", "Error")
-
-	log("Instruments loaded")
-
 	// Minecraft
 	selected_tab_mc = 0
 	
 	// Import sounds
-	mc_default_path = string_copy(game_save_id, 0, string_last_pos("\\", string_copy(game_save_id, 1, string_length(game_save_id) - 1))) + ".minecraft\\";
+	mc_default_path = string_copy(game_save_id, 0, string_last_pos(condstr(os_type = os_windows, "\\", "/"), string_copy(game_save_id, 1, string_length(game_save_id) - 1))) + condstr(os_type != os_macosx, ".") + "minecraft/";
+	if (os_type = os_windows) mc_default_path = string_replace_all(mc_default_path, "/", "\\");
 	mc_install_path = mc_default_path;
 	
 	var asset_index_names_keys = ["pre-1.6", "legacy", "1.7.3", "1.7.4", "1.7.10", "14w25a", "14w31a", "1.8", "1.9", "1.9-aprilfools", "1.10", "1.11", "1.12", "1.13", "1.13.1", "1.14", "1.14-af", "1.15", "1.16", "1.17", "1.18", "1.19", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "_"];
@@ -562,7 +589,10 @@ function control_create() {
 	save_version = nbs_version
 
 	// Settings
-	load_settings()
+	if (!check_args("--prefreset")) load_settings()
+	if (os_type = os_macosx) macos_enable_system_settings_menu()
+	tonextsave = autosave ? autosavemins : 0; // Defining autosavemins here to avoid the autosave when the first song is loaded after open the game.
+	menu_macos_init()
 	switch(language) {
 		default:
 			lang_en_us()
@@ -581,16 +611,42 @@ function control_create() {
 	} else {
 		acrylic = 0
 		can_draw_mica = 0
-		if (language != 1) show_message("Note Block Studio encountered an error creating the background sprite. Transparency effects will be disabled.\nThis usually happens when your desktop wallpaper is either too tall or too long.")
-		else show_message("Note Block Studio 在创建背景贴图时遇到错误，透明效果将被关闭。\n这种情况一般是由于您的桌面壁纸图片过高或过长。")
+		if (language != 1) message("Note Block Studio encountered an error creating the background sprite. Transparency effects will be disabled.\nThis usually happens when your desktop wallpaper is either too tall or too long.", "Note Block Studio")
+		else message("Note Block Studio 在创建背景贴图时遇到错误，透明效果将被关闭。\n这种情况一般是由于您的桌面壁纸图片过高或过长。", "Note Block Studio")
+		acrylic_successful = 1
+		save_settings()
+	}
+	if (window_scale = 0) {
+		if (language != 1) message("Note Block Studio detected that the window scale has been set to 0. It has been reverted to default.\nYou may need to restart Note Block Studio for a smooth experience.", "Note Block Studio")
+		else message("Note Block Studio 检测到窗口缩放设置为0，该设置已经被还原。您可能需要重新打开 Note Block Studio 来获得流畅体验。", "Note Block Studio")
+		window_scale = get_default_window_scale()
+		if (os_type = os_macosx){
+			if (window_scale > 1.1) window_scale = 2
+		    else window_scale = 1
+		}
+		if (window_scale > 2 && is_mobile()) window_scale = 2
+		hires = (window_scale > 1.25)
 	}
 	if (show_welcome) window = w_greeting
 	draw_accent_init()
-	if (isplayer) window_set_size(floor(800 * window_scale), floor(500 * window_scale))
-	window_set_min_width(800 * window_scale)
-	window_set_min_height(500 * window_scale)
+	if (isplayer) {
+		if (os_type != os_macosx) window_set_size(floor(800 * window_scale), floor(500 * window_scale))
+		else window_setnormal()
+	}
+	if (!macos_is_retina()) {
+		window_set_min_width(800 * window_scale)
+		window_set_min_height(500 * window_scale)
+	} else {
+		window_set_min_width(800 * window_scale / 2)
+		window_set_min_height(500 * window_scale / 2)
+	}
 	if ((theme = 3 && fdark) || theme = 2) window_set_darkmode()
 	if (keynames_flat) keynames = ["A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"]
+	
+	if (current_resource != "Vanilla") {
+		set_resourcepack(current_resource)
+	}
+
 	if (date_compare_date(date_current_datetime(), donate_banner_time) > 0) {
 		donate_banner = 1
 	} else {
@@ -617,7 +673,18 @@ function control_create() {
 	    window = w_update
 	    update_success = 1
 		donate_banner = 1 // Enable donate banner after each update
+		if (os_type != os_windows) {
+			execute_program("cp", @'-fR "' + filename_dir(bundled_data_directory) + @'" "' + filename_dir(data_directory) + @'"', true)
+			execute_program("cp", @'-fR "' + filename_dir(bundled_songs_directory) + @'" "' + filename_dir(songs_directory) + @'"', true)
+			execute_program("cp", @'-fR "' + filename_dir(bundled_pattern_directory) + @'" "' + filename_dir(pattern_directory) + @'"', true)
+		} else {
+		    execute_program("Xcopy", @'/E /I /Y "' + filename_dir(bundled_data_directory) + @'" "' + filename_dir(data_directory) + @'"', true)
+		    execute_program("Xcopy", @'/E /I /Y "' + filename_dir(bundled_songs_directory) + @'" "' + filename_dir(songs_directory) + @'"', true)
+		    execute_program("Xcopy", @'/E /I /Y "' + filename_dir(bundled_pattern_directory) + @'" "' + filename_dir(pattern_directory) + @'"', true)
+		}
 	}
+	
+	if (os_type = os_ios) recent_song[0] = bundled_songs_directory + "the_ground's_colour_is_yellow.nbs"
 	
 	// Download song
 	protocol_data = pointer_null;
@@ -626,7 +693,6 @@ function control_create() {
 	song_total_size = -1
 	song_download_status = 0
 	song_download_file = ""
-	song_download_display_name = ""
 
 	// Delete old installer
 	if (file_exists_lib(update_file)) {
@@ -634,7 +700,7 @@ function control_create() {
 	}
 	
 	// Register as nbs:// url protocol handler
-	register_url_protocol()
+	if (os_type = os_windows) register_url_protocol()
 	
 	// Init wallpaper
 	change_theme()
@@ -642,6 +708,35 @@ function control_create() {
 	// Auto-recovery
 	// PREVIOUSLY DISABLED DUE TO https://github.com/OpenNBS/OpenNoteBlockStudio/issues/196
 	// Implemented in a better way that takes multiple instances into account.
+	//if (!port_taken && !isplayer) {
+	//	if (file_find_first(backup_file + "*_backup.nbs", 0) != "") {
+	//		if (question("Minecraft Note Block Studio quit unexpectedly while you were working on a song. Do you want to recover your work?", "Auto-recovery")) {
+	//			open_url(backup_file)
+	//		}
+	//	} else if (file_find_first(backup_file + "*_unsaved.nbs", 0) != "") {
+	//		if (question("Minecraft Note Block Studio detected you closed the window without saving the song in the last session. Do you want to recover your work?", "Auto-recovery")) {
+	//			open_url(backup_file)
+	//		}
+	
+	if (os_type = os_macosx && macos_url_pending_count() > 0) {
+		var temp_url = macos_url_take_pending();
+		if (string_count("nbs://", temp_url) = 0) {
+			var file = string_replace_all(temp_url, "file://", "");
+			if (file != "" && 
+				(string_lower(filename_ext(file)) == ".mid" || string_lower(filename_ext(file)) == ".midi" || string_lower(filename_ext(file)) == ".schematic" ||
+				string_lower(filename_ext(file)) == ".nbs" || string_lower(filename_ext(file)) == ".zip")) {
+				songs[song].filename = file;
+				songs[song].file_ext = file_ext;
+				load_song(file, 0, 1, 1);
+			}
+		} else {
+			isplayer = 1
+			if (os_type != os_macosx) window_set_size(floor(800 * window_scale), floor(500 * window_scale))
+			else window_setnormal()
+			protocol_data = temp_url
+		}
+	}
+	
 	if (file_find_first(backup_directory + "*.nbs", 0) != "" && !port_taken && !isplayer) {
 		var isrecover = 0
 		if (language != 1) isrecover = question("Note Block Studio quit unexpectedly while you were working on a song. Do you want to recover your work?\n\n(If you click 'No', you'll be prompted to recover it again the next time you open the program.)", "Auto-recovery")
@@ -671,8 +766,8 @@ function control_create() {
 			file_find_close();
 			
 			// Open restore folder
-			if (language != 1) show_message(string(restored_count) + " " + condstr(restored_count > 1, "files have been restored.", "file has been restored."));
-			else show_message(string(restored_count) + "个文件已恢复。");
+			if (language != 1) message(string(restored_count) + " " + condstr(restored_count > 1, "files have been restored.", "file has been restored."), "Auto-recovery");
+			else message(string(restored_count) + "个文件已恢复。", "自动恢复");
 			open_url(restore_directory);
 		}
 	}
@@ -694,9 +789,9 @@ function control_create() {
 			
 			// File drop, etc.
 			} else if (string_replace(arg, " ", "") != "") {
-				show_debug_message(arg)
-				filename = arg;
-				song_backupname = filename_name(filename_change_ext(filename, ".nbs"));
+				log("Opening song from argument, arg: " + arg)
+				filenamearg = arg;
+				song_backupname = filename_name(filename_change_ext(filenamearg, ".nbs"));
 			}
 			
 		}
@@ -716,11 +811,22 @@ function control_create() {
 		download_song_start(download_url)
 	}
 	// Open song
-	else if (filename != "") {
-		load_song(filename)
+	if (os_type != os_macosx && p_num > 0) {
+		songs[song].filename = filenamearg;
+		if (songs[song].filename != "" &&
+			(string_lower(filename_ext(songs[song].filename)) == ".mid" || string_lower(filename_ext(songs[song].filename)) == ".midi" ||
+			string_lower(filename_ext(songs[song].filename)) == ".schematic" || string_lower(filename_ext(songs[song].filename)) == ".nbs" ||
+			string_lower(filename_ext(songs[song].filename)) == ".zip")) {
+			if (!port_taken) {
+				load_song(songs[song].filename, 0, 1, 1)
+			}
+		}
+		else songs[song].filename = ""
 	}
 
 	log("Startup OK")
+	
+	}
 
 
 }

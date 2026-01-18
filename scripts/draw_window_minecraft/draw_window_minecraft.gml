@@ -103,7 +103,7 @@ function draw_window_minecraft() {
 	yy += 65
 	if (selected_tab_mc = 0) { // Schematic
 
-		if(tempo = 10 || tempo = 5 || tempo = 2.5){
+		if(songs[song].real_tempo = 10 || songs[song].real_tempo = 5 || songs[song].real_tempo = 2.5){
 			// compatible
 			if (theme != 3) {
 				draw_sprite(spr_yesno, 1, x1 + 25, yy + 8)
@@ -136,35 +136,35 @@ function draw_window_minecraft() {
 		else draw_text_dynamic(x1 + 45, yy, "速度必须为每秒 2.5、5 或 10 红石刻。")
 		draw_theme_font(font_main)
 
-		if (tempo = 10 || tempo = 5 || tempo = 2.5) {    
+		if (songs[song].real_tempo = 10 || songs[song].real_tempo = 5 || songs[song].real_tempo = 2.5) {    
 			draw_set_color(c_green)
 			if (theme == 2 || (theme == 3 && fdark)) draw_set_color(c_lime)
-		    if (language != 1) draw_text_dynamic(x1 + 45, yy + 16, "The tempo is " + string(tempo) + " ticks per second.")
-		    else draw_text_dynamic(x1 + 45, yy + 16, "目前速度为每秒 " + string(tempo) + " 红石刻。")
+		    if (language != 1) draw_text_dynamic(x1 + 45, yy + 16, "The tempo is " + string(songs[song].real_tempo) + " ticks per second.")
+		    else draw_text_dynamic(x1 + 45, yy + 16, "目前速度为每秒 " + string(songs[song].real_tempo) + " 红石刻。")
 		} else {
 			draw_set_color(c_red)
-		    if (language != 1) draw_text_dynamic(x1 + 45, yy + 16, "The tempo is " + string(tempo) + " ticks per second.")
-		    else draw_text_dynamic(x1 + 45, yy + 16, "目前速度为每秒 " + string(tempo) + " 红石刻。")
+		    if (language != 1) draw_text_dynamic(x1 + 45, yy + 16, "The tempo is " + string(songs[song].real_tempo) + " ticks per second.")
+		    else draw_text_dynamic(x1 + 45, yy + 16, "目前速度为每秒 " + string(songs[song].real_tempo) + " 红石刻。")
 		    if (draw_button2(x1 + 45, yy + 34, 140, condstr(language != 1, "Fix tempo for schematic", "针对 Schematic 调整速度"), 0, 1)) {
-		        var otempo = tempo
-		        if (otempo > 10) tempo = 10 changed = 1
-		        if (otempo < 10) tempo = 10 changed = 1
-		        if (otempo < 7.5) tempo = 5 changed = 1
-		        if (otempo < 3.75) tempo = 2.5 changed = 1
+		        var otempo = songs[song].real_tempo
+		        if (otempo > 10) songs[song].real_tempo = 10 songs[song].changed = 1
+		        if (otempo < 10) songs[song].real_tempo = 10 songs[song].changed = 1
+		        if (otempo < 7.5) songs[song].real_tempo = 5 songs[song].changed = 1
+		        if (otempo < 3.75) songs[song].real_tempo = 2.5 songs[song].changed = 1
 		    }
 		}
 		draw_theme_color()
 
 		yy += 90
 		if (theme != 3) {
-			draw_sprite(spr_yesno, block_outside = 0, x1 + 25, yy + 8)
+			draw_sprite(spr_yesno, songs[song].block_outside = 0, x1 + 25, yy + 8)
 		} else {
 			if (!hires) {
-				draw_sprite(spr_yesno_f, (block_outside = 0) + 3 * fdark, x1 + 25, yy + 8)
-				draw_sprite_ext(spr_yesno_f, (block_outside = 0) + 6, x1 + 25, yy + 8, 1, 1, 0, accent[6 - 2 * !fdark], draw_get_alpha())
+				draw_sprite(spr_yesno_f, (songs[song].block_outside = 0) + 3 * fdark, x1 + 25, yy + 8)
+				draw_sprite_ext(spr_yesno_f, (songs[song].block_outside = 0) + 6, x1 + 25, yy + 8, 1, 1, 0, accent[6 - 2 * !fdark], draw_get_alpha())
 			} else {
-				draw_sprite_ext(spr_yesno_f_hires, (block_outside = 0) + 3 * fdark, x1 + 25, yy + 8, 0.25, 0.25, 0, -1, draw_get_alpha())
-				draw_sprite_ext(spr_yesno_f_hires, (block_outside = 0) + 6, x1 + 25, yy + 8, 0.25, 0.25, 0, accent[6 - 2 * !fdark], draw_get_alpha())
+				draw_sprite_ext(spr_yesno_f_hires, (songs[song].block_outside = 0) + 3 * fdark, x1 + 25, yy + 8, 0.25, 0.25, 0, -1, draw_get_alpha())
+				draw_sprite_ext(spr_yesno_f_hires, (songs[song].block_outside = 0) + 6, x1 + 25, yy + 8, 0.25, 0.25, 0, accent[6 - 2 * !fdark], draw_get_alpha())
 			}
 		}
 		draw_theme_font(font_main_bold)
@@ -172,12 +172,12 @@ function draw_window_minecraft() {
 		else draw_text_dynamic(x1 + 45, yy, "所有方块必须在 Minecraft 的 2 八度范围内。")
 		draw_theme_font(font_main)
 		if (language != 1) {
-		if (block_outside > 0) {    
+		if (songs[song].block_outside > 0) {    
 		    draw_set_color(c_red)
-		    if (block_outside = 1) {
+		    if (songs[song].block_outside = 1) {
 		        draw_text_dynamic(x1 + 45, yy + 16, "There is 1 block outside the 2 octave range.")
 		    } else {
-		        draw_text_dynamic(x1 + 45, yy + 16, "There are " + string(block_outside) + " blocks outside the 2 octave range.")
+		        draw_text_dynamic(x1 + 45, yy + 16, "There are " + string(songs[song].block_outside) + " blocks outside the 2 octave range.")
 		    }
 		    if (draw_button2(x1 + 45, yy + 34, 120, "Select lower blocks", 0, 1)) {
 		        select_outside(true, false)
@@ -201,9 +201,9 @@ function draw_window_minecraft() {
 		}
 		draw_theme_color()
 		} else {
-		if (block_outside > 0) {    
+		if (songs[song].block_outside > 0) {    
 		    draw_set_color(c_red)
-		    draw_text_dynamic(x1 + 45, yy + 16, "有 " + string(block_outside) + " 个方块在 2 八度范围外。")
+		    draw_text_dynamic(x1 + 45, yy + 16, "有 " + string(songs[song].block_outside) + " 个方块在 2 八度范围外。")
 		    if (draw_button2(x1 + 45, yy + 34, 120, "选择过低的音符", 0, 1)) {
 		        select_outside(true, false)
 		        windowclose = 1
@@ -228,14 +228,14 @@ function draw_window_minecraft() {
 
 		yy += 90
 		if (theme != 3) {
-			draw_sprite(spr_yesno, block_custom = 0, x1 + 25, yy + 8)
+			draw_sprite(spr_yesno, songs[song].block_custom = 0, x1 + 25, yy + 8)
 		} else {
 			if (!hires) {
-				draw_sprite(spr_yesno_f, (block_custom = 0) + 3 * fdark, x1 + 25, yy + 8)
-				draw_sprite_ext(spr_yesno_f, (block_custom = 0) + 6, x1 + 25, yy + 8, 1, 1, 0, accent[6 - 2 * !fdark], draw_get_alpha())
+				draw_sprite(spr_yesno_f, (songs[song].block_custom = 0) + 3 * fdark, x1 + 25, yy + 8)
+				draw_sprite_ext(spr_yesno_f, (songs[song].block_custom = 0) + 6, x1 + 25, yy + 8, 1, 1, 0, accent[6 - 2 * !fdark], draw_get_alpha())
 			} else {
-				draw_sprite_ext(spr_yesno_f_hires, (block_custom = 0) + 3 * fdark, x1 + 25, yy + 8, 0.25, 0.25, 0, -1, draw_get_alpha())
-				draw_sprite_ext(spr_yesno_f_hires, (block_custom = 0) + 6, x1 + 25, yy + 8, 0.25, 0.25, 0, accent[6 - 2 * !fdark], draw_get_alpha())
+				draw_sprite_ext(spr_yesno_f_hires, (songs[song].block_custom = 0) + 3 * fdark, x1 + 25, yy + 8, 0.25, 0.25, 0, -1, draw_get_alpha())
+				draw_sprite_ext(spr_yesno_f_hires, (songs[song].block_custom = 0) + 6, x1 + 25, yy + 8, 0.25, 0.25, 0, accent[6 - 2 * !fdark], draw_get_alpha())
 			}
 		}
 		draw_theme_font(font_main_bold)
@@ -244,10 +244,10 @@ function draw_window_minecraft() {
 		else draw_text_dynamic(x1 + 45, yy, "不可使用任何自定义音色。")
 		draw_theme_font(font_main)
 		if (language != 1) {
-		if (block_custom > 0) {    
+		if (songs[song].block_custom > 0) {    
 		    draw_set_color(c_red)
-		    if (block_custom = 1) draw_text_dynamic(x1 + 45, yy + 16, "There is 1 block with custom instruments.")
-		    else draw_text_dynamic(x1 + 45, yy + 16, "There are " + string(block_custom) + " blocks with custom instruments.")
+		    if (songs[song].block_custom = 1) draw_text_dynamic(x1 + 45, yy + 16, "There is 1 block with custom instruments.")
+		    else draw_text_dynamic(x1 + 45, yy + 16, "There are " + string(songs[song].block_custom) + " blocks with custom instruments.")
 		    if (draw_button2(x1 + 45, yy + 34, 160, "Select affected blocks", 0, 1)) {
 		        select_custom()
 		        windowclose = 1
@@ -258,9 +258,9 @@ function draw_window_minecraft() {
 		    draw_text_dynamic(x1 + 45, yy + 16, "There are no blocks with custom instruments.")
 		}
 		} else {
-		if (block_custom > 0) {    
+		if (songs[song].block_custom > 0) {    
 		    draw_set_color(c_red)
-		    draw_text_dynamic(x1 + 45, yy + 16, "有 " + string(block_custom) + " 个方块使用自定义音色。")
+		    draw_text_dynamic(x1 + 45, yy + 16, "有 " + string(songs[song].block_custom) + " 个方块使用自定义音色。")
 		    if (draw_button2(x1 + 45, yy + 34, 160, "选择所指音符", 0, 1)) {
 		        select_custom()
 		        windowclose = 1
@@ -281,7 +281,7 @@ function draw_window_minecraft() {
 		if (language != 1) draw_text_dynamic(x1 + 45, yy + 16, "However, the tempos 0.25, 0.5, 1, 1.25, 2, 2.5, 4, 5, 10 and 20 t/s work better.")
 		else draw_text_dynamic(x1 + 45, yy + 16, "但是，使用每秒 0.25、0.5、1、1.25、2、2.5、4、5、10 或 20 红石刻的速度更佳。")
 
-		if (tempo = 20 || tempo = 10 || tempo = 5 || tempo = 4 || tempo = 2.5 || tempo = 2 || tempo = 1.25 || tempo = 1 || tempo = 0.5 || tempo = 0.25) {    
+		if (songs[song].real_tempo = 20 || songs[song].real_tempo = 10 || songs[song].real_tempo = 5 || songs[song].real_tempo = 4 || songs[song].real_tempo = 2.5 || songs[song].real_tempo = 2 || songs[song].real_tempo = 1.25 || songs[song].real_tempo = 1 || songs[song].real_tempo = 0.5 || songs[song].real_tempo = 0.25) {    
 			if (theme != 3) {
 				draw_sprite(spr_yesno, 1, x1 + 25, yy + 8)	
 			} else {
@@ -295,8 +295,8 @@ function draw_window_minecraft() {
 			}
 			draw_set_color(c_green)
 			if (theme == 2 || (theme == 3 && fdark)) draw_set_color(c_lime)
-			if (language != 1) draw_text_dynamic(x1 + 45, yy + 32, "The tempo is " + string(tempo) + " ticks per second.")
-			else draw_text_dynamic(x1 + 45, yy + 32, "目前速度为每秒 " + string(tempo) + " 红石刻。")
+			if (language != 1) draw_text_dynamic(x1 + 45, yy + 32, "The tempo is " + string(songs[song].real_tempo) + " ticks per second.")
+			else draw_text_dynamic(x1 + 45, yy + 32, "目前速度为每秒 " + string(songs[song].real_tempo) + " 红石刻。")
 		} else {
 			if (theme != 3) {
 				draw_sprite(spr_yesno, 2, x1 + 25, yy + 8)	
@@ -310,21 +310,21 @@ function draw_window_minecraft() {
 				}
 			}
 		    draw_set_color(c_orange)
-			if (language != 1) draw_text_dynamic(x1 + 45, yy + 32, "The tempo is " + string(tempo) + " ticks per second.")
-			else draw_text_dynamic(x1 + 45, yy + 32, "目前速度为每秒 " + string(tempo) + " 红石刻。")
+			if (language != 1) draw_text_dynamic(x1 + 45, yy + 32, "The tempo is " + string(songs[song].real_tempo) + " ticks per second.")
+			else draw_text_dynamic(x1 + 45, yy + 32, "目前速度为每秒 " + string(songs[song].real_tempo) + " 红石刻。")
 			if (draw_button2(x1 + 45, yy + 50, 180, condstr(language != 1, "Optimize tempo for data pack", "针对数据包调整速度"), 0, 1)) {
 			    var otempo
-				otempo = tempo
-				if (otempo >= 15) tempo = 20 changed = 1
-		        if (otempo < 15) tempo = 10 changed = 1
-		        if (otempo < 7.5) tempo = 5 changed = 1
-		        if (otempo < 4.5) tempo = 4 changed = 1
-		        if (otempo < 3.25) tempo = 2.5 changed = 1
-				if (otempo < 2.25) tempo = 2 changed = 1
-				if (otempo < 1.625) tempo = 1.25 changed = 1
-				if (otempo < 1.125) tempo = 1 changed = 1
-				if (otempo < 0.75) tempo = 0.5 changed = 1
-				if (otempo < 0.375) tempo = 0.25 changed = 1
+				otempo = songs[song].real_tempo
+				if (otempo >= 15) songs[song].real_tempo = 20 songs[song].changed = 1
+		        if (otempo < 15) songs[song].real_tempo = 10 songs[song].changed = 1
+		        if (otempo < 7.5) songs[song].real_tempo = 5 songs[song].changed = 1
+		        if (otempo < 4.5) songs[song].real_tempo = 4 songs[song].changed = 1
+		        if (otempo < 3.25) songs[song].real_tempo = 2.5 songs[song].changed = 1
+				if (otempo < 2.25) songs[song].real_tempo = 2 songs[song].changed = 1
+				if (otempo < 1.625) songs[song].real_tempo = 1.25 songs[song].changed = 1
+				if (otempo < 1.125) songs[song].real_tempo = 1 songs[song].changed = 1
+				if (otempo < 0.75) songs[song].real_tempo = 0.5 songs[song].changed = 1
+				if (otempo < 0.375) songs[song].real_tempo = 0.25 songs[song].changed = 1
 		    }
 		}
 		draw_theme_color()
@@ -336,7 +336,7 @@ function draw_window_minecraft() {
 		draw_theme_font(font_main)
 		if (language != 1) draw_text_dynamic(x1 + 45, yy + 16, "To play without one, all blocks must be within Minecraft's 2 octave range.")	
 		else draw_text_dynamic(x1 + 45, yy + 16, "如果不想用，所有方块必须在 Minecraft 的 2 八度限制内。")	
-		if (block_outside > 0) {
+		if (songs[song].block_outside > 0) {
 		if (theme != 3) {
 			draw_sprite(spr_yesno, 2, x1 + 25, yy + 8)
 		} else {
@@ -349,12 +349,12 @@ function draw_window_minecraft() {
 			}
 		}
 		    draw_set_color(c_orange)
-		    if (block_outside = 1) {
+		    if (songs[song].block_outside = 1) {
 		        if (language != 1) draw_text_dynamic(x1 + 45, yy + 32, "There is 1 block outside the 2 octave range.")
 		        else draw_text_dynamic(x1 + 45, yy + 32, "有 1 个方块在 2 八度范围外。")
 		    } else {
-		        if (language != 1) draw_text_dynamic(x1 + 45, yy + 32, "There are " + string(block_outside) + " blocks outside the 2 octave range.")
-		        else draw_text_dynamic(x1 + 45, yy + 32, "有 " + string(block_outside) + " 个方块在 2 八度范围外。")
+		        if (language != 1) draw_text_dynamic(x1 + 45, yy + 32, "There are " + string(songs[song].block_outside) + " blocks outside the 2 octave range.")
+		        else draw_text_dynamic(x1 + 45, yy + 32, "有 " + string(songs[song].block_outside) + " 个方块在 2 八度范围外。")
 		    }
 		    if (draw_button2(x1 + 45, yy + 50, 80, condstr(language != 1, "Select lower", "选择过低音符"), 0, 1)) {
 		        select_outside(true, false)
@@ -407,7 +407,7 @@ function draw_window_minecraft() {
 		draw_text_dynamic(x1 + 45, yy, "Using a resource pack, you may play custom instruments in Minecraft.")
 		draw_theme_font(font_main)
 		draw_text_dynamic(x1 + 45, yy + 16, "To play without one, no custom instruments must be used.")
-		if (block_custom > 0) {
+		if (songs[song].block_custom > 0) {
 			if (theme != 3) {
 				draw_sprite(spr_yesno, 2, x1 + 25, yy + 8)
 			} else {
@@ -420,8 +420,8 @@ function draw_window_minecraft() {
 				}
 			}
 		    draw_set_color(c_orange)
-		    if (block_custom = 1) draw_text_dynamic(x1 + 45, yy + 32, "There is 1 block with custom instruments.")
-		    else draw_text_dynamic(x1 + 45, yy + 32, "There are " + string(block_custom) + " blocks with custom instruments.")
+		    if (songs[song].block_custom = 1) draw_text_dynamic(x1 + 45, yy + 32, "There is 1 block with custom instruments.")
+		    else draw_text_dynamic(x1 + 45, yy + 32, "There are " + string(songs[song].block_custom) + " blocks with custom instruments.")
 			if (draw_button2(x1 + 45, yy + 50, 160, "Select affected blocks", 0, 1)) {
 		        select_custom()
 		        windowclose = 1
@@ -447,7 +447,7 @@ function draw_window_minecraft() {
 		draw_text_dynamic(x1 + 45, yy, "使用数据包，即可在 Minecraft 中使用自定义音色。")
 		draw_theme_font(font_main)
 		draw_text_dynamic(x1 + 45, yy + 16, "如果不想用，就不能用任何自定义音色。")
-		if (block_custom > 0) {
+		if (songs[song].block_custom > 0) {
 			if (theme != 3) {
 				draw_sprite(spr_yesno, 2, x1 + 25, yy + 8)
 			} else {
@@ -460,7 +460,7 @@ function draw_window_minecraft() {
 				}
 			}
 		    draw_set_color(c_orange)
-		    draw_text_dynamic(x1 + 45, yy + 32, "有 " + string(block_custom) + " 个方块使用自定义音色。")
+		    draw_text_dynamic(x1 + 45, yy + 32, "有 " + string(songs[song].block_custom) + " 个方块使用自定义音色。")
 			if (draw_button2(x1 + 45, yy + 50, 160, "选择所指音符", 0, 1)) {
 		        select_custom()
 		        windowclose = 1

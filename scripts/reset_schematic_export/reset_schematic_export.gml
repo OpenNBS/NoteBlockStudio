@@ -5,7 +5,7 @@ function reset_schematic_export(argument0) {
 	    sch_exp_remember = 1
 		sch_br_remember = 1
 	}
-	for (a = 0; a < ds_list_size(instrument_list) + 240; a += 1) {
+	for (a = 0; a < ds_list_size(songs[song].instrument_list) + 240; a += 1) {
 	    sch_exp_ins_data[a] = 0
 	}
 	sch_exp_ins_block[0] = 3

@@ -1,0 +1,72 @@
+/// @description  icon(enum)
+/// @function  icon
+/// @param enum
+function icon_menubar(argument0) {
+
+	
+	var menubar_icons = [
+	"document.badge.plus",
+	"arrow.up.forward.app",
+	"square.and.arrow.down",
+	"square.and.arrow.down.on.square",
+	"play",
+	"pause",
+	"stop",
+	"backward",
+	"forward",
+	"record.circle",
+	"1.square",
+	"2.square",
+	"3.square",
+	"4.square",
+	"5.square",
+	"6.square",
+	"7.square",
+	"8.square",
+	"9.square",
+	"10.square",
+	"11.square",
+	"12.square",
+	"13.square",
+	"14.square",
+	"15.square",
+	"16.square",
+	"music.note.square.stack",
+	"music.note.square.stack",
+	"arrow.uturn.backward.square",
+	"arrow.uturn.backward.square",
+	"arrow.uturn.forward",
+	"arrow.uturn.forward",
+	"document.on.document",
+	"document.on.document",
+	"scissors",
+	"scissors",
+	"document.on.clipboard",
+	"document.on.clipboard",
+	"trash",
+	"trash",
+	"info.circle",
+	"long.text.page.and.pencil",
+	"music.note.square.stack",
+	"pianokeys",
+	"questionmark.circle",
+	"globe",
+	"checkmark",
+	"chevron.right",
+	"checkmark",
+	"point.forward.to.point.capsulepath",
+	"point.forward.to.point.capsulepath",
+	"metronome",
+	"metronome",
+	"metronome.fill",
+	"pianokeys",
+	"speaker.wave.3",
+	"person.and.arrow.left.and.arrow.right.outward",
+	"waveform.path",
+	"chevron.down",
+	"chevron.right"
+	]
+
+	return menubar_icons[argument0] + "~"
+
+}

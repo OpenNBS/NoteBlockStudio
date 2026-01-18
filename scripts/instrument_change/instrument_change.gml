@@ -13,12 +13,12 @@ function instrument_change(ins) {
 		}
 		if (string_copy(ins.name, 0, 19) == "Custom instrument #") {
 			ins.name = filename_change_ext(filename_name(newfn), "")
-			text_exists[70 + ds_list_find_index(instrument_list, ins)] = 0
+			text_exists[70 + ds_list_find_index(songs[song].instrument_list, ins)] = 0
 		}
-	    changed = true
+	    songs[song].changed = true
 	    with (ins) {
 	        filename = string_delete(newfn, 1, string_length(sounds_directory))
-			filename = string_replace_all(filename, "\\", "/")
+			if (os_type = os_windows) filename = string_replace_all(filename, "\\", "/")
 	        if (loaded)
 	            instrument_free()
 	        instrument_load()

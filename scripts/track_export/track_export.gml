@@ -2,8 +2,9 @@ function track_export() {
 	// track_export()
 	var fn, a, b, c, d, p, xx, yy, zz, len, wid, hei, o, chestx, chesty, chestz, signx, signy, signz, nblocks, layers, cyy, y1, x1, insnum, ins, repeats, remain, replen, blockamount, nbamount, cpan, cpanvol, cvol, blocktagpos;
 	var REPEATER, TORCHON, TORCHOFF, WIRE, LADDER, RAIL, POWEREDRAIL, SLAB, noteblocks, noteblockx, noteblocky, noteblockz, noteblocknote, noteblockins, noteblockpit;
-	fn = string(get_save_filename_ext("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(filename), " ", "_"), "") + ".nbt", "", "Export Track"))
+	fn = string(get_save_filename_ext("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(songs[song].filename), " ", "_"), "") + ".nbt", "", "Export Track"))
 	if (fn = "") return 0
+	fn = enforce_extension(fn, ".nbt")
 	o = obj_controller
 	window = -1
 	with (create(obj_dummy2)) {
@@ -39,7 +40,7 @@ function track_export() {
 		for (var a = 0; a < 240; a++) {
 			ins[16 + a] = "harp"
 		}
-		instrument_list = o.instrument_list
+		instrument_list = o.songs[o.song].instrument_list
 	    layers = 4
 	    block_walkway_block = o.sch_exp_walkway_block
 	    block_walkway_data = o.sch_exp_walkway_data
@@ -55,7 +56,7 @@ function track_export() {
 	    blocksam = o.sch_exp_totalblocks[o.sch_exp_includelocked] // Amount of blocks
 		totalblocksc = 0
 	    with (o) {
-	        len = 40 + enda * 2
+	        len = 40 + songs[song].enda * 2
 	        wid = 99
 	        hei = 20
 	    }
@@ -247,14 +248,14 @@ function track_export() {
 		TAG_List("entities", 0, 10)
 		blocktagpos = buffer_tell(buffer)
 		TAG_List("blocks", 114514, 10)
-		show_debug_message(blocktagpos)
+		log("blocktagpos: " + string(blocktagpos))
 			TAG_Compound("nbt")
 				TAG_String("Color", "black")
 				TAG_String("id", "minecraft:sign")
 	            TAG_String("Text1", "{\"text\": \"Song generated\"}")
 	            TAG_String("Text2", "{\"text\": \"by the\"}")
-	            TAG_String("Text3", "{\"text\": \"Minecraft Note\"}")
-	            TAG_String("Text4", "{\"text\": \"Block Studio\"}")
+	            TAG_String("Text3", "{\"text\": \"Note Block\"}")
+	            TAG_String("Text4", "{\"text\": \"Studio\"}")
 				TAG_End()
 			TAG_List("pos", 3, 3)
 				buffer_write_int_be(99 - signy)
@@ -437,7 +438,7 @@ function track_export() {
 		noteblocknote = 0
 		noteblockins = 0
 		noteblockpit = 0
-		for (a = 0; a <= o.enda; a += 1) {
+		for (a = 0; a <= o.songs[o.song].enda; a += 1) {
 		    nblocks = 0
 			nblockins = 0
 			nblockkey = 0
@@ -475,49 +476,49 @@ function track_export() {
 			nblockkeyr4 = 0
 			nblockpitr4 = 0
 		    rep += 1
-		    if (o.colamount[a] > 0) { // Calculate note blocks for this tick
-		        for (b = 0; b <= o.collast[a]; b += 1) {
-		            if (o.song_exists[a, b] && (o.lockedlayer[b] = 0 || o.sch_exp_includelocked)) {
-		                if ((o.song_key[a, b] > 32 && o.song_key[a, b] < 58) || (o.structure && o.command_block && o.song_key[a, b] >= 9 && o.song_key[a, b] <= 81)) {
-							if (o.layerstereo[b] = 100) cpan = o.song_pan[a, b]
-							else cpan = (o.layerstereo[b] + o.song_pan[a, b]) / 2
-							cvol = (o.layervol[b] / 100) * o.song_vel[a, b]
+		    if (o.songs[o.song].colamount[a] > 0) { // Calculate note blocks for this tick
+		        for (b = 0; b <= o.songs[o.song].collast[a]; b += 1) {
+		            if (o.songs[o.song].song_exists[a, b] && (o.lockedlayer[b] = 0 || o.sch_exp_includelocked)) {
+		                if ((o.songs[o.song].song_key[a, b] > 32 && o.songs[o.song].song_key[a, b] < 58) || (o.structure && o.command_block && o.songs[o.song].song_key[a, b] >= 9 && o.songs[o.song].song_key[a, b] <= 81)) {
+							if (o.songs[o.song].layerstereo[b] = 100) cpan = o.songs[o.song].song_pan[a, b]
+							else cpan = (o.songs[o.song].layerstereo[b] + o.songs[o.song].song_pan[a, b]) / 2
+							cvol = (o.songs[o.song].layervol[b] / 100) * o.songs[o.song].song_vel[a, b]
 							cpanvol = (cpan - 100) * cvol + 100
-		                    nblockinsl4[nblocksl4] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180)) - !((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180))
-		                    nblockkeyl4[nblocksl4] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180))
-		                    nblockpitl4[nblocksl4] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180))
+		                    nblockinsl4[nblocksl4] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180)) - !((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180))
+		                    nblockkeyl4[nblocksl4] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180))
+		                    nblockpitl4[nblocksl4] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180))
 		                    nblocksl4 += 1
-		                    nblockinsl3[nblocksl3] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180)) - !((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180))
-		                    nblockkeyl3[nblocksl3] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180))
-		                    nblockpitl3[nblocksl3] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180))
+		                    nblockinsl3[nblocksl3] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180)) - !((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180))
+		                    nblockkeyl3[nblocksl3] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180))
+		                    nblockpitl3[nblocksl3] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180))
 		                    nblocksl3 += 1
-		                    nblockinsl2[nblocksl2] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160)) - !((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160))
-		                    nblockkeyl2[nblocksl2] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160))
-		                    nblockpitl2[nblocksl2] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160))
+		                    nblockinsl2[nblocksl2] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160)) - !((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160))
+		                    nblockkeyl2[nblocksl2] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160))
+		                    nblockpitl2[nblocksl2] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160))
 		                    nblocksl2 += 1
-		                    nblockinsl1[nblocksl1] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140)) - !((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140))
-		                    nblockkeyl1[nblocksl1] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140))
-		                    nblockpitl1[nblocksl1] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140))
+		                    nblockinsl1[nblocksl1] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140)) - !((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140))
+		                    nblockkeyl1[nblocksl1] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140))
+		                    nblockpitl1[nblocksl1] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140))
 		                    nblocksl1 += 1
-			                nblockins[nblocks] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * (cpan > 80 && cpan < 120 && cvol > 0.8) - !(cpan > 80 && cpan < 120 && cvol > 0.8)
-			                nblockkey[nblocks] = o.song_key[a, b] * (cpan > 80 && cpan < 120 && cvol > 0.8)
-			                nblockpit[nblocks] = o.song_pit[a, b] * (cpan > 80 && cpan < 120 && cvol > 0.8)
+			                nblockins[nblocks] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * (cpan > 80 && cpan < 120 && cvol > 0.8) - !(cpan > 80 && cpan < 120 && cvol > 0.8)
+			                nblockkey[nblocks] = o.songs[o.song].song_key[a, b] * (cpan > 80 && cpan < 120 && cvol > 0.8)
+			                nblockpit[nblocks] = o.songs[o.song].song_pit[a, b] * (cpan > 80 && cpan < 120 && cvol > 0.8)
 			                nblocks += 1
-		                    nblockinsr1[nblocksr1] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80)) - !((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80))
-		                    nblockkeyr1[nblocksr1] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80))
-		                    nblockpitr1[nblocksr1] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80))
+		                    nblockinsr1[nblocksr1] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80)) - !((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80))
+		                    nblockkeyr1[nblocksr1] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80))
+		                    nblockpitr1[nblocksr1] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80))
 		                    nblocksr1 += 1
-		                    nblockinsr2[nblocksr2] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60)) - !((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60))
-		                    nblockkeyr2[nblocksr2] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60))
-		                    nblockpitr2[nblocksr2] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60))
+		                    nblockinsr2[nblocksr2] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60)) - !((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60))
+		                    nblockkeyr2[nblocksr2] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60))
+		                    nblockpitr2[nblocksr2] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60))
 		                    nblocksr2 += 1
-		                    nblockinsr3[nblocksr3] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40)) - !((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40))
-		                    nblockkeyr3[nblocksr3] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40))
-		                    nblockpitr3[nblocksr3] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40))
+		                    nblockinsr3[nblocksr3] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40)) - !((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40))
+		                    nblockkeyr3[nblocksr3] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40))
+		                    nblockpitr3[nblocksr3] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40))
 		                    nblocksr3 += 1
-		                    nblockinsr4[nblocksr4] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol <= 20)) - !((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpan <= 20))
-		                    nblockkeyr4[nblocksr4] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol <= 20))
-		                    nblockpitr4[nblocksr4] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol <= 20))
+		                    nblockinsr4[nblocksr4] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol <= 20)) - !((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpan <= 20))
+		                    nblockkeyr4[nblocksr4] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol <= 20))
+		                    nblockpitr4[nblocksr4] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol <= 20))
 		                    nblocksr4 += 1
 						}
 					}
@@ -1205,7 +1206,7 @@ function track_export() {
 		TAG_List("blocks", blockamount, 10)
 	    buffer_save(buffer, temp_file)
 	    buffer_delete(buffer)
-		show_debug_message("totalblocksc: " + string(totalblocksc))
+		log("totalblocksc: " + string(totalblocksc))
 		totalblocksc = 0
 	    gzzip(temp_file, fn)
 	    instance_destroy()

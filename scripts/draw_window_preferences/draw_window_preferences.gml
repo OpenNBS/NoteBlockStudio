@@ -297,23 +297,25 @@ function draw_window_preferences() {
 	    if (draw_button2(x1 + 40 + 84 + 84, y1 + 296 + (theme = 3) * 22, 96, "还原默认", 0, 1)) patternfolder = pattern_directory
 		}
 		}
-		if (theme = 3) draw_theme_font(font_info_med)
-		draw_areaheader(x1 + 22, y1 + 354 + (theme = 3) * 22 - 170 * isplayer, 456, 45, "Discord")
-		if (theme = 3) draw_theme_font(font_main)
-		if (language != 1) {
-		if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "Enable Discord Rich Presence", "Whether to display info about your current\nsong in your Discord status activity.", 0, 1)) {
-		    presence = !presence
-			if (presence = 1) {
-				np_setpresence_timestamps(date_current_datetime(), 0, false);
+		if (os_type != os_macosx) {
+			if (theme = 3) draw_theme_font(font_info_med)
+			draw_areaheader(x1 + 22, y1 + 354 + (theme = 3) * 22 - 170 * isplayer, 456, 45, "Discord")
+			if (theme = 3) draw_theme_font(font_main)
+			if (language != 1) {
+				if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "Enable Discord Rich Presence", "Whether to display info about your current\nsong in your Discord status activity.", 0, 1)) {
+				    presence = !presence
+					if (presence = 1) {
+						np_setpresence_timestamps(date_current_datetime(), 0, false);
+					}
+				}
+			} else {
+				if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "启用 Discord Rich Presence", "是否在 Discord 个人状态中显示当前歌曲信息。", 0, 1)) {
+				    presence = !presence
+					if (presence = 1) {
+						np_setpresence_timestamps(date_current_datetime(), 0, false);
+					}
+				}
 			}
-		}
-		} else {
-		if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "启用 Discord Rich Presence", "是否在 Discord 个人状态中显示当前歌曲信息。", 0, 1)) {
-		    presence = !presence
-			if (presence = 1) {
-				np_setpresence_timestamps(date_current_datetime(), 0, false);
-			}
-		}
 		}
 	} else if (selected_tab = 1) {
 		if (theme = 3) draw_theme_font(font_info_med)
@@ -335,12 +337,13 @@ function draw_window_preferences() {
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 20 + 25, blackout, "Blackout mode", "Makes the workspace background solid black, so you can\nremove in your video editor when recording the screen.", false, true)) blackout = !blackout
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 25, windowsound, "Navigation sound", "Whether to play sound effects when navigating the interface.\n(Only applies to the Fluent theme.)", (theme != 3), true)) windowsound = !windowsound
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 25, fdark, "Dark mode", "Whether to use darker colors on the interface.\n(Only applies to the Fluent theme.)", (theme != 3), true)) {fdark = !fdark if (fdark) window_set_darkmode() else window_unset_darkmode()}
-		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "Transparency effects", "Whether to show transparency effects on the interface.\n(Only applies to the Fluent theme.)", (theme != 3), true)) {acrylic = !acrylic change_theme()}
+		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "Transparency effects", "Whether to show transparency effects on the interface.\n(Only applies to the Fluent theme.)", theme != 3, true)) {acrylic = !acrylic change_theme()}
 		} else {
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 20 + 25, blackout, "全黑模式", "使背景变为纯黑色，可以用于剪辑时扣掉。", false, true)) blackout = !blackout
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 25, windowsound, "界面音效", "是否在浏览时播放音效。\n（仅限 Fluent 主题）", (theme != 3), true)) windowsound = !windowsound
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 25, fdark, "暗色模式", "是否在界面上使用暗色调。\n（仅限 Fluent 主题）", (theme != 3), true)) {fdark = !fdark if (fdark) window_set_darkmode() else window_unset_darkmode()}
-		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "透明效果", "是否在界面上显示透明效果。\n（仅限 Fluent 主题）", (theme != 3), true)) {acrylic = !acrylic change_theme()}
+		//if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "透明效果", condstr(os_type = os_windows, "是否在界面上显示透明效果。\n（仅限 Fluent 主题）", "该功能在非Windows平台不可用。"), (theme != 3 || os_type != os_windows), true)) {acrylic = !acrylic change_theme()}
+		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "透明效果", "是否在界面上显示透明效果。\n（仅限 Fluent 主题）", theme != 3, true)) {acrylic = !acrylic change_theme()}
 		}
 		
 		// Accent color picker
@@ -421,7 +424,7 @@ function draw_window_preferences() {
 		if (draw_button2(x1 + 394, y1 + 161 + (theme = 3) * 22, 72, "重置", (window_scale == get_default_window_scale()))) {
 			window_scale = get_default_window_scale()
 		}
-		if (draw_checkbox(x1 + 276, y1 + 195 + (theme = 3) * 22, hires, "为高分辨率优化", "是否在界面上使用更高分辨率的纹理。\n" + condstr(theme = 3, "（可能减弱性能并在低分辨率下减小可读性）", "（仅限 Fluent 主题）"), (theme != 3), true)) hires = !hires
+		if (draw_checkbox(x1 + 276, y1 + 195 + (theme = 3) * 22, hires, "为高分辨率优化", "是否在界面上使用更高分辨率的纹理。\n" + condstr(theme = 3, "（可能减弱性能并在低分辨率下减小可读性）", "（仅限 Fluent 主题）"), theme != 3, true)) hires = !hires
 		}
 		if (theme != 3 || (theme != 2 && !fdark)) draw_set_color(c_black)
 		else draw_set_color(c_white)
@@ -438,7 +441,22 @@ function draw_window_preferences() {
 		if (language != 1) draw_areaheader(x1 + 258, y1 + 239 + (theme = 3) * 22, 220, 65, "Icon")
 		else draw_areaheader(x1 + 258, y1 + 239 + (theme = 3) * 22, 220, 65, "图标")
 		if (theme = 3) draw_theme_font(font_main)
-		if (draw_checkbox(x1 + 276, y1 + (theme = 3) * 22 + 239 + 16 + 5 + 4, window_icon, condstr(language != 1, "Old icon", "旧图标"), condstr(language != 1, "Whether to use the old icon instead of the new icon.", "使用旧图标替换新图标。"), false, true)) window_icon = !window_icon
+		if (draw_checkbox(x1 + 276, y1 + (theme = 3) * 22 + 239 + 16 + 5 + 4, window_icon, condstr(language != 1, "Fruity icon", "macOS样式图标"), condstr(language != 1, "Whether to use the a fruity themed icon instead of the regular icon.", "使用macOS风格图标替换普通图标。"), false, true)) window_icon = !window_icon
+		if (theme = 3) {
+			if (draw_checkbox(x1 + 420 - 100, y1 + 478 - isplayer * 100 + 5, advancedinterface, condstr(language != 1, "Advanced", "高级设置"), condstr(language != 1, "Whether to show the advanced interfaces settings.", "显示高级界面设置选项。"), false, true)) advancedinterface = !advancedinterface
+			if (advancedinterface) {
+				draw_theme_font(font_info_med)
+				if (language != 1) draw_areaheader(x1 + 22, y1 + 239 + 22 + 65, 456, 65, "Advanced")
+				else draw_areaheader(x1 + 22, y1 + 239 + 22 + 65, 456, 65, "高级")
+				draw_theme_font(font_main)
+				if (draw_checkbox(x1 + 40, y1 + 239 + 22 + 65 + 21, wpapernoblur, condstr(language != 1, "Turn off background blurring", "关闭背景虚化"), condstr(language != 1, "Whether to turn off the blurring effect on the background image.", "关闭背景图片虚化效果。"), false, true)) wpapernoblur = !wpapernoblur
+				if (draw_checkbox(x1 + 40, y1 + 239 + 22 + 65 + 21 + 20, wpapernodim, condstr(language != 1, "Turn off background dimming", "关闭背景暗化"), condstr(language != 1, "Whether to turn off the dimming effect on the background image.", "关闭背景图片变暗效果。"), false, true)) wpapernodim = !wpapernodim
+				if (draw_checkbox(x1 + 276, y1 + 239 + 22 + 65 + 21, backgroundrainbow, condstr(language != 1, "Rainbow mode affects background", "炫彩模式对背景生效"), condstr(language != 1, "Whether to make rainbow mode affect background too.", "使炫彩模式对背景生效。"), false, true)) backgroundrainbow = !backgroundrainbow
+				if (!isplayer) {
+					if (draw_checkbox(x1 + 40, y1 + 239 + 22 + 65 + 21 + 20 + 20, noeditingbackground, condstr(language != 1, "Turn off editing area background", "关闭编辑区域背景"), condstr(language != 1, "Whether to turn off the background of the editing area.", "关闭编辑区域背景。"), false, true)) noeditingbackground = !noeditingbackground
+				}
+			}
+		}
 	} else if (selected_tab = 2) {
 		if (language != 1) {
 		if (theme = 3) draw_theme_font(font_info_med)
@@ -561,12 +579,35 @@ function draw_window_preferences() {
 		if (draw_checkbox(x1 + 32, y1 + 284 + 16 + (theme = 3) * 22, autoplay, "Auto-play downloaded songs", "Whether to start playing downloaded songs\nautomatically after opening them.")) autoplay = !autoplay
 		if (draw_checkbox(x1 + 32, y1 + 304 + 16 + (theme = 3) * 22, show_soundcount, "Show number of active sounds", "Displays the number of sounds that are\ncurrently playing in the status bar.")) show_soundcount = !show_soundcount
 		if (draw_checkbox(x1 + 32, y1 + 324 + 16 + (theme = 3) * 22, channelstoggle, "Use more audio channels", "Whether to increase the number\nof sounds that can play at once.")) channelstoggle = !channelstoggle
-		if (draw_checkbox(x1 + 32, y1 + 344 + 16 + (theme = 3) * 22, taskbar, "Enable taskbar indicator", "Whether to display the song\nprogress on the taskbar.")) taskbar = !taskbar
+		//if (draw_checkbox(x1 + 32, y1 + 344 + 16 + (theme = 3) * 22, taskbar, "Enable taskbar indicator", "Whether to display the song\nprogress on the taskbar.")) taskbar = !taskbar
 		if (theme = 3) draw_theme_font(font_info_med)
 		draw_areaheader(x1 + 233 + 22, y1 + 244 + (theme = 3) * 22, 223, 60, "Tempo unit")
 		if (theme = 3) draw_theme_font(font_main)
 		if (draw_radiobox(x1 + 233 + 32, y1 + 244 + 16 + (theme = 3) * 22, !use_bpm, "Ticks per second (t/s)", "Display song tempos in ticks per second.")) use_bpm = 0
 		if (draw_radiobox(x1 + 233 + 32, y1 + 264 + 16 + (theme = 3) * 22, use_bpm, "Beats per minute (BPM)", "Display song tempos in beats per minute.")) use_bpm = 1
+		if (theme = 3) draw_theme_font(font_info_med)
+		draw_areaheader(x1 + 233 + 22, y1 + 329 + (theme = 3) * 22, 223, 55 + 23 + 20, "Resource pack")
+		if (theme = 3) draw_theme_font(font_main)
+		draw_area(x1 + 233 + 22 + 18, y1 + 329 + (theme = 3) * 22 + 16 + 5, x1 + 233 + 22 + 18 + 100, y1 + 329 + (theme = 3) * 22 + 16 + 5 + 20)
+		var rp_str = ""
+		var display_resource = current_resource
+		if (string_width_dynamic(display_resource) > 82) {
+			while (display_resource != "" && string_width_dynamic(display_resource) > 82 - string_width_dynamic("...")) {
+				display_resource = string_delete(display_resource, string_length(display_resource), 1)
+			}
+			display_resource += "..."
+		}
+		for (var l = 0; l < array_length(resourcepacks); l++) {
+			rp_str += check(current_resource = resourcepacks[l].filename)
+			rp_str += resourcepacks[l].filename
+			if (l != array_length(resourcepacks) - 1) rp_str += "|"
+		}
+		if (draw_abutton(x1 + 233 + 22 + 18 + 100 - 17, y1 + 329 + (theme = 3) * 22 + 17 + 5) && wmenu = 0) {
+			menu = show_menu_ext("resourcepack", x1 + 233 + 22 + 18, y1 + 329 + (theme = 3) * 22 + 16 + 5 + 21, rp_str)
+		}
+		draw_text_dynamic(x1 + 233 + 22 + 18 + 3, y1 + 329 + (theme = 3) * 22 + 19 + 5, display_resource)
+		if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+		if (draw_button2(x1 + 233 + 22 + 18, y1 + 359 + (theme = 3) * 22 + 19 + 5, 150, "Refresh Resource Packs", 0, 1)) refresh_resourcepacks()
 		} else {
 		if (theme = 3) draw_theme_font(font_info_med)
 	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 145, "进度条")
@@ -586,16 +627,39 @@ function draw_window_preferences() {
 		if (draw_checkbox(x1 + 32, y1 + 284 + 16 + (theme = 3) * 22, autoplay, "Auto-play downloaded songs", "Whether to start playing downloaded songs\nautomatically after opening them.")) autoplay = !autoplay
 		if (draw_checkbox(x1 + 32, y1 + 304 + 16 + (theme = 3) * 22, show_soundcount, "显示正在播放的声音数", "在状态栏里显示正在播放的声音数。")) show_soundcount = !show_soundcount
 		if (draw_checkbox(x1 + 32, y1 + 324 + 16 + (theme = 3) * 22, channelstoggle, "提升声音限制", "提升可同时播放的声音数。")) channelstoggle = !channelstoggle
-		if (draw_checkbox(x1 + 32, y1 + 344 + 16 + (theme = 3) * 22, taskbar, "启用任务栏进度", "是否在任务栏显示当前歌曲的进度。")) taskbar = !taskbar
+		//if (draw_checkbox(x1 + 32, y1 + 344 + 16 + (theme = 3) * 22, taskbar, "启用任务栏进度", "是否在任务栏显示当前歌曲的进度。")) taskbar = !taskbar
 		if (theme = 3) draw_theme_font(font_info_med)
 		draw_areaheader(x1 + 233 + 22, y1 + 244 + (theme = 3) * 22, 223, 60, "速度单位")
 		if (theme = 3) draw_theme_font(font_main)
 		if (draw_radiobox(x1 + 233 + 32, y1 + 244 + 16 + (theme = 3) * 22, !use_bpm, "红石刻 / 秒 (t/s)", "使用每秒几刻显示速度。")) use_bpm = 0
 		if (draw_radiobox(x1 + 233 + 32, y1 + 264 + 16 + (theme = 3) * 22, use_bpm, "拍数 / 分钟 (BPM)", "使用每分钟多少拍显示速度。")) use_bpm = 1
+		if (theme = 3) draw_theme_font(font_info_med)
+		draw_areaheader(x1 + 233 + 22, y1 + 329 + (theme = 3) * 22, 223, 55 + 23 + 20, "资源包")
+		if (theme = 3) draw_theme_font(font_main)
+		draw_area(x1 + 233 + 22 + 18, y1 + 329 + (theme = 3) * 22 + 16 + 5, x1 + 233 + 22 + 18 + 100, y1 + 329 + (theme = 3) * 22 + 16 + 5 + 20)
+		var rp_str = ""
+		var display_resource = current_resource
+		if (string_width_dynamic(display_resource) > 82) {
+			while (display_resource != "" && string_width_dynamic(display_resource) > 82 - string_width_dynamic("...")) {
+				display_resource = string_delete(display_resource, string_length(display_resource), 1)
+			}
+			display_resource += "..."
+		}
+		for (var l = 0; l < array_length(resourcepacks); l++) {
+			rp_str += check(current_resource = resourcepacks[l].filename)
+			rp_str += resourcepacks[l].filename
+			if (l != array_length(resourcepacks) - 1) rp_str += "|"
+		}
+		if (draw_abutton(x1 + 233 + 22 + 18 + 100 - 17, y1 + 329 + (theme = 3) * 22 + 17 + 5) && wmenu = 0) {
+			menu = show_menu_ext("resourcepack", x1 + 233 + 22 + 18, y1 + 329 + (theme = 3) * 22 + 16 + 5 + 21, rp_str)
+		}
+		draw_text_dynamic(x1 + 233 + 22 + 18 + 3, y1 + 329 + (theme = 3) * 22 + 19 + 5, display_resource)
+		if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+		if (draw_button2(x1 + 233 + 22 + 18, y1 + 359 + (theme = 3) * 22 + 19 + 5, 150, "刷新资源包列表", 0, 1)) refresh_resourcepacks()
 		}
 	}
 	
-	if (draw_button2(x1 + 420, y1 + 478 - isplayer * 100, 72, condstr(language != 1, "OK", "确定")) || keyboard_check_released(vk_escape) || (prevwindow == window && keyboard_check(vk_control) && keyboard_check_pressed(ord("P")))) {
+	if (draw_button2(x1 + 420, y1 + 478 - isplayer * 100, 72, condstr(language != 1, "OK", "确定")) || keyboard_check_released(vk_escape) || (prevwindow == window && check_ctrl() && keyboard_check_pressed(ord("P")) || (keyboard_check_pressed(188) && os_type = os_macosx))) {
 		if (theme != 3) {
 			window = 0
 			window_set_cursor(curs)

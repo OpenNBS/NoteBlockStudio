@@ -15,13 +15,13 @@ function draw_window_about() {
 	draw_text_dynamic(x1 + 150, y1 + 200, "Note Block Studio")
 	draw_theme_font(font_main)
 	if (language != 1) {
-	if (RUN_FROM_IDE != 1){
+	if (NOT_RUN_FROM_IDE != 1){
 		draw_text_dynamic(x1 + 150, y1 + 217, "Version Local Release" + "\n\nThis program is a continuation of\n Minecraft Note Block Studio, \ncreated by David Andrei. \n\nThis product is not affiliated with\nMojang Studios, Microsoft Studios\nor the game Minecraft.")
 	} else {
 		draw_text_dynamic(x1 + 150, y1 + 217, "Version " + version + " - Released " + version_date + "\n\nThis program is a continuation of\n Minecraft Note Block Studio, \ncreated by David Andrei. \n\nThis product is not affiliated with\nMojang Studios, Microsoft Studios\nor the game Minecraft.")
 	}
 	} else {
-	if (RUN_FROM_IDE != 1){
+	if (NOT_RUN_FROM_IDE != 1){
 		draw_text_dynamic(x1 + 150, y1 + 217, "本地版本" + "\n\n本程序是 Minecraft Note Block Studio 的延续版本\n原作者 David Andrei\n\n本产品与 Mojang Studios、\nMicrosoft Studios 以及\n游戏 Minecraft 无任何关联。")
 	} else {
 		draw_text_dynamic(x1 + 150, y1 + 217, "版本" + version + " - 发布于" + version_date + "\n\n本程序是 Minecraft Note Block Studio 的延续版本\n原作者 David Andrei\n\n本产品与 Mojang Studios、\nMicrosoft Studios 以及\n游戏 Minecraft 无任何关联。")

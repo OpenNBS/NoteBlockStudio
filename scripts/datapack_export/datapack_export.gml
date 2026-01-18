@@ -12,6 +12,7 @@ function datapack_export() {
 	else fn = string(get_save_filename_ext("数据包目录", dat_name, "", "导出数据包"))
 	}
 	if (fn = "") return 0
+	fn = enforce_extension(fn, ".zip")
 
 	window = -1
 	calculate_locked_layers()
@@ -29,8 +30,8 @@ function datapack_export() {
 		// https://minecraft.wiki/w/Java_Edition_1.21#Command_format_2
 		var function_registry = (o.dat_mcversion == 0) ? "functions" : "function";
 
-		var playspeed = min(round(o.tempo * 4), 120)
-		var rootfunction = "0_" + string(power(2, floor(log2(o.enda))+1)-1)
+		var playspeed = min(round(o.songs[o.song].real_tempo * 4), 120)
+		var rootfunction = "0_" + string(power(2, floor(log2(o.songs[o.song].enda))+1)-1)
 		var tempdir
 		var functionpath
 		var functiondir
@@ -50,7 +51,7 @@ function datapack_export() {
 		}
 	
 		// Create folder structure
-		tempdir = data_directory + "TempDatapack\\"
+		tempdir = data_directory + "tempdatapack" + condstr(os_type = os_windows, "\\", "/")
 		if (directory_exists_lib(tempdir)) {
 			directory_delete_lib(tempdir)
 		}
@@ -185,9 +186,11 @@ function datapack_export() {
 	
 		// Execute shell command to create ZIP, or to move temp folder to location
 		if (o.dat_usezip) {
-			ExecuteShell("7za a -tzip \"" + fn + "\" \"" + data_directory + "TempDatapack\\*\"", true, true)
+			if (os_type = os_macosx) execute_program("ditto", "-c -k \"" + data_directory + "tempdatapack" + "\" \"" + fn + "\"", true);
+			else execute_program(get_7z_exc_name(), "a -tzip \"" + fn + "\" \"" + data_directory + "tempdatapack" + condstr(os_type = os_windows, "\\", "/") + "*\"", true)
 		} else {
-			ExecuteShell("\"" + data_directory + "move.bat\" \"" + fn + "\\\"", true, true)
+			if (os_type = os_windows) execute_program("cmd", "\"" + data_directory + "move.bat\" \"" + fn + "\\\"", true)
+			else execute_program("cp", "-r \"" + data_directory + "tempdatapack\" \"" + fn + "/\"", true);
 		}
 	
 		directory_delete_lib(tempdir)

@@ -9,14 +9,14 @@ function check_custom_instrument(argument0) {
 	//for (var i = 0; i < total_vals; i++;) {show_debug_message(arr_data[i])}
 	while (val < total_vals) {
 		val += 2
-		if arr_data[val] >= ds_list_size(instrument_list) {
+		if arr_data[val] >= ds_list_size(songs[song].instrument_list) {
 	//		show_debug_message("custom instrument found")
 			return -1
 		}
 		val += 5
 		while arr_data[val] != -1 {
 			val += 1
-			if arr_data[val] >= ds_list_size(instrument_list) {
+			if arr_data[val] >= ds_list_size(songs[song].instrument_list) {
 	//			show_debug_message("custom instrument found")
 				return -1
 			}

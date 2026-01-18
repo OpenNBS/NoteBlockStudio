@@ -4,13 +4,13 @@ function blocks_set_instruments() {
 
 	var a, b;
 
-	for (a = 0; a <= enda; a += 1) {
-	    if (colamount[a] > 0) {
-	        for (b = 0; b <= collast[a]; b += 1) {
-	            if (song_exists[a, b]) {
-	                song_ins[a, b] = instrument_list[| song_ins[a, b]]
-	                song_ins[a, b].num_blocks++
-	                if (song_ins[a, b].user) block_custom++
+	for (a = 0; a <= songs[song].enda; a += 1) {
+	    if (songs[song].colamount[a] > 0) {
+	        for (b = 0; b <= songs[song].collast[a]; b += 1) {
+	            if (songs[song].song_exists[a, b]) {
+	                songs[song].song_ins[a, b] = songs[song].instrument_list[| songs[song].song_ins[a, b]]
+	                songs[song].song_ins[a, b].num_blocks++
+	                if (songs[song].song_ins[a, b].user) songs[song].block_custom++
 	            }
 	        }
 	    }

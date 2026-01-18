@@ -28,16 +28,16 @@ function draw_icon() {
 	    else draw_sprite(spr_frame1, a + 3 * theme + dark * 3, xx, yy)
 	}
 	if (theme != 3) {
-		draw_sprite(spr_icons, i - locked, xx + (a = 2 || pressed = 1), yy + (a = 2 || pressed = 1))
+		draw_sprite_ext(spr_icons, i - locked * (i != 43), xx + (a = 2 || pressed = 1), yy + (a = 2 || pressed = 1), 1, 1, 0, -1, 0.5 + 0.5 * (i != 43 || !locked))
 	} else {
 		if (!hires) {
-			if (!dark) draw_sprite_ext(spr_icons_f, i - locked, xx + 25 * 0.1 * (a = 2), yy + 23 * 0.1 * (a = 2), 1 - 0.2 * (a = 2), 1 - 0.2 * (a = 2), 0, -1, (!dropmode) + dropalpha * (dropmode))
-			else draw_sprite_ext(spr_icons_d, i - locked, xx + 25 * 0.1 * (a = 2), yy + 23 * 0.1 * (a = 2), 1 - 0.2 * (a = 2), 1 - 0.2 * (a = 2), 0, -1, (!dropmode) + dropalpha * (dropmode))
-			draw_sprite_ext(spr_icons_col, i - locked, xx + 25 * 0.1 * (a = 2), yy + 23 * 0.1 * (a = 2), 1 - 0.2 * (a = 2), 1 - 0.2 * (a = 2), 0, accent[6 - 2 * !fdark], (!dropmode) + dropalpha * (dropmode))
+			if (!dark) draw_sprite_ext(spr_icons_f, i - locked * (i != 43), xx + 25 * 0.1 * (a = 2), yy + 23 * 0.1 * (a = 2), 1 - 0.2 * (a = 2), 1 - 0.2 * (a = 2), 0, -1, (!dropmode - 0.5 * (i = 43 && locked)) + dropalpha * (dropmode))
+			else draw_sprite_ext(spr_icons_d, i - locked * (i != 43), xx + 25 * 0.1 * (a = 2), yy + 23 * 0.1 * (a = 2), 1 - 0.2 * (a = 2), 1 - 0.2 * (a = 2), 0, -1, (!dropmode - 0.5 * (i = 43 && locked)) + dropalpha * (dropmode))
+			draw_sprite_ext(spr_icons_col, i - locked * (i != 43), xx + 25 * 0.1 * (a = 2), yy + 23 * 0.1 * (a = 2), 1 - 0.2 * (a = 2), 1 - 0.2 * (a = 2), 0, accent[6 - 2 * !fdark], (!dropmode - 0.5 * (i = 43 && locked)) + dropalpha * (dropmode))
 		} else {
-			if (!dark) draw_sprite_ext(spr_icons_f_hires, i - locked, xx + 25 * 0.1 * (a = 2), yy + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, -1, (!dropmode) + dropalpha * (dropmode))
-			else draw_sprite_ext(spr_icons_d_hires, i - locked, xx + 25 * 0.1 * (a = 2), yy + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, -1, (!dropmode) + dropalpha * (dropmode))
-			draw_sprite_ext(spr_icons_col_hires, i - locked, xx + 25 * 0.1 * (a = 2), yy + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, accent[6 - 2 * !fdark], (!dropmode) + dropalpha * (dropmode))
+			if (!dark) draw_sprite_ext(spr_icons_f_hires, i - locked * (i != 43), xx + 25 * 0.1 * (a = 2), yy + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, -1, (!dropmode - 0.5 * (i = 43 && locked)) + dropalpha * (dropmode))
+			else draw_sprite_ext(spr_icons_d_hires, i - locked * (i != 43), xx + 25 * 0.1 * (a = 2), yy + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, -1, (!dropmode - 0.5 * (i = 43 && locked)) + dropalpha * (dropmode))
+			draw_sprite_ext(spr_icons_col_hires, i - locked * (i != 43), xx + 25 * 0.1 * (a = 2), yy + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, accent[6 - 2 * !fdark], (!dropmode - 0.5 * (i = 43 && locked)) + dropalpha * (dropmode))
 		}
 	}
 	// Repeat trigger when holding fast-forward and rewind

@@ -28,7 +28,7 @@ function region_code_load(argument0, argument1, argument2) {
 	        pipe_pos = buffer_pos_char(str_buffer, str_len, "|", pipe_pos + 1)
 			val = real(buffer_substr_copy(str_buffer, prev_pipe_pos + 1, pipe_pos - prev_pipe_pos - 1, val_buffer))
 			prev_pipe_pos = pipe_pos
-	        var ins = instrument_list[| val]
+	        var ins = songs[song].instrument_list[| val]
 	        pipe_pos = buffer_pos_char(str_buffer, str_len, "|", pipe_pos + 1)
 			val = real(buffer_substr_copy(str_buffer, prev_pipe_pos + 1, pipe_pos - prev_pipe_pos - 1, val_buffer))
 			prev_pipe_pos = pipe_pos
@@ -51,5 +51,6 @@ function region_code_load(argument0, argument1, argument2) {
 	} until (pipe_pos >= str_len)
 	buffer_delete(str_buffer)
 	buffer_delete(val_buffer)
+	update_tempo_changes()
 	
 }
