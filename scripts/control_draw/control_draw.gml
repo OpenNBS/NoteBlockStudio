@@ -2398,24 +2398,26 @@ function control_draw() {
 		}
 		
 		if (window != w_settempo) {
+		temp_tempo = current_song.real_tempo
+		if (playing) temp_tempo = current_song.tempo
 		if (language != 1) {
-		if (use_bpm) {
-			bpm = current_song.real_tempo * 15
-			draw_text_dynamic(136, 60 + song_tab_offset, string_format(bpm, 4, 2) + " BPM")
-			popup_set(108, 57 + song_tab_offset, 64, 22, "Tempo of the song (measured in beats per minute).\nClick and drag to change. Click to enter value. Right-click for more options.")
+			if (use_bpm) {
+				bpm = temp_tempo * 15
+				draw_text_dynamic(136, 60 + song_tab_offset, string_format(bpm, 4, 2) + " BPM")
+				popup_set(108, 57 + song_tab_offset, 64, 22, "Tempo of the song (measured in beats per minute).\nClick and drag to change. Click to enter value. Right-click for more options.")
+			} else {
+				draw_text_dynamic(136, 60 + song_tab_offset, string_format(temp_tempo, 4, 2) + " t / s")
+				popup_set(108, 57 + song_tab_offset, 64, 22, "Tempo of the song (measured in ticks per second).\nClick and drag to change. Click to enter value. Right-click for more options.")
+			}
 		} else {
-			draw_text_dynamic(136, 60 + song_tab_offset, string_format(current_song.real_tempo, 4, 2) + " t / s")
-			popup_set(108, 57 + song_tab_offset, 64, 22, "Tempo of the song (measured in ticks per second).\nClick and drag to change. Click to enter value. Right-click for more options.")
-		}
-		} else {
-		if (use_bpm) {
-			bpm = current_song.real_tempo * 15
-			draw_text_dynamic(136, 60 + song_tab_offset, string_format(bpm, 4, 2) + " BPM")
-			popup_set(108, 57 + song_tab_offset, 64, 22, "歌曲的速度（拍数/分钟）\n拖拽来大致更改，点击来手动输入，右键查看更多选项。")
-		} else {
-			draw_text_dynamic(136, 60 + song_tab_offset, string_format(current_song.real_tempo, 4, 2) + " t / s")
-			popup_set(108, 57 + song_tab_offset, 64, 22, "歌曲的速度（红石刻/秒）\n拖拽来大致更改，点击来手动输入，右键查看更多选项。")
-		}
+			if (use_bpm) {
+				bpm = temp_tempo * 15
+				draw_text_dynamic(136, 60 + song_tab_offset, string_format(bpm, 4, 2) + " BPM")
+				popup_set(108, 57 + song_tab_offset, 64, 22, "歌曲的速度（拍数/分钟）\n拖拽来大致更改，点击来手动输入，右键查看更多选项。")
+			} else {
+				draw_text_dynamic(136, 60 + song_tab_offset, string_format(temp_tempo, 4, 2) + " t / s")
+				popup_set(108, 57 + song_tab_offset, 64, 22, "歌曲的速度（红石刻/秒）\n拖拽来大致更改，点击来手动输入，右键查看更多选项。")
+			}
 		}
 		draw_set_halign(fa_left)
 		a = mouse_rectangle(108, 57 + song_tab_offset, 64, 22)
