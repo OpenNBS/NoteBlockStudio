@@ -5,6 +5,7 @@ function set_resourcepack(pack_name){
 	var dir_no_path = ""
 	var using_directory = sounds_directory
 	var sounds_json
+	if (directory_exists(sounds_directory + "pack_temp")) directory_destroy(sounds_directory + "pack_temp")
 	if (pack_name != "Vanilla") {
 		for (var i = 1; i < array_length(resourcepacks); i++) {
 			if (resourcepacks[i].filename = pack_name) pack_obj = i
