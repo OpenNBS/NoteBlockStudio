@@ -27,6 +27,7 @@
           ],"documentation":"",},
       ],"constants":[],"ProxyFiles":[
         {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"GMaudioTools.dll","TargetMask":6,},
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libGMaudioTools.so","TargetMask":7,},
       ],"copyToTargets":-1,"usesRunnerInterface":false,"order":[],},
   ],
   "HTML5CodeInjection": "",
