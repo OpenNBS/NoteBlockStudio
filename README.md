@@ -22,9 +22,9 @@ An open-source continuation of Minecraft Note Block Studio with exciting new fea
 </p>
 
 ## ⬇ Download
-You can download Open Note Block Studio [here](https://github.com/OpenNBS/OpenNoteBlockStudio/releases/latest)!
+You can download Note Block Studio [here](https://github.com/OpenNBS/OpenNoteBlockStudio/releases/latest)!
 
-> _Windows-only. Support for other platforms is coming soon!_
+> _On linux: KDE desktops require `kdialog`. Other desktop environments require `zenity` to be installed._
 
 ## 📄 Project Status
 
