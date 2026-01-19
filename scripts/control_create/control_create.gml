@@ -21,6 +21,8 @@ function control_create() {
 	for (var i = 0; i < p_num; i += 1) {
 		if (parameter_string(i) = "-player" || parameter_string(i) == "--protocol-launcher") isplayer = 1
 	}
+	
+	if (!NOT_RUN_FROM_IDE) copy_bundled_files()
 	//if (NOT_RUN_FROM_IDE != 1) isplayer = 1
 	destroy_self = 0
 	port_taken = 0
@@ -680,23 +682,15 @@ function control_create() {
 	update_download = -1
 	downloaded_size = 0
 	total_size = -1
-	changelogstr = load_text(data_directory + "changelog.txt")
-	creditsstr = load_text(data_directory + "credits.txt")
+	changelogstr = load_text(bundled_data_directory + "changelog.txt")
+	creditsstr = load_text(bundled_data_directory + "credits.txt")
 	if (file_exists_lib(settings_file) && vers != version) {
 		if (theme = 2) fdark = 1
 		theme = 3 // Sets to the Fluent theme when updated
 	    window = w_update
 	    update_success = 1
 		donate_banner = 1 // Enable donate banner after each update
-		if (os_type != os_windows) {
-			execute_program("cp", @'-fR "' + filename_dir(bundled_data_directory) + @'" "' + filename_dir(data_directory) + @'"', true)
-			execute_program("cp", @'-fR "' + filename_dir(bundled_songs_directory) + @'" "' + filename_dir(songs_directory) + @'"', true)
-			execute_program("cp", @'-fR "' + filename_dir(bundled_pattern_directory) + @'" "' + filename_dir(pattern_directory) + @'"', true)
-		} else {
-		    execute_program("Xcopy", @'/E /I /Y "' + filename_dir(bundled_data_directory) + @'" "' + filename_dir(data_directory) + @'"', true)
-		    execute_program("Xcopy", @'/E /I /Y "' + filename_dir(bundled_songs_directory) + @'" "' + filename_dir(songs_directory) + @'"', true)
-		    execute_program("Xcopy", @'/E /I /Y "' + filename_dir(bundled_pattern_directory) + @'" "' + filename_dir(pattern_directory) + @'"', true)
-		}
+		copy_bundled_files()
 	}
 	
 	if (os_type = os_ios) recent_song[0] = bundled_songs_directory + "the_ground's_colour_is_yellow.nbs"

@@ -44,17 +44,12 @@ by Bentroen
 nbswave|https://github.com/OpenNBS/nbswave
 by Bentroen
 
-audio-DLL|https://github.com/stuffbydavid/audio-DLL/
-by David Andrei
-
-midi-input-DLL|https://github.com/stuffbydavid/midi-input-DLL/
+GMSchematic
 by David Andrei
 
 window-DLL|https://github.com/stuffbydavid/window-DLL/
-by David Andrei
-
-file-DLL|https://github.com/stuffbydavid/file-DLL
-by David Andrei
+(fork)|https://github.com/OctoFlareDev/window-DLL
+originally by David Andrei
 
 Realtime Blur|https://foxyofjungle.itch.io/realtime-blur
 by Foxy Of Jungle
@@ -65,7 +60,7 @@ by Igor Pavlov
 Pydub|http://pydub.com/
 by James Robert
 
-zlib| http://zlib.net/
+zlib|http://zlib.net/
 by Jean-loup Gailly and Mark Adler
 
 Fluent Icons|https://github.com/microsoft/fluentui-system-icons
@@ -73,6 +68,15 @@ by Microsoft Corporation
 
 NekoPresence|https://github.com/nkrapivin/NekoPresence/
 by Nikita Krapivin
+
+GMaudioTools|https://github.com/OctoFlareDev/GMaudioTools
+by OctoFlare
+
+GMmacOSTools|https://github.com/OctoFlareDev/GMmacOSTools
+by OctoFlare
+
+GMSSimpleMIDI|https://github.com/RhyminGarfunkle/GMSSimpleMIDI
+by RhyminGarfunkle
 
 Dialog Module|https://marketplace.yoyogames.com/assets/6621/dialog-module
 by Samuel Venable
@@ -88,6 +92,19 @@ by Valentin Berlier
 
 pybind11|https://github.com/pybind/pybind11
 by Wenzel Jakob
+
+---
+
+FFmpeg and LAME are licensed under the
+GNU Lesser General Public License,
+version 2.1 or later.
+A copy of the LGPL v2.1 is included with
+this application.
+
+The source code for FFmpeg and LAME is
+available from their respective projects:
+https://ffmpeg.org|https://ffmpeg.org
+https://lame.sourceforge.net|https://lame.sourceforge.net
 
 
 
