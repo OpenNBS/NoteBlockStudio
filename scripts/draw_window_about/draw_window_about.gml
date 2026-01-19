@@ -47,7 +47,7 @@ function draw_window_about() {
 		}
 		if (string_pos("|", str[a]) > 0) { // Hyperlink
 			var split = string_pos("|", str[a])
-			strurl[a] = string_copy(str[a], split + 1, string_length(str[a]) - split - 1)
+			strurl[a] = string_copy(str[a], split + 1, string_length(str[a]) - split)
 			str[a] = string_copy(str[a], 1, split - 1)
 		}
 	    fullstr = string_delete(fullstr, 1, string_pos("\n", fullstr))
