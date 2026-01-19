@@ -51,7 +51,7 @@ If OpenNBS is meaningful to you and you'd like to support its development, you c
 
 This project is written in the GameMaker Language (GML). You must have [GameMaker](https://gamemaker.io/) in order to open the project and make changes.
 
-Since OpenNBS relies on 32-bit DLLs, you must use the GameMaker runtime version **2022.6** as 32-bit support was removed in further versions. Scroll down [this page](https://gms.yoyogames.com/ReleaseNotes.html) and click _'Older versions'_ to find the appropriate installer.
+OpenNBS uses GameMaker runtime version 2022.0.3 LTS. Click on **GameMaker Long Term Stable (LTS) Version** at [this page](https://gamemaker.io/en/download) to see downloads.
 
 If you'd like to contribute, please [open an issue](https://github.com/OpenNBS/OpenNoteBlockStudio/issues/new/choose) discussing your suggestion before making a pull request!
 
