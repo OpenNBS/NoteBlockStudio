@@ -4,7 +4,7 @@ function refresh_resourcepacks(){
 	pack_to_push = file_find_first(resource_directory + "*", fa_directory)
 	var pack_ext = 0
 	while (pack_to_push != "") {
-		if (string_count("Please put your note block sound resource packs here.txt", pack_to_push) > 0) {
+		if (string_count("please put your note block sound resource packs here.txt", string_lower(pack_to_push)) > 0) {
 			pack_to_push = file_find_next()
 			continue
 		}
