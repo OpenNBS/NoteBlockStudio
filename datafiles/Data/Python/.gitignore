@@ -1,3 +1,4 @@
 .venv/
 Lib/
 python38_darwin_universal/
+python38/

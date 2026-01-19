@@ -234,6 +234,21 @@ function control_create() {
 		var tempenvpath = EnvironmentGetVariable("PATH")
 		EnvironmentSetVariable("PATH", tempenvpath + ":" + current_directory)
 	}
+	if (os_type == os_linux) {
+		EnvironmentSetVariable("PYTHONHOME", current_directory + "data/python/python38/");
+		EnvironmentSetVariable("PYTHONPATH", current_directory + "data/python/" + ":" + 
+											 current_directory + "data/python/python38/lib/python3.8/lib-dynload/" + ":" +
+											 current_directory + "data/python/python38/lib/python3.8/" + ":" +
+											 current_directory + "data/python/lib/site-packages/" + ":" + 
+											 current_directory + "data/python/lib/site-packages.zip/");
+		EnvironmentSetVariable("PYTHONDONTWRITEBYTECODE", "1");
+		EnvironmentSetVariable("PYTHONNOUSERSITE", "1");
+		EnvironmentSetVariable("LD_LIBRARY_PATH",
+		    current_directory + "data/python/python38/lib:" + EnvironmentGetVariable("LD_LIBRARY_PATH")
+		);
+		var tempenvpath = EnvironmentGetVariable("PATH")
+		EnvironmentSetVariable("PATH", tempenvpath + ":" + current_directory)
+	}
 	_python_initialize()
 
 	// Instruments
