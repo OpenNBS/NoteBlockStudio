@@ -1,5 +1,5 @@
 function update_window_caption(song){
-	window_set_caption(condstr(
+	var caption_str = condstr(
 	
 							// Condition
 							(song.song_download_display_name != ""), 
@@ -79,5 +79,9 @@ function update_window_caption(song){
 								
 							)
 							
-						)
+	if (os_type == os_linux) {
+		gmx11_set_caption(caption_str, string(int64(window_handle())))
+	} else {
+		window_set_caption(caption_str)
+	}
 }

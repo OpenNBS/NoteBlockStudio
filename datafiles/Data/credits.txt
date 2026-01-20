@@ -87,6 +87,9 @@ by Samuel Venable
 File Dropper|https://marketplace.yoyogames.com/assets/8207/file-dropper
 by Samuel Venable
 
+GMX11Caption|https://github.com/TianruiBai/GMX11Caption
+by TianruiBai
+
 pynbs|https://github.com/OpenNBS/pynbs
 by Valentin Berlier
 
