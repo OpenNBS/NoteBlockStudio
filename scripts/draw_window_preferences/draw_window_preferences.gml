@@ -231,7 +231,7 @@ function draw_window_preferences() {
 		if (theme = 3) draw_theme_font(font_main)
 		if (language != 1) {
 		if (draw_checkbox(x1 + 40, y1 + 200 + (theme = 3) * 22, show_oldwarning, "Show warning when opening older songs", "Whether to show a warning when opening a song\nsaved in an older version of Note Block Studio.", false, true)) show_oldwarning = !show_oldwarning
-		draw_text_dynamic(x1 + 40, y1 + 230 + (theme = 3) * 22, "Song folder: " + string_truncate(songfolder, 340), true)
+		draw_text_dynamic(x1 + 40, y1 + 230 + (theme = 3) * 22, "Song folder: " + string_truncate(string_replace(songfolder, "/Library/Containers/org.opennbs.onbs/Data", ""), 340), true)
 	    popup_set_window(x1 + 40, y1 + 230 + (theme = 3) * 22, 430, 18, songfolder)
 	    if (draw_button2(x1 + 40, y1 + 246 + (theme = 3) * 22, 76, "Open", 0, 1)) {
 	        if (!directory_exists_lib(songfolder)) {
@@ -247,7 +247,7 @@ function draw_window_preferences() {
 	    }
 	    if (draw_button2(x1 + 40 + 84 + 84, y1 + 246 + (theme = 3) * 22, 96, "Use default", 0, 1)) songfolder = songs_directory
 	
-		draw_text_dynamic(x1 + 40, y1 + 280 + (theme = 3) * 22, "Pattern folder: " + string_truncate(patternfolder, 340), true)
+		draw_text_dynamic(x1 + 40, y1 + 280 + (theme = 3) * 22, "Pattern folder: " + string_truncate(string_replace(patternfolder, "/Library/Containers/org.opennbs.onbs/Data", ""), 340), true)
 	    popup_set_window(x1 + 40, y1 + 280 + (theme = 3) * 22, 430, 18, patternfolder)
 	    if (draw_button2(x1 + 40, y1 + 296 + (theme = 3) * 22, 76, "Open", 0, 1)) {
 	        if (!directory_exists_lib(patternfolder)) {
@@ -264,7 +264,7 @@ function draw_window_preferences() {
 	    if (draw_button2(x1 + 40 + 84 + 84, y1 + 296 + (theme = 3) * 22, 96, "Use default", 0, 1)) patternfolder = pattern_directory
 		} else {
 		if (draw_checkbox(x1 + 40, y1 + 200 + (theme = 3) * 22, show_oldwarning, "打开旧版格式时提示", "打开在旧版 Note Block Studio 中保存的文件时是否显示警告。", false, true)) show_oldwarning = !show_oldwarning
-		draw_text_dynamic(x1 + 40, y1 + 230 + (theme = 3) * 22, "歌曲路径: " + string_truncate(songfolder, 340))
+		draw_text_dynamic(x1 + 40, y1 + 230 + (theme = 3) * 22, "歌曲路径: " + string_truncate(string_replace(songfolder, "/Library/Containers/org.opennbs.onbs/Data", ""), 340))
 	    popup_set_window(x1 + 40, y1 + 230 + (theme = 3) * 22, 430, 18, songfolder)
 	    if (draw_button2(x1 + 40, y1 + 246 + (theme = 3) * 22, 76, "打开", 0, 1)) {
 	        if (!directory_exists_lib(songfolder)) {
@@ -280,7 +280,7 @@ function draw_window_preferences() {
 	    }
 	    if (draw_button2(x1 + 40 + 84 + 84, y1 + 246 + (theme = 3) * 22, 96, "还原默认", 0, 1)) songfolder = songs_directory
 	
-		draw_text_dynamic(x1 + 40, y1 + 280 + (theme = 3) * 22, "片段路径: " + string_truncate(patternfolder, 340))
+		draw_text_dynamic(x1 + 40, y1 + 280 + (theme = 3) * 22, "片段路径: " + string_truncate(string_replace(patternfolder, "/Library/Containers/org.opennbs.onbs/Data", ""), 340))
 	    popup_set_window(x1 + 40, y1 + 280 + (theme = 3) * 22, 430, 18, patternfolder)
 	    if (draw_button2(x1 + 40, y1 + 296 + (theme = 3) * 22, 76, "打开", 0, 1)) {
 	        if (!directory_exists_lib(patternfolder)) {

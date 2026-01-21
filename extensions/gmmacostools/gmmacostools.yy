@@ -92,6 +92,7 @@
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_scroll_ended","externalName":"gm_scroll_ended","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_scroll_is_trackpad","externalName":"gm_scroll_is_trackpad","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_scroll_dy","externalName":"gm_scroll_dy","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_music_dir","externalName":"gm_music_dir","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
       ],"constants":[],"ProxyFiles":[],"copyToTargets":2,"usesRunnerInterface":false,"order":[
         {"name":"macos_menu_create","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_menu_add_item","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
