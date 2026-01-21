@@ -800,7 +800,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"metronome.ogg","CopyToMask":-1,"filePath":"datafiles/Data/Sounds/UI",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Nyan Cat.nbs","CopyToMask":-1,"filePath":"datafiles/Songs",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"ding.ogg","CopyToMask":-1,"filePath":"datafiles/Data/Sounds/UI",},
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"icon.ico","CopyToMask":-1,"filePath":"datafiles/Data",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"window.dll","CopyToMask":-1,"filePath":"datafiles/Data",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"ffmpeg.exe","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"ffprobe.exe","CopyToMask":-1,"filePath":"datafiles",},
@@ -7421,6 +7420,7 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"_bounded_integers.cpython-38-darwin.so","CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib/site-packages/numpy/random",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"rec.pyi","CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib/site-packages/numpy",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"char.pyi","CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib/site-packages/numpy",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"icon.ico","CopyToMask":-1,"filePath":"datafiles/Data",},
   ],
   "MetaData": {
     "IDEVersion": "2022.0.3.85",
