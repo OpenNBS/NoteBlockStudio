@@ -120,7 +120,7 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
         
 	        // Controls
 	        if (!singleline) {
-	            text_start[i] += mouse_wheel_down() - mouse_wheel_up()  // Mousewheel to scroll
+	            text_start[i] += mouse_wheel_down_dynamic() - mouse_wheel_up_dynamic()  // Mousewheel to scroll
 	            if (key_press[vk_enter] && !readonly) inserttext = "\n"  // Enter for linebreak
 	        }
 	        if (key_press[vk_right] || key_press[vk_left] || (key_press[vk_up] && text_mline > 0) || (key_press[vk_down] && text_mline < text_lines[i] - 1)) {  // Arrow keys to move marker

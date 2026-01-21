@@ -23,6 +23,14 @@ function control_draw() {
 	
 	update_window_scale()
 	
+	if (macos_scroll_available()){
+		macos_scroll_temp_dx = macos_scroll_dx()
+		macos_scroll_temp_dy = macos_scroll_dy()
+	} else {
+		macos_scroll_temp_dx = 0
+		macos_scroll_temp_dy = 0
+	}
+	
 	if (!mouseover) curs = cr_default
 	showmenu = 0
 	cursmarker = 0
@@ -186,8 +194,9 @@ function control_draw() {
 	    if (select = 0 && current_song.selected = 0 && selbx < current_song.arraylength && selby < current_song.arrayheight) {
 	        exist = current_song.song_exists[selbx, selby]
 	        if (exist && cursmarker = 0) {
-	            if (changepitch && (mouse_wheel_up() || mouse_wheel_down())) {
-					var diff = mouse_wheel_up() - mouse_wheel_down()
+	            if (changepitch && (mouse_wheel_up_dynamic() || mouse_wheel_down_dynamic())) {
+					var diff = mouse_wheel_up_dynamic() - mouse_wheel_down_dynamic()
+					log (string(diff))
 					// If shift is not pressed, do increments of a single key or 10 steps at once.
 					if (!keyboard_check(vk_shift) && (editmode != m_key)) {
 						diff *= 10
@@ -217,7 +226,7 @@ function control_draw() {
 	}
 	if (mousewheel = 1 && window = 0 && (exist = 0 || changepitch = 0) && !isplayer && !volume_scroll) {
 	    var insindex = ds_list_find_index(current_song.instrument_list, current_song.instrument)
-	    if (mouse_wheel_down() && insindex > 0) {
+	    if (mouse_wheel_down_dynamic() && insindex > 0) {
 	        insindex--
 	        current_song.instrument = current_song.instrument_list[| insindex]
 			selected_vel = 100
@@ -225,7 +234,7 @@ function control_draw() {
 			selected_pit = 0
 	        play_sound(current_song.instrument, selected_key, 100 ,100, 0)
 	    }
-	    if (mouse_wheel_up() && insindex < ds_list_size(current_song.instrument_list) - 1) {
+	    if (mouse_wheel_up_dynamic() && insindex < ds_list_size(current_song.instrument_list) - 1) {
 	        insindex++
 	        current_song.instrument = current_song.instrument_list[| insindex]
 			selected_vel = 100
@@ -235,14 +244,14 @@ function control_draw() {
 	    }
 	}
 	if (mousewheel = 2 && window = 0 && (exist = 0 || changepitch = 0) && !isplayer && !volume_scroll) {
-	    if (mouse_wheel_down() && selected_key > 0) {
+	    if (mouse_wheel_down_dynamic() && selected_key > 0) {
 	        selected_key -= 1
 			selected_vel = 100
 			selected_pan = 100
 			selected_pit = 0
 	        play_sound(current_song.instrument, selected_key, 100 ,100, 0)
 	    }
-	    if (mouse_wheel_up() && selected_key < 87) {
+	    if (mouse_wheel_up_dynamic() && selected_key < 87) {
 	        selected_key += 1
 			selected_vel = 100
 			selected_pan = 100
@@ -617,7 +626,7 @@ function control_draw() {
 					window_scale = get_default_window_scale()
 					set_msg(condstr(language = 1, "窗口缩放", "Window scale") + " => " + string(window_scale * 100) + "%")
 				}
-	            if ((os_type != os_macosx && keyboard_check_pressed(187)) || (os_type = os_macosx && keyboard_check_pressed(24)) || (mouse_wheel_up())) {
+	            if ((os_type != os_macosx && keyboard_check_pressed(187)) || (os_type = os_macosx && keyboard_check_pressed(24)) || (mouse_wheel_up_dynamic())) {
 					if (window_scale >= 0.5 && window_scale < 0.67) {window_scale = 0.67}
 					else if (window_scale < 0.75) {window_scale = 0.75}
 					else if (window_scale < 0.8) {window_scale = 0.8}
@@ -633,7 +642,7 @@ function control_draw() {
 					else if (window_scale < 4) {window_scale = 4}
 					set_msg(condstr(language = 1, "窗口缩放", "Window scale") + " => " + string(window_scale * 100) + "%")
 				}
-	            if ((os_type != os_macosx && keyboard_check_pressed(189)) || (os_type = os_macosx && keyboard_check_pressed(109)) || (mouse_wheel_down())) {
+	            if ((os_type != os_macosx && keyboard_check_pressed(189)) || (os_type = os_macosx && keyboard_check_pressed(109)) || (mouse_wheel_down_dynamic())) {
 					if (window_scale <= 4 && window_scale > 3.5) {window_scale = 3.5}
 					else if (window_scale > 3) {window_scale = 3}
 					else if (window_scale > 2.5) {window_scale = 2.5}
@@ -1169,10 +1178,44 @@ function control_draw() {
 	}
 	draw_theme_color()
 
+	// handle macOS scrolling separately
+	if (os_type = os_macosx) {
+		if (mouse_rectangle(x1 + 2, y1 + 2, totalcols * 32, totalrows * 32 + 64)) {
+			var scroll_dx = macos_scroll_temp_dx
+			var scroll_dy = macos_scroll_temp_dy
+			
+			if (macos_scroll_started()) {
+				log("Scroll Started")
+				macos_scroll_temp_starta = current_song.starta
+				macos_scroll_temp_startb = current_song.startb
+			}
+			
+			if (macos_scroll_is_trackpad()) {
+				if (scroll_dx != 0) {
+					macos_scroll_temp_starta -= scroll_dx / 32
+					macos_scroll_temp_starta = median(0, macos_scroll_temp_starta, current_song.enda)
+					current_song.starta = round(macos_scroll_temp_starta)
+					current_song.starta = median(0, current_song.starta, current_song.enda)
+					sb_val[scrollbarh] = current_song.starta
+				}
+				if (scroll_dy != 0) {
+					macos_scroll_temp_startb -= scroll_dy / 32
+					macos_scroll_temp_startb = median(0, macos_scroll_temp_startb, current_song.endb)
+					current_song.startb = round(macos_scroll_temp_startb)
+					current_song.startb = median(0, current_song.startb, current_song.endb)
+					sb_val[scrollbarv] = current_song.startb
+				}
+			}
+			
+			if (macos_scroll_ended()) {
+				log("Scroll Ended")
+			}
+		}
+	}
 	// Scrollbars
 	if (!fullscreen) {
-		current_song.starta = draw_scrollbar(scrollbarh, x1, y1 + (totalrows + (current_song.reference_audio >= 0)) * 32 + 34, 32, totalcols - 1, current_song.enda + totalcols - 1, (exist && changepitch) || mousewheel > 0, 0)
-		current_song.startb = draw_scrollbar(scrollbarv, x1 + totalcols * 32 + 2, y1 + 34, 32, totalrows - 1 + (current_song.reference_audio >= 0), current_song.endb + totalrows - 1, (exist && changepitch) || mousewheel > 0, 0)
+		current_song.starta = draw_scrollbar(scrollbarh, x1, y1 + (totalrows + (current_song.reference_audio >= 0)) * 32 + 34, 32, totalcols - 1, current_song.enda + totalcols - 1, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0)
+		current_song.startb = draw_scrollbar(scrollbarv, x1 + totalcols * 32 + 2, y1 + 34, 32, totalrows - 1 + (current_song.reference_audio >= 0), current_song.endb + totalrows - 1, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0)
 	} else {
 		// horizontal rise animation
 		if (mouse_rectangle(0, rh - 25, rw, rh)) {
@@ -1186,8 +1229,8 @@ function control_draw() {
 		} else if (sb_drag = -1) {
 			if (sbv_anim > 0) sbv_anim -= (2 * 30 / room_speed) * (1 / currspeed)
 		}
-		current_song.starta = draw_scrollbar(scrollbarh, 0, rh - sbh_anim, 32, ((rw - 16) / 32) - 1, current_song.enda + totalcols - 2, (exist && changepitch) || mousewheel > 0, 0)
-		current_song.startb = draw_scrollbar(scrollbarv, rw - sbv_anim, rhval, 32, ((rh - rhval - 16) / 32) - 1, current_song.endb + totalrows - 2, (exist && changepitch) || mousewheel > 0, 0)
+		current_song.starta = draw_scrollbar(scrollbarh, 0, rh - sbh_anim, 32, ((rw - 16) / 32) - 1, current_song.enda + totalcols - 2, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0)
+		current_song.startb = draw_scrollbar(scrollbarv, rw - sbv_anim, rhval, 32, ((rh - rhval - 16) / 32) - 1, current_song.endb + totalrows - 2, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0)
 		// the fifth parameters are totalrows & totalcols before rounding: ((rh - rhval) / 32), ((rw - 8) / 32)
 		// this is so it stretches to fill the whole width/height of the screen instead of clipping to the note block area size
 	}
@@ -2031,8 +2074,8 @@ function control_draw() {
 		if (mastervolprev != mastervol && audio_is_playing(current_song.reference_audio)) audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
 		if (mouse_rectangle(xx - 11, yy, 122, 22) && window = 0) {
 			volume_scroll = 1
-			if (mouse_wheel_up() && mastervol + 0.02 <= 1) {mastervol += 0.02; if (audio_is_playing(current_song.reference_audio)) audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)}
-			if (mouse_wheel_down() && mastervol - 0.02 >= 0) {mastervol -= 0.02; if (audio_is_playing(current_song.reference_audio)) audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)}
+			if (mouse_wheel_up_dynamic() && mastervol + 0.02 <= 1) {mastervol += 0.02; if (audio_is_playing(current_song.reference_audio)) audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)}
+			if (mouse_wheel_down_dynamic() && mastervol - 0.02 >= 0) {mastervol -= 0.02; if (audio_is_playing(current_song.reference_audio)) audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)}
 		} else {
 			volume_scroll = 0
 		}

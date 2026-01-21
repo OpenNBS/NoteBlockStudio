@@ -18,7 +18,7 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	//Horizontal scrollbar
 	if (sb_dir[i] = 0) {
 	    if (sb_sel = i && sb_drag = -1 && (window = 0 || win = 1) && cantscroll = 0) {
-	        sb_val[i] += (mouse_wheel_down() - mouse_wheel_up()) * (!volume_scroll)
+	        sb_val[i] += (mouse_wheel_down_dynamic() - mouse_wheel_up_dynamic()) * (!volume_scroll)
 	        sb_val[i] = median(0, sb_val[i], ms - s)
 	        bpos = (sb_val[i] / ms) * (s * swh)
 	    }
@@ -157,7 +157,7 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	//Vertical scrollbar
 	else {
 	    if (sb_sel = i && sb_drag = -1 && (window = 0 || win = 1) && cantscroll = 0) {
-	        sb_val[i] += (mouse_wheel_down() - mouse_wheel_up()) * (!volume_scroll)
+	        sb_val[i] += (mouse_wheel_down_dynamic() - mouse_wheel_up_dynamic()) * (!volume_scroll)
 	        sb_val[i] = median(0, sb_val[i], ms - s)
 	        bpos = (sb_val[i] / ms) * (s * swh)
 	    }

@@ -10,6 +10,11 @@ function control_create() {
 	// Initialize DLLs
 	if (os_type = os_windows) lib_init()
 	rtmidi_init()
+	macos_scroll_init()
+	macos_scroll_temp_starta = 0
+	macos_scroll_temp_startb = 0
+	macos_scroll_temp_dx = 0
+	macos_scroll_temp_dy = 0
 	midiMessages = ds_list_create()
 
 	// Window
