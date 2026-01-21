@@ -29,15 +29,17 @@ function draw_window_sound_import() {
 		x1, y1,
 		((language == 0) ? 
 		"This assistant will help you get sound files from your Minecraft:" + "\n" +
-		"Java Edition installation or from the Mojang server." :
-		"本向导将帮助您从您的 Minecraft：Java 版或 Mojang 服务器获取音效。"
+		"Java Edition installation" + condstr(os_type != os_macosx, " or from the Mojang server") + "." :
+		"本向导将帮助您从您的 Minecraft：Java 版" + condstr(os_type != os_macosx, "或 Mojang 服务器") + "获取音效。"
 		)
 	)
 	y1 += 33
-	if (draw_checkbox(x1, y1, sound_import_download_toggle, ((language == 0) ? "Download from Mojang" : "从 Mojang 下载"), "", (sound_import_download_toggle && sound_import_status == 1), 1)) {
-		sound_import_download_toggle = !sound_import_download_toggle
-		sound_import_asset_indexes = []
-		update_asset_index_menu()
+	if (os_type != os_macosx) {
+		if (draw_checkbox(x1, y1, sound_import_download_toggle, ((language == 0) ? "Download from Mojang" : "从 Mojang 下载"), "", (sound_import_download_toggle && sound_import_status == 1), 1)) {
+			sound_import_download_toggle = !sound_import_download_toggle
+			sound_import_asset_indexes = []
+			update_asset_index_menu()
+		}
 	}
 	y1 += 17
 	if (!sound_import_download_toggle) {
@@ -65,15 +67,20 @@ function draw_window_sound_import() {
 		// Change button
 		x1 = startx + width - 72 - 20;
 		if (draw_button2(x1, y1, 72, ((language == 0) ? "Change" : "更改"), false, true)) {
-			var fn = string(get_save_filename_ext("", 
-				((language == 0) ? "Select Minecraft installation directory" : "选择Minecraft安装目录"), 
-				mc_install_path, 
-				((language == 0) ? "Minecraft installation directory" : "Minecraft安装目录")));
+			if (os_type != os_macosx) {
+				var fn = string(get_save_filename_ext("", 
+					((language == 0) ? "Select Minecraft installation directory" : "选择Minecraft安装目录"), 
+					mc_install_path, 
+					((language == 0) ? "Minecraft installation directory" : "Minecraft安装目录")));
+			} else {
+				var fn = string(get_directory(mc_install_path));
+			}
 			if (fn != "") {
 				mc_install_path = filename_dir(fn);
 				mc_install_path = string_replace_all(mc_install_path, "Select Minecraft installation directory", "")
 				mc_install_path = string_replace_all(mc_install_path, "选择Minecraft安装目录", "")
 				if (os_type != os_windows && string_char_at(mc_install_path, string_length(mc_install_path)) != "/") mc_install_path = mc_install_path + "/"
+				if (os_type = os_macosx) macos_bookmark_store(mc_install_path, mc_install_path, 0)
 			}
 			update_asset_index_menu();
 		}

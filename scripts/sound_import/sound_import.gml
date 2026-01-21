@@ -27,6 +27,7 @@ function find_asset_indexes() {
 		else message("在所选位置未找到有Minecraft安装！", "音效导入");
 		return [];
 	}
+	if (os_type = os_macosx) macos_bookmark_begin(mc_install_path)
 	
 	// Search for .json files in the assets/ folder
 	var assets_dir = get_assets_dir();
