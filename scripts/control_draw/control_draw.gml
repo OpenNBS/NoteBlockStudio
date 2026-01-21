@@ -1180,7 +1180,7 @@ function control_draw() {
 
 	// handle macOS scrolling separately
 	if (os_type = os_macosx) {
-		if (mouse_rectangle(x1 + 2, y1 + 2, totalcols * 32, totalrows * 32 + 64)) {
+		if (mouse_rectangle(x1 + 2, y1 + 2, totalcols * 32, totalrows * 32 + 64) && window = 0) {
 			var scroll_dx = macos_scroll_temp_dx
 			var scroll_dy = macos_scroll_temp_dy
 			
