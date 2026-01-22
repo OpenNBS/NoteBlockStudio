@@ -557,6 +557,7 @@ function control_create() {
 	// Import sounds
 	mc_default_path = string_copy(game_save_id, 0, string_last_pos(condstr(os_type = os_windows, "\\", "/"), string_copy(game_save_id, 1, string_length(game_save_id) - 1))) + condstr(os_type != os_macosx, ".") + "minecraft/";
 	if (os_type = os_windows) mc_default_path = string_replace_all(mc_default_path, "/", "\\");
+	if (os_type = os_macosx) mc_default_path = (language != 1 ? "Please choose one..." : "请选择……")
 	mc_install_path = mc_default_path;
 	
 	var asset_index_names_keys = ["pre-1.6", "legacy", "1.7.3", "1.7.4", "1.7.10", "14w25a", "14w31a", "1.8", "1.9", "1.9-aprilfools", "1.10", "1.11", "1.12", "1.13", "1.13.1", "1.14", "1.14-af", "1.15", "1.16", "1.17", "1.18", "1.19", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "_"];

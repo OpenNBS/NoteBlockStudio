@@ -194,7 +194,7 @@ function menu_click(argument0) {
 			ins -= floor((ins) / 26) // subtract the "More..." entries to get the instrument number
 	        if (sel < insoffset + 1) {songs[song].instrument = songs[song].instrument_list[| ins]; selected_vel = 100; selected_pan = 100; selected_pit = 0}
 	        if (sel = insoffset + 1) window = w_instruments
-			if (sel = insoffset + 2) { window = w_sound_import update_asset_index_menu() }
+			if (sel = insoffset + 2) { window = w_sound_import update_asset_index_menu(0) }
 	        if (sel = insoffset + 3) window = w_songinfoedit
 	        if (sel = insoffset + 4) window = w_properties
 	        if (sel = insoffset + 5) {selection_place(0) window = w_stats}

@@ -21,10 +21,14 @@ function get_assets_dir() {
 }
 
 function find_asset_indexes() {
+	var check_exists = 1
+	if (argument_count > 0) check_exists = argument0
 
 	if (!directory_exists(mc_install_path)) {
-		if (language != 1) message("No Minecraft installation was found\nat the selected location!", "Sound import");
-		else message("在所选位置未找到有Minecraft安装！", "音效导入");
+		if (!check_exists) {
+			if (language != 1) message("No Minecraft installation was found\nat the selected location!", "Sound import");
+			else message("在所选位置未找到有Minecraft安装！", "音效导入");
+		}
 		return [];
 	}
 	if (os_type = os_macosx) macos_bookmark_begin(mc_install_path)
