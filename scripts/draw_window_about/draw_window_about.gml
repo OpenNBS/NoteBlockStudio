@@ -11,7 +11,7 @@ function draw_window_about() {
 	else draw_text_dynamic(x1 + 8, y1 + 8, "关于")
 	var icon_index = window_icon
 	if (window_icon && fdark) icon_index++
-	draw_sprite_ext(spr_logo, icon_index, x1 + 80, y1 + 50, 1, 1, 0, c_white, draw_get_alpha())
+	draw_sprite_ext(spr_logo, icon_index, x1 + 80, y1 + 50, 0.5, 0.5, 0, c_white, draw_get_alpha())
 	draw_set_halign(fa_center)
 	draw_theme_font(font_info_med_bold)
 	draw_text_dynamic(x1 + 150, y1 + 200, "Note Block Studio")
