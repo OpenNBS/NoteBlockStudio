@@ -15,7 +15,7 @@ function menu_macos_init(){
 				else{
 					if(a < 9){
 							str += check(current_song.instrument = ins) + get_hotkey_menubar("ins_ctrl") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
-					}else if (a < 18){
+					}else if (a < 19){
 						str += check(current_song.instrument = ins) + get_hotkey_menubar("ins_ctrl_shift") + string((a + 2) % 10) + "$" + clean(ins.name) + "|"
 					} else {
 							str += check(current_song.instrument = ins) + clean(ins.name) + "|"
@@ -122,7 +122,7 @@ function menu_macos_init(){
 				else{
 					if(a < 9){
 							str += check(current_song.instrument = ins) + get_hotkey_menubar("ins_ctrl") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
-					}else if (a < 18){
+					}else if (a < 19){
 						str += check(current_song.instrument = ins) + get_hotkey_menubar("ins_ctrl_shift") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
 					} else {
 							str += check(current_song.instrument = ins) + clean(ins.name) + "|"
