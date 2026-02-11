@@ -33,11 +33,11 @@ function draw_icon_insbox() {
 			draw_sprite_ext(spr_icons_col, sprite, xx + push + 25 * 0.1 * (a = 2), yy + push + 23 * 0.1 * (a = 2), 1 - 0.2 * (a = 2), 1 - 0.2 * (a = 2), 0, accent[6 - 2 * !fdark], 1)
 		} else {
 			if (!fdark) {
-				if (sprite < 58) draw_sprite_ext(spr_icons_f_hires, 26, xx + push + 25 * 0.1 * (a = 2), yy + push + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, -1, 1)
+				if (sprite < 42 + first_custom_index) draw_sprite_ext(spr_icons_f_hires, 10 + first_custom_index, xx + push + 25 * 0.1 * (a = 2), yy + push + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, -1, 1)
 				draw_sprite_ext(spr_icons_f_hires, sprite, xx + push + 25 * 0.1 * (a = 2), yy + push + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, -1, 1)
 				draw_sprite_ext(spr_icons_col_hires, sprite, xx + push + 25 * 0.1 * (a = 2), yy + push + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, accent[6 - 2 * !fdark], 1)
 			} else {
-				if (sprite < 58) draw_sprite_ext(spr_icons_d_hires, 26, xx + push + 25 * 0.1 * (a = 2), yy + push + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, -1, 1)
+				if (sprite < 42 + first_custom_index) draw_sprite_ext(spr_icons_d_hires, 10 + first_custom_index, xx + push + 25 * 0.1 * (a = 2), yy + push + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, -1, 1)
 				draw_sprite_ext(spr_icons_d_hires, sprite, xx + push + 25 * 0.1 * (a = 2), yy + push + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, -1, 1)
 				draw_sprite_ext(spr_icons_col_hires, sprite, xx + push + 25 * 0.1 * (a = 2), yy + push + 23 * 0.1 * (a = 2), (1 - 0.2 * (a = 2)) * 0.25, (1 - 0.2 * (a = 2)) * 0.25, 0, accent[6 - 2 * !fdark], 1)
 			}
