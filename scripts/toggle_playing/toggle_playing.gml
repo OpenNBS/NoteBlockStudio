@@ -47,9 +47,9 @@ function toggle_playing(argument0) {
 	                        }
 	                    }
 						var insname = songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, songs[song].song_ins[xx, b])].name
-						if (insname = "Tempo Changer") songs[song].tempo = floor(abs(e)) / 15
+						if (insname = "Tempo Changer") songs[song].tempo = floor(abs(songs[song].song_pit[xx, b])) / 15
 						else if (insname = "Toggle Rainbow") {rainbowtoggle = !rainbowtoggle draw_accent_init()}
-						else if (insname = "Sound Stopper") {remove_emitters_all(floor(e), panning_velocity_to_short(d, c))}
+						else if (insname = "Sound Stopper") {remove_emitters_all(floor(songs[song].song_pit[xx, b]), panning_velocity_to_short(songs[song].song_pan[xx, b], songs[song].song_vel[xx, b]))}
 						else if (insname = "Show Save Popup") set_msg("Song saved")
 						else if (string_count(string_lower("Change Color to #"), string_lower(insname)) = 1) {
 							draw_set_accent(real("0x" + string_copy(insname, 18, 2)), real("0x" + string_copy(insname, 20, 2)), real("0x" + string_copy(insname, 22, 2)))
