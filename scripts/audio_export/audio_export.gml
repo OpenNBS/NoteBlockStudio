@@ -24,7 +24,7 @@ function mp3_export() {
 	fn = string(get_save_filename_ext(output_format + " files (*" + output_ext + ")|*" + output_ext, filename_new_ext(songs[song].filename, "") + output_ext, filename_path(songs[song].filename), condstr(language != 1, "Export audio track", "导出音频文件")))
 	if (fn = "") return 0
 
-	save_song(temp_file, true);
+	save_song(temp_file, true, false, 5);
 	
 	var args = [temp_file, fn]
 	var kwargs = {

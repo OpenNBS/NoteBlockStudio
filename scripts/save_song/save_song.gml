@@ -1,10 +1,10 @@
 function save_song() {
 	// save_song(fn[, backup, is_autosave])
-	var fn, backup, nbsver, f, a, ca, cb, fsave, asave;
+	var fn, backup, nbsver, f, a, ca, cb, fsave, asave, has_v6_ins;
 	fn = argument[0];
 	backup = false;
 	asave = false;
-	var has_v6_ins = false;
+	has_v6_ins = false;
 	var cursong = songs[song];
 	if (argument_count > 1) {
 		backup = argument[1];
@@ -27,6 +27,10 @@ function save_song() {
 		nbsver = nbs_version
 	} else {
 		nbsver = save_version
+	}
+	
+	if (argument_count > 3) {
+		nbsver = argument[3];
 	}
 
 	buffer = buffer_create(8, buffer_grow, 1)
