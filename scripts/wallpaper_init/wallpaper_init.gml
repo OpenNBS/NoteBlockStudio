@@ -2,7 +2,7 @@ function wallpaper_init(wallpaper_path = "") {
 	var tempsurf, wpaperwidth;
 	can_draw_mica = (os_browser = browser_not_a_browser)
 	if (wallpaper_path = "") {
-		execute_program("cmd", "\"" + data_directory + "wallpaper.bat", true)
+		execute_program(data_directory + "wallpaper.bat", "", true)
 		wallpaper_path = data_directory + "Wallpaper.jpg"
 		wpaperanchor = 0
 	} else {
