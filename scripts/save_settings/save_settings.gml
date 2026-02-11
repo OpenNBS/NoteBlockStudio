@@ -55,7 +55,7 @@ function save_settings() {
 	ini_write_real_clean("preferences", "autoplay",           autoplay)
 	ini_write_real_clean("preferences", "show_soundcount",    show_soundcount)
 	ini_write_real_clean("preferences", "use_bpm",            use_bpm)
-	ini_write_real_clean("preferences", "save_version",       save_version)
+	//ini_write_real_clean("preferences", "save_version",       save_version)
 	ini_write_real_clean("preferences", "channelstoggle",     channelstoggle)
 	ini_write_real_clean("preferences", "presence",           presence)
 	ini_write_real_clean("preferences", "windowsound",        windowsound)

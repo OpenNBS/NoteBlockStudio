@@ -326,7 +326,7 @@ function draw_window_track_export() {
 	            block[b, 0] = 216 block[b, 1] = 0 b += 1
 	        } else {
 	            b = 0
-	            for (a = 0; a < 256; a += 1) {
+	            for (a = -500; a < 256; a += 1) {
 	                if (a = 35 || a = 95 || a = 159) {
 	                    block[b, 0] = a block[b, 1] = 0 b += 1
 	                    for (c = 0; c < 16; c += 1) {block[b + c, 0] = a block[b + c, 1] = c} b += 16
@@ -371,7 +371,7 @@ function draw_window_track_export() {
 	    }
 	    if (menun = 1) {
 	        b = 0
-	        for (a = 0; a < 256; a += 1) {
+	        for (a = -500; a < 256; a += 1) {
 	            if ((a = 20 || a = 25) && menua = 1) continue
 	            if (a = 35 || a = 95 || a = 159) {
 	                block[b, 0] = a block[b, 1] = 0 b += 1

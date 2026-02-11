@@ -128,6 +128,14 @@ function block_get_name(argument0, argument1) {
 	    case 216: return "Bone Block"
 	    case 251: return "Concrete"
 	    case 252: return "Concrete Powder"
+	    case -340: return "Copper Block"
+	    case -341: return "Exposed Copper Block"
+	    case -342: return "Weathered Copper Block"
+	    case -343: return "Oxidized Copper Block"
+	    case -344: return "Waxed Copper Block"
+	    case -345: return "Waxed Exposed Copper Block"
+	    case -346: return "Waxed Weathered Copper Block"
+	    case -446: return "Waxed Oxidized Copper Block"
 	}
 
 	return ""

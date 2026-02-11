@@ -47,6 +47,10 @@ function set_resourcepack(pack_name){
 	swap_instrument(13, "Bit", "bit", "bit", dir_no_path, using_directory)
 	swap_instrument(14, "Banjo", "banjo", "banjo", dir_no_path, using_directory)
 	swap_instrument(15, "Pling", "pling", "pling", dir_no_path, using_directory)
+	swap_instrument(16, "Trumpet", "trumpet", "trumpet", dir_no_path, using_directory)
+	swap_instrument(17, "Exposed Trumpet", "trumpet_exposed", "trumpet_exposed", dir_no_path, using_directory)
+	swap_instrument(18, "Weathered Trumpet", "trumpet_weathered", "trumpet_weathered", dir_no_path, using_directory)
+	swap_instrument(19, "Oxidized Trumpet", "trumpet_oxidized", "trumpet_oxidized", dir_no_path, using_directory)
 	//for (var i = 0; i < array_length(songs); i++) {
 	//	for (var j = 0; j < 16; j++) {
 	//		ds_list_replace(songs[i].instrument_list, j, original_instruments[j])

@@ -4,6 +4,7 @@ function save_song() {
 	fn = argument[0];
 	backup = false;
 	asave = false;
+	var has_v6_ins = false;
 	var cursong = songs[song];
 	if (argument_count > 1) {
 		backup = argument[1];
@@ -35,7 +36,9 @@ function save_song() {
 	buffer_write_short(0)
 
 	buffer_write_byte(nbsver)
-	buffer_write_byte(first_custom_index)
+	var song_first_custom_index = first_custom_index
+	if (nbsver < 6) song_first_custom_index = 16
+	buffer_write_byte(song_first_custom_index)
 	}
 
 	if nbsver = 0 || nbsver >= 3 {
@@ -73,6 +76,7 @@ function save_song() {
 	}
 
 	ca = 0
+	var ins = 0
 	for (a = 0; a <= cursong.enda; a += 1) {
 	    ca += 1
 	    if (cursong.colamount[a] > 0) {
@@ -84,6 +88,8 @@ function save_song() {
 	            if (cursong.song_exists[a, b]) {
 	                buffer_write_short(cb)
 	                cb = 0
+					ins = ds_list_find_index(cursong.instrument_list, cursong.song_ins[a, b])
+					if (nbsver < 6 && ins > 15 && ins < 20) has_v6_ins = true
 	                buffer_write_byte(ds_list_find_index(cursong.instrument_list, cursong.song_ins[a, b]))
 	                buffer_write_byte(cursong.song_key[a, b])
 					if nbsver >= 4 {
@@ -110,10 +116,12 @@ function save_song() {
 	}
 
 	// Custom instruments
-	buffer_write_byte(cursong.user_instruments)
+	var user_ins = cursong.user_instruments
+	if (has_v6_ins) user_ins += 4
+	buffer_write_byte(user_ins)
 	for (b = 0; b < ds_list_size(cursong.instrument_list); b++) {
 	    var ins = cursong.instrument_list[| b];
-	    if (ins.user) {
+	    if (ins.user || (has_v6_ins && b > 15 && b < 20)) {
 	        buffer_write_string_int(ins.name)
 	        buffer_write_string_int(ins.filename)
 	        buffer_write_byte(ins.key)

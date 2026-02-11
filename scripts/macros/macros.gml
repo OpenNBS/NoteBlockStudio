@@ -4,7 +4,7 @@ function macros() {
 #macro version "3.12.0-dev"
 #macro is_prerelease 1 // remember to change to 0 in the release!
 #macro is_development 1 // the more frequent versions that are not on github (no auto update)
-#macro nbs_version 5
+#macro nbs_version 6
 #macro pat_version 1
 
 #macro link_github "https://github.com/OpenNBS/OpenNoteBlockStudio"

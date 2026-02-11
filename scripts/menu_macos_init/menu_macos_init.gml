@@ -15,9 +15,11 @@ function menu_macos_init(){
 				else{
 					if(a < 9){
 							str += check(current_song.instrument = ins) + get_hotkey_menubar("ins_ctrl") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
-					}else{
+					}else if (a < 18){
 						str += check(current_song.instrument = ins) + get_hotkey_menubar("ins_ctrl_shift") + string((a + 2) % 10) + "$" + clean(ins.name) + "|"
-					}
+					} else {
+							str += check(current_song.instrument = ins) + clean(ins.name) + "|"
+						}
 				}
 				if (a % 25 == 0 && a > 1 && a < ds_list_size(current_song.instrument_list) - 1) {
 					customstr += "-|More...|\\|"
@@ -118,11 +120,13 @@ function menu_macos_init(){
 				if (ins.user)
 				    customstr += check(current_song.instrument = ins) + clean(ins.name) + "|"
 				else{
-					if(a < 10){
+					if(a < 9){
 							str += check(current_song.instrument = ins) + get_hotkey_menubar("ins_ctrl") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
-					}else{
+					}else if (a < 18){
 						str += check(current_song.instrument = ins) + get_hotkey_menubar("ins_ctrl_shift") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
-					}
+					} else {
+							str += check(current_song.instrument = ins) + clean(ins.name) + "|"
+						}
 				}
 				if (a % 25 == 0 && a > 1 && a < ds_list_size(current_song.instrument_list) - 1) {
 					customstr += "-|更多......|\\|"

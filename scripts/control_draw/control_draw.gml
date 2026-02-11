@@ -727,8 +727,8 @@ function control_draw() {
 	             }
 	           }
 			}else{
-			  //Last 7 (ctrl+shift)
-			  for (a = 1; a <= 7; a++) {
+			  //Last 9 (ctrl+shift)
+			  for (a = 1; a <= 9; a++) {
 				if (keyboard_check_pressed(ord(string(a % 10)))) {
 					current_song.instrument = current_song.instrument_list[| a + 8]
 					selected_vel = 100
@@ -1763,8 +1763,10 @@ function control_draw() {
 			        else{
 						if(a < 9){
 							 str += check(current_song.instrument = ins) + get_hotkey("ins_ctrl") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
-						}else{
+						}else if (a < 18){
 						  str += check(current_song.instrument = ins) + get_hotkey("ins_ctrl_shift") + string((a + 2) % 10) + "$" + clean(ins.name) + "|"
+						} else {
+							str += check(current_song.instrument = ins) + clean(ins.name) + "|"
 						}
 					}
 					if (a % 25 == 0 && a > 1 && a < ds_list_size(current_song.instrument_list) - 1) {
@@ -1856,10 +1858,12 @@ function control_draw() {
 			        if (ins.user)
 			            customstr += check(current_song.instrument = ins) + clean(ins.name) + "|"
 			        else{
-						if(a < 10){
+						if(a < 9){
 							 str += check(current_song.instrument = ins) + get_hotkey("ins_ctrl") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
-						}else{
+						}else if (a < 18){
 						  str += check(current_song.instrument = ins) + get_hotkey("ins_ctrl_shift") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
+						} else {
+						    str += check(current_song.instrument = ins) + clean(ins.name) + "|"
 						}
 					}
 					if (a % 25 == 0 && a > 1 && a < ds_list_size(current_song.instrument_list) - 1) {

@@ -24,8 +24,12 @@ function reset_schematic_export(argument0) {
 	sch_exp_ins_block[13] = 133
 	sch_exp_ins_block[14] = 170
 	sch_exp_ins_block[15] = 89
+	sch_exp_ins_block[16] = -344
+	sch_exp_ins_block[17] = -345
+	sch_exp_ins_block[18] = -346
+	sch_exp_ins_block[19] = -446
 	for (var a = 0; a < 240; a++) {
-		sch_exp_ins_block[16 + a] = 1
+		sch_exp_ins_block[20 + a] = 1
 	}
 
 	sch_exp_walkway_block = 1

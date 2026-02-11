@@ -57,7 +57,7 @@ function load_settings() {
 	autoplay =           ini_read_real(  "preferences", "autoplay",           autoplay)
 	show_soundcount =    ini_read_real(  "preferences", "show_soundcount",    show_soundcount)
 	use_bpm =            ini_read_real(  "preferences", "use_bpm",            use_bpm)
-	save_version =       ini_read_real(  "preferences", "save_version",       save_version)
+	//save_version =       ini_read_real(  "preferences", "save_version",       save_version)
 	channelstoggle =     ini_read_real(  "preferences", "channelstoggle",     channelstoggle)
 	presence =           ini_read_real(  "preferences", "presence",           presence)
 	windowsound =        ini_read_real(  "preferences", "windowsound",        windowsound)

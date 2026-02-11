@@ -37,8 +37,12 @@ function track_export() {
 		ins[13] = "bit"
 		ins[14] = "banjo"
 		ins[15] = "pling"
+		ins[16] = "trumpet"
+		ins[17] = "trumpet_exposed"
+		ins[18] = "trumpet_weathered"
+		ins[19] = "trumpet_oxidized"
 		for (var a = 0; a < 240; a++) {
-			ins[16 + a] = "harp"
+			ins[20 + a] = "harp"
 		}
 		instrument_list = o.songs[o.song].instrument_list
 	    layers = 4

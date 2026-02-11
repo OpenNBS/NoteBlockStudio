@@ -7421,6 +7421,10 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"rec.pyi","CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib/site-packages/numpy",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"char.pyi","CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib/site-packages/numpy",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"icon.ico","CopyToMask":-1,"filePath":"datafiles/Data",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"trumpet_oxidized.ogg","CopyToMask":-1,"filePath":"datafiles/Data/Sounds",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"trumpet_exposed.ogg","CopyToMask":-1,"filePath":"datafiles/Data/Sounds",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"trumpet.ogg","CopyToMask":-1,"filePath":"datafiles/Data/Sounds",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"trumpet_weathered.ogg","CopyToMask":-1,"filePath":"datafiles/Data/Sounds",},
   ],
   "MetaData": {
     "IDEVersion": "2022.0.3.85",

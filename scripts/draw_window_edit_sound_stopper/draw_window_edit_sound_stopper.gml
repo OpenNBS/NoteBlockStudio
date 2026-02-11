@@ -41,7 +41,7 @@ function draw_window_edit_sound_stopper() {
 		try {
 			temp_start = int64(sound_stopper_set_start)
 			temp_until = int64(sound_stopper_set_until)
-			if (temp_start > 0 && temp_until > 0) {
+			if (temp_start >= 0 && temp_until >= 0) {
 				songs[song].song_pit[@ tempo_changer_sel_x, tempo_changer_sel_y] = temp_start
 				var temp_arr = short_to_panning_velocity(temp_until)
 				songs[song].song_pan[@ tempo_changer_sel_x, tempo_changer_sel_y] = temp_arr[0]

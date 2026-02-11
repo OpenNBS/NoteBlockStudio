@@ -40,8 +40,18 @@ function schematic_export() {
 		ins[13] = "bit"
 		ins[14] = "banjo"
 		ins[15] = "pling"
-		for (var a = 0; a < 240; a++) {
-			ins[16 + a] = "harp"
+		if (obj_controller.structure) {
+			ins[16] = "trumpet"
+			ins[17] = "trumpet_exposed"
+			ins[18] = "trumpet_weathered"
+			ins[19] = "trumpet_oxidized"
+			for (var a = 0; a < 240; a++) {
+				ins[20 + a] = "harp"
+			}
+		} else {
+			for (var a = 0; a < 240; a++) {
+				ins[16 + a] = "harp"
+			}
 		}
 		instrument_list = o.songs[o.song].instrument_list
 	    layers = ceil(o.sch_exp_maxheight[o.sch_exp_compress] / 4)

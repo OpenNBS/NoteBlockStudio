@@ -39,6 +39,14 @@ function dat_instrument(argument0) {
 				return str + "banjo"	
 			case 15:
 				return str + "pling"
+			case 16:
+				return str + "trumpet"
+			case 17:
+				return str + "trumpet_exposed"
+			case 18:
+				return str + "trumpet_weathered"
+			case 19:
+				return str + "trumpet_oxidized"
 		}
 	}
 	if instrumentnumber >= 16 {

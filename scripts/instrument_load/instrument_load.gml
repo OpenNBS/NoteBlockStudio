@@ -28,7 +28,7 @@ function instrument_load(custom_sounds_path = "") {
 
 	log("Load instrument", fn)
 
-	if (!file_exists_lib(fn)) {
+	if (!file_exists(fn)) {
 		return false
 	}
 
