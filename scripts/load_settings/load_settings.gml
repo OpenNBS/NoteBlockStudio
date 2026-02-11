@@ -17,6 +17,7 @@ function load_settings() {
 	}
 	// Preferences
 	vers =               ini_read_string("preferences", "last_version",       version)
+	vers_date =          ini_read_string("preferences", "last_version_date",  version_date)
 	check_update =       ini_read_real(  "preferences", "check_update",       check_update)
 	check_prerelease =   ini_read_real(  "preferences", "check_prerelease",   check_prerelease)
 	show_welcome =       ini_read_real(  "preferences", "show_welcome",       show_welcome)

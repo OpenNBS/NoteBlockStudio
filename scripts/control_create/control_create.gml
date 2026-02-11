@@ -173,6 +173,7 @@ function control_create() {
 	clickinarea = 0
 	dontplace = 0
 	vers = version
+	vers_date = version_date
 	menu_shown = ""
 	show_oldwarning = 1
 	songfolder = songs_directory
@@ -700,8 +701,8 @@ function control_create() {
 	    window = w_update
 	    update_success = 1
 		donate_banner = 1 // Enable donate banner after each update
-		copy_bundled_files()
 	}
+	if (file_exists_lib(settings_file) && vers_date != version_date) copy_bundled_files()
 	
 	if (os_type = os_ios) recent_song[0] = bundled_songs_directory + "the_ground's_colour_is_yellow.nbs"
 	

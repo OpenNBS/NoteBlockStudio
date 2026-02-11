@@ -15,6 +15,7 @@ function save_settings() {
 	}
 	// Preferences
 	ini_write_string(    "preferences", "last_version",       version)
+	ini_write_string(    "preferences", "last_version_date",  version_date)
 	ini_write_real_clean("preferences", "check_update",       check_update)
 	ini_write_real_clean("preferences", "check_prerelease",   check_prerelease)
 	ini_write_real_clean("preferences", "show_welcome",       show_welcome)
