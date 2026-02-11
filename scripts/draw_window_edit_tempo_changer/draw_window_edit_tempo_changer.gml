@@ -36,7 +36,7 @@ function draw_window_edit_tempo_changer() {
 	if (draw_button2(x1 + 10, y1 + 98, 60, condstr(language != 1, "OK", "确定"))) {
 		try {
 			temp_tempo = int64(tempo_changer_set_tempo)
-			if (temp_tempo > 0) {
+			if (temp_tempo > 0 && temp_tempo < 32768) {
 				songs[song].song_pit[@ tempo_changer_sel_x, tempo_changer_sel_y] = temp_tempo
 				history_set(h_changeblock, tempo_changer_sel_x, tempo_changer_sel_y, tempo_changer_sel_ins, songs[song].song_key[tempo_changer_sel_x, tempo_changer_sel_y], songs[song].song_vel[tempo_changer_sel_x, tempo_changer_sel_y], songs[song].song_pan[tempo_changer_sel_x, tempo_changer_sel_y], temp_tempo, pins, pkey, pvel, ppan, ppit)
 				tempo_changer_sel_x = -1
