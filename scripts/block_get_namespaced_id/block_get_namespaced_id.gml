@@ -130,6 +130,7 @@ function block_get_namespaced_id(argument0, argument1=0) {
 	    case 216: return "bone_block"
 	    case 251: return color + "concrete"
 	    case 252: return color + "concrete_powder"
+	    case -316: return "heavy_core"
 	    case -340: return "copper_block"
 	    case -341: return "exposed_copper"
 	    case -342: return "weathered_copper"

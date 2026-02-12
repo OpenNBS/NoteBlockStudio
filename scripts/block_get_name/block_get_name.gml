@@ -128,6 +128,7 @@ function block_get_name(argument0, argument1) {
 	    case 216: return "Bone Block"
 	    case 251: return "Concrete"
 	    case 252: return "Concrete Powder"
+	    case -316: return "Heavy Core"
 	    case -340: return "Copper Block"
 	    case -341: return "Exposed Copper Block"
 	    case -342: return "Weathered Copper Block"

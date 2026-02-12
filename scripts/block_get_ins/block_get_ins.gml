@@ -54,6 +54,7 @@ function block_get_ins(argument0) {
 	if (block = 174) ins = 8
 	if (block = 216) ins = 9
 	if (block = -155) ins = 12
+	if (block = -316) ins = 4
 	if (block = -340) ins = 16
 	if (block = -341) ins = 17
 	if (block = -342) ins = 18
