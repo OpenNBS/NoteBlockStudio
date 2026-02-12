@@ -305,6 +305,7 @@ function draw_window_track_export() {
 	            block[b, 0] = 12 block[b, 1] = 0 b += 1
 	            block[b, 0] = 13 block[b, 1] = 0 b += 1
 	            block[b, 0] = 88 block[b, 1] = 0 b += 1
+	            block[b, 0] = -316 block[b, 1] = 0 b += 1
 	        } else if (menub = 4) {
 	            b = 0
 	            block[b, 0] = 20 block[b, 1] = 0 b += 1
