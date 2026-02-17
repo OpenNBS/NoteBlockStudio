@@ -94,7 +94,8 @@ function save_song() {
 	                cb = 0
 					ins = ds_list_find_index(cursong.instrument_list, cursong.song_ins[a, b])
 					if (nbsver < 6 && ins > 15 && ins < 20) has_v6_ins = true
-	                buffer_write_byte(ds_list_find_index(cursong.instrument_list, cursong.song_ins[a, b]))
+					if (nbsver < 6 && ins >= 20 && !has_v6_ins) ins -= 4
+	                buffer_write_byte(ins)
 	                buffer_write_byte(cursong.song_key[a, b])
 					if nbsver >= 4 {
 					buffer_write_byte(cursong.song_vel[a, b])
