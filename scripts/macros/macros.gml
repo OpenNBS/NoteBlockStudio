@@ -32,8 +32,8 @@ function macros() {
 #macro data_directory    condstr(os_type = os_windows, working_directory, file_directory) + "data" + condstr(os_type = os_windows, "\\", "/")
 #macro sounds_directory  condstr(os_type = os_windows, working_directory, file_directory) + "data" + condstr(os_type = os_windows, "\\", "/") + "sounds" + condstr(os_type = os_windows, "\\", "/")
 #macro resource_directory	sounds_directory + "resourcepacks" + condstr(os_type = os_windows, "\\", "/")
-#macro songs_directory   (os_type = os_macosx ? music_directory + "Note Block Studio/" : (os_type = os_windows ? working_directory : file_directory) + "songs" + (os_type = os_windows ? "\\" : "/"))
-#macro pattern_directory (os_type = os_macosx ? music_directory + "Note Block Studio/patterns/" : (os_type = os_windows ? working_directory : file_directory) + "patterns" + (os_type = os_windows ? "\\" : "/"))
+#macro songs_directory   (os_type = os_macosx ? music_directory : (os_type = os_windows ? working_directory : file_directory) + "songs" + (os_type = os_windows ? "\\" : "/"))
+#macro pattern_directory (os_type = os_macosx ? music_directory : (os_type = os_windows ? working_directory : file_directory) + "patterns" + (os_type = os_windows ? "\\" : "/"))
 #macro log_file          file_directory + "log.txt"
 #macro temp_file         file_directory + "tmp.file"
 #macro update_file       file_directory + "note block studio installer.exe"
