@@ -9,6 +9,8 @@ song_backupid = string(floor(random(800000)))
 song_backupname = "Unsaved song " + string(song_backupid) + ".nbs"
 song_download_display_name = ""
 
+reference_audio_buffer = -1
+
 // Playback
 tempo = 10
 real_tempo = 10

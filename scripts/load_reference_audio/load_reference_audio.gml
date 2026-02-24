@@ -1,8 +1,9 @@
 function load_reference_audio(){
 	audio_destroy_stream(songs[song].reference_audio)
 	audio_free_buffer_sound(songs[song].reference_audio)
-	buffer_delete(global.__temp_audio_buffer__)
+	buffer_delete(songs[song].reference_audio_buffer)
 	global.__temp_audio_buffer__ = -1
+	songs[song].reference_audio_buffer = -1
 	songs[song].reference_audio_file = ""
 	songs[song].reference_audio = -1
 	songs[song].reference_option = 2
@@ -16,6 +17,7 @@ function load_reference_audio(){
 	} else if (string_lower(filename_ext(songs[song].reference_audio_file)) == ".wav") {
 		songs[song].reference_audio = wav_load_buffer(songs[song].reference_audio_file)
 	}
+	songs[song].reference_audio_buffer = global.__temp_audio_buffer__
 	if (songs[song].reference_audio < 0) {
 		if (language != 1) message("Couldn't load the file", "Error")
 		else message("文件加载失败", "错误")
