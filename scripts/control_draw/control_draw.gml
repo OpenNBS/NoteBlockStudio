@@ -299,7 +299,7 @@ function control_draw() {
 			draw_rectangle(x1 + 2, y1 + 34, x1 + 2 + 32 * totalcols, y1 + 34 + 32 * totalrows, false)
 		}
 	}
-	note_offset = floor(((current_song.marker_pos - floor(current_song.marker_pos + 0.5 * !isplayer)) * 32) + 0.5) * ((playing && marker_follow && marker_pagebypage = 2 && (current_song.marker_pos - floor(totalcols / 2 + 0.5) < current_song.enda + 1 && current_song.marker_pos - floor(totalcols / 2 + 0.5) > 0)) || isplayer)
+	note_offset = floor(((current_song.marker_pos - floor(current_song.marker_pos + 0.5 * !isplayer)) * 32) + 0.5) * (((forward <> 0 || playing) && marker_follow && marker_pagebypage = 2 && (current_song.marker_pos - floor(totalcols / 2 + 0.5) < current_song.enda + 1 && current_song.marker_pos - floor(totalcols / 2 + 0.5) > 0)) || isplayer)
 	if (!isplayer) {
 	var tempo_changer_display_queue = []
 	for (a = 0; a < totalcols; a += 1) {
@@ -680,8 +680,6 @@ function control_draw() {
 	            sb_val[1] = current_song.startb
 	        }
 	    }
-	    if (keyboard_check(vk_right)) forward = 1
-	    if (keyboard_check(vk_left)) forward = -1
 	    if (keyboard_check_pressed(vk_enter)) {
 	        playing = 0
 	        current_song.marker_pos = 0
@@ -1879,6 +1877,11 @@ function control_draw() {
 			    show_menu_ext("help", 109 - 30 * isplayer, 19, icon(icons.HELP) + "教程视频|\\|第 1 集：编写音符盒乐曲|第 2 集：打开 MIDI 文件|第 3 集：将乐曲导入进 Minecraft|第 4 集：编辑在 Minecraft 中创作的乐曲     |-|F1$观看所有|/|-|" + icon(icons.INTERNET) + "官方网站......|GitHub......|Discord 服务器......|反馈 bug......|QQ 群......|捐赠......|-|更新历史......|关于......")
 			}
 		}
+		
+		forward = 0
+		// Moved forward/backward controls here for better ordering
+	    if (keyboard_check(vk_right)) forward = 1
+	    if (keyboard_check(vk_left)) forward = -1
 
 		// Icons
 		if (theme != 3) {
@@ -1904,7 +1907,7 @@ function control_draw() {
 			xx += 25
 			if (draw_icon(icons.STOP, xx, yy, "Stop song", 0, 0)) {playing = 0 current_song.marker_pos = 0 current_song.marker_prevpos = 0 timestoloop = real(current_song.loopmax) remove_emitters_all_schedule = 1} xx += 25
 			if (isplayer && !dropmode) if (draw_icon(icons.STOP, centerx - 12 - 100, centery + 50, "Stop song", 0, 0)) {playing = 0 current_song.marker_pos = 0 current_song.marker_prevpos = 0 timestoloop = real(current_song.loopmax) remove_emitters_all_schedule = 1}
-			forward = 0
+			//forward = 0
 			if (draw_icon(icons.BACK, xx, yy, "Rewind song", 0, 0)) {forward = -1} xx += 25
 			if (isplayer && !dropmode) if (draw_icon(icons.BACK, centerx - 12 - 50, centery + 50, "Rewind song", 0, 0)) {forward = -1}
 			if (draw_icon(icons.FORWARD, xx, yy, "Fast-forward song", 0, 0)) {forward = 1} xx += 25
@@ -1937,7 +1940,7 @@ function control_draw() {
 			xx += 25
 			if (draw_icon(icons.STOP, xx, yy, "停止歌曲", 0, 0)) {playing = 0 current_song.marker_pos = 0 current_song.marker_prevpos = 0 timestoloop = real(current_song.loopmax) remove_emitters_all_schedule = 1} xx += 25
 			if (isplayer && !dropmode) if (draw_icon(icons.STOP, centerx - 12 - 100, centery + 50, "停止歌曲", 0, 0)) {playing = 0 current_song.marker_pos = 0 current_song.marker_prevpos = 0 timestoloop = real(current_song.loopmax) remove_emitters_all_schedule = 1}
-			forward = 0
+			//forward = 0
 			if (draw_icon(icons.BACK, xx, yy, "快退", 0, 0)) {forward = -1} xx += 25
 			if (isplayer && !dropmode) if (draw_icon(icons.BACK, centerx - 12 - 50, centery + 50, "快退", 0, 0)) {forward = -1}
 			if (draw_icon(icons.FORWARD, xx, yy, "快进", 0, 0)) {forward = 1} xx += 25
