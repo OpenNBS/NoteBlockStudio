@@ -1,6 +1,7 @@
 function control_draw() {
 	// control_draw()
-	var a, b, c, d, e, f, g, p, l, s, exist, str, str2, m, xx, x1, y1, x2, y2, iconcolor, showmenu, totalcols, totalrows, compx, prev, colr, note_offset;
+	var a, b, c, d, e, f, g, p, l, s, exist, str, str2, m, xx, x1, y1, x2, y2, iconcolor, showmenu, totalcols, totalrows, compx, prev, colr, note_offset,
+		preview_pan = 100, preview_vol = 100;
 
 	var checkplaying = playing - playing_prev
 	playing_prev = playing
@@ -232,7 +233,11 @@ function control_draw() {
 			selected_vel = 100
 			selected_pan = 100
 			selected_pit = 0
-	        play_sound(current_song.instrument, selected_key, 100 ,100, 0)
+			
+			preview_vol = (songs[song].layervol[selby] / 100 ) * selected_vel
+			preview_pan = (songs[song].layerstereo[selby] + selected_pan) / 2
+			
+	       	play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
 	    }
 	    if (mouse_wheel_up_dynamic() && insindex < ds_list_size(current_song.instrument_list) - 1) {
 	        insindex++
@@ -240,7 +245,11 @@ function control_draw() {
 			selected_vel = 100
 			selected_pan = 100
 			selected_pit = 0
-	        play_sound(current_song.instrument, selected_key, 100 ,100, 0)
+			
+			preview_vol = (songs[song].layervol[selby] / 100 ) * selected_vel
+			preview_pan = (songs[song].layerstereo[selby] + selected_pan) / 2
+			
+			play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
 	    }
 	}
 	if (mousewheel = 2 && window = 0 && (exist = 0 || changepitch = 0) && !isplayer && !volume_scroll) {
@@ -249,14 +258,22 @@ function control_draw() {
 			selected_vel = 100
 			selected_pan = 100
 			selected_pit = 0
-	        play_sound(current_song.instrument, selected_key, 100 ,100, 0)
+			
+			preview_vol = (songs[song].layervol[selby] / 100 ) * selected_vel
+			preview_pan = (songs[song].layerstereo[selby] + selected_pan) / 2
+			
+			play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
 	    }
 	    if (mouse_wheel_up_dynamic() && selected_key < 87) {
 	        selected_key += 1
 			selected_vel = 100
 			selected_pan = 100
 			selected_pit = 0
-	        play_sound(current_song.instrument, selected_key, 100 ,100, 0)
+			
+			preview_vol = (songs[song].layervol[selby] / 100 ) * selected_vel
+			preview_pan = (songs[song].layerstereo[selby] + selected_pan) / 2
+			
+			play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
 	    }
 	}
 
@@ -475,12 +492,15 @@ function control_draw() {
 					selected_vel = current_song.song_vel[selbx, selby]
 					selected_pan = current_song.song_pan[selbx, selby]
 					selected_pit = current_song.song_pit[selbx, selby]
+					
+					preview_vol = (songs[song].layervol[selby] / 100 ) * selected_vel
+					preview_pan = (songs[song].layerstereo[selby] + selected_pan) / 2
 				} else {
 					selected_vel = 100
 					selected_pan = 100
 					selected_pit = 0
 				}
-				play_sound(current_song.instrument, selected_key, selected_vel, selected_pan, selected_pit)
+				play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, selected_pit)
 			}
 				
 		}
