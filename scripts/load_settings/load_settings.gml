@@ -37,6 +37,7 @@ function load_settings() {
 	show_octaves =       ini_read_real(  "preferences", "show_octaves",       show_octaves)
 	show_incompatible =  ini_read_real(  "preferences", "show_incompatible",  show_incompatible)
 	fade =               ini_read_real(  "preferences", "use_fading",         fade)
+	selection_alpha =	 ini_read_real(	 "preferences", "selection_alpha",    selection_alpha)
 	show_layers =        ini_read_real(  "preferences", "show_layers",        show_layers)
 	show_piano =         ini_read_real(  "preferences", "show_piano",         show_piano)
 	keysmax =            ini_read_real(  "preferences", "keys_to_show",       keysmax)
