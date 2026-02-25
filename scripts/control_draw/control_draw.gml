@@ -348,7 +348,7 @@ function control_draw() {
 	                                }
 	                                if (fade=0) c += ((selbx = current_song.starta + a && selby = current_song.startb + b && select = 0 && window = 0  && cursmarker = 0) || s) * 0.5
 	                            }
-	                            draw_block(x1 + 2 + 32 * a - note_offset, y1 + 34 + 32 * b, current_song.song_ins[current_song.starta + a, current_song.startb + b], current_song.song_key[current_song.starta + a, current_song.startb + b], current_song.song_pan[current_song.starta + a, current_song.startb + b], current_song.song_vel[current_song.starta + a, current_song.startb + b], current_song.song_pit[current_song.starta + a, current_song.startb + b], c, s * 0.8)
+	                            draw_block(x1 + 2 + 32 * a - note_offset, y1 + 34 + 32 * b, current_song.song_ins[current_song.starta + a, current_song.startb + b], current_song.song_key[current_song.starta + a, current_song.startb + b], current_song.song_pan[current_song.starta + a, current_song.startb + b], current_song.song_vel[current_song.starta + a, current_song.startb + b], current_song.song_pit[current_song.starta + a, current_song.startb + b], c, s * selection_alpha)
 								if (current_song.instrument_list[| ds_list_find_index(current_song.instrument_list, current_song.song_ins[current_song.starta + a, current_song.startb + b])].name = "Tempo Changer") array_push(tempo_changer_display_queue, [x1 + 2 + 32 * a - note_offset, y1 + 34 + 32 * b, string(abs(current_song.song_pit[current_song.starta + a, current_song.startb + b]))])
 							}
 	                    }
@@ -384,7 +384,7 @@ function control_draw() {
 	                                if (fade=0) c += ((selbx = current_song.starta + a && selby = current_song.startb + b && select = 0 && window = 0  && cursmarker = 0) || s) * 0.5
 	                            }
 								realkey = current_song.song_key[current_song.starta + a, current_song.startb + b] + current_song.song_pit[current_song.starta + a, current_song.startb + b] / 100
-	                            draw_block(floor(centerx - (52 * 39) / 2) + floor(19.5 * (realkey + floor(realkey / 12) * 2 + (realkey mod 12 >= 8) + (realkey mod 12 >= 3))) + 4, rh - 154 - a * 32 - 32 + note_offset, current_song.song_ins[current_song.starta + a, current_song.startb + b], current_song.song_key[current_song.starta + a, current_song.startb + b], current_song.song_pan[current_song.starta + a, current_song.startb + b], current_song.song_vel[current_song.starta + a, current_song.startb + b] * (current_song.layervol[b] / 100), current_song.song_pit[current_song.starta + a, current_song.startb + b], c, s * 0.8)
+	                            draw_block(floor(centerx - (52 * 39) / 2) + floor(19.5 * (realkey + floor(realkey / 12) * 2 + (realkey mod 12 >= 8) + (realkey mod 12 >= 3))) + 4, rh - 154 - a * 32 - 32 + note_offset, current_song.song_ins[current_song.starta + a, current_song.startb + b], current_song.song_key[current_song.starta + a, current_song.startb + b], current_song.song_pan[current_song.starta + a, current_song.startb + b], current_song.song_vel[current_song.starta + a, current_song.startb + b] * (current_song.layervol[b] / 100), current_song.song_pit[current_song.starta + a, current_song.startb + b], c, s * selection_alpha)
 	                        }
 	                    }
 	                } else {
