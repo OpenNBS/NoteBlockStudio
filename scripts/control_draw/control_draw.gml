@@ -234,10 +234,10 @@ function control_draw() {
 			selected_pan = 100
 			selected_pit = 0
 			
-			preview_vol = (selby >= 0 && selby <= current_song.endb && !hoverlayer_scrollnote_preview)
+			preview_vol = (selby >= 0 && selby <= current_song.endb && !layerhov_vppreview )
 				? (songs[song].layervol[selby] / 100 ) * selected_vel : 100
 
-			preview_pan = (selby >= 0 && selby <= current_song.endb && !hoverlayer_scrollnote_preview)
+			preview_pan = (selby >= 0 && selby <= current_song.endb && !layerhov_vppreview )
 				? (songs[song].layerstereo[selby] + selected_pan) / 2 : 100
 			
 	       	play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
@@ -249,10 +249,10 @@ function control_draw() {
 			selected_pan = 100
 			selected_pit = 0
 			
-			preview_vol = (selby >= 0 && selby <= current_song.endb && !hoverlayer_scrollnote_preview)
+			preview_vol = (selby >= 0 && selby <= current_song.endb && !layerhov_vppreview )
 				? (songs[song].layervol[selby] / 100 ) * selected_vel : 100
 
-			preview_pan = (selby >= 0 && selby <= current_song.endb && !hoverlayer_scrollnote_preview)
+			preview_pan = (selby >= 0 && selby <= current_song.endb && !layerhov_vppreview )
 				? (songs[song].layerstereo[selby] + selected_pan) / 2 : 100
 			
 			play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
@@ -265,10 +265,10 @@ function control_draw() {
 			selected_pan = 100
 			selected_pit = 0
 			
-			preview_vol = (selby >= 0 && selby <= current_song.endb && !hoverlayer_scrollnote_preview)
+			preview_vol = (selby >= 0 && selby <= current_song.endb && !layerhov_vppreview )
 				? (songs[song].layervol[selby] / 100 ) * selected_vel : 100
 
-			preview_pan = (selby >= 0 && selby <= current_song.endb && !hoverlayer_scrollnote_preview)
+			preview_pan = (selby >= 0 && selby <= current_song.endb && !layerhov_vppreview )
 				? (songs[song].layerstereo[selby] + selected_pan) / 2 : 100
 			
 			play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
@@ -279,10 +279,10 @@ function control_draw() {
 			selected_pan = 100
 			selected_pit = 0
 			
-			preview_vol = (selby >= 0 && selby <= current_song.endb && !hoverlayer_scrollnote_preview)
+			preview_vol = (selby >= 0 && selby <= current_song.endb && !layerhov_vppreview )
 				? (songs[song].layervol[selby] / 100 ) * selected_vel : 100
 
-			preview_pan = (selby >= 0 && selby <= current_song.endb && !hoverlayer_scrollnote_preview)
+			preview_pan = (selby >= 0 && selby <= current_song.endb && !layerhov_vppreview )
 				? (songs[song].layerstereo[selby] + selected_pan) / 2 : 100
 			
 			play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
