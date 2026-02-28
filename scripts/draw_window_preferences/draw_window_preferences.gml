@@ -532,7 +532,7 @@ function draw_window_preferences() {
 	    if (draw_radiobox(x1 + 40, y1 + 110 + (theme = 3) * 22, mousewheel = 1, "Use mouse wheel to change instrument", "Use the mouse wheel to toggle between\nthe available instruments.")) mousewheel = 1
 	    if (draw_radiobox(x1 + 40, y1 + 130 + (theme = 3) * 22, mousewheel = 2, "Use mouse wheel to change key", "Use the mouse wheel to toggle\nbetween the keys on the piano.")) mousewheel = 2
 	    if (draw_checkbox(x1 + 40, y1 + 158 + (theme = 3) * 22, changepitch, "Change note properties when scrolling over notes", "Whether scrolling when hovering over a note should change its key,\nvelocity, panning or pitch, according to the currently selected edit mode.")) changepitch=!changepitch
-		if (draw_checkbox(x1 + 40, y1 + 178 + (theme = 3) * 22, layerhov_vppreview , "Volume/Panning preview relative to current hovered layer", "Whether the volume/panning preview should be relative\nto the layer you are hovering over.")) layerhov_vppreview =!layerhov_vppreview 
+		if (draw_checkbox(x1 + 40, y1 + 178 + (theme = 3) * 22, layerhov_vppreview , "Apply hovered layer's volume and panning to note preview sounds", "Whether the preview sound's volume and panning should be\nrelative to the layer the mouse is hovering over.")) layerhov_vppreview =!layerhov_vppreview 
 		//draw_text_dynamic(x1 + 40, y1 + 178, "Tip: Hold Shift while scrolling over a note to change a whole octave,\nor fine-tune its velocity, panning or pitch.")
 		if (theme = 3) draw_theme_font(font_info_med)
 	    draw_areaheader(x1 + 22, y1 + 220 + (theme = 3) * 22, 456, 105, "Piano")
@@ -550,7 +550,7 @@ function draw_window_preferences() {
 	    if (draw_radiobox(x1 + 40, y1 + 110 + (theme = 3) * 22, mousewheel = 1, "使用鼠标滚轮改变音色", "使用鼠标滚轮切换可用音色。")) mousewheel = 1
 	    if (draw_radiobox(x1 + 40, y1 + 130 + (theme = 3) * 22, mousewheel = 2, "使用鼠标滚轮改变音调", "使用鼠标滚轮改变目前使用的音调。")) mousewheel = 2
 	    if (draw_checkbox(x1 + 40, y1 + 158 + (theme = 3) * 22, changepitch, "当在音符上使用鼠标滚轮改变音符属性", "在音符上使用鼠标滚轮时是否根据目前模式改变其音调、音量、声道或音高。")) changepitch=!changepitch
-		if (draw_checkbox(x1 + 40, y1 + 178 + (theme = 3) * 22, layerhov_vppreview , "相对于当前悬停图层的音量/平移预览", "音量/平移预览是否应相对于鼠标悬停的图层。")) layerhov_vppreview =!layerhov_vppreview 
+		if (draw_checkbox(x1 + 40, y1 + 178 + (theme = 3) * 22, layerhov_vppreview , "将悬停图层的音量和声像调整应用于音符预览声音", "预览声音的音量和声像定位是否应与鼠标悬停的图层相关。")) layerhov_vppreview =!layerhov_vppreview 
 		//draw_text_dynamic(x1 + 40, y1 + 178, "Tip: Hold Shift while scrolling over a note to change a whole octave,\nor fine-tune its velocity, panning or pitch.")
 		if (theme = 3) draw_theme_font(font_info_med)
 	    draw_areaheader(x1 + 22, y1 + 220 + (theme = 3) * 22, 456, 105, "琴键")
