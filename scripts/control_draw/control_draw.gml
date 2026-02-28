@@ -225,68 +225,47 @@ function control_draw() {
 	        }
 	    }
 	}
-	if (mousewheel = 1 && window = 0 && (exist = 0 || changepitch = 0) && !isplayer && !volume_scroll) {
-	    var insindex = ds_list_find_index(current_song.instrument_list, current_song.instrument)
-	    if (mouse_wheel_down_dynamic() && insindex > 0) {
-	        insindex--
-	        current_song.instrument = current_song.instrument_list[| insindex]
-			selected_vel = 100
-			selected_pan = 100
-			selected_pit = 0
-			
-			preview_vol = (selby >= 0 && selby <= current_song.endb && layerhov_vppreview)
-				? (songs[song].layervol[selby] / 100 ) * selected_vel : 100
 
-			preview_pan = (selby >= 0 && selby <= current_song.endb && layerhov_vppreview)
-				? (songs[song].layerstereo[selby] + selected_pan) / 2 : 100
-			
-	       	play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
-	    }
-	    if (mouse_wheel_up_dynamic() && insindex < ds_list_size(current_song.instrument_list) - 1) {
-	        insindex++
-	        current_song.instrument = current_song.instrument_list[| insindex]
-			selected_vel = 100
-			selected_pan = 100
-			selected_pit = 0
-			
-			preview_vol = (selby >= 0 && selby <= current_song.endb && layerhov_vppreview)
-				? (songs[song].layervol[selby] / 100 ) * selected_vel : 100
+	// scroll to change the instument or key if enabled. Also check if user scrolled before continue
+	if (window = 0 && (mouse_wheel_down_dynamic() || mouse_wheel_up_dynamic()) && (exist = 0 || changepitch = 0) && !isplayer && !volume_scroll) {
 
-			preview_pan = (selby >= 0 && selby <= current_song.endb && layerhov_vppreview)
-				? (songs[song].layerstereo[selby] + selected_pan) / 2 : 100
-			
-			play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
-	    }
-	}
-	if (mousewheel = 2 && window = 0 && (exist = 0 || changepitch = 0) && !isplayer && !volume_scroll) {
-	    if (mouse_wheel_down_dynamic() && selected_key > 0) {
-	        selected_key -= 1
-			selected_vel = 100
-			selected_pan = 100
-			selected_pit = 0
-			
-			preview_vol = (selby >= 0 && selby <= current_song.endb && layerhov_vppreview)
-				? (songs[song].layervol[selby] / 100 ) * selected_vel : 100
+		selected_vel = 100
+		selected_pan = 100
+		selected_pit = 0
 
-			preview_pan = (selby >= 0 && selby <= current_song.endb && layerhov_vppreview)
-				? (songs[song].layerstereo[selby] + selected_pan) / 2 : 100
-			
-			play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
-	    }
-	    if (mouse_wheel_up_dynamic() && selected_key < 87) {
-	        selected_key += 1
-			selected_vel = 100
-			selected_pan = 100
-			selected_pit = 0
-			
-			preview_vol = (selby >= 0 && selby <= current_song.endb && layerhov_vppreview)
-				? (songs[song].layervol[selby] / 100 ) * selected_vel : 100
+		var insindex = ds_list_find_index(current_song.instrument_list, current_song.instrument)
 
-			preview_pan = (selby >= 0 && selby <= current_song.endb && layerhov_vppreview)
-				? (songs[song].layerstereo[selby] + selected_pan) / 2 : 100
+		if (mouse_wheel_down_dynamic()) {
+		    if (mousewheel = 1 && insindex > 0) {
+		        insindex--
+		        current_song.instrument = current_song.instrument_list[| insindex]
+		    }
+
+			if (mousewheel = 2 && selected_key > 0) {
+			    selected_key -= 1
+		    }
+		}
+
+		if (mouse_wheel_up_dynamic()) {
+			 if (mousewheel = 1 && insindex < ds_list_size(current_song.instrument_list) - 1) {
+		        insindex++
+		        current_song.instrument = current_song.instrument_list[| insindex]
+		    }
+
+		    if (mousewheel = 2 && selected_key < 87) {
+				selected_key += 1
+			}
+		}
+	
+		preview_vol =
+			(selby >= 0 && selby <= current_song.endb && layerhov_vppreview)
+			? (songs[song].layervol[selby] / 100 ) * selected_vel : 100
+
+		preview_pan =
+			(selby >= 0 && selby <= current_song.endb && layerhov_vppreview)
+			? (songs[song].layerstereo[selby] + selected_pan) / 2 : 100
 			
-			play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
-	    }
+		play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
 	}
 
 	// Draw note blocks
