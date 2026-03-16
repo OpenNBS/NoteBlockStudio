@@ -1,213 +1,113 @@
-Changes in v3.11.0 (2024.12.14):
+Changes in v3.12.0-beta.1 (2026.03.xx):
 
+Removals:
+
+* Removed .schematic importing due to it being outdated.
+
+* Removed branch export due to the library it uses being 32 bit.
 
 Additions:
 
-* Added a button on the greeting window to open Note Block World, our brand
-   new website for browsing and sharing note block songs!
+* Added macOS and Linux support! You can now enjoy using Note Block Studio on
+   your favourite platform.
+    * Features exclusive to the macOS version:
+        * Get it from TestFlight and later in the App Store!
+        * Native menu bar support!
+        * File proxy icon on the title bar!
+        * macOS flavored hotkeys!
+        * Trackpad scrolling support!
+        * Songs opened from Note Block World displays in the existing window!
+    * Features that will be missing on the macOS version:
+        * Discord rich presence, due to the app being sandboxed.
+        * Songs and Patterns folders, due to compliance with App Store rules.
+        * Sounds downloading, due to compliance with Spp Store rules.
+    * Features that will be missing on the Linux version:
+        * File association.
+        * Drag-and-drop file opening.
+        * "Open in NBS" button on Note Block World.
 
-* Added a sound import assistant to help you use sounds from Minecraft: Java
-   Edition in your songs!
-    * Accessible from Settings > Import sounds from Minecraft.
-    * Make sure to launch the version you want from the Launcher before
-   importing its sounds. Set your Minecraft installation path and game version,
-   click the button to get sounds and watch them get imported automagically!
-    * The sounds from the selected version will be copied to the 'minecraft'
-   folder in your Sounds folder.
+* Added song tabs! You can now open multiple songs in the same window as tabs.
+    * You can copy and paste notes between files!
+    * Saves memory usage!
 
-* It is now possible to save a song with its custom sound files attached.
-    * Reach over to File > Save song with instruments... to find this option.
-    * This makes sharing songs with custom instruments easier than ever!
-    * The saved file is a regular ZIP file containing the song, as well as the
-   sound files used in it.
-    * This feature replaces the 'Export sounds' option, previously accessible
-   from the Instruments window.
+* Added four new instruments from the Minecraft 26.1 update!
+    * Trumpet, Exposed Trumpet, Weathered Trumpet and Oxidized Trumpet are 
+       added.
 
-* The behavior for clicking layer buttons has been changed:
-    * You can now click and drag over consecutive buttons to trigger them
-   without needing to click each one.
-    * This should make it much easier to add, remove, select, lock and solo
-   multiple layers!
-    * Selected layers can now be deselected by pressing the 'Select all blocks
-   in this layer' button a second time.
-    * Holding Ctrl is no longer necessary to select multiple layers.
+* Added resource pack loading support! You can now change the vanilla note
+   block sounds using Minecraft resource packs.
 
-* The fade in and fade out macros now work relatively to each note's velocity,
-   multiplying it by the decay factor.
-    * Previously, only the first note block in each selected column would be
-   taken into account for determining all velocity values in that column.
-    * Notes at each end of the selection will no longer go down to velocity 0,
-   or into negative values.
+* Added reference audio! You can now load audio files layered onto your song
+   for quick referencing!
+    * You can adjust the offset, change the volume, mute or solo this track.
+    * Only .ogg Vorbis and .wav formats are supported.
 
-* Added Minecraft version setting to data pack export.
-    * You can choose between 1.13-1.20 and 1.21+.
-    * This was necessary due to a change in the internal structure of data
-   packs, in order to not break compatibility with older versions.
+* Added custom background image support! You can load your own image to
+   display on the background for this session.
 
-* Added a new auto-recovery system which takes multiple open instances into
-   account:
-    * Songs with unsaved changes are saved to a backup directory every minute.
-    * When NBS quits abnormally (due to a crash, power loss or system restart),
-   you'll be prompted to recover the files the next time you open the program.
-    * Clicking 'Yes' will copy the files to a restore directory so you can move
-   them somewhere else.
-    * Clicking 'No' will leave the unsaved files in the backup directory so you
-   can recover them later.
-    * You can also open the backup directory by going to File > 'Restore
-   unsaved files'.
-    * This mechanic is experimental, so make sure to leave your feedback so we
-   can improve it further!
+* Added advanced options for interface! You can adjust settings for background
+   for video making.
 
-* Note Block Studio now registers itself as a handler for the `nbs://` URL
-   protocol on startup.
-    * This can be used to download and open NBS files directly from an external
-   application, such as a blog or website.
-    * By default, the program will launch in the player mode when handling the
-   protocol.
-    * To prevent security risks, the file won't be opened if it can't be
-   detected as a valid song, or if it's over a certain size.
+* Added note length support in MIDI import! It will apply a chorus effect for
+   the note's duration.
 
-* Added a 'Loop end tick' option in the song properties.
-   * Setting it to a tick greater than the song length will add a silent note
-   at that tick to move the loop end point further.
+* Added an option to automatically start playing after downloading from Note
+   Block World.
 
-* Removed the 'Loop to bar end' option from Preferences.
-   * This option was misleading in that it 'masked' the true loop point of the
-   song, which is after the last tick * causing playback behavior to vary across
-   different NBS installations.
-   * To make sure your songs loop at the right point, change the 'Loop end
-   tick' in the song properties, or manually add a note block with velocity 0 at
-   the last tick before the intended looping point.
-   * This setting may be re-added in the future as a property stored in each
-   song file.
+* Added Sound Stopper, a new functional instrument! Use it to stop all sounds
+   or from a layer range.
 
-* Blackout mode is now available in Player Mode, including the shortcut (F10)!
+* Added a right click menu to add Tempo Changer and Sound Stopper in instrument
+   settings.
 
-* If present, the song author and original author are now displayed in the
-   Player Mode's main view.
+* Added a GUI for setting the values for Tempo Changer and Sound Stopper.
 
-* Added new OpenNBS social links to the greeting window, the Help menu and the
-   About window.
+* Added the Get Extra Notes Pack button in schematic export too.
 
-* Added donation links! If NBS is useful to you and you'd like to support its
-   development, feel free to check out this option in the greeting window or the
-   Help menu.
+* Made a Tetoris cover as a demo song.
 
-* Added a small banner to the greeting window which lets you buy us a coffee
-   via our Open Collective. Thank you!
+* Added heavy core as an option for snare drum in schematic export.
 
 
 
 Bugfixes and improvements:
 
-* All operations involving selections are now much, much faster, including
-   loading a song, moving, selecting, placing and deleting notes, changing note
-   properties, applying macros, and undoing or redoing actions.
-* All macro operations can now be properly undone.
-* The 'Max loop count' option is now respected during playback.
-* The MIDI import instrument mappings have been tweaked to be more accurate to
-   General MIDI (GM) instruments.
-* The 'Show note chart' option now shows flat notes if the 'Use flat notes'
-   option is enabled.
-* The Chorus macro now better handles selections with more than three layers.
-* Fixed an error that would cause note blocks/command blocks in the track
-   export to be missing.
-* The extra notes resource pack can now be saved from the Compatibility window.
-* The popup shown when the data pack export is complete now shows the syntax to
-   play the song from a command block.
-* Added 'Schematic' and 'Structure Block' labels to the different Minecraft
-   version options in schematic export.
-* Fixed changing auto-save preferences marking the song as unsaved.
-* Fixed a softlock caused by an auto-save triggering while a window is open.
-* Fixed audio export failing with a "list index out of range" error message.
-* The song is now marked as unsaved when changing the tempo.
-* The song is now marked as unsaved when toggling a layer's solo setting.
-* Solo layers are now loaded properly from songs.
-* The 'Check for development releases' option is now enabled by default when
-   installing a development release.
-* Fixed the initial value of the tempo input box not following the current
-   tempo.
-* Fixed song author and original author fields in the Song info window not
-   using the Fluent theme's accent color.
-* Fixed previous data pack exported contents not being deleted from the temp
-   folder, causing them to reappear on subsequent exports.
-* Updated bundled resource packs to Minecraft: Java Edition 1.21.
-* Fixed the demo songs using wrong custom instrument paths.
-* Silent notes have been added at the end of the demo songs to make sure they
-   loop at the proper point.
-* The link for the OpenNBS QQ group will be displayed instead of Discord when
-   the language is set to Chinese.
-* Macro windows are now closed immediately if no note blocks are selected,
-   which should prevent certain softlock cases.
-* Fixed a crash when compressing a selection with some particular note
-   arrangements.
-* Loading and saving songs have been made much faster.
-* Fixed layer names below the workspace's visible area getting deleted when
-   adding a new layer.
-* Fixed solo button states not moving together with the layers when adding a
-   new layer above a solo layer.
-* Fixed a crash that could happen after moving the selection under all layers.
-* Fixed the volume slider number popup going past the intended range.
-* Transparency effects are now disabled if setting them up failed in the last
-   session.
-* Fixed the piano keybind flashing faster while being edited according to your
-   FPS setting.
-* Reduced the maximum channel count with the 'Use more audio sounds' option
-   enabled from 32,768 to 1,024, the largest value effectively allowed by
-   GameMaker.
-* Removed the button to watch tutorial videos from the greeting window.
-* Lag compensation is now cancelled if too much time has elapsed (for example,
-   when moving the window around). Playback will resume from the previous point
-   instead of skipping a large section.
-* Lag compensation is now applied to more internal timers, which should be more
-   accurate to wall-clock time:
-   * Auto-save and backup saving timers;
-   * Flash animation when editing piano keyboard shortcuts;
-   * Time tracker for minutes spent in a song;
-   * Scrollbar appear animation for fullscreen mode.
-* Ticks behind the playback marker will no longer play when dragging it around.
-* Fixed pointer cursor not appearing when hovering keys at the edges of the
-   piano in Player Mode.
-* Fixed the Player Mode playback progress bar going past its intended length at
-   the end of a song.
-* Fixed blurry appearance of the Player Mode's central area when at least one
-   of the window's dimensions are an odd number.
-* Fixed dropdown menu for MIDI devices not displaying text properly in the
-   English language.
-* Fixed incorrect `sounds.json` entries for the bass drum sounds in the extra
-   notes resource pack.
-* Fixed uninstall function of exported data packs not loading correctly.
-* Fixed a crash when playing an instrument that was assigned to a MIDI device.
-* Fixed swapped arrows for the instrument selection box when using
-   high-resolution textures.
-* Fixed original author not displaying in the accent color in the song stats
-   window when using the Fluent theme.
-* Fixed the note count in the Discord Rich Presence activity indicator having
-   an extra thousands separator at the start.
-* Fixed a crash when clicking links in the About window credits box.
-* The social buttons in the About window no longer use the primary button style.
-* Fixed the Stereo macro being referred to as 'delay' in the tooltip for the
-   'Reversed' checkbox.
-* Removed the 'Experimental' label from the max. frame rate setting.
-* Updated the NBS icon to a flat version. The previous icon can still be used
-   with the 'Old icon' setting.
-* Changed all instances of 'Minecraft Note Block Studio' and 'Open Note Block
-   Studio' to Note Block Studio, as part of an ongoing rebrand.
-* Replaced the opennbs.org url with noteblock.studio.
-* Updated credits in the About window.
-* Improved wording across various places.
+* Note Block Studio is updated to GameMaker 2022.0.3 LTS for longer support.
+* Note Block Studio is now 64 bit! You can now make bigger songs due to being
+   able to allocate more memory.
+* Fixed tempo changer in MIDI import not supporting remove silent.
+* Fixed chorus macro not supporting 3+ layers.
+* Fixed cyrillic characters not showing properly.
+* Updated the Minecraft Wiki links to the new domain.
+* Made the stop button stop all playing sounds too.
+* Updated the macOS icon to support liquid glass.
+* Only one MIDI device can be used at the same time due to backend changes.
+* Changed the audio priority of each sound to current_time, so the song will
+   still sound normal even if it's excedding the channel limit.
+* Fixed editing song properties sometimes crashing.
+* Fixed add layer when soloing some layers not carrying over some solo layers.
+* Fixed time display when having tempo changes.
+* Fixed tempo incorrect when playing in between two tempo changers.
+* Fixed unable to load capitalized file extensions (.MIDI, .NBS, etc.).
+* Made the save popup say "Song autosaved" when autosaving.
+* Fixed autosave countdown initializing improperly.
+* Fixed crashing when pasting with nothing in the clipboard.
+* Updated the MIDI import instrument mapping for percussions.
+* Updated the get sounds from Minecraft function to include downloading.
+* Fixed URL text dropping the last character.
+* Attribute LGPL programs properly in the credits.
+* Fix Tempo Changers and Sound Stoppers affected by layer pitch and panning.
+* Bumped NBS format version to v6 to support new instrument.
+* Fixed smooth scrolling not present when manually forwarding or rewinding.
+* Fixed crashing when removing custom instruments when there are notes
+   selected.
 
 
 
 Hidden changes:
 
-* Added tempo changer support to audio export.
-* Added tempo changer support to MIDI import.
-* Fix tempo changers not working when starting playback at its immediate tick.
-* Tempo can no longer be set to under 0.25 ticks per second with tempo
-   changers.
-* Added tempo change indicators to the timeline.
-* Added a debug launch option to get additional logs for bug reporting.
+* You can now press F3+D to turn on the GameMaker debug overlay.
+* You can now press F3+L to turn on the logs overlay.
 
 
 
