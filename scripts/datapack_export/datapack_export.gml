@@ -51,7 +51,7 @@ function datapack_export() {
 		}
 	
 		// Create folder structure
-		tempdir = data_directory + "tempdatapack" + condstr(os_type = os_windows, "\\", "/")
+		tempdir = game_save_id + "tempdatapack" + condstr(os_type = os_windows, "\\", "/")
 		if (directory_exists_lib(tempdir)) {
 			directory_delete_lib(tempdir)
 		}
@@ -186,11 +186,11 @@ function datapack_export() {
 	
 		// Execute shell command to create ZIP, or to move temp folder to location
 		if (o.dat_usezip) {
-			if (os_type = os_macosx) execute_program("ditto", "-c -k \"" + data_directory + "tempdatapack" + "\" \"" + fn + "\"", true);
-			else execute_program(get_7z_exc_name(), "a -tzip \"" + fn + "\" \"" + data_directory + "tempdatapack" + condstr(os_type = os_windows, "\\", "/") + "*\"", true)
+			if (os_type = os_macosx) execute_program("ditto", "-c -k \"" + game_save_id + "tempdatapack" + "\" \"" + fn + "\"", true);
+			else execute_program(get_7z_exc_name(), "a -tzip \"" + fn + "\" \"" + game_save_id + "tempdatapack" + condstr(os_type = os_windows, "\\", "/") + "*\"", true)
 		} else {
-			if (os_type = os_windows) execute_program("cmd", "\"" + data_directory + "move.bat\" \"" + fn + "\\\"", true)
-			else execute_program("cp", "-r \"" + data_directory + "tempdatapack\" \"" + fn + "/\"", true);
+			if (os_type = os_windows) execute_program("cmd", "\"" + game_save_id + "move.bat\" \"" + fn + "\\\"", true)
+			else execute_program("cp", "-r \"" + game_save_id + "tempdatapack\" \"" + fn + "/\"", true);
 		}
 	
 		directory_delete_lib(tempdir)
