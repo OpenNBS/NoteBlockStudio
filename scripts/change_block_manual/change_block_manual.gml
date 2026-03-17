@@ -25,7 +25,7 @@ function change_block_manual(argument0, argument1, argument2, argument3, argumen
 		songs[song].song_pit[xx, yy] = pit
 	}
 
-	if (ins.loaded) play_sound(ins, key, vel, pan, pit)
+	if (ins.loaded) play_sound(ins, key, (songs[song].layervol[yy] / 100 ) * vel, (songs[song].layerstereo[yy] + pan) / 2, pit)
 
 	var insname = songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, ins)].name
 	if (insname = "Tempo Changer") {

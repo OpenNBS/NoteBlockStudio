@@ -45,6 +45,7 @@ function save_settings() {
 	ini_write_real_clean("preferences", "show_outofrange",    show_outofrange)
 	ini_write_real_clean("preferences", "mousewheel",         mousewheel)
 	ini_write_real_clean("preferences", "change_pitch",       changepitch)
+	ini_write_real_clean("preferences", "layerhov_vppreview", layerhov_vppreview)
 	ini_write_real_clean("preferences", "select_lastpressed", select_lastpressed)
 	ini_write_real_clean("preferences", "marker_follow",      marker_follow)
 	ini_write_real_clean("preferences", "marker_pagebypage",  marker_pagebypage)

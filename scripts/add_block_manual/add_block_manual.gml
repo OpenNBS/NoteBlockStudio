@@ -68,7 +68,7 @@ function add_block_manual(argument0, argument1, argument2, argument3, argument4,
 	if (xx >= songs[song].enda) songs[song].enda = xx
 	if (yy >= songs[song].endb) songs[song].endb = yy
 
-	if (ins.loaded) play_sound(ins, key, vel, pan, pit)
+	if (ins.loaded) play_sound(ins, key, (songs[song].layervol[yy] / 100 ) * vel, (songs[song].layerstereo[yy] + pan) / 2, pit)
 	history_set(h_addblock, xx, yy, ins, key, vel, pan, pit)
 	
 	var insname = songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, ins)].name
