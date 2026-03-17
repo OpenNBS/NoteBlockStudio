@@ -101,6 +101,7 @@ Bugfixes and improvements:
 * Fixed smooth scrolling not present when manually forwarding or rewinding.
 * Fixed crashing when removing custom instruments when there are notes
    selected.
+* Updated midi mapping to incorporate trumpet instruments.
 
 
 
