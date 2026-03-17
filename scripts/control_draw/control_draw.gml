@@ -1257,20 +1257,22 @@ function control_draw() {
 	if (theme = 3) draw_set_color(15987699)
 	if (theme = 3 && fdark) draw_set_color(2105376)
 	draw_rectangle(xx, yy, xx + 16, yy + 16, false)
-	if (language != 1) {
-	if (draw_layericon(7 + fullscreen, xx, yy, condstr(!fullscreen, "Expand workspace", "Return"), 0, 0)) {
-		fullscreen = !fullscreen
-		if (fullscreen) set_msg("Fullscreen => ON")
-		else set_msg("Fullscreen => OFF")
-		dontplace = 1
-	}
-	} else {
-	if (draw_layericon(7 + fullscreen, xx, yy, condstr(!fullscreen, "展开编辑区域", "返回"), 0, 0)) {
-		fullscreen = !fullscreen
-		if (fullscreen) set_msg("全屏模式 => ON")
-		else set_msg("全屏模式 => OFF")
-		dontplace = 1
-	}
+	if (os_type != os_macosx) {
+		if (language != 1) {
+			if (draw_layericon(7 + fullscreen, xx, yy, condstr(!fullscreen, "Expand workspace", "Return"), 0, 0)) {
+				fullscreen = !fullscreen
+				if (fullscreen) set_msg("Fullscreen => ON")
+				else set_msg("Fullscreen => OFF")
+				dontplace = 1
+			}
+		} else {
+			if (draw_layericon(7 + fullscreen, xx, yy, condstr(!fullscreen, "展开编辑区域", "返回"), 0, 0)) {
+				fullscreen = !fullscreen
+				if (fullscreen) set_msg("全屏模式 => ON")
+				else set_msg("全屏模式 => OFF")
+				dontplace = 1
+			}
+		}
 	}
 	draw_theme_color()
 
