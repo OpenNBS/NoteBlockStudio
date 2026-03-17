@@ -227,7 +227,7 @@ function control_draw() {
 	}
 
 	// scroll to change the instument or key if enabled. Also check if user scrolled before continue
-	if (window = 0 && (mouse_wheel_down_dynamic() || mouse_wheel_up_dynamic()) && (exist = 0 || changepitch = 0) && !isplayer && !volume_scroll) {
+	if (mousewheel >= 1 && window = 0 && (mouse_wheel_down_dynamic() || mouse_wheel_up_dynamic()) && (exist = 0 || changepitch = 0) && !isplayer && !volume_scroll) {
 
 		selected_vel = 100
 		selected_pan = 100
