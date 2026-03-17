@@ -102,6 +102,7 @@ Bugfixes and improvements:
 * Fixed crashing when removing custom instruments when there are notes
    selected.
 * Updated midi mapping to incorporate trumpet instruments.
+* Fixed note preview sound not applying layer settings.
 
 
 
