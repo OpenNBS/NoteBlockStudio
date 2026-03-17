@@ -705,8 +705,6 @@ function control_create() {
 	update_download = -1
 	downloaded_size = 0
 	total_size = -1
-	changelogstr = load_text(bundled_data_directory + "changelog.txt")
-	creditsstr = load_text(bundled_data_directory + "credits.txt")
 	if (file_exists_lib(settings_file) && vers != version) {
 		if (theme = 2) fdark = 1
 		theme = 3 // Sets to the Fluent theme when updated
@@ -715,6 +713,8 @@ function control_create() {
 		donate_banner = 1 // Enable donate banner after each update
 	}
 	if (file_exists_lib(settings_file) && vers_date != version_date) copy_bundled_files()
+	changelogstr = load_text(bundled_data_directory + "changelog.txt")
+	creditsstr = load_text(bundled_data_directory + "credits.txt")
 	
 	if (os_type = os_ios) recent_song[0] = bundled_songs_directory + "the_ground's_colour_is_yellow.nbs"
 	
