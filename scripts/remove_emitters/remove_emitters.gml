@@ -1,6 +1,6 @@
 function remove_emitters() {
 	
-	if (os_type != os_macosx) {
+	//if (os_type != os_macosx) {
 	
 	//Called from control_draw every frame
 	//Removes emitters from memory to prevent memory leaking
@@ -20,28 +20,28 @@ function remove_emitters() {
 		}
 	}
 
-	} else {
+	//} else {
 	
-	//Called from control_draw every frame
-	//Removes emitters from memory to prevent memory leaking
-	var pos, arr, emitterid, timetoremove
+	////Called from control_draw every frame
+	////Removes emitters from memory to prevent memory leaking
+	//var pos, arr, emitterid, timetoremove
 
-	for(pos = 0; pos < ds_list_size(emitters_to_remove); pos++){
-		arr = ds_list_find_value(emitters_to_remove,pos)
+	//for(pos = 0; pos < ds_list_size(emitters_to_remove); pos++){
+	//	arr = ds_list_find_value(emitters_to_remove,pos)
 	
-		emitterid = ds_list_find_value(arr,0)
-		timetoremove = ds_list_find_value(arr,1)
+	//	emitterid = ds_list_find_value(arr,0)
+	//	timetoremove = ds_list_find_value(arr,1)
 	
-		if(get_timer() >= timetoremove){
-			ds_list_delete(emitters_to_remove,pos)
-			//audio_emitter_free(emitterid)
-			audio_stop_sound(emitterid)
-			//log("freeing emitter with id " + string(emitterid))
-			sounds--
-		}
-	}
+	//	if(get_timer() >= timetoremove){
+	//		ds_list_delete(emitters_to_remove,pos)
+	//		//audio_emitter_free(emitterid)
+	//		audio_stop_sound(emitterid)
+	//		//log("freeing emitter with id " + string(emitterid))
+	//		sounds--
+	//	}
+	//}
 	
-	}
+	//}
 
 }
 
@@ -53,7 +53,7 @@ function remove_emitters_all() {
 	if (layerid < 0) layerid = 0
 	if (layerto < layerid) layerto = layerid
 	
-	if (os_type != os_macosx) {
+	//if (os_type != os_macosx) {
 	
 		var pos, arr, emitterid, timetoremove
 	
@@ -77,29 +77,29 @@ function remove_emitters_all() {
 	
 		}
 
-	} else {
+	//} else {
 	
-		var pos, arr, emitterid, timetoremove, soundlayer
+	//	var pos, arr, emitterid, timetoremove, soundlayer
 	
-		for (var i = 0; i < 3; i++) {
+	//	for (var i = 0; i < 3; i++) {
 
-			for(pos = 0; pos < ds_list_size(emitters_to_remove); pos++){
-				arr = ds_list_find_value(emitters_to_remove,pos)
+	//		for(pos = 0; pos < ds_list_size(emitters_to_remove); pos++){
+	//			arr = ds_list_find_value(emitters_to_remove,pos)
 	
-				emitterid = ds_list_find_value(arr,0)
-				timetoremove = ds_list_find_value(arr,1)
-				soundlayer = ds_list_find_value(arr, 2)
+	//			emitterid = ds_list_find_value(arr,0)
+	//			timetoremove = ds_list_find_value(arr,1)
+	//			soundlayer = ds_list_find_value(arr, 2)
 		
-				if(layerid = 0 || (soundlayer >= layerid && soundlayer <= layerto)){
-					ds_list_delete(emitters_to_remove,pos)
-					//audio_emitter_free(emitterid)
-					audio_stop_sound(emitterid)
-					//log("freeing emitter with id " + string(emitterid))
-					sounds--
-				}
-			}
+	//			if(layerid = 0 || (soundlayer >= layerid && soundlayer <= layerto)){
+	//				ds_list_delete(emitters_to_remove,pos)
+	//				//audio_emitter_free(emitterid)
+	//				audio_stop_sound(emitterid)
+	//				//log("freeing emitter with id " + string(emitterid))
+	//				sounds--
+	//			}
+	//		}
 	
-		}
+	//	}
 	
-	}
+	//}
 }
