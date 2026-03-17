@@ -1709,7 +1709,6 @@ function control_draw() {
 										 "Import...|\\|" + 
 											inactive(current_song.selected != 0)+"Pattern...|"+
 											"MIDI...|"+
-											inactive(os_type != os_windows)+"Schematic...|"+
 											"Reference audio...|Background image...|/|"+
 										 "Export...|\\|" +
 											inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "Song with custom sounds...|" +
@@ -1717,7 +1716,6 @@ function control_draw() {
 											inactive(current_song.totalblocks = 0) + "Audio track...|"+
 											inactive(current_song.totalblocks = 0) + "Schematic...|"+
 											inactive(current_song.totalblocks = 0) + "Track schematic...|"+
-											inactive(current_song.totalblocks = 0) + "Branch schematic...|"+
 											inactive(current_song.totalblocks = 0) + "Data pack...|/|-|" + 
 			                             get_hotkey("exit") + "$Exit")
 				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import from schematic...|Import background image...|-|" + get_hotkey("exit") + "$Exit")
@@ -1806,7 +1804,6 @@ function control_draw() {
 										 "导入......|\\|"+
 											inactive(current_song.selected != 0)+"片段......|"+
 											"MIDI 文件......|"+
-											inactive(os_type != os_windows)+"Schematic 文件......|"+
 											"参考音频......|背景图片......|/|"+
 										 "导出......|\\|"+
 											inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "带自定义音色的歌曲......|"+
@@ -1814,7 +1811,6 @@ function control_draw() {
 											inactive(current_song.totalblocks = 0) + "音频文件......|"+
 											inactive(current_song.totalblocks = 0) + "结构......|"+
 											inactive(current_song.totalblocks = 0) + "直轨结构......|"+
-											inactive(current_song.totalblocks = 0) + "分支结构......|"+
 											inactive(current_song.totalblocks = 0) + "数据包......|/|-|" +
 			                             get_hotkey("exit") + "$退出")
 				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|从 Schematic 文件导入......|导入背景图片......|-|" + get_hotkey("exit") + "$退出")
