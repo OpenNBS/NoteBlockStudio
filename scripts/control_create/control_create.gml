@@ -631,6 +631,9 @@ function control_create() {
 
 	// Settings
 	if (!check_args("--prefreset")) load_settings()
+	var vers_tmp = vers
+	var vers_date_tmp = vers_date
+	if (vers_date_tmp != version_date) copy_bundled_files()
 	if (os_type = os_macosx) macos_enable_system_settings_menu()
 	tonextsave = autosave ? autosavemins : 0; // Defining autosavemins here to avoid the autosave when the first song is loaded after open the game.
 	menu_macos_init()
@@ -706,14 +709,13 @@ function control_create() {
 	update_download = -1
 	downloaded_size = 0
 	total_size = -1
-	if (file_exists_lib(settings_file) && vers != version) {
+	if (file_exists_lib(settings_file) && vers_tmp != version) {
 		if (theme = 2) fdark = 1
 		theme = 3 // Sets to the Fluent theme when updated
 	    window = w_update
 	    update_success = 1
 		donate_banner = 1 // Enable donate banner after each update
 	}
-	if (file_exists_lib(settings_file) && vers_date != version_date) copy_bundled_files()
 	changelogstr = load_text(bundled_data_directory + "changelog.txt")
 	creditsstr = load_text(bundled_data_directory + "credits.txt")
 	
