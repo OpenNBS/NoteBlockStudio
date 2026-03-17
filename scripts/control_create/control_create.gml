@@ -695,7 +695,7 @@ function control_create() {
 	}
 
 	// Updates
-	if (check_update)
+	if (check_update && os_type != os_macosx)
 		if (check_prerelease) {
 			update_http = http_get(link_releases)
 		} else {
