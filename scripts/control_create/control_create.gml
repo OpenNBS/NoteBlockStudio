@@ -161,7 +161,7 @@ function control_create() {
 
 	// Application
 	update = 0
-	check_update = 1
+	check_update = (os_type != os_macosx)
 	check_prerelease = is_prerelease
 	update_success = 0
 	show_welcome = 1
