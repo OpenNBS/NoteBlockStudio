@@ -24,7 +24,7 @@ An open-source continuation of Minecraft Note Block Studio with exciting new fea
 ## ⬇ Download
 You can download Note Block Studio [here](https://github.com/OpenNBS/OpenNoteBlockStudio/releases/latest)!
 
-> _On linux: KDE desktops require `kdialog`. Other desktop environments require `zenity` to be installed._
+> _On linux: KDE desktops require `kdialog`. Other desktop environments require `zenity` to be installed. You'll also need `7zip` for some of the export functions to work._
 
 ## 📄 Project Status
 
