@@ -27,9 +27,9 @@ An open-source continuation of Minecraft Note Block Studio with exciting new fea
 ## ⬇ Download
 You can download Open Note Block Studio [here](https://github.com/OpenNBS/OpenNoteBlockStudio/releases/latest)!
 
-> _Windows-only. Support for other platforms is coming soon!_
+> _Support for macOS and Linux is in beta right now!_
 
-> _We're having a TestFlight on macOS for an upcoming version! Join [here](https://testflight.apple.com/join/hg58hwbM)!_
+> _We're having a TestFlight on macOS! Join [here](https://testflight.apple.com/join/hg58hwbM)!_
 
 ## 📄 Project Status
 
