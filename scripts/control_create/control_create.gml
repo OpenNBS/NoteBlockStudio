@@ -135,7 +135,7 @@ function control_create() {
 	]
 	
 	// Wallpaper
-	wpaper = 0
+	wpaper = -1
 	wpaperexist = 0
 	wpaperside = 0
 	wpaperwidth = 0
