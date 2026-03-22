@@ -471,8 +471,9 @@ function draw_window_preferences() {
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 210, fade, "No fading", "Disables transparency animations on note block sprites")) fade = !fade
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 230, show_layers, "Show layer boxes", "Whether the layer boxes should be shown\non the left side of the workspace.")) show_layers = !show_layers
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 250, remove_effect, "Show effect on removal", "Whether to show a fading border\nwhen removing a note block.")) remove_effect = !remove_effect
-		selection_alpha = (draw_dragbar(selection_alpha, 0.8, x1 + 40, y1 + (theme = 3) * 22 + 270, 100, 3, clamp(mouse_x - x1 + 40, 0, 100), condstr(language != 1, "Selection transparency: ", "选择透明度：") + string(floor(selection_alpha * 100)), 2))
-		
+		draw_text_dynamic(x1 + 60, y1 + 268 + (theme = 3) * 22, "Selection highlight intensity:         %")
+		selection_alpha = median(10, draw_dragvalue(21, x1 + 218, y1 + 268 + (theme = 3) * 22, selection_alpha * 100, 2), 80) / 100
+
 		if (theme = 3) draw_theme_font(font_info_med)
 	    draw_areaheader(x1 + 22, y1 + 294 + (theme = 3) * 22, 456, 171, "Piano")
 		if (theme = 3) draw_theme_font(font_main)
