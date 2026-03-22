@@ -509,7 +509,7 @@ function draw_window_preferences() {
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 230, show_layers, "显示每层操作区", "显示在界面左侧操作每层设定的区域。")) show_layers = !show_layers
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 250, remove_effect, "显示删除效果", "删除音符时显示淡出边框效果。")) remove_effect = !remove_effect
 		draw_text_dynamic(x1 + 60, y1 + 268 + (theme = 3) * 22, "选择突出显示强度：        %")
-		selection_alpha = median(10, draw_dragvalue(21, x1 + 170, y1 + 268 + (theme = 3) * 22, selection_alpha * 100, 2), 80) / 100
+		selection_alpha = median(10, draw_dragvalue(21, x1 + 172, y1 + 268 + (theme = 3) * 22, selection_alpha * 100, 2), 80) / 100
 		
 		if (theme = 3) draw_theme_font(font_info_med)
 	    draw_areaheader(x1 + 22, y1 + 294 + (theme = 3) * 22, 456, 171, "琴键")
