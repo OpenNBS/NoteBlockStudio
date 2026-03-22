@@ -47,28 +47,24 @@ function menu_click(argument0) {
 			if (sel = b + 7) open_url(backup_directory)
 	        if (sel = b + 9) pattern_import("")
 	        if (sel = b + 10) open_midi("")
-	        if (sel = b + 11) open_schematic("")
-	        if (sel = b + 12) {
+	        if (sel = b + 11) {
 				load_reference_audio()
 			}
-			if (sel = b + 13) {
+			if (sel = b + 12) {
 				var temppath = string(get_open_filename_ext("Image Files (*.png, *.jpg, *.jpeg)|*.png;*.jpg;*.jpeg", "", "", condstr(language != 1, "Open background image", "打开背景图片")))
 				wallpaper_init(temppath)
 			}
-			if (sel = b + 15) save_song_zip("")
-	        if (sel = b + 16) pattern_export("")
-	        if (sel = b + 17) window = w_mp3_export
-	        if (sel = b + 18) {
+			if (sel = b + 14) save_song_zip("")
+	        if (sel = b + 15) pattern_export("")
+	        if (sel = b + 16) window = w_mp3_export
+	        if (sel = b + 17) {
 	            if (calculate_size()) window = w_schematic_export
 	        }
-	        if (sel = b + 19) {
+	        if (sel = b + 18) {
 	            if (calculate_size()) window = w_track_export
 	        }
-	        if (sel = b + 20) {
-	            if (calculate_size()) window = w_branch_export
-	        }
-			if(sel = b + 21) window = w_datapack_export
-	        if (sel = b + 22) game_end()
+			if(sel = b + 19) window = w_datapack_export
+	        if (sel = b + 20) game_end()
 	        break
 	    }
 	    case "edit": {

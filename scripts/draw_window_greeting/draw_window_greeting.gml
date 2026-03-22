@@ -50,9 +50,17 @@ function draw_window_greeting() {
 		if (os_type = os_windows || os_type = os_linux) {
 			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking disabled.")
 			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "检查更新不可用")
-		} else if (os_type = os_macosx) {
+		} else {
 			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Updates managed by TestFlight app.")
 			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "由 TestFlight 应用管理更新")
+		}
+	} else if (os_type = os_macosx) {
+		if (is_prerelease) {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Updates managed by TestFlight app.")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "由 TestFlight 应用管理更新")
+		} else {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "App Store Version")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "App Store 版本")
 		}
 	} else if (check_update) {
 		if (update_success) {

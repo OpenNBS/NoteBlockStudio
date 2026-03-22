@@ -45,6 +45,10 @@ function midi_instruments() {
 	   13 Bit (Synthesizer)           | 0   | 81 Lead 1 (square)
 	   14 Banjo                       | 0   | 106 Banjo
 	   15 Pling (Electric piano)      | 0   | 3 Electric Grand Piano
+	   16 Trumpet                     | 0   | 
+	   17 Exposed Trumpet             | 0   | 
+	   18 Weathered Trumpet           | +1  | 
+	   19 Oxidized Trumpet            | +2  |
 	3 = shortened name (optional)
 	*/
 
@@ -96,7 +100,7 @@ function midi_instruments() {
 	midi_ins[a, 0] = "Accordion" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	midi_ins[a, 0] = "Harmonica" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 1] = 16 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Bandoneon" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	// Guitar
@@ -169,30 +173,30 @@ function midi_instruments() {
 	midi_ins[a, 1] = 3 midi_ins[a, 2] = 0 a += 1
 	// Brass
 	midi_ins[a, 0] = "Trumpet" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 1] = 16 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Trombone" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
+	midi_ins[a, 1] = 17 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Tuba" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
+	midi_ins[a, 1] = 19 midi_ins[a, 2] = 2 a += 1
 	midi_ins[a, 0] = "Muted Trumpet" midi_ins[a, 3] = "Muted Tp."
-	midi_ins[a, 1] = 12 midi_ins[a, 2] = 2 a += 1
+	midi_ins[a, 1] = 18 midi_ins[a, 2] = 1 a += 1
 	midi_ins[a, 0] = "French Horn" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 1] = 17 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Brass Section" midi_ins[a, 3] = "Brass"
-	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 1] = 17 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Synth Brass 1" midi_ins[a, 3] = "Synth Brass1"
-	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 1] = 17 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Synth Brass 2" midi_ins[a, 3] = "Synth Brass2"
-	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 1] = 16 midi_ins[a, 2] = 0 a += 1
 	// Reed
 	midi_ins[a, 0] = "Soprano Sax" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	midi_ins[a, 0] = "Alto Sax" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 1] = 16 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Tenor Sax" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 1] = 16 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Baritone Sax" midi_ins[a, 3] = ""
-	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
+	midi_ins[a, 1] = 17 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Oboe" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 6 midi_ins[a, 2] = -1 a += 1
 	midi_ins[a, 0] = "English Horn" midi_ins[a, 3] = ""

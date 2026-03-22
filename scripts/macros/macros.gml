@@ -1,9 +1,9 @@
 function macros() {
 #macro gm_runtime_version "2022.0.3 LTS"
-#macro version_date "2026.2.17"
-#macro version "3.12.0-dev"
+#macro version_date "2026.3.20"
+#macro version "3.12.0-beta.1"
 #macro is_prerelease 1 // remember to change to 0 in the release!
-#macro is_development 1 // the more frequent versions that are not on github (no auto update)
+#macro is_development 0 // the more frequent versions that are not on github (no auto update)
 #macro nbs_version 6
 #macro pat_version 1
 

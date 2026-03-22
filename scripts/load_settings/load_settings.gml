@@ -48,6 +48,7 @@ function load_settings() {
 	show_outofrange =    ini_read_real(  "preferences", "show_outofrange",    show_outofrange)
 	mousewheel =         ini_read_real(  "preferences", "mousewheel",         mousewheel)
 	changepitch =        ini_read_real(  "preferences", "change_pitch",       changepitch)
+	layerhov_vppreview = ini_read_real(  "preferences", "layerhov_vppreview", layerhov_vppreview)
 	select_lastpressed = ini_read_real(  "preferences", "select_lastpressed", select_lastpressed)
 	marker_follow =      ini_read_real(  "preferences", "marker_follow",      marker_follow)
 	marker_pagebypage =  ini_read_real(  "preferences", "marker_pagebypage",  marker_pagebypage)

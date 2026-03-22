@@ -22,7 +22,7 @@ function dat_makefolders(path, namespace, function_registry) {
 		}
 	}
 
-	var tempdir = data_directory + "TempDatapack\\"
+	var tempdir = game_save_id + "TempDatapack\\"
 	if (directory_exists_lib(tempdir)) directory_delete_lib(tempdir)
 
 	directory_create_lib(tempdir)

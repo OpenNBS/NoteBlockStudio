@@ -225,56 +225,47 @@ function control_draw() {
 	        }
 	    }
 	}
-	if (mousewheel = 1 && window = 0 && (exist = 0 || changepitch = 0) && !isplayer && !volume_scroll) {
-	    var insindex = ds_list_find_index(current_song.instrument_list, current_song.instrument)
-	    if (mouse_wheel_down_dynamic() && insindex > 0) {
-	        insindex--
-	        current_song.instrument = current_song.instrument_list[| insindex]
-			selected_vel = 100
-			selected_pan = 100
-			selected_pit = 0
+
+	// scroll to change the instument or key if enabled. Also check if user scrolled before continue
+	if (mousewheel >= 1 && window = 0 && (mouse_wheel_down_dynamic() || mouse_wheel_up_dynamic()) && (exist = 0 || changepitch = 0) && !isplayer && !volume_scroll) {
+
+		selected_vel = 100
+		selected_pan = 100
+		selected_pit = 0
+
+		var insindex = ds_list_find_index(current_song.instrument_list, current_song.instrument)
+
+		if (mouse_wheel_down_dynamic()) {
+		    if (mousewheel = 1 && insindex > 0) {
+		        insindex--
+		        current_song.instrument = current_song.instrument_list[| insindex]
+		    }
+
+			if (mousewheel = 2 && selected_key > 0) {
+			    selected_key -= 1
+		    }
+		}
+
+		if (mouse_wheel_up_dynamic()) {
+			 if (mousewheel = 1 && insindex < ds_list_size(current_song.instrument_list) - 1) {
+		        insindex++
+		        current_song.instrument = current_song.instrument_list[| insindex]
+		    }
+
+		    if (mousewheel = 2 && selected_key < 87) {
+				selected_key += 1
+			}
+		}
+	
+		preview_vol =
+			(selby >= 0 && selby <= current_song.endb && layerhov_vppreview)
+			? (songs[song].layervol[selby] / 100 ) * selected_vel : 100
+
+		preview_pan =
+			(selby >= 0 && selby <= current_song.endb && layerhov_vppreview)
+			? (songs[song].layerstereo[selby] + selected_pan) / 2 : 100
 			
-			preview_vol = (songs[song].layervol[selby] / 100 ) * selected_vel
-			preview_pan = (songs[song].layerstereo[selby] + selected_pan) / 2
-			
-	       	play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
-	    }
-	    if (mouse_wheel_up_dynamic() && insindex < ds_list_size(current_song.instrument_list) - 1) {
-	        insindex++
-	        current_song.instrument = current_song.instrument_list[| insindex]
-			selected_vel = 100
-			selected_pan = 100
-			selected_pit = 0
-			
-			preview_vol = (songs[song].layervol[selby] / 100 ) * selected_vel
-			preview_pan = (songs[song].layerstereo[selby] + selected_pan) / 2
-			
-			play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
-	    }
-	}
-	if (mousewheel = 2 && window = 0 && (exist = 0 || changepitch = 0) && !isplayer && !volume_scroll) {
-	    if (mouse_wheel_down_dynamic() && selected_key > 0) {
-	        selected_key -= 1
-			selected_vel = 100
-			selected_pan = 100
-			selected_pit = 0
-			
-			preview_vol = (songs[song].layervol[selby] / 100 ) * selected_vel
-			preview_pan = (songs[song].layerstereo[selby] + selected_pan) / 2
-			
-			play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
-	    }
-	    if (mouse_wheel_up_dynamic() && selected_key < 87) {
-	        selected_key += 1
-			selected_vel = 100
-			selected_pan = 100
-			selected_pit = 0
-			
-			preview_vol = (songs[song].layervol[selby] / 100 ) * selected_vel
-			preview_pan = (songs[song].layerstereo[selby] + selected_pan) / 2
-			
-			play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
-	    }
+		play_sound(current_song.instrument, selected_key, preview_vol, preview_pan, 0)
 	}
 
 	// Draw note blocks
@@ -1266,20 +1257,22 @@ function control_draw() {
 	if (theme = 3) draw_set_color(15987699)
 	if (theme = 3 && fdark) draw_set_color(2105376)
 	draw_rectangle(xx, yy, xx + 16, yy + 16, false)
-	if (language != 1) {
-	if (draw_layericon(7 + fullscreen, xx, yy, condstr(!fullscreen, "Expand workspace", "Return"), 0, 0)) {
-		fullscreen = !fullscreen
-		if (fullscreen) set_msg("Fullscreen => ON")
-		else set_msg("Fullscreen => OFF")
-		dontplace = 1
-	}
-	} else {
-	if (draw_layericon(7 + fullscreen, xx, yy, condstr(!fullscreen, "展开编辑区域", "返回"), 0, 0)) {
-		fullscreen = !fullscreen
-		if (fullscreen) set_msg("全屏模式 => ON")
-		else set_msg("全屏模式 => OFF")
-		dontplace = 1
-	}
+	if (os_type != os_macosx) {
+		if (language != 1) {
+			if (draw_layericon(7 + fullscreen, xx, yy, condstr(!fullscreen, "Expand workspace", "Return"), 0, 0)) {
+				fullscreen = !fullscreen
+				if (fullscreen) set_msg("Fullscreen => ON")
+				else set_msg("Fullscreen => OFF")
+				dontplace = 1
+			}
+		} else {
+			if (draw_layericon(7 + fullscreen, xx, yy, condstr(!fullscreen, "展开编辑区域", "返回"), 0, 0)) {
+				fullscreen = !fullscreen
+				if (fullscreen) set_msg("全屏模式 => ON")
+				else set_msg("全屏模式 => OFF")
+				dontplace = 1
+			}
+		}
 	}
 	draw_theme_color()
 
@@ -1718,7 +1711,6 @@ function control_draw() {
 										 "Import...|\\|" + 
 											inactive(current_song.selected != 0)+"Pattern...|"+
 											"MIDI...|"+
-											inactive(os_type != os_windows)+"Schematic...|"+
 											"Reference audio...|Background image...|/|"+
 										 "Export...|\\|" +
 											inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "Song with custom sounds...|" +
@@ -1726,7 +1718,6 @@ function control_draw() {
 											inactive(current_song.totalblocks = 0) + "Audio track...|"+
 											inactive(current_song.totalblocks = 0) + "Schematic...|"+
 											inactive(current_song.totalblocks = 0) + "Track schematic...|"+
-											inactive(current_song.totalblocks = 0) + "Branch schematic...|"+
 											inactive(current_song.totalblocks = 0) + "Data pack...|/|-|" + 
 			                             get_hotkey("exit") + "$Exit")
 				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import from schematic...|Import background image...|-|" + get_hotkey("exit") + "$Exit")
@@ -1815,7 +1806,6 @@ function control_draw() {
 										 "导入......|\\|"+
 											inactive(current_song.selected != 0)+"片段......|"+
 											"MIDI 文件......|"+
-											inactive(os_type != os_windows)+"Schematic 文件......|"+
 											"参考音频......|背景图片......|/|"+
 										 "导出......|\\|"+
 											inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "带自定义音色的歌曲......|"+
@@ -1823,7 +1813,6 @@ function control_draw() {
 											inactive(current_song.totalblocks = 0) + "音频文件......|"+
 											inactive(current_song.totalblocks = 0) + "结构......|"+
 											inactive(current_song.totalblocks = 0) + "直轨结构......|"+
-											inactive(current_song.totalblocks = 0) + "分支结构......|"+
 											inactive(current_song.totalblocks = 0) + "数据包......|/|-|" +
 			                             get_hotkey("exit") + "$退出")
 				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|从 Schematic 文件导入......|导入背景图片......|-|" + get_hotkey("exit") + "$退出")

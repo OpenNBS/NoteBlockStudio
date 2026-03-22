@@ -811,8 +811,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"poetry.toml","CopyToMask":-1,"filePath":"datafiles/Data/Python",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"poetry.lock","CopyToMask":-1,"filePath":"datafiles/Data/Python",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"package.py","CopyToMask":-1,"filePath":"datafiles/Data/Python",},
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"instrumenttextures.zip","CopyToMask":-1,"filePath":"datafiles/Data",},
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"extranotes.zip","CopyToMask":-1,"filePath":"datafiles/Data",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Please put your note block sound resource packs here.txt","CopyToMask":-1,"filePath":"datafiles/Data/Sounds/ResourcePacks",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"changelog.txt","CopyToMask":-1,"filePath":"datafiles/Data",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Launch Debug.bat","CopyToMask":-1,"filePath":"datafiles",},
@@ -7425,6 +7423,8 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"trumpet_exposed.ogg","CopyToMask":-1,"filePath":"datafiles/Data/Sounds",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"trumpet.ogg","CopyToMask":-1,"filePath":"datafiles/Data/Sounds",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"trumpet_weathered.ogg","CopyToMask":-1,"filePath":"datafiles/Data/Sounds",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"extranotes.zip","CopyToMask":-1,"filePath":"datafiles/Data",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"instrumenttextures.zip","CopyToMask":-1,"filePath":"datafiles/Data",},
   ],
   "MetaData": {
     "IDEVersion": "2022.0.3.85",

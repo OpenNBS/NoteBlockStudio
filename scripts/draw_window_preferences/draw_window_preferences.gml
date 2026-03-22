@@ -163,31 +163,33 @@ function draw_window_preferences() {
 		} else { 
 			if (draw_checkbox(x1 + 40, y1 + 90 + (theme = 3) * 22, show_welcome, "显示欢迎界面", "打开软件时是否显示欢迎界面。", false, true)) show_welcome=!show_welcome
 		}
-		if (language != 1) {
-			if (draw_checkbox(x1 + 40, y1 + 110 + (theme = 3) * 22, check_update, "Check for updates", "Whether to check for any updates\nwhen the program is opened.", false, true)) check_update=!check_update
-			if (draw_checkbox(x1 + 60, y1 + 130 + (theme = 3) * 22, check_prerelease, "Check for development versions", "Whether to check for development versions in addition to stable releases.\nDevelopment versions contain the latest improvements, but may be potentially unstable.", !check_update, false)) {
-				check_prerelease = !check_prerelease
-				if (!is_prerelease && check_prerelease) {
-					if (!message_yesnocancel("Development versions are experimental and may be unstable. To avoid data corruption, it's highly recommended that you install Note Block Studio to a separate directory before enabling this option.\n\nProceed?", "Warning")) {
-						check_prerelease = !check_prerelease // undo button check
-					}
-				} else if (is_prerelease && !check_prerelease) {
-					if (!message_yesnocancel("You're currently running a development version of Note Block Studio. By disabling this option, you will be prompted to downgrade to the latest stable version the next time you open the program.\n\nProceed?", "Warning")) {
-						check_prerelease = !check_prerelease // undo button uncheck
+		if (os_type != os_macosx) {
+			if (language != 1) {
+				if (draw_checkbox(x1 + 40, y1 + 110 + (theme = 3) * 22, check_update, "Check for updates", "Whether to check for any updates\nwhen the program is opened.", false, true)) check_update=!check_update
+				if (draw_checkbox(x1 + 60, y1 + 130 + (theme = 3) * 22, check_prerelease, "Check for development versions", "Whether to check for development versions in addition to stable releases.\nDevelopment versions contain the latest improvements, but may be potentially unstable.", !check_update, false)) {
+					check_prerelease = !check_prerelease
+					if (!is_prerelease && check_prerelease) {
+						if (!message_yesnocancel("Development versions are experimental and may be unstable. To avoid data corruption, it's highly recommended that you install Note Block Studio to a separate directory before enabling this option.\n\nProceed?", "Warning")) {
+							check_prerelease = !check_prerelease // undo button check
+						}
+					} else if (is_prerelease && !check_prerelease) {
+						if (!message_yesnocancel("You're currently running a development version of Note Block Studio. By disabling this option, you will be prompted to downgrade to the latest stable version the next time you open the program.\n\nProceed?", "Warning")) {
+							check_prerelease = !check_prerelease // undo button uncheck
+						}
 					}
 				}
-			}
-		} else {
-			if (draw_checkbox(x1 + 40, y1 + 110 + (theme = 3) * 22, check_update, "检查更新", "打开软件时是否检查更新。", false, true)) check_update=!check_update
-			if (draw_checkbox(x1 + 60, y1 + 130 + (theme = 3) * 22, check_prerelease, "检查开发版本", "是否在稳定版之外额外检测开发版。\n开发版本包含最新的内容，但可能不稳定。", !check_update, false)) {
-				check_prerelease = !check_prerelease
-				if (!is_prerelease && check_prerelease) {
-					if (!message_yesnocancel("开发版本仍在测试中，可能会不稳定。为了防止数据损坏，强烈建议您在开启该选项前将 Note Block Studio 安装到一个单独的目录。\n\n继续吗？", "警告")) {
-						check_prerelease = !check_prerelease // undo button check
-					}
-				} else if (is_prerelease && !check_prerelease) {
-					if (!message_yesnocancel("您正在运行一个 Note Block Studio 的开发版本。关闭这个选项后，在下次开启此程序时您将会被提示降级至最新的稳定版。\n\n继续吗？", "警告")) {
-						check_prerelease = !check_prerelease // undo button uncheck
+			} else {
+				if (draw_checkbox(x1 + 40, y1 + 110 + (theme = 3) * 22, check_update, "检查更新", "打开软件时是否检查更新。", false, true)) check_update=!check_update
+				if (draw_checkbox(x1 + 60, y1 + 130 + (theme = 3) * 22, check_prerelease, "检查开发版本", "是否在稳定版之外额外检测开发版。\n开发版本包含最新的内容，但可能不稳定。", !check_update, false)) {
+					check_prerelease = !check_prerelease
+					if (!is_prerelease && check_prerelease) {
+						if (!message_yesnocancel("开发版本仍在测试中，可能会不稳定。为了防止数据损坏，强烈建议您在开启该选项前将 Note Block Studio 安装到一个单独的目录。\n\n继续吗？", "警告")) {
+							check_prerelease = !check_prerelease // undo button check
+						}
+					} else if (is_prerelease && !check_prerelease) {
+						if (!message_yesnocancel("您正在运行一个 Note Block Studio 的开发版本。关闭这个选项后，在下次开启此程序时您将会被提示降级至最新的稳定版。\n\n继续吗？", "警告")) {
+							check_prerelease = !check_prerelease // undo button uncheck
+						}
 					}
 				}
 			}
@@ -538,6 +540,7 @@ function draw_window_preferences() {
 	    if (draw_radiobox(x1 + 40, y1 + 110 + (theme = 3) * 22, mousewheel = 1, "Use mouse wheel to change instrument", "Use the mouse wheel to toggle between\nthe available instruments.")) mousewheel = 1
 	    if (draw_radiobox(x1 + 40, y1 + 130 + (theme = 3) * 22, mousewheel = 2, "Use mouse wheel to change key", "Use the mouse wheel to toggle\nbetween the keys on the piano.")) mousewheel = 2
 	    if (draw_checkbox(x1 + 40, y1 + 158 + (theme = 3) * 22, changepitch, "Change note properties when scrolling over notes", "Whether scrolling when hovering over a note should change its key,\nvelocity, panning or pitch, according to the currently selected edit mode.")) changepitch=!changepitch
+		if (draw_checkbox(x1 + 40, y1 + 178 + (theme = 3) * 22, layerhov_vppreview , "Apply hovered layer's volume and panning to note preview sounds", "Whether the preview sound's volume and panning should be\nrelative to the layer the mouse is hovering over.")) layerhov_vppreview =!layerhov_vppreview 
 		//draw_text_dynamic(x1 + 40, y1 + 178, "Tip: Hold Shift while scrolling over a note to change a whole octave,\nor fine-tune its velocity, panning or pitch.")
 		if (theme = 3) draw_theme_font(font_info_med)
 	    draw_areaheader(x1 + 22, y1 + 220 + (theme = 3) * 22, 456, 105, "Piano")
@@ -555,6 +558,7 @@ function draw_window_preferences() {
 	    if (draw_radiobox(x1 + 40, y1 + 110 + (theme = 3) * 22, mousewheel = 1, "使用鼠标滚轮改变音色", "使用鼠标滚轮切换可用音色。")) mousewheel = 1
 	    if (draw_radiobox(x1 + 40, y1 + 130 + (theme = 3) * 22, mousewheel = 2, "使用鼠标滚轮改变音调", "使用鼠标滚轮改变目前使用的音调。")) mousewheel = 2
 	    if (draw_checkbox(x1 + 40, y1 + 158 + (theme = 3) * 22, changepitch, "当在音符上使用鼠标滚轮改变音符属性", "在音符上使用鼠标滚轮时是否根据目前模式改变其音调、音量、声道或音高。")) changepitch=!changepitch
+		if (draw_checkbox(x1 + 40, y1 + 178 + (theme = 3) * 22, layerhov_vppreview , "将悬停层的音量和声道调整应用于音符预览声音", "预览声音的音量和声道是否应与鼠标悬停的层相关。")) layerhov_vppreview =!layerhov_vppreview 
 		//draw_text_dynamic(x1 + 40, y1 + 178, "Tip: Hold Shift while scrolling over a note to change a whole octave,\nor fine-tune its velocity, panning or pitch.")
 		if (theme = 3) draw_theme_font(font_info_med)
 	    draw_areaheader(x1 + 22, y1 + 220 + (theme = 3) * 22, 456, 105, "琴键")

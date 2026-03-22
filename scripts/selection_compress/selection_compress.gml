@@ -1,7 +1,7 @@
 function selection_compress() {
 	// selection_compress()
 	var a, b, str, nw, nh, na, nb, temp_colfirst, temp_collast, temp_exists, temp_ins, temp_key, temp_vel, temp_pan, temp_pit, temp_played;
-	str = selection_code
+	str = songs[song].selection_code
 	if (songs[song].selected = 0 || songs[song].selection_l = 1) return 0
 	nw = 0
 	nh = 0

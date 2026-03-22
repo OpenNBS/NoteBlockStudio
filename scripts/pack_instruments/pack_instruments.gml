@@ -8,7 +8,7 @@ function pack_instruments() {
 	if (fn = "") return 0;
 	fn = enforce_extension(fn, ".zip")
 	
-	tempdir = data_directory + "temp" + condstr(os_type = os_windows, "\\", "/");
+	tempdir = game_save_id + "temp" + condstr(os_type = os_windows, "\\", "/");
 	if (directory_exists_lib(tempdir)) {
 		directory_delete_lib(tempdir);
 	}
@@ -33,8 +33,8 @@ function pack_instruments() {
 		}
 	}
 	
-	if (os_type = os_macosx) execute_program("ditto", "-c -k \"" + data_directory + "temp" + "\" \"" + fn + "\"", true);
-	else execute_program(get_7z_exc_name(), "a -tzip \"" + fn + "\" \"" + data_directory + "temp" + condstr(os_type = os_windows, "\\", "/") + "*\"", true)
+	if (os_type = os_macosx) execute_program("ditto", "-c -k \"" + game_save_id + "temp" + "\" \"" + fn + "\"", true);
+	else execute_program(get_7z_exc_name(), "a -tzip \"" + fn + "\" \"" + game_save_id + "temp" + condstr(os_type = os_windows, "\\", "/") + "*\"", true)
 	directory_delete_lib(tempdir);
 	if (language != 1) message(string(count) + " instrument" + condstr(count > 1, "s were", " was") + " saved!", "Pack instruments");
 	else message(string(count) + "个音色已保存！", "导出音色");
