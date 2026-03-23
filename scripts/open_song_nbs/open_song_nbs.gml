@@ -17,8 +17,8 @@ function open_song_nbs(fn, sounds_path = "", safeopen, replace) {
 	
 	if (byte1 = 0 && byte2 = 0) {
 		newsong.song_nbs_version = buffer_read_byte()
-		if (language != 1) {if (show_oldwarning && newsong.song_nbs_version < nbs_version) message("Warning: You are opening an older NBS file. Saving this file will make it incompatible with older Note Block Studio versions.","Warning")}
-		else {if (show_oldwarning && newsong.song_nbs_version < nbs_version) message("警告：你正在打开旧版的 NBS 文件。保存此文件会使其与旧版 Note Block Studio 不兼容。","警告")}
+		if (language != 1) {if (show_oldwarning && newsong.song_nbs_version < nbs_version && !isplayer) message("Warning: You are opening an older NBS file. Saving this file will make it incompatible with older Note Block Studio versions.","Warning")}
+		else {if (show_oldwarning && newsong.song_nbs_version < nbs_version && !isplayer) message("警告：你正在打开旧版的 NBS 文件。保存此文件会使其与旧版 Note Block Studio 不兼容。","警告")}
 		if newsong.song_nbs_version > nbs_version {
 			if (language != 1) message("Warning: You are opening an NBS file created in a later version of Note Block Studio.\nPlease save the song as a version " + string(nbs_version) + " file or lower via the Save Options menu.","Error")
 			else message("警告：你正在打开在新版 Note Block Studio 里保存的文件。\n请用保存选项菜单将其保存到" + string(nbs_version) + "版本或以下。","错误")
@@ -36,8 +36,8 @@ function open_song_nbs(fn, sounds_path = "", safeopen, replace) {
 			message("This file doesn't look like a valid song!", "Error")
 			return
 		}
-		if (language != 1) {if (show_oldwarning) message("Warning: You are opening an older NBS file. Saving this file will make it incompatible with older Note Block Studio versions.","Warning")}
-		else {if (show_oldwarning) message("警告：你正在打开旧版的 NBS 文件。保存此文件会使其与旧版 Note Block Studio 不兼容。","警告")}
+		if (language != 1) {if (show_oldwarning && !isplayer) message("Warning: You are opening an older NBS file. Saving this file will make it incompatible with older Note Block Studio versions.","Warning")}
+		else {if (show_oldwarning && !isplayer) message("警告：你正在打开旧版的 NBS 文件。保存此文件会使其与旧版 Note Block Studio 不兼容。","警告")}
 		newsong.song_nbs_version = 0
 		custom_index_diff = 0
 		song_first_custom_index = 0
