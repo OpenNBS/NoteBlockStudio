@@ -583,7 +583,7 @@ function control_create() {
 									"1.17", "1.18", "1.19", 
 									"22w42a", "1.19.3", "1.19.4", "23w14a", "1.20", "23w31a", "1.20.2 Pre-Release 1", "1.20.2", "23w42a", "23w43a", 
 									"23w45a", "1.20.3", "24w06a", "24w09a", "24w11a", "1.20.5", "1.21", "1.21.2", "1.21.4", "25w02a", 
-									"25w04a", "25w05a", "25w07a", "1.21.5", "25w20a", "1.21.8", "1.21.10", "25w46a", "1.21.11", "26.1-snapshot-7", "26.1+"];
+									"25w04a", "25w05a", "25w07a", "1.21.5", "25w20a", "1.21.8", "1.21.10", "25w46a", "1.21.11", "26.1", "26.1+"];
 	
 	sound_import_asset_index_names = ds_map_create();
 	sound_import_asset_index_names_sort = ds_list_create(); // TODO: convert this to an array when array_get_index() is available
