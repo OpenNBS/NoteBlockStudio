@@ -9,6 +9,10 @@ function instrument_load(custom_sounds_path = "") {
 
 	// If a custom Sounds folder is provided, try loading the sound from it.
 	// If not provided or the sound doesn't exist there, fall back to the default Sounds folder
+	
+	var sounds_dir = bundled_sounds_directory
+	if (user) sounds_dir = sounds_directory
+	
 	if (custom_sounds_path == "") {
 		fn = sounds_directory + filename;
 		log ("load bundle")
