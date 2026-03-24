@@ -8,7 +8,7 @@ function datapack_getextranotes() {
 	if (fn = "") return 0
 	fn = enforce_extension(fn, ".zip")
 
-	src = data_directory + "extranotes.zip"
+	src = bundled_data_directory + "extranotes.zip"
 
 	if file_exists(src) {
 		file_copy(src, fn)

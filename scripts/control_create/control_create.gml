@@ -94,7 +94,7 @@ function control_create() {
 	display_height = display_get_height()
 	window_icon = (os_type = os_macosx)
 	if (os_type = os_windows) {
-		icon_buffer = window_set_icon_impl_load(data_directory + "icon.ico")
+		icon_buffer = window_set_icon_impl_load(bundled_data_directory + "icon.ico")
 		icon_size_buffer = window_set_icon_impl_argbuf()
 		buffer_write(icon_size_buffer, buffer_u32, buffer_get_size(icon_buffer))
 		buffer_write(icon_size_buffer, buffer_u32, $80004005)

@@ -8,7 +8,7 @@ function datapack_getinstextures() {
 	if (fn = "") return 0
 	fn = enforce_extension(fn, ".zip")
 
-	src = data_directory + "instrumenttextures.zip"
+	src = bundled_data_directory + "instrumenttextures.zip"
 
 	if file_exists(src) {
 		file_copy(src, fn)

@@ -14,7 +14,7 @@ function instrument_load(custom_sounds_path = "") {
 	if (user) sounds_dir = sounds_directory
 	
 	if (custom_sounds_path == "") {
-		fn = sounds_directory + filename;
+		fn = sounds_dir + filename;
 		log ("load bundle")
 	} else {
 		var custom_fn = custom_sounds_path + filename;
@@ -23,7 +23,7 @@ function instrument_load(custom_sounds_path = "") {
 			fn = custom_fn;
 		log ("load custom")
 		} else {
-			fn = sounds_directory + filename;
+			fn = sounds_dir + filename;
 			log ("load fallback bundle")
 		}
 	}

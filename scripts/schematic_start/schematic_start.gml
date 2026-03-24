@@ -7,7 +7,7 @@ function schematic_start() {
 	
 	if (os_type == os_windows) {
 
-		global.path_gmbinfile = data_directory + "gmbinaryfile.dll";
+		global.path_gmbinfile = bundled_data_directory + "gmbinaryfile.dll";
 
 		// All of this seems to be replacable with buffer_read or buffer_write scripts / GMS2 stuff. Will replace later.
 		// Note: Already replaced

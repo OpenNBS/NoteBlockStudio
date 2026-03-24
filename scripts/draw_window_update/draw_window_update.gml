@@ -42,10 +42,10 @@ function draw_window_update() {
 	// Refresh changelog button (debug)
 	if (NOT_RUN_FROM_IDE != 1) {
 		if (draw_button2(x1 + 500 - 144 - 16, y1 + 8 + 24, 72, "Open file")) {
-			open_url(data_directory + "changelog.txt");
+			open_url(bundled_data_directory + "changelog.txt");
 		}
 		if (draw_button2(x1 + 500 - 72 - 8, y1 + 8 + 24, 72, "Refresh")) {
-			changelogstr = load_text(data_directory + "changelog.txt");
+			changelogstr = load_text(bundled_data_directory + "changelog.txt");
 		}
 	}
 	
