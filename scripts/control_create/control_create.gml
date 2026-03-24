@@ -635,7 +635,7 @@ function control_create() {
 	if (!check_args("--prefreset")) load_settings()
 	var vers_tmp = vers
 	var vers_date_tmp = vers_date
-	if (vers_date_tmp != version_date) copy_bundled_files()
+	if (vers_tmp != version || vers_date_tmp != version_date) copy_bundled_files()
 	if (os_type = os_macosx) macos_enable_system_settings_menu()
 	tonextsave = autosave ? autosavemins : 0; // Defining autosavemins here to avoid the autosave when the first song is loaded after open the game.
 	menu_macos_init()
