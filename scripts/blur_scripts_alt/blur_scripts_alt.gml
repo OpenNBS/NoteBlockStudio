@@ -42,11 +42,13 @@ function draw_surface_blur_alt(surface, x, y, w, h, downamount) {
 			surface_reset_target()
 			surface_free(obj_controller.blur_temp_surface)
 			blur_area_destroy(obj_controller.blur_area_id)
+			gpu_set_blendenable(true)
 		}
 	} catch (exc) {
 		if (surface_get_target() != application_surface) surface_reset_target()
 		if (surface_exists(obj_controller.blur_temp_surface)) surface_free(obj_controller.blur_temp_surface)
 		if (blur_area_exists(obj_controller.blur_area_id)) blur_area_destroy(obj_controller.blur_area_id)
+		gpu_set_blendenable(true)
 		//if (surface_exists(obj_controller.blur_temp_surface_scaled)) surface_free(obj_controller.blur_temp_surface_scaled)
 		return;
 	}
