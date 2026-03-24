@@ -67,14 +67,8 @@ function draw_window_sound_import() {
 		// Change button
 		x1 = startx + width - 72 - 20;
 		if (draw_button2(x1, y1, 72, ((language == 0) ? "Change" : "更改"), false, true)) {
-			if (os_type != os_macosx) {
-				var fn = string(get_save_filename_ext("", 
-					((language == 0) ? "Select Minecraft installation directory" : "选择Minecraft安装目录"), 
-					mc_install_path, 
-					((language == 0) ? "Minecraft installation directory" : "Minecraft安装目录")));
-			} else {
-				var fn = string(get_directory(mc_install_path));
-			}
+			widget_set_caption((language == 0) ? "Select Minecraft installation directory" : "选择Minecraft安装目录")
+			var fn = string(get_directory(mc_install_path));
 			if (fn != "") {
 				mc_install_path = filename_dir(fn);
 				mc_install_path = string_replace_all(mc_install_path, "Select Minecraft installation directory", "")
