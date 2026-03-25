@@ -115,7 +115,7 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
         
 	        if (!readonly) deletetext = key_press[vk_backspace] - key_press[vk_delete] // 0 = Do nothing, 1 = Erase to left, -1 = Erase to right, 2 = Delete selected
 	        if (mouse_check_button_pressed(mb_left) && !keyboard_check(vk_shift)) text_focus = -1
-	        if (keyboard_check(vk_anykey) && !readonly && ord(keyboard_string) != 127 && !check_ctrl()) inserttext = keyboard_string
+	        if (keyboard_check(vk_anykey) && !readonly && ord(keyboard_string) != 127 && ord(keyboard_string) != 8 && ord(keyboard_string) != 9 && !check_ctrl()) inserttext = keyboard_string
 	        keyboard_string = ""
         
 	        // Controls
