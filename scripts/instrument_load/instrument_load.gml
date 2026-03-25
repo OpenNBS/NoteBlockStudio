@@ -39,21 +39,31 @@ function instrument_load(custom_sounds_path = "") {
 	//if (os_type = os_windows) {
 		log("audio_file_decode")
 		if (file_exists(temp_file)) file_delete(temp_file)
-		var ret = audio_file_decode_ogg(fn, temp_file);
-		if (ret < 0) ret = audio_file_decode_ogg(string_replace_all(game_save_id + "data/sounds/" + filename, "/", "\\"), temp_file);
-		log ("wrote to: " + temp_file)
-		if (ret < 0) {
-		    if (obj_controller.language != 1) message("Couldn't load the file " + fn + "! Error: " + string(ret), "Error")
-		    else message("找不到文件" + fn + "！错误代码：" + string(ret), "错误")
-		    return 0
-		}
+		if (string_lower(filename_ext(fn)) == ".ogg") {
+			var ret = audio_file_decode_ogg(fn, temp_file);
+			if (ret < 0) ret = audio_file_decode_ogg(string_replace_all(game_save_id + "data/sounds/" + filename, "/", "\\"), temp_file);
+			log ("wrote to: " + temp_file)
+			if (ret < 0) {
+			    if (obj_controller.language != 1) message("Couldn't load the file " + fn + "! Error: " + string(ret), "Error")
+			    else message("找不到文件" + fn + "！错误代码：" + string(ret), "错误")
+			    return 0
+			}
 
-		log("buffer_load")
-		sound_buffer_temp = buffer_load(temp_file)
-		sound_buffer = buffer_create(buffer_get_size(sound_buffer_temp), buffer_fixed, 2)
-		buffer_copy(sound_buffer_temp, 0, buffer_get_size(sound_buffer_temp), sound_buffer, 0)
-		sound = audio_create_buffer_sound(sound_buffer, buffer_s16, 44100, 0, buffer_get_size(sound_buffer), audio_stereo)
-		buffer_delete(sound_buffer_temp)
+			log("buffer_load")
+			sound_buffer_temp = buffer_load(temp_file)
+			sound_buffer = buffer_create(buffer_get_size(sound_buffer_temp), buffer_fixed, 2)
+			buffer_copy(sound_buffer_temp, 0, buffer_get_size(sound_buffer_temp), sound_buffer, 0)
+			sound = audio_create_buffer_sound(sound_buffer, buffer_s16, 44100, 0, buffer_get_size(sound_buffer), audio_stereo)
+			buffer_delete(sound_buffer_temp)
+		} else if (string_lower(filename_ext(fn)) == ".wav") {
+			sound = wav_load_buffer(fn)
+			if (sound = -1) {
+				if (obj_controller.language != 1) message("Couldn't load the file " + fn, "Error")
+			    else message("找不到文件" + fn, "错误")
+			    return 0
+			}
+			sound_buffer = global.__temp_audio_buffer__
+		}
 	//} else {
 	//	ret = audio_create_stream(fn)
 	//	if (ret < 0) {
