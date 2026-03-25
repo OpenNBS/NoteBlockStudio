@@ -146,7 +146,7 @@ function open_song_nbs(fn, sounds_path = "", safeopen, replace) {
 		newsong.song_backupname = filename_name(fn)
 	    newsong.changed = 0
 	    blocks_set_instruments()
-	    return 0
+	    return newsong
 	}
 	// a = buffer_read_short()
 	// Layer names
@@ -180,7 +180,7 @@ function open_song_nbs(fn, sounds_path = "", safeopen, replace) {
 	    newsong.filename = fn
 	    newsong.changed = 0
 	    blocks_set_instruments()
-	    return 0
+	    return newsong
 	}
 	
 	// Custom instruments
