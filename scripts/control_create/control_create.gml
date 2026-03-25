@@ -3,6 +3,9 @@ function control_create() {
 
 	globalvar buffer, window_width, window_height, window_background;
 	var a, b, c, w, h, str, str2;
+	
+	// Reset working directory when double click files
+	if (os_type = os_windows) DirectorySetCurrentWorking(working_directory)
 
 	// Initialize logging
 	log_init()
