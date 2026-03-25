@@ -428,6 +428,8 @@ function control_create() {
 	sound_stopper_set_start = -1
 	sound_stopper_set_until = -1
 
+	selection_alpha = 0.8
+
 	// Layers
 	show_layers = 1
 	realvolume = 1

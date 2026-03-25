@@ -34,6 +34,7 @@ function save_settings() {
 	ini_write_real_clean("preferences", "show_numbers",       show_numbers)
 	ini_write_real_clean("preferences", "show_octaves",       show_octaves)
 	ini_write_real_clean("preferences", "show_incompatible",  show_incompatible)
+	ini_write_real_clean("preferences", "selection_alpha",    selection_alpha)
 	ini_write_real_clean("preferences", "use_fading",         fade)
 	ini_write_real_clean("preferences", "show_layers",        show_layers)
 	ini_write_real_clean("preferences", "show_piano",         show_piano)

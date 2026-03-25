@@ -54,13 +54,13 @@ function selection_draw(argument0, argument1, argument2, argument3) {
 	            sb = b - songs[song].selection_y
 	            if (sb >= songs[song].selection_colfirst[sa] && sb <= songs[song].selection_collast[sa]) {
 	                if (songs[song].selection_exists[sa, sb]) {
-	                    salpha = 0.8
+	                    salpha = selection_alpha
 	                    if (window < 1) {
 	                        if (select = 2) {
-	                            if (is_inside(a, b, select_pressa, select_pressb, selbx, selby)) salpha = 0.5
+	                            if (is_inside(a, b, select_pressa, select_pressb, selbx, selby)) salpha = 0.5 * 0.625
 	                        } else if (select = 0 && !cursmarker && playing = 0) {
 	                            if (mouse_rectangle(xs + (a - songs[song].starta) * 32, ys + (b - songs[song].startb) * 32, 32, 32)) {
-	                                salpha = 0.7
+	                                salpha = selection_alpha * (0.8 * (selection_alpha > 0.4) - 0.08 * (selection_alpha > 0.4))
 	                                curs = cr_size_all
 	                                if (mouse_check_button_pressed(mb_left)) {
 	                                    window = w_dragselection
@@ -72,7 +72,7 @@ function selection_draw(argument0, argument1, argument2, argument3) {
 	                            }
 	                        }
 	                    } else if (window = w_dragselection) {
-	                        if (select_pressa = sa && select_pressb = sb) salpha = 0.7
+	                        salpha = selection_alpha * (0.8 * (selection_alpha > 0.4) - 0.08 * (selection_alpha > 0.4))
 	                    }
 	//                    salpha += 0.1 * (1 - (min(1000, current_time - selection_played[sa, sb]) / 1000))
 	                    draw_block(xs + (a - songs[song].starta) * 32, ys + (b - songs[song].startb) * 32, songs[song].selection_ins[sa, sb], songs[song].selection_key[sa, sb], songs[song].selection_pan[sa, sb], songs[song].selection_vel[sa, sb], songs[song].selection_pit[sa, sb], 1, salpha)
