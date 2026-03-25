@@ -21,7 +21,7 @@ function log_init() {
 	log("YYC", code_is_compiled())
 	log("working_directory", current_directory)
 	log("file_directory", file_directory)
-	log("OS", test(false, "Mac", "Windows"))
+	log("OS", get_os_type_string())
 	log("os_version", os_version)
 	log("os_is_network_connected", os_is_network_connected())
 	log("os_get_language", os_get_language())
