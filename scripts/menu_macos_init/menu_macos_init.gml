@@ -54,6 +54,8 @@ function menu_macos_init(){
 				                            inactive(current_song.totalblocks = 0) + get_hotkey_menubar("select_all") + "$Select all|"+
 				                            inactive(current_song.selected = 0) + "Deselect all|"+
 				                            inactive(current_song.selected = 0 && current_song.totalblocks = 0) + get_hotkey_menubar("invert_selection") + "$Invert selection|-|"+
+											inactive(current_song.selection_l < 2) + "Flip selection horizontally|"+
+											inactive(current_song.selection_h < 2) + "Flip selection vertically|-|"+
 				                            inactive(current_song.instrument.num_blocks = 0) + "Select all " + clean(current_song.instrument.name) + "|"+
 				                            inactive(current_song.instrument.num_blocks = current_song.totalblocks) + "Select all but " + clean(current_song.instrument.name) + "|-|"+
 				                            inactive(current_song.selected = 0) + get_hotkey_menubar("action_1") + "$" + get_mode_actions(1) + "|"+
