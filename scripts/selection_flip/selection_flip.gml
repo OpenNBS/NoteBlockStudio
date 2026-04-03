@@ -9,10 +9,10 @@ function selection_flip(flipVertically){
 
 	str = current_song.selection_code;
 
-	var target_height = current_song.selection_h;
+	// expand all the column properites before flipping
 	for (var i = 0; i < current_song.selection_l; i++) {
 				
-		for (var j = current_song.selection_colfirst[i]; j < target_height; j++) {
+		for (var j = current_song.selection_colfirst[i]; j < current_song.selection_h; j++) {
 			if (j < 0 || current_song.selection_exists[i, j]) continue;
 					
 			current_song.selection_colfirst[i] = -1
@@ -23,15 +23,13 @@ function selection_flip(flipVertically){
 			current_song.selection_vel[i, j] = 0
 			current_song.selection_pan[i, j] = 0
 			current_song.selection_pit[i, j] = 0
-			current_song.selection_played[i, j] = 0
 		}
 	}
 	
 	
 	
+	if (flipVertically)
 	// vertical flip
-	if (flipVertically) {
-	
 	for (column = 0; column < current_song.selection_l; column++) {
 	    for (row = 0; row < current_song.selection_h / 2; row++) {
 			var target_row = current_song.selection_h - row - 1;
@@ -62,8 +60,8 @@ function selection_flip(flipVertically){
 			current_song.selection_exists[column, target_row] = old_exists;
 	    }
 	}
-	}
-	else {
+	else
+	// horizontal flip
 	for (column = 0; column < current_song.selection_l / 2; column++) {
 	    for (row = 0; row < current_song.selection_h; row++) {
 			var target_column =  current_song.selection_l - column - 1;
@@ -94,8 +92,8 @@ function selection_flip(flipVertically){
 			current_song.selection_exists[target_column, row] = old_exists;
 	    }
 	}
-	}
-	
+
+	// find the fist row number in the columns
 	for (var i = 0; i < current_song.selection_l; i++) {
 		for (var j = 0; j < current_song.selection_h; j++) {
 			if (current_song.selection_exists[i,j]) {
@@ -104,7 +102,8 @@ function selection_flip(flipVertically){
 			}
 		}
 	}
-	
+
+	// find the last row number in the columns
 	for (var i = current_song.selection_l; i >= 0; i--) {
 		for (var j = current_song.selection_h; j >= 0; j--) {
 			if (current_song.selection_exists[i,j]) {
