@@ -160,6 +160,8 @@ function menu_macos_init(){
 				                            inactive(current_song.totalblocks = 0) + get_hotkey_menubar("select_all") + "$全选|"+
 				                            inactive(current_song.selected = 0) + "全不选|"+
 				                            inactive(current_song.selected = 0 && current_song.totalblocks = 0) + get_hotkey_menubar("invert_selection") + "$选择反转|-|"+
+											inactive(current_song.selection_l < 2) + "Flip selection horizontally (TRANSLATION_NEEDED)|"+
+											inactive(current_song.selection_h < 2) + "Flip selection vertically (TRANSLATION_NEEDED)|-|"+
 				                            inactive(current_song.instrument.num_blocks = 0) + "选择所有 " + clean(current_song.instrument.name) + "|"+
 				                            inactive(current_song.instrument.num_blocks = current_song.totalblocks) + "选择所有除了 " + clean(current_song.instrument.name) + "|-|"+
 				                            inactive(current_song.selected = 0) + get_hotkey_menubar("action_1") + "$" + get_mode_actions(1) + "|"+

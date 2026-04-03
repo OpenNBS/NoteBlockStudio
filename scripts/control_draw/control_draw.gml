@@ -571,6 +571,8 @@ function control_draw() {
 	                                      inactive(current_song.totalblocks = 0) + get_hotkey("select_all") + "$全选|"+
 	                                      inactive(current_song.selected = 0) + "全不选|"+
 	                                      inactive(current_song.selected = 0 && current_song.totalblocks = 0) + get_hotkey("invert_selection") + "$选择反转|-|"+
+										  inactive(current_song.selection_l < 2) + "Flip selection horizontally (TRANSLATION_NEEDED)|"+
+										  inactive(current_song.selection_h < 2) + "Flip selection vertically (TRANSLATION_NEEDED)|-|"+
 	                                      inactive(current_song.totalblocks = 0 || selbx >= current_song.enda) + "选择右侧所有 ->|"+
 	                                      inactive(current_song.totalblocks = 0 || selbx <= 0) + "选择左侧所有 <-|-|"+
 	                                      inactive(current_song.instrument.num_blocks = 0) + "选择所有 " + clean(current_song.instrument.name) + "|"+
@@ -1853,6 +1855,8 @@ function control_draw() {
 			                              inactive(current_song.totalblocks = 0) + get_hotkey("select_all") + "$全选|"+
 			                              inactive(current_song.selected = 0) + "全不选|"+
 			                              inactive(current_song.selected = 0 && current_song.totalblocks = 0) + get_hotkey("invert_selection") + "$选择反转|-|"+
+										  inactive(current_song.selection_l < 2) + "Flip selection horizontally (TRANSLATION_NEEDED)|"+
+										  inactive(current_song.selection_h < 2) + "Flip selection vertically (TRANSLATION_NEEDED)|-|"+
 			                              inactive(current_song.instrument.num_blocks = 0) + "选择所有 " + clean(current_song.instrument.name) + "|"+
 			                              inactive(current_song.instrument.num_blocks = current_song.totalblocks) + "选择所有除了 " + clean(current_song.instrument.name) + "|-|"+
 			                                inactive(current_song.selected = 0) + get_hotkey("action_1") + "$" + get_mode_actions(1) + "|"+
