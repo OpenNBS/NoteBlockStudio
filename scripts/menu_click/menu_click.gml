@@ -68,11 +68,11 @@ function menu_click(argument0) {
 	        break
 	    }
 	    case "edit": {
-			if ((editmode = m_key) && (sel >= 15)) {
+			if ((editmode = m_key) && (sel >= 17)) {
 				sel += 2
 			}
 			var insoffset = ds_list_size(songs[song].instrument_list) + insmenu - 1
-			var ins = sel - 18
+			var ins = sel - 20
 			ins -= floor(ins / 26) // subtract the "More..." entries to get the instrument number
 	        if (sel = 0) action_undo()
 	        if (sel = 1) action_redo()
@@ -98,44 +98,46 @@ function menu_click(argument0) {
 	        if (sel = 6) select_all(-1, 0)
 	        if (sel = 7) selection_place(0)
 	        if (sel = 8) selection_invert()
-	        if (sel = 9) select_all(songs[song].instrument, 0)
-	        if (sel = 10) select_all(songs[song].instrument, 1)
-	        if (sel = 11) mode_action(1)
-	        if (sel = 12) mode_action(2)
-	        if (sel = 13) mode_action(3)
-	        if (sel = 14) mode_action(4)
-	        if (sel = 15 && editmode != m_key) mode_action(5)
-	        if (sel = 16 && editmode != m_key) mode_action(6)
-	        if (sel > 17 && sel < 18 + insoffset) selection_changeins(songs[song].instrument_list[| ins])
-	        if (sel = 18 + insoffset) selection_expand()
-	        if (sel = 19 + insoffset) selection_compress()
-	        if (sel = 21 + insoffset) window = w_tremolo
-	        if (sel = 22 + insoffset) window = w_stereo
-			if (sel = 23 + insoffset) window = w_arpeggio
-	        if (sel = 24 + insoffset) window = w_portamento
-	        if (sel = 25 + insoffset) macro_vibrato()
-			if (sel = 26 + insoffset) window = w_stagger
-	        if (sel = 27 + insoffset) macro_chorus()
-	        if (sel = 28 + insoffset) macro_velocitylfo()
-	        if (sel = 29 + insoffset) macro_fadein()
-	        if (sel = 30 + insoffset) macro_fadeout()
-	        if (sel = 31 + insoffset) macro_replacekey()
-	        if (sel = 32 + insoffset) window = w_setvelocity
-	        if (sel = 33 + insoffset) window = w_setpanning
-	        if (sel = 34 + insoffset) window = w_setpitch
-	        if (sel = 35 + insoffset) macro_reset()
-	        if (sel = 36 + insoffset) {
+			if (sel = 9) selection_flip(0)
+			if (sel = 10) selection_flip(1)
+	        if (sel = 11) select_all(songs[song].instrument, 0)
+	        if (sel = 12) select_all(songs[song].instrument, 1)
+	        if (sel = 13) mode_action(1)
+	        if (sel = 14) mode_action(2)
+	        if (sel = 15) mode_action(3)
+	        if (sel = 16) mode_action(4)
+	        if (sel = 17 && editmode != m_key) mode_action(5)
+	        if (sel = 18 && editmode != m_key) mode_action(6)
+	        if (sel > 19 && sel < 20 + insoffset) selection_changeins(songs[song].instrument_list[| ins])
+	        if (sel = 20 + insoffset) selection_expand()
+	        if (sel = 21 + insoffset) selection_compress()
+	        if (sel = 23 + insoffset) window = w_tremolo
+	        if (sel = 24 + insoffset) window = w_stereo
+			if (sel = 25 + insoffset) window = w_arpeggio
+	        if (sel = 26 + insoffset) window = w_portamento
+	        if (sel = 27 + insoffset) macro_vibrato()
+			if (sel = 28 + insoffset) window = w_stagger
+	        if (sel = 29 + insoffset) macro_chorus()
+	        if (sel = 30 + insoffset) macro_velocitylfo()
+	        if (sel = 31 + insoffset) macro_fadein()
+	        if (sel = 32 + insoffset) macro_fadeout()
+	        if (sel = 33 + insoffset) macro_replacekey()
+	        if (sel = 34 + insoffset) window = w_setvelocity
+	        if (sel = 35 + insoffset) window = w_setpanning
+	        if (sel = 36 + insoffset) window = w_setpitch
+	        if (sel = 37 + insoffset) macro_reset()
+	        if (sel = 38 + insoffset) {
 	            if (language != 1) {if (question("Transpose selected notes so that they fall within Minecraft's 2 octaves?", "Transpose notes")) selection_transpose()}
 	            else {if (question("转换音符使其在 Minecraft 的 2 八度以内吗？", "转换音符")) selection_transpose()}
 	        }
 	        break
 	    }
 	    case "editext": {
-			if ((editmode = m_key) && (sel >= 15)) {
+			if ((editmode = m_key) && (sel >= 17)) {
 				sel += 2
 			}
 			var insoffset = ds_list_size(songs[song].instrument_list) + insmenu - 1
-			var ins = sel - 18
+			var ins = sel - 20
 			ins -= floor((ins) / 26) // subtract the "More..." entries to get the instrument number
 	        if (sel = 0) action_copy()
 	        if (sel = 1) action_cut()
@@ -152,33 +154,35 @@ function menu_click(argument0) {
 	            selection_place(0)
 	            selection_add(0, 0, obj_menu.menuc, songs[song].endb, 0, 0)
 	        }
-	        if (sel = 9) select_all(songs[song].instrument, 0)
-	        if (sel = 10) select_all(songs[song].instrument, 1)
-	        if (sel = 11) mode_action(1)
-	        if (sel = 12) mode_action(2)
-	        if (sel = 13) mode_action(3)
-	        if (sel = 14) mode_action(4)
-	        if (sel = 15 && editmode != m_key) mode_action(5)
-	        if (sel = 16 && editmode != m_key) mode_action(6)
-	        if (sel > 17 && sel < 18 + insoffset) selection_changeins(songs[song].instrument_list[| ins])
-	        if (sel = 18 + insoffset) selection_expand()
-	        if (sel = 19 + insoffset) selection_compress()
-	        if (sel = 21 + insoffset) window = w_tremolo
-	        if (sel = 22 + insoffset) window = w_stereo
-			if (sel = 23 + insoffset) window = w_arpeggio
-	        if (sel = 24 + insoffset) window = w_portamento
-	        if (sel = 25 + insoffset) macro_vibrato()
-			if (sel = 26 + insoffset) window = w_stagger
-	        if (sel = 27 + insoffset) macro_chorus()
-	        if (sel = 28 + insoffset) macro_velocitylfo()
-	        if (sel = 29 + insoffset) macro_fadein()
-	        if (sel = 30 + insoffset) macro_fadeout()
-	        if (sel = 31 + insoffset) macro_replacekey()
-	        if (sel = 32 + insoffset) window = w_setvelocity
-	        if (sel = 33 + insoffset) window = w_setpanning
-	        if (sel = 34 + insoffset) window = w_setpitch
-	        if (sel = 35 + insoffset) macro_reset()
-	        if (sel = 36 + insoffset) {
+			if (sel = 9) selection_flip(0)
+			if (sel = 10) selection_flip(1)
+	        if (sel = 11) select_all(songs[song].instrument, 0)
+	        if (sel = 12) select_all(songs[song].instrument, 1)
+	        if (sel = 13) mode_action(1)
+	        if (sel = 14) mode_action(2)
+	        if (sel = 15) mode_action(3)
+	        if (sel = 16) mode_action(4)
+	        if (sel = 17 && editmode != m_key) mode_action(5)
+	        if (sel = 18 && editmode != m_key) mode_action(6)
+	        if (sel > 19 && sel < 20 + insoffset) selection_changeins(songs[song].instrument_list[| ins])
+	        if (sel = 20 + insoffset) selection_expand()
+	        if (sel = 21 + insoffset) selection_compress()
+	        if (sel = 23 + insoffset) window = w_tremolo
+	        if (sel = 24 + insoffset) window = w_stereo
+			if (sel = 25 + insoffset) window = w_arpeggio
+	        if (sel = 26 + insoffset) window = w_portamento
+	        if (sel = 27 + insoffset) macro_vibrato()
+			if (sel = 28 + insoffset) window = w_stagger
+	        if (sel = 29 + insoffset) macro_chorus()
+	        if (sel = 30 + insoffset) macro_velocitylfo()
+	        if (sel = 31 + insoffset) macro_fadein()
+	        if (sel = 32 + insoffset) macro_fadeout()
+	        if (sel = 33 + insoffset) macro_replacekey()
+	        if (sel = 34 + insoffset) window = w_setvelocity
+	        if (sel = 35 + insoffset) window = w_setpanning
+	        if (sel = 36 + insoffset) window = w_setpitch
+	        if (sel = 37 + insoffset) macro_reset()
+	        if (sel = 38 + insoffset) {
 	            if (language != 1) {if (question("Transpose selected notes so that they fall within Minecraft's 2 octaves?", "Transpose notes")) selection_transpose()}
 	            else {if (question("转换音符使其在 Minecraft 的 2 八度以内吗？", "转换音符")) selection_transpose()}
 	        }
