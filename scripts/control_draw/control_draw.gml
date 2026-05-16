@@ -642,12 +642,6 @@ function control_draw() {
 					set_msg(condstr(language = 1, "窗口缩放", "Window scale") + " => " + string(window_scale * 100) + "%")
 				}
 				
-				// ASK FOR CHANGES BEFORE FLIGHT!
-				if (keyboard_check_pressed(ord("J")))
-					selection_flip(true)
-				if (keyboard_check_pressed(ord("H")))
-					selection_flip(false)
-				
 	            if ((os_type != os_macosx && keyboard_check_pressed(187)) || (os_type = os_macosx && keyboard_check_pressed(24)) || (mouse_wheel_up_dynamic())) {
 					if (window_scale >= 0.5 && window_scale < 0.67) {window_scale = 0.67}
 					else if (window_scale < 0.75) {window_scale = 0.75}
