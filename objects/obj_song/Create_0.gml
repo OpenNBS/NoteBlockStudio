@@ -8,6 +8,7 @@ timesignature = 4
 song_backupid = string(floor(random(800000)))
 song_backupname = "Unsaved song " + string(song_backupid) + ".nbs"
 song_download_display_name = ""
+save_version = nbs_version
 
 reference_audio_buffer = -1
 

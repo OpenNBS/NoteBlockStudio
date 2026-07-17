@@ -638,9 +638,6 @@ function control_create() {
 	setpan = 0
 	setpit = 0
 
-	// Saving
-	save_version = nbs_version
-
 	// Settings
 	if (!check_args("--prefreset")) load_settings()
 	var vers_tmp = vers
