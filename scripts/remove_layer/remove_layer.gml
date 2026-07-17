@@ -35,7 +35,8 @@ function remove_layer(argument0, argument1) {
 	selection_delete(true)
 
 	// Remove properties
-	text_str[num + 100] = ""
+	text_str[num + 400] = ""
+	text_exists[num + 400] = 0
 	songs[song].layername[num] = ""
 	songs[song].layerlock[num] = 0
 	songs[song].layervol[num] = 100
