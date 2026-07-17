@@ -626,6 +626,7 @@
     {"id":{"name":"nbt_tag_byte_array","path":"scripts/nbt_tag_byte_array/nbt_tag_byte_array.yy",},"order":8,},
     {"id":{"name":"nbt_tag_list","path":"scripts/nbt_tag_list/nbt_tag_list.yy",},"order":9,},
     {"id":{"name":"libxprocess","path":"extensions/libxprocess/libxprocess.yy",},"order":6,},
+    {"id":{"name":"windows_update_launcher","path":"extensions/windows_update_launcher/windows_update_launcher.yy",},"order":12,},
     {"id":{"name":"spr_mp3_exp_f","path":"sprites/spr_mp3_exp_f/spr_mp3_exp_f.yy",},"order":33,},
     {"id":{"name":"nbt_tag_string","path":"scripts/nbt_tag_string/nbt_tag_string.yy",},"order":10,},
     {"id":{"name":"spr_stereo_f_hires","path":"sprites/spr_stereo_f_hires/spr_stereo_f_hires.yy",},"order":49,},
