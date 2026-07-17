@@ -6,6 +6,7 @@ function instrument_free() {
 	buffer_delete(sound_buffer)
 
 	loaded = false
+	sound_duration = 0
 
 
 

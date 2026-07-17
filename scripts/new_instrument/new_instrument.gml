@@ -28,6 +28,7 @@ function new_instrument() {
 	ins.num_blocks = 0
 	ins.sound_buffer = -1
 	ins.sound = -1
+	ins.sound_duration = 0
 
 	return ins
 

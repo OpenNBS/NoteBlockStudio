@@ -79,6 +79,7 @@ function swap_instrument(index, ins_name, sound_name, vanilla_name, dir_no_path,
 				sound_buffer = buffer_create(buffer_get_size(sound_buffer_temp), buffer_fixed, 2)
 				buffer_copy(sound_buffer_temp, 0, buffer_get_size(sound_buffer_temp), sound_buffer, 0)
 				sound = audio_create_buffer_sound(sound_buffer, buffer_s16, 44100, 0, buffer_get_size(sound_buffer), audio_stereo)
+				sound_duration = real(buffer_get_size(sound_buffer)) / (44100 * 4)
 				buffer_delete(sound_buffer_temp)
 			//} else {
 			//	ret = audio_create_stream(bundled_sounds_directory + dir_no_path + "assets/minecraft/sounds/note/" + sound_name + ".ogg")
@@ -108,6 +109,7 @@ function swap_instrument(index, ins_name, sound_name, vanilla_name, dir_no_path,
 				sound_buffer = buffer_create(buffer_get_size(sound_buffer_temp), buffer_fixed, 2)
 				buffer_copy(sound_buffer_temp, 0, buffer_get_size(sound_buffer_temp), sound_buffer, 0)
 				sound = audio_create_buffer_sound(sound_buffer, buffer_s16, 44100, 0, buffer_get_size(sound_buffer), audio_stereo)
+				sound_duration = real(buffer_get_size(sound_buffer)) / (44100 * 4)
 				buffer_delete(sound_buffer_temp)
 			//} else {
 			//	ret = audio_create_stream(bundled_sounds_directory + vanilla_name + ".ogg")
