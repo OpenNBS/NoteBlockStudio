@@ -325,7 +325,7 @@ function control_create() {
 	insmenu = 0
 	emitters_to_remove = ds_list_create()
 	
-	if (!file_exists(sounds_directory + "trumpet.ogg")) copy_bundled_files()
+	if (!file_exists(sounds_directory + "trumpet.ogg")) copy_bundled_files(true, false, false)
 	
 	// Initialize instruments
 	str = ""
