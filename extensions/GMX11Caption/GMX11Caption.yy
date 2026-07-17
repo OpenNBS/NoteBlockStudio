@@ -10,7 +10,7 @@
   "packageId": "",
   "productId": "",
   "author": "",
-  "date": "2026-01-19T20:38:34.341659-06:00",
+  "date": "2026-01-20T10:38:34.341659+08:00",
   "license": "",
   "description": "",
   "helpfile": "",
@@ -26,6 +26,13 @@
             1,
           ],"documentation":"",},
       ],"constants":[],"ProxyFiles":[],"copyToTargets":128,"usesRunnerInterface":false,"order":[],},
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"libgmx11windowstate.so","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"gmx11_unmaximize","externalName":"gmx11_unmaximize","kind":1,"help":"gmx11_unmaximize(window_handle())","hidden":false,"returnType":2,"argCount":0,"args":[
+            1,
+          ],"documentation":"",},
+      ],"constants":[],"ProxyFiles":[],"copyToTargets":128,"usesRunnerInterface":false,"order":[],},
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"gmx11windowstate.c","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"usesRunnerInterface":false,"order":[],},
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"gmx11windowstate.sh","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"usesRunnerInterface":false,"order":[],},
   ],
   "HTML5CodeInjection": "",
   "classname": "",
