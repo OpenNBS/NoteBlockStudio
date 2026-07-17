@@ -45,6 +45,7 @@ function save_settings() {
 	ini_write_real_clean("preferences", "show_notechart",     show_notechart)
 	ini_write_real_clean("preferences", "show_outofrange",    show_outofrange)
 	ini_write_real_clean("preferences", "mousewheel",         mousewheel)
+	ini_write_real_clean("preferences", "mousewheel_scroll_speed", mousewheel_scroll_speed)
 	ini_write_real_clean("preferences", "change_pitch",       changepitch)
 	ini_write_real_clean("preferences", "layerhov_vppreview", layerhov_vppreview)
 	ini_write_real_clean("preferences", "select_lastpressed", select_lastpressed)

@@ -492,7 +492,7 @@ function draw_window_preferences() {
 	} else if (selected_tab = 2) {
 		if (language != 1) {
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 196, "Note blocks")
+	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 208, "Note blocks")
 		if (theme = 3) draw_theme_font(font_main)
 	    if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 90, use_colors, "Use colored note blocks", "If the instruments should be identified with\ndifferent colors.")) use_colors=!use_colors
 	    if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 110, use_icons, "Show instrument icons", "If the instruments should be identified with\ntheir respective icons.")) use_icons=!use_icons
@@ -527,7 +527,7 @@ function draw_window_preferences() {
 	    popup_set_window(x1 + 70, y1 + 328 + (theme = 3) * 22, 150, 21, "The amount of keys to show. A high number may\nslow down the program on old computers.")
 		} else {
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 196, "音符盒")
+	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 208, "音符盒")
 		if (theme = 3) draw_theme_font(font_main)
 	    if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 90, use_colors, "彩色音符盒", "用音符盒颜色区分音色。")) use_colors=!use_colors
 	    if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 110, use_icons, "显示音色图标", "用音色图标区分音色。")) use_icons=!use_icons
@@ -564,38 +564,50 @@ function draw_window_preferences() {
 	} else if (selected_tab = 3) {
 		if (language != 1) {
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 120, "Mouse wheel")
+	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 140, "Mouse wheel")
 		if (theme = 3) draw_theme_font(font_main)
 	    if (draw_radiobox(x1 + 40, y1 + 90 + (theme = 3) * 22, mousewheel = 0, "Use mouse wheel to scroll through the song", "Use the mouse wheel to scroll through\nthe song horizontally or vertically.")) mousewheel = 0
 	    if (draw_radiobox(x1 + 40, y1 + 110 + (theme = 3) * 22, mousewheel = 1, "Use mouse wheel to change instrument", "Use the mouse wheel to toggle between\nthe available instruments.")) mousewheel = 1
 	    if (draw_radiobox(x1 + 40, y1 + 130 + (theme = 3) * 22, mousewheel = 2, "Use mouse wheel to change key", "Use the mouse wheel to toggle\nbetween the keys on the piano.")) mousewheel = 2
-	    if (draw_checkbox(x1 + 40, y1 + 158 + (theme = 3) * 22, changepitch, "Change note properties when scrolling over notes", "Whether scrolling when hovering over a note should change its key,\nvelocity, panning or pitch, according to the currently selected edit mode.")) changepitch=!changepitch
-		if (draw_checkbox(x1 + 40, y1 + 178 + (theme = 3) * 22, layerhov_vppreview , "Apply hovered layer's volume and panning to note preview sounds", "Whether the preview sound's volume and panning should be\nrelative to the layer the mouse is hovering over.")) layerhov_vppreview =!layerhov_vppreview 
+		if (mousewheel != 0) draw_set_color(c_gray)
+		draw_text_dynamic(x1 + 70, y1 + 150 + (theme = 3) * 22, "Scroll speed:")
+		if (mousewheel = 0) mousewheel_scroll_speed = median(1, draw_dragvalue(22, x1 + 150, y1 + 150 + (theme = 3) * 22, mousewheel_scroll_speed, 1), 10)
+		else draw_text_dynamic(x1 + 150, y1 + 150 + (theme = 3) * 22, mousewheel_scroll_speed)
+		draw_theme_color()
+		popup_set_window(x1 + 70, y1 + 150 + (theme = 3) * 22, 180, 16, "The number of ticks or layers scrolled with each mouse wheel step.\nThis setting does not affect macOS trackpads.")
+	    if (draw_checkbox(x1 + 40, y1 + 178 + (theme = 3) * 22, changepitch, "Change note properties when scrolling over notes", "Whether scrolling when hovering over a note should change its key,\nvelocity, panning or pitch, according to the currently selected edit mode.")) changepitch=!changepitch
+		if (draw_checkbox(x1 + 40, y1 + 198 + (theme = 3) * 22, layerhov_vppreview , "Apply hovered layer's volume and panning to note preview sounds", "Whether the preview sound's volume and panning should be\nrelative to the layer the mouse is hovering over.")) layerhov_vppreview =!layerhov_vppreview
 		//draw_text_dynamic(x1 + 40, y1 + 178, "Tip: Hold Shift while scrolling over a note to change a whole octave,\nor fine-tune its velocity, panning or pitch.")
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 220 + (theme = 3) * 22, 456, 105, "Piano")
+	    draw_areaheader(x1 + 22, y1 + 240 + (theme = 3) * 22, 456, 105, "Piano")
 		if (theme = 3) draw_theme_font(font_main)
-	    if (draw_checkbox(x1 + 40, y1 + 236 + (theme = 3) * 22, select_lastpressed, "Set selected key to pressed one", "If the selected key should be set\nto the one pressed using the keyboard.")) select_lastpressed=!select_lastpressed
-	    draw_text_dynamic(x1 + 40, y1 + 270 + (theme = 3) * 22, "Right-click on keys to change their shortcuts.")
-	    if (draw_button2(x1 + 40, y1 + 290 + (theme = 3) * 22, 160, "Reset key shortcuts")) {
+	    if (draw_checkbox(x1 + 40, y1 + 256 + (theme = 3) * 22, select_lastpressed, "Set selected key to pressed one", "If the selected key should be set\nto the one pressed using the keyboard.")) select_lastpressed=!select_lastpressed
+	    draw_text_dynamic(x1 + 40, y1 + 290 + (theme = 3) * 22, "Right-click on keys to change their shortcuts.")
+	    if (draw_button2(x1 + 40, y1 + 310 + (theme = 3) * 22, 160, "Reset key shortcuts")) {
 	        if (question("Are you sure?", "Confirm")) init_keys()
 	    }
 		} else {
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 120, "鼠标滚轮")
+	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 140, "鼠标滚轮")
 		if (theme = 3) draw_theme_font(font_main)
 	    if (draw_radiobox(x1 + 40, y1 + 90 + (theme = 3) * 22, mousewheel = 0, "使用鼠标滚轮移动位置", "使用鼠标滚轮横向或竖向移动编辑区域位置。")) mousewheel = 0
 	    if (draw_radiobox(x1 + 40, y1 + 110 + (theme = 3) * 22, mousewheel = 1, "使用鼠标滚轮改变音色", "使用鼠标滚轮切换可用音色。")) mousewheel = 1
 	    if (draw_radiobox(x1 + 40, y1 + 130 + (theme = 3) * 22, mousewheel = 2, "使用鼠标滚轮改变音调", "使用鼠标滚轮改变目前使用的音调。")) mousewheel = 2
-	    if (draw_checkbox(x1 + 40, y1 + 158 + (theme = 3) * 22, changepitch, "当在音符上使用鼠标滚轮改变音符属性", "在音符上使用鼠标滚轮时是否根据目前模式改变其音调、音量、声道或音高。")) changepitch=!changepitch
-		if (draw_checkbox(x1 + 40, y1 + 178 + (theme = 3) * 22, layerhov_vppreview , "将悬停层的音量和声道调整应用于音符预览声音", "预览声音的音量和声道是否应与鼠标悬停的层相关。")) layerhov_vppreview =!layerhov_vppreview 
+		if (mousewheel != 0) draw_set_color(c_gray)
+		draw_text_dynamic(x1 + 70, y1 + 150 + (theme = 3) * 22, "滚动速度：")
+		if (mousewheel = 0) mousewheel_scroll_speed = median(1, draw_dragvalue(22, x1 + 150, y1 + 150 + (theme = 3) * 22, mousewheel_scroll_speed, 1), 10)
+		else draw_text_dynamic(x1 + 150, y1 + 150 + (theme = 3) * 22, mousewheel_scroll_speed)
+		draw_theme_color()
+		popup_set_window(x1 + 70, y1 + 150 + (theme = 3) * 22, 180, 16, "每滚动一次鼠标滚轮所移动的刻或层数。\n此设置不影响 macOS 触控板。")
+	    if (draw_checkbox(x1 + 40, y1 + 178 + (theme = 3) * 22, changepitch, "当在音符上使用鼠标滚轮改变音符属性", "在音符上使用鼠标滚轮时是否根据目前模式改变其音调、音量、声道或音高。")) changepitch=!changepitch
+		if (draw_checkbox(x1 + 40, y1 + 198 + (theme = 3) * 22, layerhov_vppreview , "将悬停层的音量和声道调整应用于音符预览声音", "预览声音的音量和声道是否应与鼠标悬停的层相关。")) layerhov_vppreview =!layerhov_vppreview
 		//draw_text_dynamic(x1 + 40, y1 + 178, "Tip: Hold Shift while scrolling over a note to change a whole octave,\nor fine-tune its velocity, panning or pitch.")
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 220 + (theme = 3) * 22, 456, 105, "琴键")
+	    draw_areaheader(x1 + 22, y1 + 240 + (theme = 3) * 22, 456, 105, "琴键")
 		if (theme = 3) draw_theme_font(font_main)
-	    if (draw_checkbox(x1 + 40, y1 + 236 + (theme = 3) * 22, select_lastpressed, "选择按下的键", "是否选择按下的键所对应的音。")) select_lastpressed=!select_lastpressed
-	    draw_text_dynamic(x1 + 40, y1 + 270 + (theme = 3) * 22, "对琴键右键可更改键位。")
-	    if (draw_button2(x1 + 40, y1 + 290 + (theme = 3) * 22, 160, "重置键位")) {
+	    if (draw_checkbox(x1 + 40, y1 + 256 + (theme = 3) * 22, select_lastpressed, "选择按下的键", "是否选择按下的键所对应的音。")) select_lastpressed=!select_lastpressed
+	    draw_text_dynamic(x1 + 40, y1 + 290 + (theme = 3) * 22, "对琴键右键可更改键位。")
+	    if (draw_button2(x1 + 40, y1 + 310 + (theme = 3) * 22, 160, "重置键位")) {
 	        if (question("你确定吗？", "确认")) init_keys()
 	    }
 		}

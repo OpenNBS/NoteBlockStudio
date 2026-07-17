@@ -1285,8 +1285,8 @@ function control_draw() {
 	}
 	// Scrollbars
 	if (!fullscreen) {
-		current_song.starta = draw_scrollbar(scrollbarh, x1, y1 + (totalrows + (current_song.reference_audio >= 0)) * 32 + 34, 32, totalcols - 1, current_song.enda + totalcols - 1, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0)
-		current_song.startb = draw_scrollbar(scrollbarv, x1 + totalcols * 32 + 2, y1 + 34, 32, totalrows - 1 + (current_song.reference_audio >= 0), current_song.endb + totalrows - 1, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0)
+		current_song.starta = draw_scrollbar(scrollbarh, x1, y1 + (totalrows + (current_song.reference_audio >= 0)) * 32 + 34, 32, totalcols - 1, current_song.enda + totalcols - 1, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0, mousewheel_scroll_speed)
+		current_song.startb = draw_scrollbar(scrollbarv, x1 + totalcols * 32 + 2, y1 + 34, 32, totalrows - 1 + (current_song.reference_audio >= 0), current_song.endb + totalrows - 1, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0, mousewheel_scroll_speed)
 	} else {
 		// horizontal rise animation
 		if (mouse_rectangle(0, rh - 25, rw, rh)) {
@@ -1300,8 +1300,8 @@ function control_draw() {
 		} else if (sb_drag = -1) {
 			if (sbv_anim > 0) sbv_anim -= (2 * 30 / room_speed) * (1 / currspeed)
 		}
-		current_song.starta = draw_scrollbar(scrollbarh, 0, rh - sbh_anim, 32, ((rw - 16) / 32) - 1, current_song.enda + totalcols - 2, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0)
-		current_song.startb = draw_scrollbar(scrollbarv, rw - sbv_anim, rhval, 32, ((rh - rhval - 16) / 32) - 1, current_song.endb + totalrows - 2, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0)
+		current_song.starta = draw_scrollbar(scrollbarh, 0, rh - sbh_anim, 32, ((rw - 16) / 32) - 1, current_song.enda + totalcols - 2, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0, mousewheel_scroll_speed)
+		current_song.startb = draw_scrollbar(scrollbarv, rw - sbv_anim, rhval, 32, ((rh - rhval - 16) / 32) - 1, current_song.endb + totalrows - 2, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0, mousewheel_scroll_speed)
 		// the fifth parameters are totalrows & totalcols before rounding: ((rh - rhval) / 32), ((rw - 8) / 32)
 		// this is so it stretches to fill the whole width/height of the screen instead of clipping to the note block area size
 	}

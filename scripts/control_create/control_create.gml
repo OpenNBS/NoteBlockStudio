@@ -400,6 +400,7 @@ function control_create() {
 	show_incompatible = 1
 
 	mousewheel = 0
+	mousewheel_scroll_speed = 1
 	changepitch = 1
 	layerhov_vppreview  = 0
 	

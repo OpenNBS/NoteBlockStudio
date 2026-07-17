@@ -47,6 +47,7 @@ function load_settings() {
 	show_notechart =     ini_read_real(  "preferences", "show_notechart",     show_notechart)
 	show_outofrange =    ini_read_real(  "preferences", "show_outofrange",    show_outofrange)
 	mousewheel =         ini_read_real(  "preferences", "mousewheel",         mousewheel)
+	mousewheel_scroll_speed = median(1, ini_read_real("preferences", "mousewheel_scroll_speed", mousewheel_scroll_speed), 10)
 	changepitch =        ini_read_real(  "preferences", "change_pitch",       changepitch)
 	layerhov_vppreview = ini_read_real(  "preferences", "layerhov_vppreview", layerhov_vppreview)
 	select_lastpressed = ini_read_real(  "preferences", "select_lastpressed", select_lastpressed)
