@@ -36,7 +36,8 @@ function get_update() {
 						launch_caption = "未启动更新"
 					}
 					if (question(launch_message, launch_caption)) {
-						open_url(link_website)
+						if (check_prerelease) open_url(link_releases)
+						else open_url(link_website)
 					}
 					window = w_greeting
 					update_download = -1
