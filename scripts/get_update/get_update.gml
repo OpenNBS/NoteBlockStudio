@@ -46,11 +46,13 @@ function get_update() {
 			} else {
 				if (language != 1) {
 				if (question("Failed to download update. Do you want to open the Note Block Studio website and update manually?", "Failed")) {
-					open_url(link_website)
+					if (check_prerelease) open_url(link_releases)
+					else open_url(link_website)
 				}
 				} else {
 				if (question("下载更新失败。你想要到 Note Block Studio 官网手动更新吗？", "失败")) {
-					open_url(link_website)
+					if (check_prerelease) open_url(link_releases)
+					else open_url(link_website)
 				}
 				}
 			window = w_greeting
