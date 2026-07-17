@@ -53,6 +53,12 @@ function control_step() {
 			else if (text_focus_last = -1) keyboard_virtual_show(kbv_type_ascii, kbv_returnkey_default, kbv_autocapitalize_none, false)
 		}
 	}
+
+	if (os_type = os_macosx && text_focus != macos_menu_text_focus) {
+		macos_menu_text_focus = text_focus
+		macos_menu_last_refresh = current_time
+		if (text_focus = -1) text_focus_readonly = false
+	}
 	
 	// handle midi messages
 	var b,i,listMessage;

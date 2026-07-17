@@ -22,9 +22,26 @@ function control_social(){
 			}
 			if (menu_index_str != "") {
 				menu_index = real(menu_index_str)
-				menu_shown = string_copy(uid, 0, i - 1)
-				window += w_menu
-				menu_click(menu_index)
+				var menu_name = string_copy(uid, 0, i - 1)
+				var text_action = text_cmd_none
+				// macOS consumes native Edit shortcuts, so forward them to the focused custom text editor.
+				if (menu_name = "edit" && text_focus != -1) {
+					switch (menu_index) {
+						case 2: text_action = text_cmd_copy break
+						case 3: text_action = text_cmd_cut break
+						case 4: text_action = text_cmd_paste break
+						case 5: text_action = text_cmd_delete break
+						case 6: text_action = text_cmd_select_all break
+					}
+				}
+				if (text_action != text_cmd_none) {
+					text_menu_action = text_action
+					text_menu_target = text_focus
+				} else {
+					menu_shown = menu_name
+					window += w_menu
+					menu_click(menu_index)
+				}
 				macos_menu_last_refresh = current_time
 			}
 		}

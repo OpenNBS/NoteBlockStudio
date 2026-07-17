@@ -3,6 +3,14 @@ function menu_macos_init(){
 	if (os_type = os_macosx) {
 		macos_menu_clear()
 		var current_song = songs[song]
+		var text_editing = (text_focus != -1)
+		var edit_undo_inactive = (text_editing || current_song.historypos = current_song.historylen)
+		var edit_redo_inactive = (text_editing || current_song.historypos = 0)
+		var edit_copy_inactive = (!text_editing && current_song.selected = 0)
+		var edit_cut_inactive = ((text_editing && text_focus_readonly) || (!text_editing && current_song.selected = 0))
+		var edit_paste_inactive = ((text_editing && text_focus_readonly) || (!text_editing && selection_copied = ""))
+		var edit_delete_inactive = ((text_editing && text_focus_readonly) || (!text_editing && current_song.selected = 0))
+		var edit_select_all_inactive = (!text_editing && current_song.totalblocks = 0)
 		if (language != 1) {
 			macos_create_menu_ext("Help", "help", icon_menubar(icons.HELP) + "Tutorial videos|\\|Part 1: Composing note block music|Part 2: Opening MIDI files|Part 3: Importing songs into Minecraft|Part 4: Editing songs made in Minecraft     |-|F1$View all|/|-|" + icon_menubar(icons.INTERNET) + "Website...|GitHub...|Discord server...|Report a bug...|Donate...|-|Changelist...|About...")
 			str = ""
@@ -45,13 +53,13 @@ function menu_macos_init(){
 					}
 				}
 				// title is "Edit" + no_wide_space, otherwise fails
-				macos_create_menu_ext("Edit​", "edit", inactive(current_song.historypos = current_song.historylen) + icon_menubar(icons.UNDO - (current_song.historypos = current_song.historylen)) + get_hotkey_menubar("undo") + "$Undo|"+
-				                            inactive(current_song.historypos = 0) + icon_menubar(icons.REDO - (current_song.historypos = 0)) + get_hotkey_menubar("redo") + "$Redo|-|"+
-				                            inactive(current_song.selected = 0) + icon_menubar(icons.COPY - (current_song.selected = 0)) + get_hotkey_menubar("copy") + "$Copy|"+
-				                            inactive(current_song.selected = 0) + icon_menubar(icons.CUT - (current_song.selected = 0)) + get_hotkey_menubar("cut") + "$Cut|"+
-				                            inactive(selection_copied = "") + icon_menubar(icons.PASTE - (selection_copied = "")) + get_hotkey_menubar("paste") + "$Paste|"+
-				                            inactive(current_song.selected = 0) + icon_menubar(icons.DELETE - (current_song.selected = 0)) + get_hotkey_menubar("delete") + "$Delete|-|"+
-				                            inactive(current_song.totalblocks = 0) + get_hotkey_menubar("select_all") + "$Select all|"+
+				macos_create_menu_ext("Edit​", "edit", inactive(edit_undo_inactive) + icon_menubar(icons.UNDO - edit_undo_inactive) + get_hotkey_menubar("undo") + "$Undo|"+
+				                            inactive(edit_redo_inactive) + icon_menubar(icons.REDO - edit_redo_inactive) + get_hotkey_menubar("redo") + "$Redo|-|"+
+				                            inactive(edit_copy_inactive) + icon_menubar(icons.COPY - edit_copy_inactive) + get_hotkey_menubar("copy") + "$Copy|"+
+				                            inactive(edit_cut_inactive) + icon_menubar(icons.CUT - edit_cut_inactive) + get_hotkey_menubar("cut") + "$Cut|"+
+				                            inactive(edit_paste_inactive) + icon_menubar(icons.PASTE - edit_paste_inactive) + get_hotkey_menubar("paste") + "$Paste|"+
+				                            inactive(edit_delete_inactive) + icon_menubar(icons.DELETE - edit_delete_inactive) + get_hotkey_menubar("delete") + "$Delete|-|"+
+				                            inactive(edit_select_all_inactive) + get_hotkey_menubar("select_all") + "$Select all|"+
 				                            inactive(current_song.selected = 0) + "Deselect all|"+
 				                            inactive(current_song.selected = 0 && current_song.totalblocks = 0) + get_hotkey_menubar("invert_selection") + "$Invert selection|-|"+
 				                            inactive(current_song.instrument.num_blocks = 0) + "Select all " + clean(current_song.instrument.name) + "|"+
@@ -149,13 +157,13 @@ function menu_macos_init(){
 						insmenu++
 					}
 				}
-				macos_create_menu_ext("编辑", "edit", inactive(current_song.historypos = current_song.historylen) + icon_menubar(icons.UNDO - (current_song.historypos = current_song.historylen)) + get_hotkey_menubar("undo") + "$撤销|"+
-				                            inactive(current_song.historypos = 0) + icon_menubar(icons.REDO - (current_song.historypos = 0)) + get_hotkey_menubar("redo") + "$重做|-|"+
-				                            inactive(current_song.selected = 0) + icon_menubar(icons.COPY - (current_song.selected = 0)) + get_hotkey_menubar("copy") + "$复制|"+
-				                            inactive(current_song.selected = 0) + icon_menubar(icons.CUT - (current_song.selected = 0)) + get_hotkey_menubar("cut") + "$剪切|"+
-				                            inactive(selection_copied = "") + icon_menubar(icons.PASTE - (selection_copied = "")) + get_hotkey_menubar("paste") + "$粘贴|"+
-				                            inactive(current_song.selected = 0) + icon_menubar(icons.DELETE - (current_song.selected = 0)) + get_hotkey_menubar("delete") + "$删除|-|"+
-				                            inactive(current_song.totalblocks = 0) + get_hotkey_menubar("select_all") + "$全选|"+
+				macos_create_menu_ext("编辑", "edit", inactive(edit_undo_inactive) + icon_menubar(icons.UNDO - edit_undo_inactive) + get_hotkey_menubar("undo") + "$撤销|"+
+				                            inactive(edit_redo_inactive) + icon_menubar(icons.REDO - edit_redo_inactive) + get_hotkey_menubar("redo") + "$重做|-|"+
+				                            inactive(edit_copy_inactive) + icon_menubar(icons.COPY - edit_copy_inactive) + get_hotkey_menubar("copy") + "$复制|"+
+				                            inactive(edit_cut_inactive) + icon_menubar(icons.CUT - edit_cut_inactive) + get_hotkey_menubar("cut") + "$剪切|"+
+				                            inactive(edit_paste_inactive) + icon_menubar(icons.PASTE - edit_paste_inactive) + get_hotkey_menubar("paste") + "$粘贴|"+
+				                            inactive(edit_delete_inactive) + icon_menubar(icons.DELETE - edit_delete_inactive) + get_hotkey_menubar("delete") + "$删除|-|"+
+				                            inactive(edit_select_all_inactive) + get_hotkey_menubar("select_all") + "$全选|"+
 				                            inactive(current_song.selected = 0) + "全不选|"+
 				                            inactive(current_song.selected = 0 && current_song.totalblocks = 0) + get_hotkey_menubar("invert_selection") + "$选择反转|-|"+
 				                            inactive(current_song.instrument.num_blocks = 0) + "选择所有 " + clean(current_song.instrument.name) + "|"+

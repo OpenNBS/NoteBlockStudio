@@ -63,6 +63,13 @@ function macros() {
 #macro m_pan 2
 #macro m_pit 3
 
+#macro text_cmd_none -1
+#macro text_cmd_cut 0
+#macro text_cmd_copy 1
+#macro text_cmd_paste 2
+#macro text_cmd_delete 3
+#macro text_cmd_select_all 4
+
 #macro w_menu 100
 #macro w_releasemouse 29
 #macro w_mididevices 28

@@ -487,6 +487,7 @@ function control_create() {
 	globalvar text_select, text_exists, text_str, text_start, text_line, text_line_wrap, text_line_single, text_lines;
 	globalvar text_sline, text_spos, text_eline, text_epos, text_cline, text_cpos, text_mline, text_mpos;
 	globalvar text_click, text_marker, text_key_delay, text_lastwidth, text_laststr, text_lastfocus, text_mouseover, text_chars, text_clipboard;
+	globalvar text_menu_action, text_menu_target, text_focus_readonly, macos_menu_text_focus;
 	text_select = -1
 	text_exists[10000] = 0
 	text_click = current_time
@@ -497,6 +498,10 @@ function control_create() {
 	text_focus = -1
 	text_focus_last = -1
 	text_clipboard = ""
+	text_menu_action = text_cmd_none
+	text_menu_target = -1
+	text_focus_readonly = false
+	macos_menu_text_focus = -1
 
 	globalvar sb_count, sb_drag, sb_mprev, sb, sb_press, sb_sel;
 	sb_count = 0
