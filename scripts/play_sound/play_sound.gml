@@ -28,7 +28,9 @@ function play_sound() {
 	    return 0
 	emitter=audio_emitter_create()
 	keyshift = key + (ins.key + (pit/100) - 78)
-	audio_emitter_pitch(emitter, 0.5 * power(2, keyshift / 12))
+	var resourcepack_pitch = 1
+	if (variable_instance_exists(ins, "resourcepack_pitch")) resourcepack_pitch = ins.resourcepack_pitch
+	audio_emitter_pitch(emitter, 0.5 * power(2, keyshift / 12) * resourcepack_pitch)
 	audio_emitter_gain(emitter, (vol / 100) * mastervol)
 	if (realstereo = 0) audio_emitter_position(emitter,pan,0,0)
 	else audio_emitter_position(emitter,100,0,0)

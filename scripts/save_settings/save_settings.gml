@@ -77,6 +77,7 @@ function save_settings() {
 	ini_write_real_clean("preferences", "keynames_flat",      keynames_flat)
 	ini_write_real_clean("preferences", "hires",              hires)
 	ini_write_string(    "preferences", "current_resource",   current_resource)
+	ini_write_real_clean("preferences", "resourcepack_sounds_json", resourcepack_sounds_json)
 	ini_write_real_clean("preferences", "acrylic_successful", acrylic_successful)
 	ini_write_real_clean("preferences", "advancedinterface",  advancedinterface)
 	ini_write_real_clean("preferences", "wpapernoblur",       wpapernoblur)

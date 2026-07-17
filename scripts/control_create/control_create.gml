@@ -264,6 +264,7 @@ function control_create() {
 
 	// Instruments
 	current_resource = "Vanilla"
+	resourcepack_sounds_json = 0
 	resourcepacks = []
 	refresh_resourcepacks()
 	

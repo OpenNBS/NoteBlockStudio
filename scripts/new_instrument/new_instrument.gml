@@ -29,6 +29,7 @@ function new_instrument() {
 	ins.sound_buffer = -1
 	ins.sound = -1
 	ins.sound_duration = 0
+	ins.resourcepack_pitch = 1
 
 	return ins
 

@@ -79,6 +79,7 @@ function load_settings() {
 	keynames_flat =      ini_read_real(  "preferences", "keynames_flat",      keynames_flat)
 	hires =              ini_read_real(  "preferences", "hires",              hires)
 	current_resource =   ini_read_string("preferences", "current_resource",   current_resource)
+	resourcepack_sounds_json = ini_read_real("preferences", "resourcepack_sounds_json", resourcepack_sounds_json)
 	acrylic_successful = ini_read_real(  "preferences", "acrylic_successful", acrylic_successful)
 	advancedinterface  = ini_read_real(  "preferences", "advancedinterface",  advancedinterface)
 	wpapernoblur       = ini_read_real(  "preferences", "wpapernoblur",       wpapernoblur)

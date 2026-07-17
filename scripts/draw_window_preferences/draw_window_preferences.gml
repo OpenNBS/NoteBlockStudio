@@ -647,7 +647,11 @@ function draw_window_preferences() {
 		}
 		draw_text_dynamic(x1 + 233 + 22 + 18 + 3, y1 + 329 + (theme = 3) * 22 + 19 + 5, display_resource)
 		if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
-		if (draw_button2(x1 + 233 + 22 + 18, y1 + 359 + (theme = 3) * 22 + 19 + 5, 150, "Refresh Resource Packs", 0, 1)) refresh_resourcepacks()
+		if (draw_checkbox(x1 + 233 + 22 + 18, y1 + 359 + (theme = 3) * 22 + 19 + 5, resourcepack_sounds_json, "Use sounds.json", "Load note block sound paths and pitch shifts defined by the selected resource pack.")) {
+			resourcepack_sounds_json = !resourcepack_sounds_json
+			set_resourcepack(current_resource)
+		}
+		if (draw_button2(x1 + 233 + 22 + 18, y1 + 379 + (theme = 3) * 22 + 19 + 5, 150, "Refresh Resource Packs", 0, 1)) refresh_resourcepacks()
 		} else {
 		if (theme = 3) draw_theme_font(font_info_med)
 	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 145, "进度条")
@@ -695,7 +699,11 @@ function draw_window_preferences() {
 		}
 		draw_text_dynamic(x1 + 233 + 22 + 18 + 3, y1 + 329 + (theme = 3) * 22 + 19 + 5, display_resource)
 		if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
-		if (draw_button2(x1 + 233 + 22 + 18, y1 + 359 + (theme = 3) * 22 + 19 + 5, 150, "刷新资源包列表", 0, 1)) refresh_resourcepacks()
+		if (draw_checkbox(x1 + 233 + 22 + 18, y1 + 359 + (theme = 3) * 22 + 19 + 5, resourcepack_sounds_json, "使用 sounds.json", "根据所选资源包的 sounds.json 定义加载音符盒声音路径和音高偏移。")) {
+			resourcepack_sounds_json = !resourcepack_sounds_json
+			set_resourcepack(current_resource)
+		}
+		if (draw_button2(x1 + 233 + 22 + 18, y1 + 379 + (theme = 3) * 22 + 19 + 5, 150, "刷新资源包列表", 0, 1)) refresh_resourcepacks()
 		}
 	}
 	
