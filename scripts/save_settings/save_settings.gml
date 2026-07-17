@@ -98,6 +98,9 @@ function save_settings() {
 	ini_write_real_clean("midi_import", "precision",       w_midi_precision)
 	ini_write_real_clean("midi_import", "tempo_changer",   w_midi_tempo_changer)
 	ini_write_real_clean("midi_import", "note_duration",   w_midi_note_duration)
+	ini_write_real_clean("midi_import", "note_duration_fade",       w_midi_note_duration_fade)
+	ini_write_real_clean("midi_import", "note_duration_fade_start", w_midi_note_duration_fade_start)
+	ini_write_real_clean("midi_import", "note_duration_fade_end",   w_midi_note_duration_fade_end)
 	// instruments
 	for (a = 0; a < 128; a += 1) {
 	    ini_write_real_clean("midi_import", "ins_" + string(a),          midi_ins[a, 1]) // Instrument

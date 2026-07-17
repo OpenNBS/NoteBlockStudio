@@ -100,6 +100,9 @@ function load_settings() {
 	w_midi_precision =    ini_read_real(  "midi_import", "precision",       w_midi_precision)
 	w_midi_tempo_changer =ini_read_real(  "midi_import", "tempo_changer",   w_midi_tempo_changer)
 	w_midi_note_duration =ini_read_real(  "midi_import", "note_duration",   w_midi_note_duration)
+	w_midi_note_duration_fade = ini_read_real("midi_import", "note_duration_fade", w_midi_note_duration_fade)
+	w_midi_note_duration_fade_start = median(0, ini_read_real("midi_import", "note_duration_fade_start", w_midi_note_duration_fade_start), 100)
+	w_midi_note_duration_fade_end = median(0, ini_read_real("midi_import", "note_duration_fade_end", w_midi_note_duration_fade_end), 100)
 	// instruments
 	for (a = 0; a < 128; a += 1) {
 	    midi_ins[a, 1] =  ini_read_real(  "midi_import", "ins_" + string(a),          midi_ins[a, 1]) // Instrument

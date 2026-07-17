@@ -1,6 +1,6 @@
 function draw_window_midi_import() {
 	// draw_window_midi_import()
-	var x1, y1, xx, a, b, c, menun, menua, menub, stabx, stabw, nsel, tabs, tabw, tabstr, tabtip, str;
+	var x1, y1, xx, a, b, c, menun, menua, menub, stabx, stabw, nsel, tabs, tabw, tabstr, tabtip, str, fade_locked;
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
@@ -30,7 +30,21 @@ function draw_window_midi_import() {
 	popup_set_window(x1 + 260, y1 + 72, 140, 16, "The maximum allowed layers per channel.\nClick and drag to adjust.")
 	w_midi_maxheight = median(1, draw_dragvalue(1, x1 + 380, y1 + 72, w_midi_maxheight, 1), 20)
 	if (draw_checkbox(x1 + 260, y1 + 92, w_midi_octave, "Keep within octave range", "Whether to automatically transpose the notes\nto keep them within the 2 octave range.") && wmenu = 0) w_midi_octave=!w_midi_octave
-	if (draw_checkbox(x1 + 260, y1 + 112, w_midi_vel, "Read note velocity", "Whether to copy the volume data found\nin each MIDI note.") && wmenu = 0) w_midi_vel=!w_midi_vel
+	if (draw_checkbox(x1 + 32, y1 + 112, w_midi_vel, "Read note velocity", "Whether to copy the volume data found\nin each MIDI note.") && wmenu = 0) w_midi_vel=!w_midi_vel
+	if (draw_checkbox(x1 + 260, y1 + 112, w_midi_note_duration_fade, "Fade tail velocity", "Linearly change the generated tail notes from the start percentage to the end percentage.\nThe original note head keeps its imported velocity.", !w_midi_note_duration) && wmenu = 0) w_midi_note_duration_fade = !w_midi_note_duration_fade
+	fade_locked = !w_midi_note_duration || !w_midi_note_duration_fade
+	if (fade_locked) draw_set_color(c_gray)
+	draw_text_dynamic(x1 + 410, y1 + 111, "Start:")
+	if (fade_locked) draw_text_dynamic(x1 + 445, y1 + 111, string(w_midi_note_duration_fade_start))
+	else w_midi_note_duration_fade_start = median(0, draw_dragvalue(23, x1 + 445, y1 + 112, w_midi_note_duration_fade_start, 1), 100)
+	draw_text_dynamic(x1 + 466, y1 + 111, "%")
+	draw_text_dynamic(x1 + 485, y1 + 111, "End:")
+	if (fade_locked) draw_text_dynamic(x1 + 513, y1 + 111, string(w_midi_note_duration_fade_end))
+	else w_midi_note_duration_fade_end = median(0, draw_dragvalue(24, x1 + 513, y1 + 112, w_midi_note_duration_fade_end, 1), 100)
+	draw_text_dynamic(x1 + 534, y1 + 111, "%")
+	draw_theme_color()
+	popup_set_window(x1 + 408, y1 + 108, 67, 20, "Velocity of the first generated tail note,\nas a percentage of the MIDI note velocity.\nClick and drag to adjust.")
+	popup_set_window(x1 + 483, y1 + 108, 60, 20, "Velocity of the last generated tail note,\nas a percentage of the MIDI note velocity.\nClick and drag to adjust.")
 	
 	draw_text_dynamic(x1 + 470, y1 + 32 + 20, "Time precision")
 	popup_set_window(x1 + 470, y1 + 32 + 20, 100, 20, "How much to increase the spacing between each note,\nso that more notes can be placed in between.")
@@ -57,7 +71,21 @@ function draw_window_midi_import() {
 	popup_set_window(x1 + 300, y1 + 72, 140, 16, "每个通道所允许使用的最多层数。拖拽来更改。")
 	w_midi_maxheight = median(1, draw_dragvalue(1, x1 + 420, y1 + 72, w_midi_maxheight, 1), 20)
 	if (draw_checkbox(x1 + 300, y1 + 92, w_midi_octave, "保持八度范围", "是否自动将音符转换到 2 八度限制内。") && wmenu = 0) w_midi_octave=!w_midi_octave
-	if (draw_checkbox(x1 + 300, y1 + 112, w_midi_vel, "导入音符音量", "是否将 MIDI 文件中音符音量应用到音符上。") && wmenu = 0) w_midi_vel=!w_midi_vel
+	if (draw_checkbox(x1 + 32, y1 + 112, w_midi_vel, "导入音符音量", "是否将 MIDI 文件中音符音量应用到音符上。") && wmenu = 0) w_midi_vel=!w_midi_vel
+	if (draw_checkbox(x1 + 300, y1 + 112, w_midi_note_duration_fade, "尾音渐变", "将生成的尾音从起始百分比线性变化到结束百分比。\n原音符起始音的音量保持不变。", !w_midi_note_duration) && wmenu = 0) w_midi_note_duration_fade = !w_midi_note_duration_fade
+	fade_locked = !w_midi_note_duration || !w_midi_note_duration_fade
+	if (fade_locked) draw_set_color(c_gray)
+	draw_text_dynamic(x1 + 405, y1 + 111, "起始:")
+	if (fade_locked) draw_text_dynamic(x1 + 445, y1 + 111, string(w_midi_note_duration_fade_start))
+	else w_midi_note_duration_fade_start = median(0, draw_dragvalue(23, x1 + 445, y1 + 112, w_midi_note_duration_fade_start, 1), 100)
+	draw_text_dynamic(x1 + 466, y1 + 111, "%")
+	draw_text_dynamic(x1 + 485, y1 + 111, "结束:")
+	if (fade_locked) draw_text_dynamic(x1 + 525, y1 + 111, string(w_midi_note_duration_fade_end))
+	else w_midi_note_duration_fade_end = median(0, draw_dragvalue(24, x1 + 525, y1 + 112, w_midi_note_duration_fade_end, 1), 100)
+	draw_text_dynamic(x1 + 546, y1 + 111, "%")
+	draw_theme_color()
+	popup_set_window(x1 + 403, y1 + 108, 72, 20, "第一个尾音相对于 MIDI 音符音量的百分比。\n拖拽来更改。")
+	popup_set_window(x1 + 483, y1 + 108, 72, 20, "最后一个尾音相对于 MIDI 音符音量的百分比。\n拖拽来更改。")
 	
 	draw_text_dynamic(x1 + 470, y1 + 32 + 20, "精准度")
 	popup_set_window(x1 + 470, y1 + 32 + 20, 100, 20, "调整音符间的距离，以在中间放下更多音符。")
@@ -91,6 +119,9 @@ function draw_window_midi_import() {
 			w_midi_precision = 1
 			w_midi_tempo_changer = 0
 			w_midi_note_duration = 0
+			w_midi_note_duration_fade = 0
+			w_midi_note_duration_fade_start = 50
+			w_midi_note_duration_fade_end = 50
 	    }
 	}
 	b = 8
