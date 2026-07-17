@@ -1,3 +1,78 @@
+function reference_audio_stop(song_instance) {
+	if (song_instance.reference_sound >= 0 && audio_is_playing(song_instance.reference_sound)) {
+		audio_stop_sound(song_instance.reference_sound)
+	}
+	song_instance.reference_sound = -1
+	song_instance.reference_state = 0
+	song_instance.reference_has_last_position = false
+}
+
+function reference_audio_sync(song_instance, force_resync) {
+	var state_stopped = 0
+	var state_waiting = 1
+	var state_playing = 2
+	var state_finished = 3
+
+	if (playing <= 0 || song_instance.reference_option <= 0 || song_instance.reference_audio < 0) {
+		reference_audio_stop(song_instance)
+		return
+	}
+
+	var target_position = get_seconds_from_tick(song_instance.marker_pos) + song_instance.reference_offset / 1000
+	var moved_back = song_instance.reference_has_last_position && target_position < song_instance.reference_last_position - 0.05
+	song_instance.reference_last_position = target_position
+	song_instance.reference_has_last_position = true
+
+	// A negative track position represents silence before the reference audio starts.
+	if (target_position < 0) {
+		if (song_instance.reference_sound >= 0 && audio_is_playing(song_instance.reference_sound)) {
+			audio_stop_sound(song_instance.reference_sound)
+		}
+		song_instance.reference_sound = -1
+		song_instance.reference_state = state_waiting
+		return
+	}
+
+	var reference_length = audio_sound_length(song_instance.reference_audio)
+	if (reference_length > 0 && target_position >= reference_length) {
+		if (song_instance.reference_sound >= 0 && audio_is_playing(song_instance.reference_sound)) {
+			audio_stop_sound(song_instance.reference_sound)
+		}
+		song_instance.reference_sound = -1
+		song_instance.reference_state = state_finished
+		return
+	}
+
+	force_resync = force_resync || moved_back
+	if (song_instance.reference_state == state_playing) {
+		if (!audio_is_playing(song_instance.reference_sound)) {
+			song_instance.reference_sound = -1
+			song_instance.reference_state = state_finished
+		} else {
+			var actual_position = audio_sound_get_track_position(song_instance.reference_sound)
+			if (force_resync || abs(actual_position - target_position) > 0.1) {
+				audio_sound_set_track_position(song_instance.reference_sound, target_position)
+			}
+			audio_sound_gain(song_instance.reference_sound, (song_instance.reference_volume * mastervol) / 100, 0)
+			return
+		}
+	}
+
+	if (force_resync && song_instance.reference_state == state_finished) {
+		song_instance.reference_state = state_stopped
+	}
+	if (song_instance.reference_state == state_finished) return
+
+	audio_sound_gain(song_instance.reference_audio, (song_instance.reference_volume * mastervol) / 100, 0)
+	song_instance.reference_sound = audio_play_sound(song_instance.reference_audio, 1, 0)
+	if (song_instance.reference_sound >= 0) {
+		audio_sound_set_track_position(song_instance.reference_sound, target_position)
+		song_instance.reference_state = state_playing
+	} else {
+		song_instance.reference_state = state_finished
+	}
+}
+
 function control_draw() {
 	// control_draw()
 	var a, b, c, d, e, f, g, p, l, s, exist, str, str2, m, xx, x1, y1, x2, y2, iconcolor, showmenu, totalcols, totalrows, compx, prev, colr, note_offset,
@@ -399,17 +474,12 @@ function control_draw() {
 	draw_set_alpha(1)
 	draw_set_halign(fa_left)
 
-	if (checkplaying > 0) {
-		if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
-			current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
-			audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-			audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
-		}
-	}
 	if (checkplaying < 0) {
 		for (var i = 0; i < array_length(songs); i++) {
-			if (audio_is_playing(songs[i].reference_sound)) audio_stop_sound(songs[i].reference_sound)
+			reference_audio_stop(songs[i])
 		}
+	} else {
+		reference_audio_sync(current_song, checkplaying > 0)
 	}
 
 	if (current_song.tempo < 0.25) current_song.tempo = 0.25
@@ -892,29 +962,17 @@ function control_draw() {
 		if (keyboard_check_pressed(vk_numpad1)) {
 			current_song.reference_option = 0; 
 			set_msg("Reference mute"); 
-			if (audio_is_playing(current_song.reference_sound)) audio_stop_sound(current_song.reference_sound)
+			reference_audio_sync(current_song, true)
 		}
 		if (keyboard_check_pressed(vk_numpad2)) {
 			current_song.reference_option = 1; 
 			set_msg("Reference solo"); 
-			if (playing) {
-				if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
-					current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
-					audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-					audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
-				}
-			}
+			reference_audio_sync(current_song, true)
 		}
 		if (keyboard_check_pressed(vk_numpad3)) {
 			current_song.reference_option = 2; 
 			set_msg("Reference mix")
-			if (playing) {
-				if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
-					current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
-					audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-					audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
-				}
-			}
+			reference_audio_sync(current_song, true)
 		}
 	
 	}
@@ -1527,40 +1585,20 @@ function control_draw() {
 		if (draw_layericon(0, x1 + 126 - !realvolume-realstereo * 10, y1 + 8, condstr(language != 1, "Mute reference audio", "静音参考音频"), 0, p)) {
 		    if (p) {
 				current_song.reference_option = 2; 
-				if (playing) {
-					if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
-						current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
-						audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-						audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
-					}
-				}
 		    } else {
 				current_song.reference_option = 0; 
-				if (audio_is_playing(current_song.reference_sound)) audio_stop_sound(current_song.reference_sound)
 		    }
+			reference_audio_sync(current_song, true)
 		}
 		// Solo button
 		p = (current_song.reference_option = 1)
 		if (draw_layericon(1, x1 + 144 - !realvolume-realstereo * 10, y1 + 8, condstr(language != 1, "Solo reference audio", "独奏参考音频"), 0, p)) {
 		    if (p) {
 				current_song.reference_option = 2; 
-				if (playing) {
-					if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
-						current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
-						audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-						audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
-					}
-				}
 		    } else {
 				current_song.reference_option = 1; 
-				if (playing) {
-					if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
-						current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
-						audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-						audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
-					}
-				}
 		    }
+			reference_audio_sync(current_song, true)
 		}
 		// Remove layer
 		if (draw_layericon(4, x1 + 162 - !realvolume-realstereo * 10, y1 + 8, condstr(language != 1, "Remove reference audio\n(Click and drag to remove multiple layers)", "删除参考音频\n（拖拽可批量删除层）"), 0, 0)) {
@@ -1573,6 +1611,9 @@ function control_draw() {
 			current_song.reference_option = 2
 			current_song.reference_offset = 0
 			current_song.reference_sound = -1
+			current_song.reference_state = 0
+			current_song.reference_has_last_position = false
+			current_song.reference_last_position = 0
 			current_song.reference_volume = 100
 		}
 		draw_theme_color()
@@ -1622,8 +1663,10 @@ function control_draw() {
 			    window = w_releasemouse
 			}
 		} else {
+			prev = current_song.reference_offset
 			dragstereo += (mouse_yprev - mouse_y)
 			current_song.reference_offset = dragstereo
+			if (current_song.reference_offset != prev) reference_audio_sync(current_song, true)
 			if (!mouse_check_button(mb_left)) {
 			    window = w_releasemouse
 			}
