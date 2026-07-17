@@ -419,6 +419,11 @@ function control_create() {
 	selection_copied = ""
 	copied_arrayheight = 0
 	copied_arraylength = 0
+	copied_from_song = -1
+	copied_context_code = ""
+	copied_note_count = 0
+	copied_source_name = ""
+	copied_custom_instruments = []
 	clipboard = ""
 	
 	tempo_changer_sel_x = -1
