@@ -20,6 +20,7 @@ function copy_bundled_files(copy_data = true, copy_songs = true, copy_patterns =
 		copy_bundled_directory(bundled_sounds_directory, sounds_directory)
 		copy_bundled_file(bundled_data_directory + "wallpaper.bat", data_directory + "wallpaper.bat")
 		copy_bundled_file(bundled_data_directory + "Wallpaper.jpg", data_directory + "Wallpaper.jpg")
+		copy_bundled_file(bundled_data_directory + "changelog.txt", data_directory + "changelog.txt")
 	}
 
 	// Songs and patterns intentionally stay in ~/Music on macOS.
