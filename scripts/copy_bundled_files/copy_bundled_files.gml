@@ -9,7 +9,7 @@ function copy_bundled_directory(source, destination) {
 }
 
 function copy_bundled_file(source, destination) {
-	if (!file_exists(source)) return
+	if (!file_exists(source)) return;
 	if (file_exists(destination)) file_delete(destination)
 	file_copy(source, destination)
 }
@@ -20,7 +20,12 @@ function copy_bundled_files(copy_data = true, copy_songs = true, copy_patterns =
 		copy_bundled_directory(bundled_sounds_directory, sounds_directory)
 		copy_bundled_file(bundled_data_directory + "wallpaper.bat", data_directory + "wallpaper.bat")
 		copy_bundled_file(bundled_data_directory + "Wallpaper.jpg", data_directory + "Wallpaper.jpg")
-		copy_bundled_file(bundled_data_directory + "changelog.txt", data_directory + "changelog.txt")
+		if (os_type = os_linux) {
+			copy_bundled_file(bundled_data_directory + "changelog.txt", data_directory + "changelog.txt")
+			copy_bundled_file(bundled_data_directory + "credits.txt", data_directory + "credits.txt")
+			copy_bundled_file(bundled_data_directory + "extranotes.zip", data_directory + "extranotes.zip")
+			copy_bundled_file(bundled_data_directory + "instrumenttextures.zip", data_directory + "instrumenttextures.zip")
+		}
 	}
 
 	// Songs and patterns intentionally stay in ~/Music on macOS.
@@ -33,7 +38,7 @@ function copy_bundled_files(copy_data = true, copy_songs = true, copy_patterns =
 }
 
 function remove_legacy_copied_libraries() {
-	if (os_type != os_windows) return
+	if (os_type != os_windows) return;
 
 	var legacy_libraries = [
 		"audio.dll",
