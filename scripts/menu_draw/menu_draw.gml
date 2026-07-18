@@ -5,20 +5,40 @@ function menu_draw() {
 	var m, menux, menuy, noclick, o, theme, cm, menu, realpha;
 	realpha = draw_get_alpha()
 	theme = obj_controller.theme;
-	menux[0] = sx
-	menuy[0] = sy
 	sel = -1
 	noclick = 0
 	o = obj_controller;
+	var rootx;
+	rootx = clamp(sx - (sx + menu_wid[0] > o.rw) * menu_wid[0], 0, max(o.rw - menu_wid[0], 0))
+	if (menu_span[0] <= o.rw) {
+		var right_cascade_x, left_cascade_x;
+		right_cascade_x = min(rootx, o.rw - menu_span[0])
+		left_cascade_x = max(rootx, menu_span[0] - menu_wid[0])
+		if (abs(right_cascade_x - rootx) <= abs(left_cascade_x - rootx)) rootx = right_cascade_x
+		else rootx = left_cascade_x
+	}
+	menux[0] = rootx
+	menuy[0] = sy
 	for (m = 0; m < menus; m += 1) {
 	    if (!menu_show[m]) continue
 	    var dx, dy, i, iy, hei;
 		dx = menux[m]
-	    dx = menux[m] - (dx + menu_wid[m] > o.rw) * menu_wid[m] - (dx + menu_wid[m] > o.rw) * menu_wid[0] * (m > 0)// - (dx + menu_wid[m - (m > 0)] > o.rw) * (menu_show[m - (m > 0)]) * (m > 0) * menu_wid[m - (m > 0)]
+		dx = clamp(dx, 0, max(o.rw - menu_wid[m], 0))
 	    dy = menuy[m]
 		cm = floor(m * 0.5)
 	    hei = menu_hei[m] * (1 - power(1 - ani, 2))
 	    if (dy + hei > o.rh) dy = o.rh - hei
+		menu_x[m] = dx
+		menu_y[m] = dy
+		menu_draw_hei[m] = hei
+		var higher_menu_hovered, hm;
+		higher_menu_hovered = 0
+		for (hm = m + 1; hm < menus; hm += 1) {
+			if (menu_show[hm] && mouse_rectangle(menu_x[hm], menu_y[hm], menu_wid[hm], menu_draw_hei[hm])) {
+				higher_menu_hovered = 1
+				break
+			}
+		}
 	    iy = 8
 	    if (!o.fdark) draw_theme_color()
 	    else draw_set_color(197379)
@@ -65,8 +85,8 @@ function menu_draw() {
 	        } else {
 	            var issel;
 				var inaissel;
-	            issel = (mouse_rectangle(dx + 3, dy + iy - 5, menu_wid[m] - 5, 22))
-	            inaissel = (mouse_rectangle(dx + 3, dy + iy - 5, menu_wid[m] - 5, 22))
+	            issel = (!higher_menu_hovered && mouse_rectangle(dx + 3, dy + iy - 5, menu_wid[m] - 5, 22))
+	            inaissel = issel
 	            if (issel) { // Close higher menus
 	                var om;
 	                for (om = m + 1; om < menus; om += 1) menu_show[om] = 0
@@ -79,11 +99,23 @@ function menu_draw() {
 	            }
 	            if (item_inactive[m, i]) issel = 0
 	            if (item_hasmenu[m, i] > 0) {
-	                if (menu_show[item_hasmenu[m, i]]) issel = 1
+					var submenu;
+					submenu = item_hasmenu[m, i]
+	                if (menu_show[submenu]) issel = 1
 	                if (issel) {
-	                    menu_show[item_hasmenu[m, i]] = 1
-	                    menux[item_hasmenu[m, i]] = dx + menu_wid[m] - 3
-	                    menuy[item_hasmenu[m, i]] = dy + iy - 8
+	                    menu_show[submenu] = 1
+						if (m = 0) {
+							var right_space, left_space;
+							right_space = o.rw - (dx + menu_wid[m] - 3)
+							left_space = dx + 3
+							menu_direction[submenu] = 1
+							if (menu_span[submenu] > right_space && left_space > right_space) menu_direction[submenu] = -1
+						} else {
+							menu_direction[submenu] = menu_direction[m]
+						}
+						if (menu_direction[submenu] = 1) menux[submenu] = dx + menu_wid[m] - 3
+						else menux[submenu] = dx - menu_wid[submenu] + 3
+	                    menuy[submenu] = dy + iy - 8
 	                }
 	            }
 	            draw_theme_color()

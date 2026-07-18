@@ -80,6 +80,10 @@ function show_menu_ext(argument0, argument1, argument2, argument3) {
 	    obj.menu_hei[a] = 0
 	    obj.menu_show[a] = 0
 	    obj.menu_sel[a] = -1
+		obj.menu_direction[a] = 0
+		obj.menu_x[a] = 0
+		obj.menu_y[a] = 0
+		obj.menu_draw_hei[a] = 0
 	    for (b = 0; b < obj.items[a]; b += 1) {
 	        obj.menu_wid[a] = max(obj.menu_wid[a], string_width_dynamic(obj.item_str[a, b] + condstr(obj.item_shortcut[a, b] != "", obj.item_shortcut[a, b] + "       ")))
 	        if (obj.item_str[a, b] = "-") obj.menu_hei[a] += 6
@@ -87,6 +91,13 @@ function show_menu_ext(argument0, argument1, argument2, argument3) {
 	    }
 	    obj.menu_wid[a] += 56
 	    obj.menu_hei[a] += 6
+	}
+	// Width needed to draw each menu and its deepest submenu branch without overlap.
+	for (a = obj.menus - 1; a >= 0; a -= 1) {
+		obj.menu_span[a] = obj.menu_wid[a]
+		for (b = a + 1; b < obj.menus; b += 1) {
+			if (obj.menu_parent[b] = a) obj.menu_span[a] = max(obj.menu_span[a], obj.menu_wid[a] + obj.menu_span[b] - 3)
+		}
 	}
 
 	obj.menu_show[0] = 1
