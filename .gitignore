@@ -24,3 +24,4 @@ __MACOSX/shaders/._sh_blur_static
 __MACOSX/shaders/._sh_blur_realtime
 __MACOSX/shaders/.___ba_sh_blur_noise
 **/.DS_Store
+/.macos-build-dependencies/
