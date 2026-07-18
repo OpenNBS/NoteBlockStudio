@@ -88,9 +88,10 @@ function menu_draw() {
 	            issel = (!higher_menu_hovered && mouse_rectangle(dx + 3, dy + iy - 5, menu_wid[m] - 5, 22))
 	            inaissel = issel
 	            if (issel) { // Close higher menus
+					var press_started_here = mouse_press_in_rectangle(dx + 3, dy + iy - 5, menu_wid[m] - 5, 22)
 	                var om;
 	                for (om = m + 1; om < menus; om += 1) menu_show[om] = 0
-	                if (ani = 1) {
+	                if (ani = 1 && press_started_here) {
 	                    sel = item_n[m, i]
 	                    if (item_hasmenu[m, i] > 0 || item_inactive[m, i]) noclick = 1
 	                }

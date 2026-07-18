@@ -45,6 +45,8 @@ function control_step() {
 	if (mouse_check_button_pressed(mb_left)) {
 		mousepress_x = mouse_x
 		mousepress_y = mouse_y
+		mousepress_window = window
+		mousepress_layericon = -1
 	}
 	
 	if (is_mobile()) {

@@ -248,7 +248,7 @@ function control_draw() {
 	        if (mouse_check_button_pressed(mb_left)) {
 	            timeline_pressa = current_song.starta + floor((mouse_x - (x1 + 2)) / 32)
 	        }
-	        if (mouse_check_button_released(mb_left) && aa = 0) {
+	        if (mouse_check_button_released(mb_left) && mouse_press_in_rectangle(x1 + 2 + song_tab_offset, y1 + 2, totalcols * 32, 32) && aa = 0) {
 	            current_song.marker_pos = current_song.starta + (mouse_x - (x1 + 2)) / 32
 	        } 
 	        if (mouse_check_button(mb_left)) {
@@ -2538,7 +2538,7 @@ function control_draw() {
 			curs = cr_handpoint
 			
 			// Input
-			if (mouse_check_button_released(mb_left)) {
+			if (mouse_rectangle_click(108, 57 + song_tab_offset, 64, 22)) {
 		        window = w_settempo
 				text_exists[64] = 0
 				text_focus = 64
@@ -2620,13 +2620,15 @@ function control_draw() {
 		for (tab = 0; tab < array_length(songs); tab++) {
 			tab_str = ""
 			taba = (mouse_rectangle(8 + tab * (tabwidth - 1) - 2, 24 + 2, tabwidth - 2, 24 + 5 * (theme = 3)) && (window = 0) && (!tabdrag))
-			if (taba && mouse_check_button(mb_left)) taba += 1
+			if (taba && mouse_check_button(mb_left) && mouse_press_in_rectangle(8 + tab * (tabwidth - 1) - 2, 24 + 2, tabwidth - 2, 24 + 5 * (theme = 3))) taba += 1
 			if (taba = 2) {
 				set_song(tab)
 			}
+			var close_press_started = false
 			if (theme != 3) {
 				closea = mouse_rectangle(7 - 20 + (tabwidth - 1) + tab * (tabwidth - 1) - 1, 24 - 5 * (theme = 1 || theme = 2) + 7 + 3 * (theme != 0), 16, 15) * (window = 0) * (!tabdrag)
-				if (closea && mouse_check_button(mb_left)) closea++
+				close_press_started = mouse_press_in_rectangle(7 - 20 + (tabwidth - 1) + tab * (tabwidth - 1) - 1, 24 - 5 * (theme = 1 || theme = 2) + 7 + 3 * (theme != 0), 16, 15)
+				if (closea && mouse_check_button(mb_left) && close_press_started) closea++
 				draw_sprite_ext(spr_songtab, 0 + 3 * (taba = 1 && tab != song) + 6 * (tab = song) + 10 * theme, 6 + tab * (tabwidth - 1) - 1, 24 - 5 * (theme = 1 || theme = 2), 1, 1, 0, -1, 1)
 				draw_sprite_ext(spr_songtab, 1 + 3 * (taba = 1 && tab != song) + 6 * (tab = song) + 10 * theme, 10 + tab * (tabwidth - 1) - 1, 24 - 5 * (theme = 1 || theme = 2), (tabwidth - 5) / 4, 1, 0, -1, 1)
 				draw_sprite_ext(spr_songtab, 2 + 3 * (taba = 1 && tab != song) + 6 * (tab = song) + 10 * theme, 5 + (tabwidth - 1) + tab * (tabwidth - 1) - 1, 24 - 5 * (theme = 1 || theme = 2), 1, 1, 0, -1, 1)
@@ -2634,7 +2636,8 @@ function control_draw() {
 				draw_sprite_ext(spr_closetab, (closea > 0 && theme = 0), 7 - 20 + (tabwidth - 1) + tab * (tabwidth - 1) - 1 + 4 + (closea = 2 && theme != 0), 24 - 5 * (theme = 1 || theme = 2) + 7 + 3 * (theme != 0) + 4 + (closea = 2 && theme != 0), 1, 1, 0, -1 + (theme = 1), 1)
 			} else {
 				closea = mouse_rectangle(7 + (tabwidth - 1) + tab * (tabwidth - 1) - 35, 24 + 5, 30, 22) * (window = 0) * (!tabdrag)
-				if (closea && mouse_check_button(mb_left)) closea++
+				close_press_started = mouse_press_in_rectangle(7 + (tabwidth - 1) + tab * (tabwidth - 1) - 35, 24 + 5, 30, 22)
+				if (closea && mouse_check_button(mb_left) && close_press_started) closea++
 				if (wpaperexist && acrylic && can_draw_mica) {
 					if (!fdark) {
 						hover_color = make_color_rgb(45, 45, 45)
@@ -2724,7 +2727,7 @@ function control_draw() {
 				window = w_dragtab
 			}
 			
-			if (closea && mouse_check_button_released(mb_left)) close_song(tab)
+			if (closea && close_press_started && mouse_check_button_released(mb_left)) close_song(tab)
 		}
 		if (tabdrag) {
 			draw_set_color(0)
@@ -2744,7 +2747,7 @@ function control_draw() {
 		// new song button
 		var newsongbtnwidth = 32
 		taba = (mouse_rectangle(8 + array_length(songs) * (tabwidth - 1) - 2, 24 + 2, newsongbtnwidth - 2, 24 + 5 * (theme = 3)) && (window = 0) && (!tabdrag))
-		if (taba && mouse_check_button_released(mb_left) && !tabdrag) taba += 1
+		if (taba && mouse_rectangle_click(8 + array_length(songs) * (tabwidth - 1) - 2, 24 + 2, newsongbtnwidth - 2, 24 + 5 * (theme = 3)) && !tabdrag) taba += 1
 		if (taba = 2) {
 			new_song()
 		}

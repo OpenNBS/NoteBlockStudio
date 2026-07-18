@@ -536,6 +536,8 @@ function control_create() {
 	mouse_yprev = mouse_y
 	mousepress_x = -1
 	mousepress_y = -1
+	mousepress_window = -1
+	mousepress_layericon = -1
 	asso_nbs = 1
 	asso_midi = 0
 	asso_sch = 0

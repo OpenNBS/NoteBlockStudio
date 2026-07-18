@@ -41,7 +41,7 @@ function draw_window_preferences() {
 	}
 	}
 	if (theme = 3) {
-		c = (mouse_check_button(mb_left))
+		c = (mouse_check_button(mb_left) && mouse_press_in_rectangle(x1, y1 + 30, 40, 40))
 		if (mouse_rectangle(x1, y1 + 30, 40, 40)) {
 			draw_set_color(15395562)
 			if (fdark) draw_set_color(4539717)
@@ -50,7 +50,7 @@ function draw_window_preferences() {
 				if (fdark) draw_set_color(5789784)
 			}
 			draw_roundrect(x1 + 1, y1 + 31, x1 + 41, y1 + 67, 0)
-			if (mouse_check_button_released(mb_left) && windowopen = 1) {
+			if (mouse_rectangle_click(x1, y1 + 30, 40, 40) && windowopen = 1) {
 				if (windowsound && theme = 3) play_sound(soundgoback, 45, 100, 100, 0)
 				windowclose = 1
 			}
@@ -128,7 +128,7 @@ function draw_window_preferences() {
 			draw_set_color(c_black)
 			if (fdark) draw_set_color(c_white)
 	    }
-		if (mouse_check_button(mb_left) && c) {
+		if (mouse_check_button(mb_left) && c && mouse_press_in_rectangle(x1 + b, y1 + 28 + 21 - 19, string_width_dynamic(str[a]) + 12, 18 + 21)) {
 			// draw_sprite(spr_tabbuttons_f, 6 + 9 * fdark, x1 + b, y1 + 28 + 21 - 19)
 			// draw_sprite_ext(spr_tabbuttons_f, 7 + 9 * fdark, x1 + b + 2, y1 + 28 + 21 - 19, string_width_dynamic(str[a]) / 2 + 4, 1, 0, -1, 1)
 			// draw_sprite(spr_tabbuttons_f, 8 + 9 * fdark, x1 + b + string_width_dynamic(str[a]) + 10, y1 + 28 + 21 - 19)	
@@ -144,7 +144,7 @@ function draw_window_preferences() {
 			if (selected_tab = a && fdark) draw_set_color(11579568)
 		}
 	    draw_text_dynamic(x1 + b + 6, y1 + 30 + 21 - 8, str[a])
-	    if (mouse_check_button_released(mb_left) && c) nsel = a
+	    if (mouse_rectangle_click(x1 + b, y1 + 28 + 21 - 19, string_width_dynamic(str[a]) + 12, 18 + 21)) nsel = a
 	    b += string_width_dynamic(str[a]) + 12
 	}
 	}
@@ -357,7 +357,7 @@ function draw_window_preferences() {
 			if (theme = 3) draw_set_color(15987699)
 			if (theme = 3 && fdark) draw_set_color(2105376)
 			accentclick = mouse_rectangle(xx - 2, yy - 2, 17, 17)
-			if (accentclick = 1) accentclick += mouse_check_button(mb_left)
+			if (accentclick = 1) accentclick += (mouse_check_button(mb_left) && mouse_press_in_rectangle(xx - 2, yy - 2, 17, 17))
 			draw_roundrect_ext(xx - 2, yy - 2, xx + 15, yy + 15, 4, 4, false)
 			draw_theme_color()
 			draw_roundrect_ext(xx - 2, yy - 2, xx + 15, yy + 15, 4, 4, true)
@@ -365,7 +365,7 @@ function draw_window_preferences() {
 			draw_roundrect_ext(xx, yy, xx + 13, yy + 13, 4, 4, false)
 			if (language != 1) popup_set_window(xx - 2, yy - 2, 17, 17, "Click to change the theme's accent color.")
 			else popup_set_window(xx - 2, yy - 2, 17, 17, "点击更改此主题的主题色。")
-			if (mouse_check_button_released(mb_left) && accentclick) {
+			if (mouse_rectangle_click(xx - 2, yy - 2, 17, 17)) {
 				window = w_setaccent
 				resetcolor = true
 				if (windowsound) play_sound(soundinvoke, 45, 100, 50, 0)
