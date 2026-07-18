@@ -449,8 +449,12 @@ function control_draw() {
 	                                //}
 	                                if (fade=0) c += ((selbx = current_song.starta + a && selby = current_song.startb + b && select = 0 && window = 0  && cursmarker = 0) || s) * 0.5
 	                            }
-								realkey = current_song.song_key[current_song.starta + a, current_song.startb + b] + current_song.song_pit[current_song.starta + a, current_song.startb + b] / 100
-	                            draw_block(floor(centerx - (52 * 39) / 2) + floor(19.5 * (realkey + floor(realkey / 12) * 2 + (realkey mod 12 >= 8) + (realkey mod 12 >= 3))) + 4, rh - 154 - a * 32 - 32 + note_offset, current_song.song_ins[current_song.starta + a, current_song.startb + b], current_song.song_key[current_song.starta + a, current_song.startb + b], current_song.song_pan[current_song.starta + a, current_song.startb + b], current_song.song_vel[current_song.starta + a, current_song.startb + b] * (current_song.layervol[b] / 100), current_song.song_pit[current_song.starta + a, current_song.startb + b], c, s * selection_alpha)
+								var realkey = current_song.song_key[current_song.starta + a, current_song.startb + b] + current_song.song_pit[current_song.starta + a, current_song.startb + b] / 100
+								var realkey_octave = floor(realkey / 12)
+								var realkey_in_octave = realkey - realkey_octave * 12
+								// Interpolate through the wider B-C and E-F gaps instead of jumping across them.
+								var piano_position = realkey_octave * 14 + realkey_in_octave + clamp(realkey_in_octave - 2, 0, 1) + clamp(realkey_in_octave - 7, 0, 1)
+	                            draw_block(floor(centerx - (52 * 39) / 2) + floor(19.5 * piano_position) + 4, rh - 154 - a * 32 - 32 + note_offset, current_song.song_ins[current_song.starta + a, current_song.startb + b], current_song.song_key[current_song.starta + a, current_song.startb + b], current_song.song_pan[current_song.starta + a, current_song.startb + b], current_song.song_vel[current_song.starta + a, current_song.startb + b] * (current_song.layervol[b] / 100), current_song.song_pit[current_song.starta + a, current_song.startb + b], c, s * selection_alpha)
 	                        }
 	                    }
 	                } else {
