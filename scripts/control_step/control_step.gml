@@ -213,7 +213,7 @@ function control_step() {
 	}
 	
 	// Play column
-	if (floor(current_song.marker_pos) != floor(current_song.marker_prevpos) && floor(current_song.marker_pos) <= current_song.enda && (floor(current_song.marker_pos) != current_song.section_end || window = w_dragmarker || forward<>0 || marker_end = 0 || current_song.marker_prevpos >= current_song.section_end)) {
+	if (floor(current_song.marker_pos) != floor(current_song.marker_prevpos) && floor(current_song.marker_pos) <= current_song.enda && (floor(current_song.marker_pos) != current_song.section_end || window = w_dragmarker || forward<>0 || marker_end = 0 || !current_song.section_exists || current_song.section_end <= current_song.section_start || current_song.marker_prevpos >= current_song.section_end)) {
 	    var diff = floor(current_song.marker_pos) - floor(current_song.marker_prevpos)
 	    var start
 	    if (!playing || diff < 0 || diff > 3) {

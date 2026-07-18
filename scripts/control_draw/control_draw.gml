@@ -1089,7 +1089,7 @@ function control_draw() {
 	        current_song.marker_pos = current_song.enda + totalcols
 	        playing = 0
 	    }
-	    if (marker_end && current_song.marker_pos >= current_song.section_end && current_song.marker_prevpos < current_song.section_end) {
+	    if (marker_end && current_song.section_exists && current_song.section_end > current_song.section_start && current_song.marker_pos >= current_song.section_end && current_song.marker_prevpos < current_song.section_end) {
 	        current_song.marker_pos = current_song.section_end
 	        playing = 0
 	    }
@@ -1181,6 +1181,10 @@ function control_draw() {
 	if (current_song.section_exists) {
 	    current_song.section_start = median(0, current_song.section_start, current_song.enda + totalcols)
 	    current_song.section_end = median(0, current_song.section_end, current_song.enda + totalcols)
+	    // Clamping at the timeline bounds can collapse a section after the release check above.
+	    if (current_song.section_end = current_song.section_start && window != w_dragsection_start && window != w_dragsection_end) current_song.section_exists = 0
+	}
+	if (current_song.section_exists) {
 	    draw_set_alpha(0.25)
 	    draw_set_color(c_blue)
 	    draw_rectangle(x1 + 2 + floor(current_song.section_start - current_song.starta + 0.5) * 32 - note_offset, y1 + 2, x1 + 2 + floor(current_song.section_end - current_song.starta + 0.5) * 32 - note_offset, y1 + 33, 0)
