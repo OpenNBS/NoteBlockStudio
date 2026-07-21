@@ -25,8 +25,9 @@ function control_create() {
 	//show_message(get_execution_command() + "IDE: " + string(NOT_RUN_FROM_IDE))
 	p_num = parameter_count();
 	isplayer = (check_args("-player"));
-	filenamearg = check_args();
-	for (var i = 0; i < p_num; i += 1) {
+	filenamearg = find_song_path_arg();
+	// Linux runner arguments begin at index 0; Windows keeps the executable there.
+	for (var i = 0; i <= p_num; i += 1) {
 		if (parameter_string(i) = "-player" || parameter_string(i) == "--protocol-launcher") isplayer = 1
 	}
 	
@@ -38,22 +39,16 @@ function control_create() {
 	if (!isplayer) server_socket = network_create_server(network_socket_tcp, 30010, 1)
 	client_socket = -1
 	if (server_socket < 0 && !isplayer) {port_taken = 1; client_socket = network_create_socket(network_socket_tcp)}
-	if (p_num > 0) {
-		if (filenamearg != "" && (string_lower(filename_ext(filenamearg)) == ".mid" || string_lower(filename_ext(filenamearg)) == ".midi" ||
-			string_lower(filename_ext(filenamearg)) == ".schematic" || string_lower(filename_ext(filenamearg)) == ".nbs" ||
-			string_lower(filename_ext(filenamearg)) == ".zip")) {
-			if (port_taken) {
-				network_connect(client_socket, "127.0.0.1", 30010)
-				var temp_buffer = buffer_create(0, buffer_grow, 1)
-				buffer_write(temp_buffer, buffer_s8, 10)
-				buffer_write(temp_buffer, buffer_string, filenamearg)
-				network_send_packet(client_socket, temp_buffer, buffer_get_size(temp_buffer))
-				buffer_delete(temp_buffer)
-				destroy_self = 1
-				log("Sended opening song path, closing...")
-				game_end()
-			}
-		}
+	if (is_song_path_arg(filenamearg) && port_taken) {
+		network_connect(client_socket, "127.0.0.1", 30010)
+		var temp_buffer = buffer_create(0, buffer_grow, 1)
+		buffer_write(temp_buffer, buffer_s8, 10)
+		buffer_write(temp_buffer, buffer_string, filenamearg)
+		network_send_packet(client_socket, temp_buffer, buffer_get_size(temp_buffer))
+		buffer_delete(temp_buffer)
+		destroy_self = 1
+		log("Sended opening song path, closing...")
+		game_end()
 	}
 	if (!destroy_self) {
 	window_width = 0
@@ -831,27 +826,33 @@ function control_create() {
 
 	// Parse command line arguments
 	var p_num = parameter_count();
-	if (p_num > 1) {
-		for (var i = 1; i <= p_num; i++) {
-			var arg = parameter_string(i);
-			
-			if (arg == "-player") continue;
-			if (arg == "-game" || string_count("\\GMS2TEMP\\", arg) > 0) continue; // GMS runner
-			
-			// URL protocol
-			if (arg == "--protocol-launcher") {
-				if (p_num >= i + 1) {
-					protocol_data = parameter_string(i + 1);
-				}
-			
-			// File drop, etc.
-			} else if (string_replace(arg, " ", "") != "") {
-				log("Opening song from argument, arg: " + arg)
-				filenamearg = arg;
-				song_backupname = filename_name(filename_change_ext(filenamearg, ".nbs"));
-			}
-			
+	// Start at 0 so Linux does not lose its first user-supplied argument.
+	for (var arg_index = 0; arg_index <= p_num; arg_index++) {
+		var arg = parameter_string(arg_index);
+
+		if (arg == "-player") continue;
+		if (arg == "-game") {
+			arg_index += 1; // Skip the GameMaker runner payload (for example, game.unx)
+			continue;
 		}
+		if (string_count("\\GMS2TEMP\\", arg) > 0) continue; // GMS runner
+
+		// URL protocol
+		if (arg == "--protocol-launcher") {
+			if (p_num >= arg_index + 1) {
+				protocol_data = parameter_string(arg_index + 1);
+				arg_index += 1; // The URL belongs to --protocol-launcher, not file opening
+			}
+			continue;
+		}
+
+		// File drop, etc.
+		if (is_song_path_arg(arg)) {
+			log("Opening song from argument, arg: " + arg)
+			filenamearg = arg;
+			song_backupname = filename_name(filename_change_ext(filenamearg, ".nbs"));
+		}
+
 	}
 	
 	var args = ""
@@ -868,7 +869,7 @@ function control_create() {
 		download_song_start(download_url)
 	}
 	// Open song
-	if (os_type != os_macosx && p_num > 0) {
+	if (os_type != os_macosx && protocol_data == pointer_null && is_song_path_arg(filenamearg)) {
 		songs[song].filename = filenamearg;
 		if (songs[song].filename != "" &&
 			(string_lower(filename_ext(songs[song].filename)) == ".mid" || string_lower(filename_ext(songs[song].filename)) == ".midi" ||

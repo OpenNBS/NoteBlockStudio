@@ -1,0 +1,243 @@
+#!/bin/sh
+
+# AppImage entry point for Note Block Studio.
+# NBS_APPIMAGE_WRAPPER=1
+#
+# Besides launching the GameMaker payload, this keeps the per-user desktop
+# entries pointed at the AppImage's current location.  A normal .nbs launch is
+# kept separate from an nbs:// launch so only the latter enters player mode.
+
+set -u
+
+nbs_carriage_return=$(printf '\r')
+
+nbs_warn() {
+	printf '%s\n' "Note Block Studio AppImage: $*" >&2
+}
+
+nbs_desktop_escape() {
+	# Exec values are not shell commands. Escape the characters reserved by the
+	# Desktop Entry specification, including literal percent signs.
+	printf '%s' "$1" | sed \
+		-e 's/\\/\\\\/g' \
+		-e 's/"/\\"/g' \
+		-e 's/`/\\`/g' \
+		-e 's/\$/\\$/g' \
+		-e 's/%/%%/g'
+}
+
+nbs_replace_if_changed() {
+	nbs_replace_source=$1
+	nbs_replace_destination=$2
+
+	if [ -f "$nbs_replace_destination" ] && cmp -s "$nbs_replace_source" "$nbs_replace_destination"; then
+		rm -f "$nbs_replace_source"
+		return 1
+	fi
+
+	chmod 0644 "$nbs_replace_source"
+	mv -f "$nbs_replace_source" "$nbs_replace_destination"
+	return 0
+}
+
+nbs_copy_if_changed() {
+	nbs_copy_source=$1
+	nbs_copy_destination=$2
+
+	if [ -f "$nbs_copy_destination" ] && cmp -s "$nbs_copy_source" "$nbs_copy_destination"; then
+		return 1
+	fi
+
+	nbs_copy_temp=$(mktemp "${nbs_copy_destination}.tmp.XXXXXX") || return 2
+	if ! cp "$nbs_copy_source" "$nbs_copy_temp"; then
+		rm -f "$nbs_copy_temp"
+		return 2
+	fi
+	chmod 0644 "$nbs_copy_temp"
+	mv -f "$nbs_copy_temp" "$nbs_copy_destination"
+	return 0
+}
+
+nbs_register_desktop_integration() {
+	nbs_runtime_image=${APPIMAGE:-}
+	[ -n "$nbs_runtime_image" ] || return 0
+
+	# Desktop entry values are line based. Refuse paths that cannot be encoded
+	# safely rather than creating a malformed launcher.
+	case "$nbs_runtime_image" in
+		*"
+"*|*"$nbs_carriage_return"*)
+			nbs_warn "cannot register an AppImage whose path contains a newline"
+			return 0
+			;;
+	esac
+
+	nbs_home=${HOME:-}
+	nbs_data_home=${XDG_DATA_HOME:-}
+	if [ -z "$nbs_data_home" ]; then
+		[ -n "$nbs_home" ] || {
+			nbs_warn "HOME and XDG_DATA_HOME are unset; skipping desktop registration"
+			return 0
+		}
+		nbs_data_home=$nbs_home/.local/share
+	fi
+
+	nbs_applications_dir=$nbs_data_home/applications
+	nbs_icons_dir=$nbs_data_home/icons/hicolor/64x64/apps
+	nbs_main_desktop=$nbs_applications_dir/org.opennbs.onbs.desktop
+	nbs_protocol_desktop=$nbs_applications_dir/org.opennbs.onbs-protocol.desktop
+	nbs_main_desktop_id=org.opennbs.onbs.desktop
+	nbs_protocol_desktop_id=org.opennbs.onbs-protocol.desktop
+	nbs_main_was_present=0
+	nbs_protocol_was_present=0
+	[ -f "$nbs_main_desktop" ] && nbs_main_was_present=1
+	[ -f "$nbs_protocol_desktop" ] && nbs_protocol_was_present=1
+	nbs_desktop_changed=0
+	nbs_icon_changed=0
+
+	if ! mkdir -p "$nbs_applications_dir" "$nbs_icons_dir"; then
+		nbs_warn "could not create the per-user desktop integration directories"
+		return 0
+	fi
+
+	nbs_escaped_image=$(nbs_desktop_escape "$nbs_runtime_image") || {
+		nbs_warn "could not escape the AppImage path"
+		return 0
+	}
+
+	nbs_main_temp=$(mktemp "$nbs_applications_dir/.org.opennbs.onbs.desktop.XXXXXX") || return 0
+	cat >"$nbs_main_temp" <<EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Note Block Studio
+Comment=An open-source Minecraft music editor
+Exec="$nbs_escaped_image" %f
+Icon=org.opennbs.onbs
+Terminal=false
+Categories=AudioVideo;Audio;
+MimeType=audio/nbs;
+StartupNotify=true
+EOF
+	if nbs_replace_if_changed "$nbs_main_temp" "$nbs_main_desktop"; then
+		nbs_desktop_changed=1
+	fi
+
+	nbs_protocol_temp=$(mktemp "$nbs_applications_dir/.org.opennbs.onbs-protocol.desktop.XXXXXX") || return 0
+	cat >"$nbs_protocol_temp" <<EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Note Block Studio URL Handler
+NoDisplay=true
+Exec="$nbs_escaped_image" --protocol-launcher %u
+Icon=org.opennbs.onbs
+Terminal=false
+MimeType=x-scheme-handler/nbs;
+StartupNotify=true
+EOF
+	if nbs_replace_if_changed "$nbs_protocol_temp" "$nbs_protocol_desktop"; then
+		nbs_desktop_changed=1
+	fi
+
+	nbs_icon_source=$nbs_app_dir/usr/share/icons/hicolor/64x64/apps/org.opennbs.onbs.png
+	if [ -f "$nbs_icon_source" ]; then
+		if nbs_copy_if_changed "$nbs_icon_source" "$nbs_icons_dir/org.opennbs.onbs.png"; then
+			nbs_icon_changed=1
+		fi
+	fi
+
+	if [ "$nbs_desktop_changed" -eq 1 ] && command -v update-desktop-database >/dev/null 2>&1; then
+		update-desktop-database "$nbs_applications_dir" >/dev/null 2>&1 || \
+			nbs_warn "update-desktop-database failed"
+	fi
+
+	if [ "$nbs_icon_changed" -eq 1 ] && command -v gtk-update-icon-cache >/dev/null 2>&1; then
+		gtk-update-icon-cache -q -t -f "$nbs_data_home/icons/hicolor" >/dev/null 2>&1 || true
+	fi
+
+	nbs_mime_source=$nbs_app_dir/usr/share/mime/packages/opennbs-nbs.xml
+	if [ -f "$nbs_mime_source" ]; then
+		nbs_installed_mime=$nbs_data_home/mime/packages/opennbs-nbs.xml
+		if [ ! -f "$nbs_installed_mime" ] || ! cmp -s "$nbs_mime_source" "$nbs_installed_mime"; then
+			if command -v xdg-mime >/dev/null 2>&1; then
+				xdg-mime install --mode user "$nbs_mime_source" >/dev/null 2>&1 || \
+					nbs_warn "could not install the audio/nbs MIME definition"
+			else
+				mkdir -p "$nbs_data_home/mime/packages"
+				if nbs_copy_if_changed "$nbs_mime_source" "$nbs_installed_mime"; then
+					if command -v update-mime-database >/dev/null 2>&1; then
+						update-mime-database "$nbs_data_home/mime" >/dev/null 2>&1 || \
+							nbs_warn "update-mime-database failed"
+					else
+						nbs_warn "xdg-mime is unavailable; the audio/nbs MIME database was not refreshed"
+					fi
+				fi
+			fi
+		fi
+	fi
+
+	if command -v xdg-mime >/dev/null 2>&1; then
+		nbs_current_file_handler=$(xdg-mime query default audio/nbs 2>/dev/null || true)
+		if [ "$nbs_main_was_present" -eq 0 ] || [ -z "$nbs_current_file_handler" ] || [ "$nbs_current_file_handler" = "$nbs_main_desktop_id" ]; then
+			xdg-mime default "$nbs_main_desktop_id" audio/nbs >/dev/null 2>&1 || \
+				nbs_warn "could not set the default .nbs file handler"
+		fi
+
+		nbs_current_protocol_handler=$(xdg-mime query default x-scheme-handler/nbs 2>/dev/null || true)
+		if [ "$nbs_protocol_was_present" -eq 0 ] || [ -z "$nbs_current_protocol_handler" ] || [ "$nbs_current_protocol_handler" = "$nbs_protocol_desktop_id" ]; then
+			xdg-mime default "$nbs_protocol_desktop_id" x-scheme-handler/nbs >/dev/null 2>&1 || \
+				nbs_warn "could not set the default nbs:// handler"
+		fi
+	else
+		nbs_warn "xdg-mime is unavailable; desktop handlers were installed but not made default"
+	fi
+}
+
+nbs_app_dir=${APPDIR:-}
+if [ -z "$nbs_app_dir" ]; then
+	nbs_app_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 1
+fi
+
+nbs_register_desktop_integration
+
+nbs_payload_record=$nbs_app_dir/usr/lib/opennbs/payload-path
+if [ ! -r "$nbs_payload_record" ]; then
+	nbs_warn "missing payload record: $nbs_payload_record"
+	exit 127
+fi
+
+IFS= read -r nbs_payload_relative <"$nbs_payload_record" || nbs_payload_relative=
+case "/$nbs_payload_relative/" in
+	"//"|*"/../"*|*"/./"*|*"
+"*|*"$nbs_carriage_return"*)
+		nbs_warn "invalid payload path in $nbs_payload_record"
+		exit 127
+		;;
+esac
+
+case "$nbs_payload_relative" in
+	/*)
+		nbs_warn "payload path must be relative to APPDIR"
+		exit 127
+		;;
+esac
+
+nbs_payload=$nbs_app_dir/$nbs_payload_relative
+if [ ! -x "$nbs_payload" ]; then
+	nbs_warn "payload is not executable: $nbs_payload"
+	exit 127
+fi
+
+nbs_payload_dir=$(dirname -- "$nbs_payload")
+cd "$nbs_payload_dir" || exit 127
+
+# GameMaker's Linux runner exposes the first user argument as parameter 0,
+# while older NBS builds begin protocol parsing at parameter 1.  The existing
+# player flag is a harmless compatibility prefix that keeps the protocol flag
+# visible to both the old and corrected parsers.
+if [ "${1:-}" = "--protocol-launcher" ]; then
+	exec "$nbs_payload" -player "$@"
+fi
+
+exec "$nbs_payload" "$@"
