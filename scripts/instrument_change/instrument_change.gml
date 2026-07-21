@@ -26,11 +26,14 @@ function instrument_change(ins) {
 			if (!directory_exists_lib(filename_dir(newfn))) {
 				directory_create_lib(filename_dir(newfn))
 			}
+			// file_copy fails when the destination already exists, so replace the bundled copy
+			if (file_exists_lib(newfn)) files_delete_lib(newfn)
 			files_copy_lib(fn, newfn)
 		} else {
 			// Sound is elsewhere, copy to root of Sounds folder
 			relative_filename = filename_name(fn)
 			newfn = sounds_directory + relative_filename;
+			if (file_exists_lib(newfn)) files_delete_lib(newfn)
 			files_copy_lib(fn, newfn)
 		}
 		if (string_copy(ins.name, 0, 19) == "Custom instrument #") {
