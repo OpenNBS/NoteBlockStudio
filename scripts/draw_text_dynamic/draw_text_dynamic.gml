@@ -1,11 +1,12 @@
 function draw_text_dynamic(x, y, string, force = false){
 	// draw_text_dynamic()
+	var draw_string = string_compose_display(string)
 
 	// Skip drawing dynamic text when using English
 	var o = obj_controller
 	if (!force && o.language != 1) {
-		if (!o.hires || o.theme != 3) draw_text(x, y, string);
-		else draw_text_transformed(x, y, string, 0.25, 0.25, 0);
+		if (!o.hires || o.theme != 3) draw_text(x, y, draw_string);
+		else draw_text_transformed(x, y, draw_string, 0.25, 0.25, 0);
 		return;
 	}
 	
@@ -28,8 +29,8 @@ function draw_text_dynamic(x, y, string, force = false){
 	var is_not_ascii_prev = -2
 	draw_set_halign(fa_left)
 	if (halign != fa_left) {
-		for (var i = 1; i <= string_length(string); i += 1) {
-			char = string_char_at(string, i)
+		for (var i = 1; i <= string_length(draw_string); i += 1) {
+			char = string_char_at(draw_string, i)
 			char_code = ord(char)
 			is_not_ascii = is_nonascii(char_code)
 			font_changed = is_not_ascii != is_not_ascii_prev
@@ -50,8 +51,8 @@ function draw_text_dynamic(x, y, string, force = false){
 		lines = 0
 		is_not_ascii_prev = -2
 	}
-	for(var i = 1; i <= string_length(string); i += 1) {
-		char = string_char_at(string, i)
+	for(var i = 1; i <= string_length(draw_string); i += 1) {
+		char = string_char_at(draw_string, i)
 		char_code = ord(char)
 		is_not_ascii = is_nonascii(char_code)
 		font_changed = is_not_ascii != is_not_ascii_prev

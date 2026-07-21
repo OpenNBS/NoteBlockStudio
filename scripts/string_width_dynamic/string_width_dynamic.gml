@@ -1,4 +1,5 @@
 function string_width_dynamic(str){
+	str = string_compose_display(str)
 	var lines = 0;
 	var linewidth = [0];
 	var totalwidth = 0;
