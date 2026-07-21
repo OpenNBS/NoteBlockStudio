@@ -34,7 +34,10 @@ function draw_text_dynamic(x, y, string, force = false){
 			is_not_ascii = is_nonascii(char_code)
 			font_changed = is_not_ascii != is_not_ascii_prev
 			if (font_changed) {
-				draw_theme_font(o.currentfont, is_not_ascii, true)
+				if (is_not_ascii = 1) font_src_dynamic_select(o.currentfont, char, char_code, true)
+				else draw_theme_font(o.currentfont, is_not_ascii, true)
+			} else if (is_not_ascii = 1) {
+				font_src_dynamic_select(o.currentfont, char, char_code, true)
 			}
 			linewidth[lines] += string_width(char)
 			if (char = "\n") {lines += 1 array_push(linewidth, 0)}
@@ -53,7 +56,10 @@ function draw_text_dynamic(x, y, string, force = false){
 		is_not_ascii = is_nonascii(char_code)
 		font_changed = is_not_ascii != is_not_ascii_prev
 		if (font_changed) {
-			draw_theme_font(o.currentfont, is_not_ascii)
+			if (is_not_ascii = 1) font_src_dynamic_select(o.currentfont, char, char_code)
+			else draw_theme_font(o.currentfont, is_not_ascii)
+		} else if (is_not_ascii = 1) {
+			font_src_dynamic_select(o.currentfont, char, char_code)
 		}
 		y_offset = lines * 16
 		

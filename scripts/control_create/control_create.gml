@@ -657,6 +657,7 @@ function control_create() {
 	if (vers_tmp != version || vers_date_tmp != version_date) copy_bundled_files()
 	if (os_type = os_macosx) macos_enable_system_settings_menu()
 	tonextsave = autosave ? autosavemins : 0; // Defining autosavemins here to avoid the autosave when the first song is loaded after open the game.
+	font_src_dynamic_init()
 	menu_macos_init()
 	switch(language) {
 		default:

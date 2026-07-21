@@ -1,5 +1,6 @@
 function control_step() {
 	var current_song = songs[song]
+	font_src_dynamic_step()
 	
 	var targetspeed = 1000000 / room_speed
 	currspeed = targetspeed / delta_time
