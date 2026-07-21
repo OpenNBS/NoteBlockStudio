@@ -7442,6 +7442,7 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"extranotes.zip","CopyToMask":-1,"filePath":"datafiles/Data",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"instrumenttextures.zip","CopyToMask":-1,"filePath":"datafiles/Data",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"changelog.txt","CopyToMask":-1,"filePath":"datafiles/Data",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Touhou 9 - Reach for the moon(Remastered).nbs","CopyToMask":-1,"filePath":"datafiles/Songs",},
   ],
   "MetaData": {
     "IDEVersion": "2022.0.3.85",
