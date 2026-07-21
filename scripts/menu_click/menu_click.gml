@@ -247,6 +247,12 @@ function menu_click(argument0) {
 	        if (sel = 5) marker_end=!marker_end
 	        break
 	    }
+	    case "schexport_format": {
+	        sch_exp_format = sel
+	        structure = (sch_exp_format <= 1)
+	        sch_exp_minecraft_old = (sch_exp_format = 3)
+	        break
+	    }
 	    case "schexport_insblock": {
 	        var str, block, data;
 	        str = obj_menu.item_shortcut[obj_menu.selmenu, obj_menu.selitem]

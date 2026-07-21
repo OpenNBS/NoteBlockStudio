@@ -113,6 +113,7 @@ function save_settings() {
 	}
 
 	// Schematic export settings
+	ini_write_real_clean("schematic_export", "format",         sch_exp_format)
 	ini_write_real_clean("schematic_export", "use_old_format", sch_exp_minecraft_old)
 	ini_write_real_clean("schematic_export", "walkway_block",  sch_exp_walkway_block)
 	ini_write_real_clean("schematic_export", "walkway_data",   sch_exp_walkway_data)
