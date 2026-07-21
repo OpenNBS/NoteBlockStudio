@@ -25,7 +25,7 @@ function draw_text_dynamic(x, y, string, force = false){
 	var totalwidth = 0;
 	var longline = 0;
 	var halign = draw_get_halign();
-	var char, char_code, is_not_ascii, y_offset, font_changed;
+	var char, char_code, is_not_ascii, y_offset, font_changed, uses_dynamic_font;
 	var is_not_ascii_prev = -2
 	draw_set_halign(fa_left)
 	if (halign != fa_left) {
@@ -56,13 +56,16 @@ function draw_text_dynamic(x, y, string, force = false){
 		char_code = ord(char)
 		is_not_ascii = is_nonascii(char_code)
 		font_changed = is_not_ascii != is_not_ascii_prev
+		uses_dynamic_font = false
 		if (font_changed) {
-			if (is_not_ascii = 1) font_src_dynamic_select(o.currentfont, char, char_code)
+			if (is_not_ascii = 1) uses_dynamic_font = font_src_dynamic_select(o.currentfont, char, char_code)
 			else draw_theme_font(o.currentfont, is_not_ascii)
 		} else if (is_not_ascii = 1) {
-			font_src_dynamic_select(o.currentfont, char, char_code)
+			uses_dynamic_font = font_src_dynamic_select(o.currentfont, char, char_code)
 		}
-		y_offset = lines * 16
+		// Runtime font_add() rasterizes Source Han one logical pixel lower than
+		// the equivalent baked fnt_src_* asset in this GameMaker runtime.
+		y_offset = lines * 16 - uses_dynamic_font
 		
 		if (!o.hires || o.theme != 3) {
 			if (halign = fa_left) draw_text (x + width, y - 1 * !(!is_not_ascii) + y_offset, char)
