@@ -1,6 +1,6 @@
 function import_midi() {
 	// import_midi()
-	var a, b, deltapertick, t, e, channel, note, pos, noteuntil, yy, channelheight, posamount, framesps, smpte, ins, stop, vel, tempy, forvalue, tempvel, temppan, length, at;
+	var a, b, deltapertick, t, e, channel, note, pos, noteuntil, yy, channelheight, posamount, framesps, smpte, ins, stop, vel, tempy, forvalue, tempvel, temppan, length, at, fadepercent;
 	var ins1notes, ins2notes, ins3notes, ins4notes, ins5notes, ins6notes, ins7notes, ins8notes, ins9notes, ins10notes;
 	io_clear()
 	reset_add()
@@ -185,7 +185,30 @@ function import_midi() {
 				forvalue = pos + 1
 				if (channel != 9 && midi_eventuntil[t, e] != -1 && pos - noteuntil != 0) forvalue = noteuntil
 	            // Add block, go lower if failed
-				if (midi_is_note_fade(midi_ins[midi_channelpatch[channel], 0], 0)) {
+				if (w_midi_note_duration_fade && channel != 9 && midi_eventuntil[t, e] != -1 && pos - noteuntil != 0) {
+					for (var i = pos; i < forvalue; i++) {
+			            a = 0
+						yy = tempy
+						at = i - pos
+						// Keep the note head unchanged and fade only the generated tail.
+						tempvel = vel
+						temppan = 100
+						if (at != 0) {
+							length = forvalue - pos - 2
+							fadepercent = w_midi_note_duration_fade_start
+							if (length > 0) fadepercent += (w_midi_note_duration_fade_end - w_midi_note_duration_fade_start) * ((at - 1) / length)
+							tempvel = floor(vel * fadepercent / 100)
+							if (at % 2 = 0) temppan = 150
+							else temppan = 50
+						}
+			            while (1) {
+			                if (add_block(i, yy, songs[song].instrument_list[| ins], note, tempvel, temppan, 0)) break
+			                yy += 1
+			                a += 1
+			                if (a >= w_midi_maxheight && w_midi_maxheight < 20) break
+			            }
+					}
+				} else if (midi_is_note_fade(midi_ins[midi_channelpatch[channel], 0], 0)) {
 					for (var i = pos; i < forvalue; i++) {
 			            a = 0
 						yy = tempy
@@ -311,6 +334,9 @@ function import_midi() {
 	    w_midi_tempo = 1
 	    w_midi_octave = 1
 		w_midi_precision = 0
+		w_midi_note_duration_fade = 0
+		w_midi_note_duration_fade_start = 50
+		w_midi_note_duration_fade_end = 50
 	}
 	save_settings()
 	global.popup = 0

@@ -10,6 +10,7 @@ function pattern_export() {
 		fn = string(get_save_filename_ext("Note Block Pattern (*.nbp)|*.nbp", fsave, patternfolder, condstr(language !=1, "Save pattern", "保存分段")))
 	    if (fn = "") return 0
 	}
+	var pattern_instruments = selection_get_custom_instruments()
 	buffer = buffer_create(8, buffer_grow, 1)
 	buffer_write_byte(pat_version)
 	//	show_debug_message("pat_version " + string(pat_version))
@@ -28,6 +29,17 @@ function pattern_export() {
 	//		show_debug_message("selection_colfirst " + string(a) + " " + string(selection_colfirst[a]))
 		buffer_write_byte(songs[song].selection_collast[a])
 	//		show_debug_message("selection_collast " + string(a) + " " + string(selection_collast[a]))
+	}
+
+	// NBP v2 stores only the custom instrument definitions used by this pattern.
+	buffer_write_byte(array_length(pattern_instruments))
+	for (a = 0; a < array_length(pattern_instruments); a++) {
+		var ins = pattern_instruments[a]
+		buffer_write_short(ins.source_index)
+		buffer_write_string(ins.name)
+		buffer_write_string(ins.filename)
+		buffer_write_byte(ins.key)
+		buffer_write_byte(ins.press)
 	}
 	buffer_export(buffer, fn)
 	buffer_delete(buffer)

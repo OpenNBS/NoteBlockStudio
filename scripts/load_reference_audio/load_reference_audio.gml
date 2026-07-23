@@ -11,6 +11,9 @@ function load_reference_audio(){
 	songs[song].reference_option = 2
 	songs[song].reference_offset = 0
 	songs[song].reference_sound = -1
+	songs[song].reference_state = 0
+	songs[song].reference_has_last_position = false
+	songs[song].reference_last_position = 0
 	songs[song].reference_volume = 100
 	songs[song].reference_audio_file = fn
 	songs[song].reference_audio = -1

@@ -39,6 +39,8 @@ function reset_schematic_export(argument0) {
 	sch_exp_ground_block = 1
 	sch_exp_ground_data = 0
 
+	sch_exp_format = 0 // 0 = Structure Block NBT, 1 = Litematica NBT, 2 = 1.11-1.12 Schematic, 3 = pre-1.11 Schematic
+	structure = true
 	sch_exp_minecraft_old = false
 	sch_exp_layout = 1 // 0 = Circular walkway, 1 = Simple walkway, 2 = Classic
 	sch_exp_stereo = 4

@@ -64,7 +64,7 @@ function reset() {
 	setpit = 0
 
 	// Saving
-	save_version = nbs_version
+	songs[song].save_version = nbs_version
 	tonextsave = 0
 	tonextbackup = 0
 	backup_delete_own_tab()

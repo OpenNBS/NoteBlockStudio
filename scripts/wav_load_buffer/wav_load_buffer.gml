@@ -82,15 +82,6 @@ function wav_load_buffer(_fname)
         return -1;
     }
 
-    var bytes_per_sample = (bits div 8) * channels;
-    if (bytes_per_sample <= 0) {
-        log("Invalid sample size: bits=" + string(bits) + ", channels=" + string(channels));
-        buffer_delete(_buf);
-        return -1;
-    }
-
-    var samples = data_sz div bytes_per_sample;
-
     var fmt = (bits == 8)  ? buffer_u8  :
               ((bits == 16) ? buffer_s16 : -1);
     if (fmt == -1) {
@@ -107,7 +98,19 @@ function wav_load_buffer(_fname)
         return -1;
     }
 
-    var snd = audio_create_buffer_sound(_buf, fmt, rate, data_ofs, samples, ch_fmt);
+    var bytes_per_frame = (bits div 8) * channels;
+    if (rate <= 0) {
+        log("Invalid sample rate: " + string(rate));
+        buffer_delete(_buf);
+        return -1;
+    }
+
+    // buffer_peek() returns integer values in this runtime, so cast before division.
+    global.__temp_audio_duration__ = real(data_sz) / real(rate * bytes_per_frame);
+
+    // GameMaker expects the buffer length in bytes, not sample frames.
+    // Passing the frame count truncated 16-bit stereo WAVs to one quarter.
+    var snd = audio_create_buffer_sound(_buf, fmt, rate, data_ofs, data_sz, ch_fmt);
     //buffer_delete(_buf);
 	global.__temp_audio_buffer__ = _buf;
     return snd;

@@ -1,25 +1,23 @@
 // Set parent window of dialogs to be game window
 if (os_type = os_windows || os_type = os_macosx || os_type = os_linux) widget_set_owner(string(int64(window_handle())))
 
-// Copy defaults into sandbox to allow modification
+// Copy user-editable defaults into the save directory.
 directory_create(game_save_id)
-if (os_type = os_windows) {
-  if (!directory_exists(data_directory)) execute_program("Xcopy", @'/E /I "' + filename_dir(bundled_data_directory) + @'" "' + filename_dir(data_directory) + @'"', true)
-  if (!directory_exists(songs_directory)) execute_program("Xcopy", @'/E /I "' + filename_dir(bundled_songs_directory) + @'" "' + filename_dir(songs_directory) + @'"', true)
-  if (!directory_exists(pattern_directory)) execute_program("Xcopy", @'/E /I "' + filename_dir(bundled_pattern_directory) + @'" "' + filename_dir(pattern_directory) + @'"', true)
-} if (os_type = os_macosx) {
-  if (!directory_exists(data_directory)) execute_program("cp", @'-fR "' + filename_dir(bundled_data_directory) + @'/." "' + filename_dir(data_directory) + @'"', true)
-  //if (!directory_exists(songs_directory)) directory_create(songs_directory)
-  //if (!directory_exists(pattern_directory)) directory_create(pattern_directory)
-} if (os_type = os_linux) {
-  if (!directory_exists(data_directory)) execute_program("cp", @'-fR "' + filename_dir(bundled_data_directory) + @'/." "' + filename_dir(data_directory) + @'"', true)
-  if (!directory_exists(songs_directory)) execute_program("cp", @'-fR "' + filename_dir(bundled_songs_directory) + @'/." "' + filename_dir(songs_directory) + @'"', true)
-  if (!directory_exists(pattern_directory)) execute_program("cp", @'-fR "' + filename_dir(bundled_pattern_directory) + @'/." "' + filename_dir(pattern_directory) + @'"', true)
-} if (os_type = os_ios) {
-  if (!directory_exists(data_directory)) directory_copy(bundled_data_directory, data_directory);
-  if (!directory_exists(songs_directory)) directory_copy(bundled_songs_directory, songs_directory);
-  if (!directory_exists(pattern_directory)) directory_copy(bundled_pattern_directory, pattern_directory);
-}
+var copy_data = !directory_exists(data_directory)
+             || !directory_exists(sounds_directory)
+             || (os_type = os_windows && !file_exists(data_directory + "wallpaper.bat"))
+			 || !file_exists(data_directory + "changelog.txt")
+			 || !file_exists(data_directory + "credits.txt")
+			 || !file_exists(data_directory + "extranotes.txt")
+			 || !file_exists(data_directory + "instrumenttextures.txt")
+var copy_songs = (os_type != os_macosx && !directory_exists(songs_directory))
+var copy_patterns = (os_type != os_macosx && !directory_exists(pattern_directory))
+
+if (copy_data || copy_songs || copy_patterns) copy_bundled_files(copy_data, copy_songs, copy_patterns)
+
+// Old releases prefer DLLs in AppData over their own bundled copies.
+// Remove only known application libraries so downgrades load the matching DLLs.
+remove_legacy_copied_libraries()
 
 // Do everything else for create event...
 control_create();

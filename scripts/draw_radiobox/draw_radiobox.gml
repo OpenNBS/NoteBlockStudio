@@ -1,6 +1,6 @@
 function draw_radiobox() {
 	// draw_radiobox(x, y, expression, str, tip[, locked])
-	var xx, yy, expression, str, tip, m, lock;
+	var xx, yy, expression, str, tip, m, lock, pressed_in;
 	xx = argument[0]
 	yy = argument[1]
 	expression = argument[2]
@@ -9,6 +9,7 @@ function draw_radiobox() {
 	lock = 0
 	if (argument_count > 5)
 	    lock = argument[5]
+	pressed_in = mouse_press_in_rectangle(xx, yy, 12 + string_width_dynamic(str) + 8, 12)
 	if (tip != "") popup_set_window(xx, yy, 12 + string_width_dynamic(str) + 8, 12, tip)
 	if (!hires || theme != 3) {
 		if (lock = 1) {
@@ -24,12 +25,12 @@ function draw_radiobox() {
 		} else {
 		    m = mouse_rectangle(xx, yy, 12 + string_width_dynamic(str) + 8, 12)
 		    if (w_isdragging > 0) m = 0
-		    if (m) m += mouse_check_button(mb_left)
+		    if (m) m += (mouse_check_button(mb_left) && pressed_in)
 		    draw_sprite(spr_radiobox, m + 6 * theme + 6 * (theme = 3) * fdark, xx, yy)
 		    if (expression) draw_sprite_ext(spr_radiobox, 3 + 6 * theme, xx, yy, 1, 1, 0, accent[5] * (theme = 3) - !(theme = 3), draw_get_alpha())
 		    draw_text_dynamic(xx + 18, yy - 1, str)
-			if (m && mouse_check_button_released(mb_left) && windowsound && theme = 3 && instance_exists(obj_menu)) play_sound(soundinvoke, 45, 100, 50, 0)
-		    return (m && mouse_check_button_released(mb_left)) * (!instance_exists(obj_menu))
+			if (m && pressed_in && mouse_check_button_released(mb_left) && windowsound && theme = 3 && instance_exists(obj_menu)) play_sound(soundinvoke, 45, 100, 50, 0)
+		    return (m && pressed_in && mouse_check_button_released(mb_left)) * (!instance_exists(obj_menu))
 		}
 	} else {
 		if (lock = 1) {
@@ -60,7 +61,7 @@ function draw_radiobox() {
 		} else {
 		    m = mouse_rectangle(xx, yy, 12 + string_width_dynamic(str) + 8, 12)
 		    if (w_isdragging > 0) m = 0
-		    if (m) m += mouse_check_button(mb_left)
+		    if (m) m += (mouse_check_button(mb_left) && pressed_in)
 			if (expression) {
 				draw_set_color(accent[5])
 			} else {
@@ -88,8 +89,8 @@ function draw_radiobox() {
 			if (m == 2 || expression) draw_circle(xx + 5, yy + 6, 3 + (m == 1 && expression), 0)
 			draw_theme_color()
 		    draw_text_dynamic(xx + 18, yy - 1, str)
-			if (m && mouse_check_button_released(mb_left) && windowsound && theme = 3 && instance_exists(obj_menu)) play_sound(soundinvoke, 45, 100, 50, 0)
-		    return (m && mouse_check_button_released(mb_left)) * (!instance_exists(obj_menu))
+			if (m && pressed_in && mouse_check_button_released(mb_left) && windowsound && theme = 3 && instance_exists(obj_menu)) play_sound(soundinvoke, 45, 100, 50, 0)
+		    return (m && pressed_in && mouse_check_button_released(mb_left)) * (!instance_exists(obj_menu))
 		}
 	}
 

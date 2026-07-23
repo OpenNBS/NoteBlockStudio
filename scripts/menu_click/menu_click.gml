@@ -74,60 +74,60 @@ function menu_click(argument0) {
 			var insoffset = ds_list_size(songs[song].instrument_list) + insmenu - 1
 			var ins = sel - 18
 			ins -= floor(ins / 26) // subtract the "More..." entries to get the instrument number
-	        if (sel = 0) action_undo()
-	        if (sel = 1) action_redo()
-	        if (sel = 2) action_copy()
-	        if (sel = 3) action_cut()
-	        if (sel = 4) {
-				var x1a = -2
-				var y1a = -2
-				if (!fullscreen && show_layers) {
-					x1a = 264
-				}
-				if (fullscreen) {
-					y1a = -2
-				} else {
-					y1a = 52 + get_tab_offset()
-				}
-				var selbxa = songs[song].starta + floor((mouse_x - (x1a + 2)) / 32)
-				var selbya = songs[song].startb + floor((mouse_y - (y1a + 34)) / 32)
-				if (selbxa > -1 && selbya > -1) action_paste(selbxa, selbya)
-				else action_paste(songs[song].starta, songs[song].startb)
+		    if (sel = 0) action_undo()
+		    if (sel = 1) action_redo()
+		    if (sel = 2) action_copy()
+		    if (sel = 3) action_cut()
+		    if (sel = 4) {
+					var x1a = -2
+					var y1a = -2
+					if (!fullscreen && show_layers) {
+						x1a = 264
+					}
+					if (fullscreen) {
+						y1a = -2
+					} else {
+						y1a = 52 + get_tab_offset()
+					}
+					var selbxa = songs[song].starta + floor((mouse_x - (x1a + 2)) / 32)
+					var selbya = songs[song].startb + floor((mouse_y - (y1a + 34)) / 32)
+					if (selbxa > -1 && selbya > -1) action_paste(selbxa, selbya)
+					else action_paste(songs[song].starta, songs[song].startb)
 			}
-	        if (sel = 5) action_delete()
-	        if (sel = 6) select_all(-1, 0)
-	        if (sel = 7) selection_place(0)
-	        if (sel = 8) selection_invert()
-	        if (sel = 9) select_all(songs[song].instrument, 0)
-	        if (sel = 10) select_all(songs[song].instrument, 1)
-	        if (sel = 11) mode_action(1)
-	        if (sel = 12) mode_action(2)
-	        if (sel = 13) mode_action(3)
-	        if (sel = 14) mode_action(4)
-	        if (sel = 15 && editmode != m_key) mode_action(5)
-	        if (sel = 16 && editmode != m_key) mode_action(6)
-	        if (sel > 17 && sel < 18 + insoffset) selection_changeins(songs[song].instrument_list[| ins])
-	        if (sel = 18 + insoffset) selection_expand()
-	        if (sel = 19 + insoffset) selection_compress()
-	        if (sel = 21 + insoffset) window = w_tremolo
-	        if (sel = 22 + insoffset) window = w_stereo
+		    if (sel = 5) action_delete()
+		    if (sel = 6) select_all(-1, 0)
+		    if (sel = 7) selection_place(0)
+		    if (sel = 8) selection_invert()
+		    if (sel = 9) select_all(songs[song].instrument, 0)
+		    if (sel = 10) select_all(songs[song].instrument, 1)
+		    if (sel = 11) mode_action(1)
+		    if (sel = 12) mode_action(2)
+		    if (sel = 13) mode_action(3)
+		    if (sel = 14) mode_action(4)
+		    if (sel = 15 && editmode != m_key) mode_action(5)
+		    if (sel = 16 && editmode != m_key) mode_action(6)
+		    if (sel > 17 && sel < 18 + insoffset) selection_changeins(songs[song].instrument_list[| ins])
+		    if (sel = 18 + insoffset) selection_expand()
+		    if (sel = 19 + insoffset) selection_compress()
+		    if (sel = 21 + insoffset) window = w_tremolo
+		    if (sel = 22 + insoffset) window = w_stereo
 			if (sel = 23 + insoffset) window = w_arpeggio
-	        if (sel = 24 + insoffset) window = w_portamento
-	        if (sel = 25 + insoffset) macro_vibrato()
+		    if (sel = 24 + insoffset) window = w_portamento
+		    if (sel = 25 + insoffset) macro_vibrato()
 			if (sel = 26 + insoffset) window = w_stagger
-	        if (sel = 27 + insoffset) macro_chorus()
-	        if (sel = 28 + insoffset) macro_velocitylfo()
-	        if (sel = 29 + insoffset) macro_fadein()
-	        if (sel = 30 + insoffset) macro_fadeout()
-	        if (sel = 31 + insoffset) macro_replacekey()
-	        if (sel = 32 + insoffset) window = w_setvelocity
-	        if (sel = 33 + insoffset) window = w_setpanning
-	        if (sel = 34 + insoffset) window = w_setpitch
-	        if (sel = 35 + insoffset) macro_reset()
-	        if (sel = 36 + insoffset) {
-	            if (language != 1) {if (question("Transpose selected notes so that they fall within Minecraft's 2 octaves?", "Transpose notes")) selection_transpose()}
-	            else {if (question("转换音符使其在 Minecraft 的 2 八度以内吗？", "转换音符")) selection_transpose()}
-	        }
+		    if (sel = 27 + insoffset) macro_chorus()
+		    if (sel = 28 + insoffset) macro_velocitylfo()
+		    if (sel = 29 + insoffset) macro_fadein()
+		    if (sel = 30 + insoffset) macro_fadeout()
+		    if (sel = 31 + insoffset) macro_replacekey()
+		    if (sel = 32 + insoffset) window = w_setvelocity
+		    if (sel = 33 + insoffset) window = w_setpanning
+		    if (sel = 34 + insoffset) window = w_setpitch
+		    if (sel = 35 + insoffset) macro_reset()
+		    if (sel = 36 + insoffset) {
+		        if (language != 1) {if (question("Transpose selected notes so that they fall within Minecraft's 2 octaves?", "Transpose notes")) selection_transpose()}
+		        else {if (question("转换音符使其在 Minecraft 的 2 八度以内吗？", "转换音符")) selection_transpose()}
+		    }
 	        break
 	    }
 	    case "editext": {
@@ -245,6 +245,12 @@ function menu_click(argument0) {
 	        if (sel = 3) selection_add(songs[song].section_start, 0, songs[song].section_end - 1, songs[song].endb, 0, 0)
 	        if (sel = 4) marker_start=!marker_start
 	        if (sel = 5) marker_end=!marker_end
+	        break
+	    }
+	    case "schexport_format": {
+	        sch_exp_format = sel
+	        structure = (sch_exp_format <= 1)
+	        sch_exp_minecraft_old = (sch_exp_format = 3)
 	        break
 	    }
 	    case "schexport_insblock": {

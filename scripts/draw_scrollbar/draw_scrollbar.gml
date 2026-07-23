@@ -1,6 +1,6 @@
 function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, argument5, argument6, argument7) {
-	// draw_scrollbar(id, x, y, slotwh, slots, maxslots, cantscroll, window)
-	var i, xx, yy, swh, s, ms, mwh, bwh, bpos, ind, locked, cantscroll, win;
+	// draw_scrollbar(id, x, y, slotwh, slots, maxslots, cantscroll, window[, wheel_speed])
+	var i, xx, yy, swh, s, ms, mwh, bwh, bpos, ind, locked, cantscroll, win, wheel_speed;
 	i = argument0
 	xx = argument1
 	yy = argument2
@@ -9,6 +9,8 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	ms = argument5
 	cantscroll = argument6
 	win = argument7
+	wheel_speed = 1
+	if (argument_count > 8) wheel_speed = argument[8]
 	mwh = swh * s
 	bwh = max(10, (s / ms) * (s * swh))
 	bpos = (sb_val[i] / ms) * (s * swh)
@@ -18,7 +20,7 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	//Horizontal scrollbar
 	if (sb_dir[i] = 0) {
 	    if (sb_sel = i && sb_drag = -1 && (window = 0 || win = 1) && cantscroll = 0) {
-	        sb_val[i] += (mouse_wheel_down_dynamic() - mouse_wheel_up_dynamic()) * (!volume_scroll)
+	        sb_val[i] += (mouse_wheel_down_dynamic() - mouse_wheel_up_dynamic()) * (!volume_scroll) * wheel_speed
 	        sb_val[i] = median(0, sb_val[i], ms - s)
 	        bpos = (sb_val[i] / ms) * (s * swh)
 	    }
@@ -157,7 +159,7 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	//Vertical scrollbar
 	else {
 	    if (sb_sel = i && sb_drag = -1 && (window = 0 || win = 1) && cantscroll = 0) {
-	        sb_val[i] += (mouse_wheel_down_dynamic() - mouse_wheel_up_dynamic()) * (!volume_scroll)
+	        sb_val[i] += (mouse_wheel_down_dynamic() - mouse_wheel_up_dynamic()) * (!volume_scroll) * wheel_speed
 	        sb_val[i] = median(0, sb_val[i], ms - s)
 	        bpos = (sb_val[i] / ms) * (s * swh)
 	    }

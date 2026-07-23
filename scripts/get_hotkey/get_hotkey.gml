@@ -72,77 +72,77 @@ function get_hotkey(action){
 		}
 		case "tremolo": {
 			if (os_type != os_macosx) return "Ctrl+Shift+A"
-			else return "⌃ ⇧ A"
+			else return "^ ⇧ A"
 			break
 		}
 		case "stereo": {
 			if (os_type != os_macosx) return "Ctrl+Shift+S"
-			else return "⌃ ⇧ S"
+			else return "^ ⇧ S"
 			break
 		}
 		case "arpeggio": {
 			if (os_type != os_macosx) return "Ctrl+Shift+D"
-			else return "⌃ ⇧ D"
+			else return "^ ⇧ D"
 			break
 		}
 		case "portamento": {
 			if (os_type != os_macosx) return "Ctrl+Shift+F"
-			else return "⌃ ⇧ F"
+			else return "^ ⇧ F"
 			break
 		}
 		case "vibrato": {
 			if (os_type != os_macosx) return "Ctrl+Shift+G"
-			else return "⌃ ⇧ G"
+			else return "^ ⇧ G"
 			break
 		}
 		case "stagger": {
 			if (os_type != os_macosx) return "Ctrl+Shift+H"
-			else return "⌃ ⇧ H"
+			else return "^ ⇧ H"
 			break
 		}
 		case "chorus": {
 			if (os_type != os_macosx) return "Ctrl+Shift+J"
-			else return "⌃ ⇧ J"
+			else return "^ ⇧ J"
 			break
 		}
 		case "volume_lfo": {
 			if (os_type != os_macosx) return "Ctrl+Shift+K"
-			else return "⌃ ⇧ K"
+			else return "^ ⇧ K"
 			break
 		}
 		case "fade_in": {
 			if (os_type != os_macosx) return "Ctrl+Shift+Q"
-			else return "⌃ ⇧ Q"
+			else return "^ ⇧ Q"
 			break
 		}
 		case "fade_out": {
 			if (os_type != os_macosx) return "Ctrl+Shift+W"
-			else return "⌃ ⇧ W"
+			else return "^ ⇧ W"
 			break
 		}
 		case "replace_key": {
 			if (os_type != os_macosx) return "Ctrl+Shift+E"
-			else return "⌃ ⇧ E"
+			else return "^ ⇧ E"
 			break
 		}
 		case "set_velocity": {
 			if (os_type != os_macosx) return "Ctrl+Shift+R"
-			else return "⌃ ⇧ R"
+			else return "^ ⇧ R"
 			break
 		}
 		case "set_panning": {
 			if (os_type != os_macosx) return "Ctrl+Shift+T"
-			else return "⌃ ⇧ T"
+			else return "^ ⇧ T"
 			break
 		}
 		case "set_pitch": {
 			if (os_type != os_macosx) return "Ctrl+Shift+Y"
-			else return "⌃ ⇧ Y"
+			else return "^ ⇧ Y"
 			break
 		}
 		case "reset_properties": {
 			if (os_type != os_macosx) return "Ctrl+Shift+U"
-			else return "⌃ ⇧ U"
+			else return "^ ⇧ U"
 			break
 		}
 		case "new_song": {
@@ -167,12 +167,12 @@ function get_hotkey(action){
 		}
 		case "ins_ctrl": {
 			if (os_type != os_macosx) return "Ctrl+"
-			else return "⌃ "
+			else return "^ "
 			break
 		}
 		case "ins_ctrl_shift": {
 			if (os_type != os_macosx) return "Ctrl+Shift+"
-			else return "⌃ ⇧ "
+			else return "^ ⇧ "
 			break
 		}
 		case "preferences": {

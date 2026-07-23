@@ -1,5 +1,15 @@
 function block_other_track(x, y, z, id, data){
+	if (!obj_controller.structure) {
+		sch_block_write(x, y, z, id)
+		sch_data_write(x, y, z, data)
+		return
+	}
+	if (id = 25) return // Note blocks are emitted once, with their final state and block entity, by track_export().
 	var insnum = ds_list_size(obj_controller.songs[obj_controller.song].instrument_list)
+	var blockx = 99 - y
+	structure_max_x = max(structure_max_x, blockx)
+	structure_max_y = max(structure_max_y, z)
+	structure_max_z = max(structure_max_z, x)
 	if (id = 0) TAG_Int("state", insnum * 26 + 4) //air
 	else if (id = 35 && data = 11) TAG_Int("state", insnum * 26 + 3) //blue_wool
 	else if (id = 65) TAG_Int("state", insnum * 26 + 5) //ladder
@@ -23,7 +33,7 @@ function block_other_track(x, y, z, id, data){
 		}
 	}
 	TAG_List("pos", 3, 3)
-		buffer_write_int_be(99 - y)
+		buffer_write_int_be(blockx)
 		buffer_write_int_be(z)
 		buffer_write_int_be(x)
 	TAG_End()

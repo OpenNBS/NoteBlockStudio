@@ -6,7 +6,7 @@ function toggle_playing(argument0) {
 	else macos_menu_last_refresh = current_time
 	if (playing = 1) {
 	    if (songs[song].marker_pos = songs[song].enda + argument0) songs[song].marker_pos = 0
-	    if (marker_start && songs[song].section_exists) songs[song].marker_pos = songs[song].section_start
+	    if (marker_start && songs[song].section_exists && songs[song].section_end > songs[song].section_start) songs[song].marker_pos = songs[song].section_start
 	    if (marker_follow = 1) {
 	        if (marker_pagebypage = 1 && (songs[song].starta + argument0 - 2 < songs[song].marker_pos || songs[song].starta > songs[song].marker_pos)) {
 	            songs[song].starta = median(0, songs[song].marker_pos - 1, songs[song].enda)

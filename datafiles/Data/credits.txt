@@ -96,6 +96,28 @@ by Valentin Berlier
 pybind11|https://github.com/pybind/pybind11
 by Wenzel Jakob
 
+*Fonts
+
+Source Han Sans|https://github.com/adobe-fonts/source-han-sans
+by Adobe, Google, Sandoll, and contributors
+SIL Open Font License 1.1
+
+Liberation Sans|https://github.com/liberationfonts/liberation-fonts
+by Google, Red Hat, and contributors
+SIL Open Font License 1.1
+
+Noto Sans Symbols 2|https://github.com/notofonts/symbols
+by the Noto Project Authors
+SIL Open Font License 1.1
+
+Open Sans|https://github.com/googlefonts/opensans
+by Steve Matteson, commissioned by Google
+Apache License 2.0
+
+WeblySleek UI
+by Mat Douglas
+Public domain
+
 ---
 
 FFmpeg and LAME are licensed under the
@@ -123,6 +145,5 @@ for making OpenNBS what it is!
 
 
 ---
-
 
 

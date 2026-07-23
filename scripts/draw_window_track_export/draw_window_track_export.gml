@@ -2,7 +2,7 @@ function draw_window_track_export() {
 	// draw_window_track_export()
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
-	var x1, y1, a, b, c, d, str, nsel, tabs, tabstr, tabw, tabtip, menun, menua, menub, block, blocks, c1, c2;
+	var x1, y1, a, b, c, d, str, nsel, tabs, tabstr, tabw, tabtip, menun, menua, menub, block, blocks, c1, c2, formatstr, formatmenu;
 	curs = cr_default
 	x1 = floor(rw / 2 - 275)
 	y1 = floor(rh / 2 - 200) + windowoffset
@@ -96,10 +96,19 @@ function draw_window_track_export() {
 	    draw_sprite(spr_schematic_exp, sch_exp_layout, x1 + 15, y1 + 56)
 	    draw_text_dynamic(x1 + 16, y1 + 220, "Layout:")
 	    draw_radiobox(x1 + 32, y1 + 240, sch_exp_layout = 1, "Simple walkway", "Generate a simple walkway that stretches\nas far as the length of the song.", 1)
-	    draw_text_dynamic(x1 + 16, y1 + 280, "For Minecraft version:")
-	    draw_radiobox(x1 + 32, y1 + 300, 1, "1.13+ (Structure Block)", "Create a Structure block file that is compatible with 1.13+.\nOnly the default block choice is supported.", 1)
+	    draw_text_dynamic(x1 + 16, y1 + 280, "Format:")
+		formatstr = condstr(sch_exp_format = 0, ".nbt (Structure Block)") + condstr(sch_exp_format = 1, ".nbt (Litematica)") + condstr(sch_exp_format = 2, ".schematic (1.11-1.12)") + condstr(sch_exp_format = 3, ".schematic (pre 1.11)")
+		draw_area(x1 + 16, y1 + 298, x1 + 166, y1 + 319)
+		if ((draw_abutton(x1 + 148, y1 + 300) || (mouse_rectangle(x1 + 16, y1 + 298, 150, 21) && mouse_check_button_pressed(mb_left))) && wmenu = 0) {
+			formatmenu = check(sch_exp_format = 0) + ".nbt (Structure Block)|" + check(sch_exp_format = 1) + ".nbt (Litematica)|" + check(sch_exp_format = 2) + ".schematic (1.11-1.12)|" + check(sch_exp_format = 3) + ".schematic (pre 1.11)"
+			menu = show_menu_ext("schexport_format", x1 + 16, y1 + 319, formatmenu)
+		}
+		draw_theme_font(font_small)
+		draw_text_dynamic(x1 + 21, y1 + 302, formatstr)
+		draw_theme_font(font_main)
+		popup_set_window(x1 + 16, y1 + 298, 170, 21, "Structure Block writes a 1.13-compatible 32-block size header.\nLitematica writes the exact structure dimensions.")
 		if (draw_checkbox(x1 + 170, y1 + 240, sch_exp_includelocked, "Include locked layers", "Whether to include locked layers in the Schematic.", false, true)) sch_exp_includelocked=!sch_exp_includelocked
-		if (draw_checkbox(x1 + 170, y1 + 260 + (sch_exp_layout = 0) * 20, command_block, "Use command blocks", "Whether to use command blocks instead of note blocks for a wider octave range.\n(Extra notes pack required)", false, true)) command_block=!command_block
+		if (structure && draw_checkbox(x1 + 170, y1 + 260 + (sch_exp_layout = 0) * 20, command_block, "Use command blocks", "Whether to use command blocks instead of note blocks for a wider octave range.\n(Extra notes pack required)", false, true)) command_block=!command_block
 	    draw_text_dynamic(x1 + 380, y1 + 220, "Note blocks:")
 	    draw_text_dynamic(x1 + 380, y1 + 220 + 16 * 1, "Repeaters:")
 	    draw_text_dynamic(x1 + 380, y1 + 220 + 16 * 2, "Size:")
@@ -114,10 +123,19 @@ function draw_window_track_export() {
 		draw_sprite(spr_schematic_exp, sch_exp_layout, x1 + 15, y1 + 56)
 	    draw_text_dynamic(x1 + 16, y1 + 220, "分布:")
 	    draw_radiobox(x1 + 32, y1 + 240, 1, "普通过道", "生成过道延伸到歌曲末尾。", 1)
-	    draw_text_dynamic(x1 + 16, y1 + 280, "导出为 Minecraft 版本:")
-	    draw_radiobox(x1 + 32, y1 + 300, 1, "1.13+", "创建一个兼容 1.13+ 的结构方块文件。", 1)
+	    draw_text_dynamic(x1 + 16, y1 + 280, "格式:")
+		formatstr = condstr(sch_exp_format = 0, ".nbt (结构方块)") + condstr(sch_exp_format = 1, ".nbt (Litematica)") + condstr(sch_exp_format = 2, ".schematic (1.11-1.12)") + condstr(sch_exp_format = 3, ".schematic (pre 1.11)")
+		draw_area(x1 + 16, y1 + 298, x1 + 166, y1 + 319)
+		if ((draw_abutton(x1 + 148, y1 + 300) || (mouse_rectangle(x1 + 16, y1 + 298, 150, 21) && mouse_check_button_pressed(mb_left))) && wmenu = 0) {
+			formatmenu = check(sch_exp_format = 0) + ".nbt (结构方块)|" + check(sch_exp_format = 1) + ".nbt (Litematica)|" + check(sch_exp_format = 2) + ".schematic (1.11-1.12)|" + check(sch_exp_format = 3) + ".schematic (pre 1.11)"
+			menu = show_menu_ext("schexport_format", x1 + 16, y1 + 319, formatmenu)
+		}
+		draw_theme_font(font_small)
+		draw_text_dynamic(x1 + 21, y1 + 302, formatstr)
+		draw_theme_font(font_main)
+		popup_set_window(x1 + 16, y1 + 298, 170, 21, "结构方块格式写入兼容 1.13 的 32 格尺寸。\nLitematica 格式写入结构的实际尺寸。")
 		if (draw_checkbox(x1 + 170, y1 + 240, sch_exp_includelocked, "包括已静音的层", "是否在结构内包括已静音的层。", false, true)) sch_exp_includelocked=!sch_exp_includelocked
-		if (draw_checkbox(x1 + 170, y1 + 260, command_block, "使用命令方块", "是否使用命令方块代替音符盒以获得更广音域。\n（需要更多音符资源包）", false, true)) command_block=!command_block
+		if (structure && draw_checkbox(x1 + 170, y1 + 260, command_block, "使用命令方块", "是否使用命令方块代替音符盒以获得更广音域。\n（需要更多音符资源包）", false, true)) command_block=!command_block
 	    draw_text_dynamic(x1 + 380, y1 + 220, "音符盒:")
 	    draw_text_dynamic(x1 + 380, y1 + 220 + 16 * 1, "中继器:")
 	    draw_text_dynamic(x1 + 380, y1 + 220 + 16 * 2, "大小:")

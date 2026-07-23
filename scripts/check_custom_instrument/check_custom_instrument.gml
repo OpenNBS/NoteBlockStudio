@@ -1,31 +1,21 @@
 function check_custom_instrument(argument0) {
 	// check_custom_instrument(string)
-	var str, total_vals, val
-	str = argument0
-	var arr_data = selection_to_array_ext()
-	total_vals = array_length(arr_data)
-	val = 0
-	//show_debug_message(string_count("-1", str))
-	//for (var i = 0; i < total_vals; i++;) {show_debug_message(arr_data[i])}
-	while (val < total_vals) {
-		val += 2
-		if arr_data[val] >= ds_list_size(songs[song].instrument_list) {
-	//		show_debug_message("custom instrument found")
-			return -1
+	var arr_data = selection_to_array(argument0)
+	var total_vals = array_length(arr_data)
+	var at = 0
+
+	while (at < total_vals) {
+		at++ // Column offset
+		while (at < total_vals) {
+			var row_offset = arr_data[at++]
+			if (row_offset == -1) break
+			if (at >= total_vals) return -1
+
+			var instrument_index = arr_data[at++]
+			if (instrument_index < 0 || instrument_index >= ds_list_size(songs[song].instrument_list)) return -1
+			at += 4 // Key, velocity, panning and fine pitch
 		}
-		val += 5
-		while arr_data[val] != -1 {
-			val += 1
-			if arr_data[val] >= ds_list_size(songs[song].instrument_list) {
-	//			show_debug_message("custom instrument found")
-				return -1
-			}
-			val += 5
-		}
-		val ++
 	}
-	//show_debug_message("no custom instrument found")
+
 	return 0
-
-
 }

@@ -9,6 +9,9 @@ function selection_load(argument0, argument1, argument2, argument3) {
 	if (str = "") return 0
 	ca = 0
 	h = 0
+	var instrument_map = -1
+	var invalid_instrument = false
+	if (argument_count > 4) instrument_map = argument[4]
 	
 	var str_len = string_length(str)
 	var str_buffer = string_buffer_create(str)
@@ -31,6 +34,17 @@ function selection_load(argument0, argument1, argument2, argument3) {
 	        pipe_pos = buffer_pos_char(str_buffer, str_len, "|", pipe_pos + 1)
 			val = real(buffer_substr_copy(str_buffer, prev_pipe_pos + 1, pipe_pos - prev_pipe_pos - 1, val_buffer))
 			prev_pipe_pos = pipe_pos
+			if (instrument_map != -1 && val >= first_custom_index) {
+				if (ds_map_exists(instrument_map, val)) val = instrument_map[? val]
+				else {
+					val = 0
+					invalid_instrument = true
+				}
+			}
+			if (val < 0 || val >= ds_list_size(songs[song].instrument_list)) {
+				val = 0
+				invalid_instrument = true
+			}
 	        songs[song].selection_ins[ca, cb] = songs[song].instrument_list[| val]
 	        pipe_pos = buffer_pos_char(str_buffer, str_len, "|", pipe_pos + 1)
 			val = real(buffer_substr_copy(str_buffer, prev_pipe_pos + 1, pipe_pos - prev_pipe_pos - 1, val_buffer))
@@ -64,4 +78,6 @@ function selection_load(argument0, argument1, argument2, argument3) {
 	songs[song].selection_h = h + 1
 	selection_code_update()
 	selection_expand_layers()
+	if (invalid_instrument) set_msg(condstr(language != 1, "Some notes used unavailable instruments and were changed to Harp", "部分音符使用了不可用的音色，已替换为 Harp"))
+	return !invalid_instrument
 }

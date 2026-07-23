@@ -91,8 +91,14 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	    inserttext = ""
 	    lh = string_height_dynamic(" ")
 	    mouseover = (mouse_x >= xx && mouse_x < xx + w && mouse_y >= yy && mouse_y < yy + h)
+	    if (text_menu_target != -1 && text_menu_target != text_focus) {
+	        text_menu_action = text_cmd_none
+	        text_menu_target = -1
+	    }
     
 	    if (text_focus = i) {
+	        if (text_focus_readonly != readonly && os_type = os_macosx) macos_menu_last_refresh = current_time
+	        text_focus_readonly = readonly
 	        if (text_lastfocus != i || text_mline >= text_lines[i]) {
 	            text_marker = current_time
 	            text_eline = text_lines[i] - 1 text_epos = string_length(text_line[i, text_lines[i] - 1])
@@ -163,6 +169,13 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	            if (!readonly && key_press[ord("V")]) menu = 2
 	            if (keyboard_check_pressed(ord("A"))) menu = 4
 	        }
+	        // Consume a native macOS Edit command once, and only in the field that owned focus.
+	        if (text_menu_target = i && text_menu_action != text_cmd_none) {
+	            var queued_text_action = text_menu_action
+	            text_menu_action = text_cmd_none
+	            text_menu_target = -1
+	            if (!readonly || queued_text_action = text_cmd_copy || queued_text_action = text_cmd_select_all) menu = queued_text_action
+	        }
 	        if (menu = 0 || menu = 1) {  // Cut / Copy text
 	            str = ""
 	            if (text_sline = text_eline) {  // Get text on single line
@@ -181,7 +194,8 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	            if (os_type = os_windows) inserttext = clipboard_get_text() else inserttext = text_clipboard
 	            inserttext = string_replace_all(inserttext, "\r\n", "\n")
 	        } else if (menu = 3) {  // Delete text
-	            deletetext = 2
+	            if (text_sline != text_eline || text_spos != text_epos) deletetext = 2
+	            else deletetext = 1
 	        } else if (menu = 4) {  // Select all text
 	            text_sline = 0 text_spos = 0
 	            text_eline = text_lines[i] - 1

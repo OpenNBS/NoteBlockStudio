@@ -47,6 +47,7 @@ function load_settings() {
 	show_notechart =     ini_read_real(  "preferences", "show_notechart",     show_notechart)
 	show_outofrange =    ini_read_real(  "preferences", "show_outofrange",    show_outofrange)
 	mousewheel =         ini_read_real(  "preferences", "mousewheel",         mousewheel)
+	mousewheel_scroll_speed = median(1, ini_read_real("preferences", "mousewheel_scroll_speed", mousewheel_scroll_speed), 10)
 	changepitch =        ini_read_real(  "preferences", "change_pitch",       changepitch)
 	layerhov_vppreview = ini_read_real(  "preferences", "layerhov_vppreview", layerhov_vppreview)
 	select_lastpressed = ini_read_real(  "preferences", "select_lastpressed", select_lastpressed)
@@ -60,7 +61,6 @@ function load_settings() {
 	autoplay =           ini_read_real(  "preferences", "autoplay",           autoplay)
 	show_soundcount =    ini_read_real(  "preferences", "show_soundcount",    show_soundcount)
 	use_bpm =            ini_read_real(  "preferences", "use_bpm",            use_bpm)
-	//save_version =       ini_read_real(  "preferences", "save_version",       save_version)
 	channelstoggle =     ini_read_real(  "preferences", "channelstoggle",     channelstoggle)
 	presence =           ini_read_real(  "preferences", "presence",           presence)
 	windowsound =        ini_read_real(  "preferences", "windowsound",        windowsound)
@@ -80,6 +80,7 @@ function load_settings() {
 	keynames_flat =      ini_read_real(  "preferences", "keynames_flat",      keynames_flat)
 	hires =              ini_read_real(  "preferences", "hires",              hires)
 	current_resource =   ini_read_string("preferences", "current_resource",   current_resource)
+	resourcepack_sounds_json = ini_read_real("preferences", "resourcepack_sounds_json", resourcepack_sounds_json)
 	acrylic_successful = ini_read_real(  "preferences", "acrylic_successful", acrylic_successful)
 	advancedinterface  = ini_read_real(  "preferences", "advancedinterface",  advancedinterface)
 	wpapernoblur       = ini_read_real(  "preferences", "wpapernoblur",       wpapernoblur)
@@ -99,6 +100,9 @@ function load_settings() {
 	w_midi_precision =    ini_read_real(  "midi_import", "precision",       w_midi_precision)
 	w_midi_tempo_changer =ini_read_real(  "midi_import", "tempo_changer",   w_midi_tempo_changer)
 	w_midi_note_duration =ini_read_real(  "midi_import", "note_duration",   w_midi_note_duration)
+	w_midi_note_duration_fade = ini_read_real("midi_import", "note_duration_fade", w_midi_note_duration_fade)
+	w_midi_note_duration_fade_start = median(0, ini_read_real("midi_import", "note_duration_fade_start", w_midi_note_duration_fade_start), 100)
+	w_midi_note_duration_fade_end = median(0, ini_read_real("midi_import", "note_duration_fade_end", w_midi_note_duration_fade_end), 100)
 	// instruments
 	for (a = 0; a < 128; a += 1) {
 	    midi_ins[a, 1] =  ini_read_real(  "midi_import", "ins_" + string(a),          midi_ins[a, 1]) // Instrument
@@ -134,6 +138,9 @@ function load_settings() {
 	sch_exp_glass =            ini_read_real("schematic_export", "glass",          sch_exp_glass)
 	sch_exp_minecart =         ini_read_real("schematic_export", "minecart",       sch_exp_minecart)
 	sch_exp_chest =            ini_read_real("schematic_export", "chest",          sch_exp_chest)
+	sch_exp_format =           ini_read_real("schematic_export", "format",         structure ? 0 : (sch_exp_minecraft_old ? 3 : 2))
+	structure = (sch_exp_format <= 1)
+	sch_exp_minecraft_old = (sch_exp_format = 3)
 	for (a = 0; a < 256; a += 1) {
 	   sch_exp_ins_block[a] = ini_read_real("schematic_export", "ins_block_" + string(a), sch_exp_ins_block[a])
 	   sch_exp_ins_data[a] =  ini_read_real("schematic_export", "ins_data_"  + string(a), sch_exp_ins_data[a])

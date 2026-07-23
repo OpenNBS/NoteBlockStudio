@@ -8,6 +8,7 @@ timesignature = 4
 song_backupid = string(floor(random(800000)))
 song_backupname = "Unsaved song " + string(song_backupid) + ".nbs"
 song_download_display_name = ""
+save_version = nbs_version
 
 reference_audio_buffer = -1
 
@@ -120,6 +121,9 @@ reference_audio = -1
 reference_option = 2
 reference_offset = 0
 reference_sound = -1
+reference_state = 0 // 0 = stopped, 1 = waiting, 2 = playing, 3 = finished
+reference_has_last_position = false
+reference_last_position = 0
 reference_volume = 100
 
 tempo_changes = [[0, 10]]

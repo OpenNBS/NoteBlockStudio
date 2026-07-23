@@ -1,11 +1,12 @@
 function draw_text_dynamic(x, y, string, force = false){
 	// draw_text_dynamic()
+	var draw_string = string_compose_display(string)
 
 	// Skip drawing dynamic text when using English
 	var o = obj_controller
 	if (!force && o.language != 1) {
-		if (!o.hires || o.theme != 3) draw_text(x, y, string);
-		else draw_text_transformed(x, y, string, 0.25, 0.25, 0);
+		if (!o.hires || o.theme != 3) draw_text(x, y, draw_string);
+		else draw_text_transformed(x, y, draw_string, 0.25, 0.25, 0);
 		return;
 	}
 	
@@ -24,17 +25,20 @@ function draw_text_dynamic(x, y, string, force = false){
 	var totalwidth = 0;
 	var longline = 0;
 	var halign = draw_get_halign();
-	var char, char_code, is_not_ascii, y_offset, font_changed;
+	var char, char_code, is_not_ascii, y_offset, font_changed, uses_dynamic_font;
 	var is_not_ascii_prev = -2
 	draw_set_halign(fa_left)
 	if (halign != fa_left) {
-		for (var i = 1; i <= string_length(string); i += 1) {
-			char = string_char_at(string, i)
+		for (var i = 1; i <= string_length(draw_string); i += 1) {
+			char = string_char_at(draw_string, i)
 			char_code = ord(char)
 			is_not_ascii = is_nonascii(char_code)
 			font_changed = is_not_ascii != is_not_ascii_prev
 			if (font_changed) {
-				draw_theme_font(o.currentfont, is_not_ascii, true)
+				if (is_not_ascii = 1) font_src_dynamic_select(o.currentfont, char, char_code, true)
+				else draw_theme_font(o.currentfont, is_not_ascii, true)
+			} else if (is_not_ascii = 1) {
+				font_src_dynamic_select(o.currentfont, char, char_code, true)
 			}
 			linewidth[lines] += string_width(char)
 			if (char = "\n") {lines += 1 array_push(linewidth, 0)}
@@ -47,15 +51,21 @@ function draw_text_dynamic(x, y, string, force = false){
 		lines = 0
 		is_not_ascii_prev = -2
 	}
-	for(var i = 1; i <= string_length(string); i += 1) {
-		char = string_char_at(string, i)
+	for(var i = 1; i <= string_length(draw_string); i += 1) {
+		char = string_char_at(draw_string, i)
 		char_code = ord(char)
 		is_not_ascii = is_nonascii(char_code)
 		font_changed = is_not_ascii != is_not_ascii_prev
+		uses_dynamic_font = false
 		if (font_changed) {
-			draw_theme_font(o.currentfont, is_not_ascii)
+			if (is_not_ascii = 1) uses_dynamic_font = font_src_dynamic_select(o.currentfont, char, char_code)
+			else draw_theme_font(o.currentfont, is_not_ascii)
+		} else if (is_not_ascii = 1) {
+			uses_dynamic_font = font_src_dynamic_select(o.currentfont, char, char_code)
 		}
-		y_offset = lines * 16
+		// Runtime font_add() rasterizes Source Han one logical pixel lower than
+		// the equivalent baked fnt_src_* asset in this GameMaker runtime.
+		y_offset = lines * 16 - uses_dynamic_font
 		
 		if (!o.hires || o.theme != 3) {
 			if (halign = fa_left) draw_text (x + width, y - 1 * !(!is_not_ascii) + y_offset, char)

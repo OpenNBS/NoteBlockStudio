@@ -20,13 +20,13 @@ function draw_window_greeting() {
 		if (hover_badge) {
 			curs = cr_handpoint;
 			if (mouse_check_button_released(mb_left)) {
-				if (hover_x) { // X button
+				if (mouse_rectangle_click(x1 + 120, y1 + 3, 16, 16)) { // X button
 					if (language != 1) message("Developing Note Block Studio takes a lot of unpaid volunteering time. If you can, please consider supporting us in the future! =)\n\n(You can find that option at any time in Help > Donate.)", "Note Block Studio");
 					else message("开发Note Block Studio完全基于我们用爱发电。如果情况允许，请考虑在以后小小的支持我们一下！(～￣▽￣)～\n\n（您可以随时在帮助 > 捐赠中找到该选项。）", "Note Block Studio")
 					donate_banner_time = date_inc_month(date_current_datetime(), 1);
 					donate_banner = 0;
 					save_settings();
-				} else {
+				} else if (!hover_x && mouse_rectangle_click(x1, y1, 150, 120) && !mouse_press_in_rectangle(x1 + 120, y1 + 3, 16, 16)) {
 					open_url(link_donate);
 				}
 			}
@@ -149,7 +149,7 @@ function draw_window_greeting() {
 	c = y1 + 48
 	if (!isplayer) {
 	a = mouse_rectangle(b, c, 224, 32)
-	a += (a && (mouse_check_button(mb_left) || mouse_check_button_released(mb_left)))
+	a += (a && (mouse_check_button(mb_left) || mouse_check_button_released(mb_left)) && mouse_press_in_rectangle(b, c, 224, 32))
 	if (!hires || theme != 3) draw_sprite(spr_frame2, a + 3 * theme + 3 * (fdark && theme = 3), b, c)
 	else draw_sprite_ext(spr_frame2_hires, a + 3 * fdark, b, c, 0.25, 0.25, 0, -1, draw_get_alpha())
 	if (theme != 3) {
@@ -174,7 +174,7 @@ function draw_window_greeting() {
 	}
 	b = x1 + 300
 	a = mouse_rectangle(b, c, 224, 32)
-	a += (a && (mouse_check_button(mb_left) || mouse_check_button_released(mb_left)))
+	a += (a && (mouse_check_button(mb_left) || mouse_check_button_released(mb_left)) && mouse_press_in_rectangle(b, c, 224, 32))
 	if (!hires || theme != 3) draw_sprite(spr_frame2, a + 3 * theme + 3 * (fdark && theme = 3), b, c)
 	else draw_sprite_ext(spr_frame2_hires, a + 3 * fdark, b, c, 0.25, 0.25, 0, -1, draw_get_alpha())
 	if (theme != 3) {
@@ -210,8 +210,8 @@ function draw_window_greeting() {
 
 	    popup_set_window(b, c, 320, 16, recent_song[a])
 	    m = mouse_rectangle(b, c, 320, 16)
-	    m += m && mouse_check_button(mb_left)
-	    if (m > 0 && mouse_check_button_released(mb_left)) {
+	    m += m && mouse_check_button(mb_left) && mouse_press_in_rectangle(b, c, 320, 16)
+	    if (m > 0 && mouse_rectangle_click(b, c, 320, 16)) {
 			if (windowsound && theme = 3) play_sound(soundinvoke, 45, 100, 50, 0)
 	        if (!file_exists_lib(recent_song[a])) {
 	            if (language != 1) message("Could not find file:\n" + recent_song[a], "Error")
@@ -248,7 +248,7 @@ function draw_window_greeting() {
 	
 	// Note Block World button
 	a = mouse_rectangle(b, c, 224 * 1.5, 32)
-	a += (a && (mouse_check_button(mb_left) || mouse_check_button_released(mb_left)))
+	a += (a && (mouse_check_button(mb_left) || mouse_check_button_released(mb_left)) && mouse_press_in_rectangle(b, c, 224 * 1.5, 32))
 	if (!hires || theme != 3) draw_sprite_ext(spr_frame2, a + 3 * theme + 3 * (fdark && theme = 3), b, c, 1.5, 1, 0, -1, 1)
 	else draw_sprite_ext(spr_frame2_hires, a + 3 * fdark, b, c, 0.25 * 1.5, 0.25, 0, -1, draw_get_alpha())
 	if (theme != 3) {
@@ -289,7 +289,7 @@ function draw_window_greeting() {
 	c += 44;
 	
 	a = mouse_rectangle(b, c, 224, 32)
-	a += (a && (mouse_check_button(mb_left) || mouse_check_button_released(mb_left)))
+	a += (a && (mouse_check_button(mb_left) || mouse_check_button_released(mb_left)) && mouse_press_in_rectangle(b, c, 224, 32))
 	if (!hires || theme != 3) draw_sprite(spr_frame2, a + 3 * theme + 3 * (fdark && theme = 3), b, c)
 	else draw_sprite_ext(spr_frame2_hires, a + 3 * fdark, b, c, 0.25, 0.25, 0, -1, draw_get_alpha())
 	if (theme != 3) {

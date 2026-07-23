@@ -1,11 +1,11 @@
 function macros() {
 #macro gm_runtime_version "2022.0.3 LTS"
-#macro version_date "2026.6.15"
-#macro version "3.12.0-beta.2"
+#macro version_date "2026.7.21"
+#macro version "3.12.0-beta.3"
 #macro is_prerelease 1 // remember to change to 0 in the release!
 #macro is_development 0 // the more frequent versions that are not on github (no auto update)
 #macro nbs_version 6
-#macro pat_version 1
+#macro pat_version 2
 
 #macro link_github "https://github.com/OpenNBS/OpenNoteBlockStudio"
 #macro link_report "https://github.com/OpenNBS/OpenNoteBlockStudio/issues/new/choose"
@@ -62,6 +62,13 @@ function macros() {
 #macro m_vel 1
 #macro m_pan 2
 #macro m_pit 3
+
+#macro text_cmd_none -1
+#macro text_cmd_cut 0
+#macro text_cmd_copy 1
+#macro text_cmd_paste 2
+#macro text_cmd_delete 3
+#macro text_cmd_select_all 4
 
 #macro w_menu 100
 #macro w_releasemouse 29

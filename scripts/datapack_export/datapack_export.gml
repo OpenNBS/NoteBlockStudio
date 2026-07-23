@@ -189,7 +189,7 @@ function datapack_export() {
 			if (os_type = os_macosx) execute_program("ditto", "-c -k \"" + game_save_id + "tempdatapack" + "\" \"" + fn + "\"", true);
 			else execute_program(get_7z_exc_name(), "a -tzip \"" + fn + "\" \"" + game_save_id + "tempdatapack" + condstr(os_type = os_windows, "\\", "/") + "*\"", true)
 		} else {
-			if (os_type = os_windows) execute_program("cmd", "\"" + game_save_id + "move.bat\" \"" + fn + "\\\"", true)
+			if (os_type = os_windows) execute_program("Xcopy", @'/E /I /Q /Y "' + filename_dir(tempdir) + @'" "' + fn + @'"', true)
 			else execute_program("cp", "-r \"" + game_save_id + "tempdatapack\" \"" + fn + "/\"", true);
 		}
 	

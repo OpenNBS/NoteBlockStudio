@@ -26,7 +26,7 @@ function save_song() {
 	if (backup) {
 		nbsver = nbs_version
 	} else {
-		nbsver = save_version
+		nbsver = cursong.save_version
 	}
 	
 	if (argument_count > 3) {

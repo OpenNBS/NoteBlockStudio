@@ -1,10 +1,14 @@
 function track_export() {
 	// track_export()
-	var fn, a, b, c, d, p, xx, yy, zz, len, wid, hei, o, chestx, chesty, chestz, signx, signy, signz, nblocks, layers, cyy, y1, x1, insnum, ins, repeats, remain, replen, blockamount, nbamount, cpan, cpanvol, cvol, blocktagpos;
+	var fn, a, b, c, d, p, xx, yy, zz, len, wid, hei, o, chestx, chesty, chestz, signx, signy, signz, nblocks, layers, cyy, y1, x1, insnum, ins, repeats, remain, replen, blockamount, nbamount, cpan, cpanvol, cvol, blocktagpos, sizepos;
 	var REPEATER, TORCHON, TORCHOFF, WIRE, LADDER, RAIL, POWEREDRAIL, SLAB, noteblocks, noteblockx, noteblocky, noteblockz, noteblocknote, noteblockins, noteblockpit;
-	fn = string(get_save_filename_ext("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(songs[song].filename), " ", "_"), "") + ".nbt", "", "Export Track"))
+	structure = (sch_exp_format <= 1)
+	sch_exp_minecraft_old = (sch_exp_format = 3)
+	if (structure) fn = string(get_save_filename_ext("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(songs[song].filename), " ", "_"), "") + ".nbt", "", "Export Track"))
+	else fn = string(get_save_filename_ext("Minecraft Schematics (*.schematic)|*.schematic", filename_new_ext(songs[song].filename, "") + ".schematic", "", "Export Track"))
 	if (fn = "") return 0
-	fn = enforce_extension(fn, ".nbt")
+	if (structure) fn = enforce_extension(fn, ".nbt")
+	else fn = enforce_extension(fn, ".schematic")
 	o = obj_controller
 	window = -1
 	with (create(obj_dummy2)) {
@@ -72,16 +76,38 @@ function track_export() {
 		signx = 2
 		signy = yy
 		signz = hei - 1
+		if (o.structure) {
+			structure_max_x = 99 - signy
+			structure_max_y = signz
+			structure_max_z = signx
+		} else {
+			structure_max_x = signx
+			structure_max_y = signy
+			structure_max_z = signz
+		}
 		
 	    // Write to file
 	    buffer = buffer_create(8, buffer_grow, 1)
-		
+
+		if (!o.structure) {
+			for (a = 0; a < len + 2; a += 1) {
+				for (b = 0; b < 100; b += 1) {
+					for (c = 0; c < hei; c += 1) {
+						sch_block_write(a, b, c, 0)
+						sch_data_write(a, b, c, 0)
+					}
+				}
+			}
+		}
+
+		if (o.structure) {
 		TAG_Compound("")
 		TAG_Int("DataVersion", 1519)
 		TAG_List("size", 3, 3)
-			buffer_write_int_be(32)
+			sizepos = buffer_tell(buffer)
+			buffer_write_int_be(wid)
 			buffer_write_int_be(hei)
-			buffer_write_int_be(32)
+			buffer_write_int_be(len)
 		insnum = ds_list_size(instrument_list)
 		TAG_List("palette", 30 + insnum * 26, 10)
 			TAG_String("Name", "minecraft:" + block_get_namespaced_id(block_walkway_block, block_walkway_data))
@@ -268,7 +294,11 @@ function track_export() {
 			TAG_Int("state", insnum * 26 + 19)
 	        TAG_End()
 			totalblocksc++
-    
+		} else {
+			sch_block_write(signx, signy, signz, 68)
+			sch_data_write(signx, signy, signz, 3)
+		}
+
 	    // Create walkway
 	    for (a = 0; a < 3; a += 1) {
 	        for (b = 2; b < len + 2; b += 1) {
@@ -280,7 +310,6 @@ function track_export() {
 		block_circuit_track(1, yy + 1, hei - 2)
 		block_other_track(1, yy, hei - 1, 35, 11) // wool
 		block_other_track(1, yy + 1, hei - 1, 35, 11)
-		block_other_track(2, yy, hei - 1, 68, 3) // Button
 		block_other_track(2, yy + 1, hei - 1, 77, 3)
 		// Back
 		block_circuit_track(0, yy + 1, hei - 2)
@@ -1181,9 +1210,11 @@ function track_export() {
 		    turn = 0
 		}
     
+		if (o.structure) {
 			var soundname, soundpitch, soundnote;
 			for (a = 0; a < noteblocks; a += 1) {
 				TAG_Compound("nbt") // the non-command-block setting still needs this part because of magic
+					if (o.command_block) TAG_String("id", "minecraft:command_block")
 					soundname = dat_instrument(noteblockins[a])
 					soundpitch = dat_pitch(noteblocknote[a] + 33 + noteblockpit[a] / 100)
 					if (noteblocknote[a] + noteblockpit[a] / 100 < 0) soundname += "_-1"
@@ -1196,18 +1227,96 @@ function track_export() {
 					TAG_Byte("UpdateLastExecution", 1)
 					TAG_End()
 				TAG_List("pos", 3, 3)
+					structure_max_x = max(structure_max_x, 99 - noteblocky[a])
+					structure_max_y = max(structure_max_y, noteblockz[a])
+					structure_max_z = max(structure_max_z, noteblockx[a])
 					buffer_write_int_be(99 - noteblocky[a])
 					buffer_write_int_be(noteblockz[a])
 					buffer_write_int_be(noteblockx[a])
-	            TAG_Int("state", 3 + insnum + (noteblockins[a] * 25 + noteblocknote[a]) * !o.command_block)
-	            TAG_End()
+		            TAG_Int("state", 3 + insnum + (noteblockins[a] * 25 + noteblocknote[a]) * !o.command_block)
+		            TAG_End()
 				totalblocksc++
-	        }
-			
-		TAG_End()
-		blockamount = totalblocksc
-		buffer_seek(buffer, buffer_seek_start, blocktagpos)
-		TAG_List("blocks", blockamount, 10)
+		        }
+			TAG_End()
+			blockamount = totalblocksc
+			buffer_seek(buffer, buffer_seek_start, sizepos)
+			if (o.sch_exp_format = 1) {
+				buffer_write_int_be(structure_max_x + 1)
+				buffer_write_int_be(structure_max_y + 1)
+				buffer_write_int_be(structure_max_z + 1)
+			} else {
+				buffer_write_int_be(min(structure_max_x + 1, 32))
+				buffer_write_int_be(min(structure_max_y + 1, 32))
+				buffer_write_int_be(min(structure_max_z + 1, 32))
+			}
+			buffer_seek(buffer, buffer_seek_start, blocktagpos)
+			TAG_List("blocks", blockamount, 10)
+		} else {
+			len = max(len, structure_max_x + 1)
+			wid = max(100, structure_max_y + 1)
+			hei = max(hei, structure_max_z + 1)
+
+			TAG_Compound("Schematic")
+			TAG_Short("Height", hei)
+			TAG_Short("Length", len)
+			TAG_Short("Width", wid)
+			TAG_List("Entities", 0, 10)
+			TAG_List("TileEntities", 1 + noteblocks, 10)
+				if (o.sch_exp_minecraft_old) TAG_String("id", "Sign")
+				else TAG_String("id", "minecraft:sign")
+				TAG_Int("x", wid - 1 - signy)
+				TAG_Int("y", signz)
+				TAG_Int("z", signx)
+				if (o.sch_exp_minecraft_old) {
+					TAG_String("Text1", "Song generated")
+					TAG_String("Text2", "by the")
+					TAG_String("Text3", "Note Block")
+					TAG_String("Text4", "Studio")
+				} else {
+					TAG_String("Text1", "{\"text\": \"Song generated\"}")
+					TAG_String("Text2", "{\"text\": \"by the\"}")
+					TAG_String("Text3", "{\"text\": \"Note Block\"}")
+					TAG_String("Text4", "{\"text\": \"Studio\"}")
+				}
+				TAG_End()
+				for (a = 0; a < noteblocks; a += 1) {
+					if (o.sch_exp_minecraft_old) TAG_String("id", "Music")
+					else TAG_String("id", "minecraft:noteblock")
+					TAG_Int("x", wid - 1 - noteblocky[a])
+					TAG_Int("y", noteblockz[a])
+					TAG_Int("z", noteblockx[a])
+					TAG_Byte("note", noteblocknote[a])
+					TAG_End()
+				}
+			TAG_String("Materials", "Alpha")
+			TAG_Byte_Array("Blocks", len * wid * hei)
+			for (c = 0; c < hei; c += 1) {
+				for (a = 0; a < len; a += 1) {
+					for (b = wid - 1; b >= 0; b -= 1) {
+						buffer_write_byte(sch_block_read(a, b, c))
+					}
+				}
+			}
+			TAG_Byte_Array("Data", len * wid * hei)
+			for (c = 0; c < hei; c += 1) {
+				for (a = 0; a < len; a += 1) {
+					for (b = wid - 1; b >= 0; b -= 1) {
+						buffer_write_byte(sch_data_read(a, b, c))
+					}
+				}
+			}
+			TAG_Compound("Version")
+				if (o.sch_exp_minecraft_old) {
+					TAG_String("Name", "1.8")
+					TAG_Byte("Snapshot", 0)
+				} else {
+					TAG_Int("Id", 922)
+					TAG_String("Name", "1.11.2")
+					TAG_Byte("Snapshot", 0)
+				}
+				TAG_End()
+			TAG_End()
+		}
 	    buffer_save(buffer, temp_file)
 	    buffer_delete(buffer)
 		log("totalblocksc: " + string(totalblocksc))
@@ -1215,8 +1324,8 @@ function track_export() {
 	    gzzip(temp_file, fn)
 	    instance_destroy()
 	}
-	if (o.language != 1) message("Structure saved!", "Track Export")
-	else message("结构已保存！", "导出直轨")
+	if (o.language != 1) message(condstr(structure, "Structure saved!", "Schematic saved!"), "Track Export")
+	else message(condstr(structure, "结构已保存！", "Schematic 已保存！"), "导出直轨")
 	window = w_track_export
 
 

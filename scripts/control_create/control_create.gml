@@ -25,8 +25,9 @@ function control_create() {
 	//show_message(get_execution_command() + "IDE: " + string(NOT_RUN_FROM_IDE))
 	p_num = parameter_count();
 	isplayer = (check_args("-player"));
-	filenamearg = check_args();
-	for (var i = 0; i < p_num; i += 1) {
+	filenamearg = find_song_path_arg();
+	// Linux runner arguments begin at index 0; Windows keeps the executable there.
+	for (var i = 0; i <= p_num; i += 1) {
 		if (parameter_string(i) = "-player" || parameter_string(i) == "--protocol-launcher") isplayer = 1
 	}
 	
@@ -38,22 +39,16 @@ function control_create() {
 	if (!isplayer) server_socket = network_create_server(network_socket_tcp, 30010, 1)
 	client_socket = -1
 	if (server_socket < 0 && !isplayer) {port_taken = 1; client_socket = network_create_socket(network_socket_tcp)}
-	if (p_num > 0) {
-		if (filenamearg != "" && (string_lower(filename_ext(filenamearg)) == ".mid" || string_lower(filename_ext(filenamearg)) == ".midi" ||
-			string_lower(filename_ext(filenamearg)) == ".schematic" || string_lower(filename_ext(filenamearg)) == ".nbs" ||
-			string_lower(filename_ext(filenamearg)) == ".zip")) {
-			if (port_taken) {
-				network_connect(client_socket, "127.0.0.1", 30010)
-				var temp_buffer = buffer_create(0, buffer_grow, 1)
-				buffer_write(temp_buffer, buffer_s8, 10)
-				buffer_write(temp_buffer, buffer_string, filenamearg)
-				network_send_packet(client_socket, temp_buffer, buffer_get_size(temp_buffer))
-				buffer_delete(temp_buffer)
-				destroy_self = 1
-				log("Sended opening song path, closing...")
-				game_end()
-			}
-		}
+	if (is_song_path_arg(filenamearg) && port_taken) {
+		network_connect(client_socket, "127.0.0.1", 30010)
+		var temp_buffer = buffer_create(0, buffer_grow, 1)
+		buffer_write(temp_buffer, buffer_s8, 10)
+		buffer_write(temp_buffer, buffer_string, filenamearg)
+		network_send_packet(client_socket, temp_buffer, buffer_get_size(temp_buffer))
+		buffer_delete(temp_buffer)
+		destroy_self = 1
+		log("Sended opening song path, closing...")
+		game_end()
 	}
 	if (!destroy_self) {
 	window_width = 0
@@ -264,6 +259,7 @@ function control_create() {
 
 	// Instruments
 	current_resource = "Vanilla"
+	resourcepack_sounds_json = 0
 	resourcepacks = []
 	refresh_resourcepacks()
 	
@@ -325,7 +321,7 @@ function control_create() {
 	insmenu = 0
 	emitters_to_remove = ds_list_create()
 	
-	if (!file_exists(sounds_directory + "trumpet.ogg")) copy_bundled_files()
+	if (!file_exists(sounds_directory + "trumpet.ogg")) copy_bundled_files(true, false, false)
 	
 	// Initialize instruments
 	str = ""
@@ -399,6 +395,7 @@ function control_create() {
 	show_incompatible = 1
 
 	mousewheel = 0
+	mousewheel_scroll_speed = 1
 	changepitch = 1
 	layerhov_vppreview  = 0
 	
@@ -418,6 +415,11 @@ function control_create() {
 	selection_copied = ""
 	copied_arrayheight = 0
 	copied_arraylength = 0
+	copied_from_song = -1
+	copied_context_code = ""
+	copied_note_count = 0
+	copied_source_name = ""
+	copied_custom_instruments = []
 	clipboard = ""
 	
 	tempo_changer_sel_x = -1
@@ -487,6 +489,7 @@ function control_create() {
 	globalvar text_select, text_exists, text_str, text_start, text_line, text_line_wrap, text_line_single, text_lines;
 	globalvar text_sline, text_spos, text_eline, text_epos, text_cline, text_cpos, text_mline, text_mpos;
 	globalvar text_click, text_marker, text_key_delay, text_lastwidth, text_laststr, text_lastfocus, text_mouseover, text_chars, text_clipboard;
+	globalvar text_menu_action, text_menu_target, text_focus_readonly, macos_menu_text_focus;
 	text_select = -1
 	text_exists[10000] = 0
 	text_click = current_time
@@ -497,6 +500,10 @@ function control_create() {
 	text_focus = -1
 	text_focus_last = -1
 	text_clipboard = ""
+	text_menu_action = text_cmd_none
+	text_menu_target = -1
+	text_focus_readonly = false
+	macos_menu_text_focus = -1
 
 	globalvar sb_count, sb_drag, sb_mprev, sb, sb_press, sb_sel;
 	sb_count = 0
@@ -524,6 +531,8 @@ function control_create() {
 	mouse_yprev = mouse_y
 	mousepress_x = -1
 	mousepress_y = -1
+	mousepress_window = -1
+	mousepress_layericon = -1
 	asso_nbs = 1
 	asso_midi = 0
 	asso_sch = 0
@@ -560,6 +569,9 @@ function control_create() {
 	w_midi_precision = 1
 	w_midi_tempo_changer = 0
 	w_midi_note_duration = 0
+	w_midi_note_duration_fade = 0
+	w_midi_note_duration_fade_start = 50
+	w_midi_note_duration_fade_end = 50
 	w_isdragging = 0
 	w_dragvalue = 0
 	init_midi()
@@ -606,7 +618,7 @@ function control_create() {
 	// Schematic
 	reset_schematic_export(0)
 	block_color = 0
-	structure = 0
+	structure = 1
 	command_block = 0
 
 	//Datapack
@@ -633,9 +645,6 @@ function control_create() {
 	setpan = 0
 	setpit = 0
 
-	// Saving
-	save_version = nbs_version
-
 	// Settings
 	if (!check_args("--prefreset")) load_settings()
 	var vers_tmp = vers
@@ -643,6 +652,7 @@ function control_create() {
 	if (vers_tmp != version || vers_date_tmp != version_date) copy_bundled_files()
 	if (os_type = os_macosx) macos_enable_system_settings_menu()
 	tonextsave = autosave ? autosavemins : 0; // Defining autosavemins here to avoid the autosave when the first song is loaded after open the game.
+	font_src_dynamic_init()
 	menu_macos_init()
 	switch(language) {
 		default:
@@ -816,27 +826,33 @@ function control_create() {
 
 	// Parse command line arguments
 	var p_num = parameter_count();
-	if (p_num > 1) {
-		for (var i = 1; i <= p_num; i++) {
-			var arg = parameter_string(i);
-			
-			if (arg == "-player") continue;
-			if (arg == "-game" || string_count("\\GMS2TEMP\\", arg) > 0) continue; // GMS runner
-			
-			// URL protocol
-			if (arg == "--protocol-launcher") {
-				if (p_num >= i + 1) {
-					protocol_data = parameter_string(i + 1);
-				}
-			
-			// File drop, etc.
-			} else if (string_replace(arg, " ", "") != "") {
-				log("Opening song from argument, arg: " + arg)
-				filenamearg = arg;
-				song_backupname = filename_name(filename_change_ext(filenamearg, ".nbs"));
-			}
-			
+	// Start at 0 so Linux does not lose its first user-supplied argument.
+	for (var arg_index = 0; arg_index <= p_num; arg_index++) {
+		var arg = parameter_string(arg_index);
+
+		if (arg == "-player") continue;
+		if (arg == "-game") {
+			arg_index += 1; // Skip the GameMaker runner payload (for example, game.unx)
+			continue;
 		}
+		if (string_count("\\GMS2TEMP\\", arg) > 0) continue; // GMS runner
+
+		// URL protocol
+		if (arg == "--protocol-launcher") {
+			if (p_num >= arg_index + 1) {
+				protocol_data = parameter_string(arg_index + 1);
+				arg_index += 1; // The URL belongs to --protocol-launcher, not file opening
+			}
+			continue;
+		}
+
+		// File drop, etc.
+		if (is_song_path_arg(arg)) {
+			log("Opening song from argument, arg: " + arg)
+			filenamearg = arg;
+			song_backupname = filename_name(filename_change_ext(filenamearg, ".nbs"));
+		}
+
 	}
 	
 	var args = ""
@@ -853,7 +869,7 @@ function control_create() {
 		download_song_start(download_url)
 	}
 	// Open song
-	if (os_type != os_macosx && p_num > 0) {
+	if (os_type != os_macosx && protocol_data == pointer_null && is_song_path_arg(filenamearg)) {
 		songs[song].filename = filenamearg;
 		if (songs[song].filename != "" &&
 			(string_lower(filename_ext(songs[song].filename)) == ".mid" || string_lower(filename_ext(songs[song].filename)) == ".midi" ||

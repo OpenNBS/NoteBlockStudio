@@ -13,6 +13,7 @@ function control_end() {
 	
 		save_settings()
 	}
+	font_src_dynamic_shutdown()
 	rtmidi_deinit()
 
 }

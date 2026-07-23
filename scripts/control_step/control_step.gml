@@ -1,5 +1,6 @@
 function control_step() {
 	var current_song = songs[song]
+	font_src_dynamic_step()
 	
 	var targetspeed = 1000000 / room_speed
 	currspeed = targetspeed / delta_time
@@ -45,6 +46,8 @@ function control_step() {
 	if (mouse_check_button_pressed(mb_left)) {
 		mousepress_x = mouse_x
 		mousepress_y = mouse_y
+		mousepress_window = window
+		mousepress_layericon = -1
 	}
 	
 	if (is_mobile()) {
@@ -52,6 +55,12 @@ function control_step() {
 			if (text_focus = -1) keyboard_virtual_hide()
 			else if (text_focus_last = -1) keyboard_virtual_show(kbv_type_ascii, kbv_returnkey_default, kbv_autocapitalize_none, false)
 		}
+	}
+
+	if (os_type = os_macosx && text_focus != macos_menu_text_focus) {
+		macos_menu_text_focus = text_focus
+		macos_menu_last_refresh = current_time
+		if (text_focus = -1) text_focus_readonly = false
 	}
 	
 	// handle midi messages
@@ -207,7 +216,7 @@ function control_step() {
 	}
 	
 	// Play column
-	if (floor(current_song.marker_pos) != floor(current_song.marker_prevpos) && floor(current_song.marker_pos) <= current_song.enda && (floor(current_song.marker_pos) != current_song.section_end || window = w_dragmarker || forward<>0 || marker_end = 0 || current_song.marker_prevpos >= current_song.section_end)) {
+	if (floor(current_song.marker_pos) != floor(current_song.marker_prevpos) && floor(current_song.marker_pos) <= current_song.enda && (floor(current_song.marker_pos) != current_song.section_end || window = w_dragmarker || forward<>0 || marker_end = 0 || !current_song.section_exists || current_song.section_end <= current_song.section_start || current_song.marker_prevpos >= current_song.section_end)) {
 	    var diff = floor(current_song.marker_pos) - floor(current_song.marker_prevpos)
 	    var start
 	    if (!playing || diff < 0 || diff > 3) {

@@ -54,6 +54,7 @@ function instrument_load(custom_sounds_path = "") {
 			sound_buffer = buffer_create(buffer_get_size(sound_buffer_temp), buffer_fixed, 2)
 			buffer_copy(sound_buffer_temp, 0, buffer_get_size(sound_buffer_temp), sound_buffer, 0)
 			sound = audio_create_buffer_sound(sound_buffer, buffer_s16, 44100, 0, buffer_get_size(sound_buffer), audio_stereo)
+			sound_duration = real(buffer_get_size(sound_buffer)) / (44100 * 4)
 			buffer_delete(sound_buffer_temp)
 		} else if (string_lower(filename_ext(fn)) == ".wav") {
 			sound = wav_load_buffer(fn)
@@ -63,6 +64,7 @@ function instrument_load(custom_sounds_path = "") {
 			    return 0
 			}
 			sound_buffer = global.__temp_audio_buffer__
+			sound_duration = global.__temp_audio_duration__
 		}
 	//} else {
 	//	ret = audio_create_stream(fn)

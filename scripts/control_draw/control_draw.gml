@@ -173,7 +173,7 @@ function control_draw() {
 	        if (mouse_check_button_pressed(mb_left)) {
 	            timeline_pressa = current_song.starta + floor((mouse_x - (x1 + 2)) / 32)
 	        }
-	        if (mouse_check_button_released(mb_left) && aa = 0) {
+	        if (mouse_check_button_released(mb_left) && mouse_press_in_rectangle(x1 + 2 + song_tab_offset, y1 + 2, totalcols * 32, 32) && aa = 0) {
 	            current_song.marker_pos = current_song.starta + (mouse_x - (x1 + 2)) / 32
 	        } 
 	        if (mouse_check_button(mb_left)) {
@@ -374,8 +374,12 @@ function control_draw() {
 	                                //}
 	                                if (fade=0) c += ((selbx = current_song.starta + a && selby = current_song.startb + b && select = 0 && window = 0  && cursmarker = 0) || s) * 0.5
 	                            }
-								realkey = current_song.song_key[current_song.starta + a, current_song.startb + b] + current_song.song_pit[current_song.starta + a, current_song.startb + b] / 100
-	                            draw_block(floor(centerx - (52 * 39) / 2) + floor(19.5 * (realkey + floor(realkey / 12) * 2 + (realkey mod 12 >= 8) + (realkey mod 12 >= 3))) + 4, rh - 154 - a * 32 - 32 + note_offset, current_song.song_ins[current_song.starta + a, current_song.startb + b], current_song.song_key[current_song.starta + a, current_song.startb + b], current_song.song_pan[current_song.starta + a, current_song.startb + b], current_song.song_vel[current_song.starta + a, current_song.startb + b] * (current_song.layervol[b] / 100), current_song.song_pit[current_song.starta + a, current_song.startb + b], c, s * selection_alpha)
+								var realkey = current_song.song_key[current_song.starta + a, current_song.startb + b] + current_song.song_pit[current_song.starta + a, current_song.startb + b] / 100
+								var realkey_octave = floor(realkey / 12)
+								var realkey_in_octave = realkey - realkey_octave * 12
+								// Interpolate through the wider B-C and E-F gaps instead of jumping across them.
+								var piano_position = realkey_octave * 14 + realkey_in_octave + clamp(realkey_in_octave - 2, 0, 1) + clamp(realkey_in_octave - 7, 0, 1)
+	                            draw_block(floor(centerx - (52 * 39) / 2) + floor(19.5 * piano_position) + 4, rh - 154 - a * 32 - 32 + note_offset, current_song.song_ins[current_song.starta + a, current_song.startb + b], current_song.song_key[current_song.starta + a, current_song.startb + b], current_song.song_pan[current_song.starta + a, current_song.startb + b], current_song.song_vel[current_song.starta + a, current_song.startb + b] * (current_song.layervol[b] / 100), current_song.song_pit[current_song.starta + a, current_song.startb + b], c, s * selection_alpha)
 	                        }
 	                    }
 	                } else {
@@ -399,17 +403,12 @@ function control_draw() {
 	draw_set_alpha(1)
 	draw_set_halign(fa_left)
 
-	if (checkplaying > 0) {
-		if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
-			current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
-			audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-			audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
-		}
-	}
 	if (checkplaying < 0) {
 		for (var i = 0; i < array_length(songs); i++) {
-			if (audio_is_playing(songs[i].reference_sound)) audio_stop_sound(songs[i].reference_sound)
+			reference_audio_stop(songs[i])
 		}
+	} else {
+		reference_audio_sync(current_song, checkplaying > 0)
 	}
 
 	if (current_song.tempo < 0.25) current_song.tempo = 0.25
@@ -892,29 +891,17 @@ function control_draw() {
 		if (keyboard_check_pressed(vk_numpad1)) {
 			current_song.reference_option = 0; 
 			set_msg("Reference mute"); 
-			if (audio_is_playing(current_song.reference_sound)) audio_stop_sound(current_song.reference_sound)
+			reference_audio_sync(current_song, true)
 		}
 		if (keyboard_check_pressed(vk_numpad2)) {
 			current_song.reference_option = 1; 
 			set_msg("Reference solo"); 
-			if (playing) {
-				if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
-					current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
-					audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-					audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
-				}
-			}
+			reference_audio_sync(current_song, true)
 		}
 		if (keyboard_check_pressed(vk_numpad3)) {
 			current_song.reference_option = 2; 
 			set_msg("Reference mix")
-			if (playing) {
-				if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
-					current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
-					audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-					audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
-				}
-			}
+			reference_audio_sync(current_song, true)
 		}
 	
 	}
@@ -1031,7 +1018,7 @@ function control_draw() {
 	        current_song.marker_pos = current_song.enda + totalcols
 	        playing = 0
 	    }
-	    if (marker_end && current_song.marker_pos >= current_song.section_end && current_song.marker_prevpos < current_song.section_end) {
+	    if (marker_end && current_song.section_exists && current_song.section_end > current_song.section_start && current_song.marker_pos >= current_song.section_end && current_song.marker_prevpos < current_song.section_end) {
 	        current_song.marker_pos = current_song.section_end
 	        playing = 0
 	    }
@@ -1123,6 +1110,10 @@ function control_draw() {
 	if (current_song.section_exists) {
 	    current_song.section_start = median(0, current_song.section_start, current_song.enda + totalcols)
 	    current_song.section_end = median(0, current_song.section_end, current_song.enda + totalcols)
+	    // Clamping at the timeline bounds can collapse a section after the release check above.
+	    if (current_song.section_end = current_song.section_start && window != w_dragsection_start && window != w_dragsection_end) current_song.section_exists = 0
+	}
+	if (current_song.section_exists) {
 	    draw_set_alpha(0.25)
 	    draw_set_color(c_blue)
 	    draw_rectangle(x1 + 2 + floor(current_song.section_start - current_song.starta + 0.5) * 32 - note_offset, y1 + 2, x1 + 2 + floor(current_song.section_end - current_song.starta + 0.5) * 32 - note_offset, y1 + 33, 0)
@@ -1227,8 +1218,8 @@ function control_draw() {
 	}
 	// Scrollbars
 	if (!fullscreen) {
-		current_song.starta = draw_scrollbar(scrollbarh, x1, y1 + (totalrows + (current_song.reference_audio >= 0)) * 32 + 34, 32, totalcols - 1, current_song.enda + totalcols - 1, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0)
-		current_song.startb = draw_scrollbar(scrollbarv, x1 + totalcols * 32 + 2, y1 + 34, 32, totalrows - 1 + (current_song.reference_audio >= 0), current_song.endb + totalrows - 1, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0)
+		current_song.starta = draw_scrollbar(scrollbarh, x1, y1 + (totalrows + (current_song.reference_audio >= 0)) * 32 + 34, 32, totalcols - 1, current_song.enda + totalcols - 1, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0, mousewheel_scroll_speed)
+		current_song.startb = draw_scrollbar(scrollbarv, x1 + totalcols * 32 + 2, y1 + 34, 32, totalrows - 1 + (current_song.reference_audio >= 0), current_song.endb + totalrows - 1, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0, mousewheel_scroll_speed)
 	} else {
 		// horizontal rise animation
 		if (mouse_rectangle(0, rh - 25, rw, rh)) {
@@ -1242,8 +1233,8 @@ function control_draw() {
 		} else if (sb_drag = -1) {
 			if (sbv_anim > 0) sbv_anim -= (2 * 30 / room_speed) * (1 / currspeed)
 		}
-		current_song.starta = draw_scrollbar(scrollbarh, 0, rh - sbh_anim, 32, ((rw - 16) / 32) - 1, current_song.enda + totalcols - 2, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0)
-		current_song.startb = draw_scrollbar(scrollbarv, rw - sbv_anim, rhval, 32, ((rh - rhval - 16) / 32) - 1, current_song.endb + totalrows - 2, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0)
+		current_song.starta = draw_scrollbar(scrollbarh, 0, rh - sbh_anim, 32, ((rw - 16) / 32) - 1, current_song.enda + totalcols - 2, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0, mousewheel_scroll_speed)
+		current_song.startb = draw_scrollbar(scrollbarv, rw - sbv_anim, rhval, 32, ((rh - rhval - 16) / 32) - 1, current_song.endb + totalrows - 2, (exist && changepitch) || mousewheel > 0 || macos_scroll_is_trackpad(), 0, mousewheel_scroll_speed)
 		// the fifth parameters are totalrows & totalcols before rounding: ((rh - rhval) / 32), ((rw - 8) / 32)
 		// this is so it stretches to fill the whole width/height of the screen instead of clipping to the note block area size
 	}
@@ -1527,40 +1518,20 @@ function control_draw() {
 		if (draw_layericon(0, x1 + 126 - !realvolume-realstereo * 10, y1 + 8, condstr(language != 1, "Mute reference audio", "静音参考音频"), 0, p)) {
 		    if (p) {
 				current_song.reference_option = 2; 
-				if (playing) {
-					if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
-						current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
-						audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-						audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
-					}
-				}
 		    } else {
 				current_song.reference_option = 0; 
-				if (audio_is_playing(current_song.reference_sound)) audio_stop_sound(current_song.reference_sound)
 		    }
+			reference_audio_sync(current_song, true)
 		}
 		// Solo button
 		p = (current_song.reference_option = 1)
 		if (draw_layericon(1, x1 + 144 - !realvolume-realstereo * 10, y1 + 8, condstr(language != 1, "Solo reference audio", "独奏参考音频"), 0, p)) {
 		    if (p) {
 				current_song.reference_option = 2; 
-				if (playing) {
-					if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
-						current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
-						audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-						audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
-					}
-				}
 		    } else {
 				current_song.reference_option = 1; 
-				if (playing) {
-					if (current_song.reference_option > 0 && !audio_is_playing(current_song.reference_sound)) {
-						current_song.reference_sound = audio_play_sound(current_song.reference_audio, 1, 0)
-						audio_sound_gain(current_song.reference_audio, (current_song.reference_volume * mastervol) / 100, 0)
-						audio_sound_set_track_position(current_song.reference_sound, get_seconds_from_tick(current_song.marker_pos) + current_song.reference_offset / 1000)
-					}
-				}
 		    }
+			reference_audio_sync(current_song, true)
 		}
 		// Remove layer
 		if (draw_layericon(4, x1 + 162 - !realvolume-realstereo * 10, y1 + 8, condstr(language != 1, "Remove reference audio\n(Click and drag to remove multiple layers)", "删除参考音频\n（拖拽可批量删除层）"), 0, 0)) {
@@ -1573,6 +1544,9 @@ function control_draw() {
 			current_song.reference_option = 2
 			current_song.reference_offset = 0
 			current_song.reference_sound = -1
+			current_song.reference_state = 0
+			current_song.reference_has_last_position = false
+			current_song.reference_last_position = 0
 			current_song.reference_volume = 100
 		}
 		draw_theme_color()
@@ -1622,8 +1596,10 @@ function control_draw() {
 			    window = w_releasemouse
 			}
 		} else {
+			prev = current_song.reference_offset
 			dragstereo += (mouse_yprev - mouse_y)
 			current_song.reference_offset = dragstereo
+			if (current_song.reference_offset != prev) reference_audio_sync(current_song, true)
 			if (!mouse_check_button(mb_left)) {
 			    window = w_releasemouse
 			}
@@ -2491,7 +2467,7 @@ function control_draw() {
 			curs = cr_handpoint
 			
 			// Input
-			if (mouse_check_button_released(mb_left)) {
+			if (mouse_rectangle_click(108, 57 + song_tab_offset, 64, 22)) {
 		        window = w_settempo
 				text_exists[64] = 0
 				text_focus = 64
@@ -2573,13 +2549,15 @@ function control_draw() {
 		for (tab = 0; tab < array_length(songs); tab++) {
 			tab_str = ""
 			taba = (mouse_rectangle(8 + tab * (tabwidth - 1) - 2, 24 + 2, tabwidth - 2, 24 + 5 * (theme = 3)) && (window = 0) && (!tabdrag))
-			if (taba && mouse_check_button(mb_left)) taba += 1
+			if (taba && mouse_check_button(mb_left) && mouse_press_in_rectangle(8 + tab * (tabwidth - 1) - 2, 24 + 2, tabwidth - 2, 24 + 5 * (theme = 3))) taba += 1
 			if (taba = 2) {
 				set_song(tab)
 			}
+			var close_press_started = false
 			if (theme != 3) {
 				closea = mouse_rectangle(7 - 20 + (tabwidth - 1) + tab * (tabwidth - 1) - 1, 24 - 5 * (theme = 1 || theme = 2) + 7 + 3 * (theme != 0), 16, 15) * (window = 0) * (!tabdrag)
-				if (closea && mouse_check_button(mb_left)) closea++
+				close_press_started = mouse_press_in_rectangle(7 - 20 + (tabwidth - 1) + tab * (tabwidth - 1) - 1, 24 - 5 * (theme = 1 || theme = 2) + 7 + 3 * (theme != 0), 16, 15)
+				if (closea && mouse_check_button(mb_left) && close_press_started) closea++
 				draw_sprite_ext(spr_songtab, 0 + 3 * (taba = 1 && tab != song) + 6 * (tab = song) + 10 * theme, 6 + tab * (tabwidth - 1) - 1, 24 - 5 * (theme = 1 || theme = 2), 1, 1, 0, -1, 1)
 				draw_sprite_ext(spr_songtab, 1 + 3 * (taba = 1 && tab != song) + 6 * (tab = song) + 10 * theme, 10 + tab * (tabwidth - 1) - 1, 24 - 5 * (theme = 1 || theme = 2), (tabwidth - 5) / 4, 1, 0, -1, 1)
 				draw_sprite_ext(spr_songtab, 2 + 3 * (taba = 1 && tab != song) + 6 * (tab = song) + 10 * theme, 5 + (tabwidth - 1) + tab * (tabwidth - 1) - 1, 24 - 5 * (theme = 1 || theme = 2), 1, 1, 0, -1, 1)
@@ -2587,7 +2565,8 @@ function control_draw() {
 				draw_sprite_ext(spr_closetab, (closea > 0 && theme = 0), 7 - 20 + (tabwidth - 1) + tab * (tabwidth - 1) - 1 + 4 + (closea = 2 && theme != 0), 24 - 5 * (theme = 1 || theme = 2) + 7 + 3 * (theme != 0) + 4 + (closea = 2 && theme != 0), 1, 1, 0, -1 + (theme = 1), 1)
 			} else {
 				closea = mouse_rectangle(7 + (tabwidth - 1) + tab * (tabwidth - 1) - 35, 24 + 5, 30, 22) * (window = 0) * (!tabdrag)
-				if (closea && mouse_check_button(mb_left)) closea++
+				close_press_started = mouse_press_in_rectangle(7 + (tabwidth - 1) + tab * (tabwidth - 1) - 35, 24 + 5, 30, 22)
+				if (closea && mouse_check_button(mb_left) && close_press_started) closea++
 				if (wpaperexist && acrylic && can_draw_mica) {
 					if (!fdark) {
 						hover_color = make_color_rgb(45, 45, 45)
@@ -2677,7 +2656,7 @@ function control_draw() {
 				window = w_dragtab
 			}
 			
-			if (closea && mouse_check_button_released(mb_left)) close_song(tab)
+			if (closea && close_press_started && mouse_check_button_released(mb_left)) close_song(tab)
 		}
 		if (tabdrag) {
 			draw_set_color(0)
@@ -2697,7 +2676,7 @@ function control_draw() {
 		// new song button
 		var newsongbtnwidth = 32
 		taba = (mouse_rectangle(8 + array_length(songs) * (tabwidth - 1) - 2, 24 + 2, newsongbtnwidth - 2, 24 + 5 * (theme = 3)) && (window = 0) && (!tabdrag))
-		if (taba && mouse_check_button_released(mb_left) && !tabdrag) taba += 1
+		if (taba && mouse_rectangle_click(8 + array_length(songs) * (tabwidth - 1) - 2, 24 + 2, newsongbtnwidth - 2, 24 + 5 * (theme = 3)) && !tabdrag) taba += 1
 		if (taba = 2) {
 			new_song()
 		}

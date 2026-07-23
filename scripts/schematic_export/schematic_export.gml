@@ -1,7 +1,9 @@
 function schematic_export() {
 	// schematic_export()
-	var fn, a, b, c, d, p, xx, yy, zz, len, wid, hei, o, chestx, chesty, chestz, signx, signy, signz, nblocks, layers, cyy, y1, insnum, ins;
+	var fn, a, b, c, d, p, xx, yy, zz, len, wid, hei, o, chestx, chesty, chestz, signx, signy, signz, nblocks, layers, cyy, y1, insnum, ins, blockamount, blocktagpos, skipblock;
 	var REPEATER, TORCHON, TORCHOFF, WIRE, LADDER, RAIL, POWEREDRAIL, noteblocks, noteblockx, noteblocky, noteblockz, noteblocknote, noteblockins, noteblockpit;
+	structure = (sch_exp_format <= 1)
+	sch_exp_minecraft_old = (sch_exp_format = 3)
 	if (!structure) fn = string(get_save_filename_ext("Minecraft Schematics (*.schematic)|*.schematic", filename_new_ext(songs[song].filename, "") + ".schematic", "", "Export Schematic"))
 	else fn = string(get_save_filename_ext("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(songs[song].filename), " ", "_"), "") + ".nbt", "", "Export Schematic"))
 	if (fn = "") return 0
@@ -72,6 +74,11 @@ function schematic_export() {
 	        wid = schematic_width()
 	        hei = schematic_height()
 	    }
+		if (o.structure) {
+			structure_max_x = len - 1
+			structure_max_y = wid - 1
+			structure_max_z = hei - 1
+		}
 	    noteblocks = 0
     
 	    // Reset
@@ -594,6 +601,11 @@ function schematic_export() {
 	        }
 	    }
     
+		if (o.structure) {
+			len = max(len, structure_max_x + 1)
+			wid = max(wid, structure_max_y + 1)
+			hei = max(hei, structure_max_z + 1)
+		}
 	    // Write to file
 	    buffer = buffer_create(8, buffer_grow, 1)
 		
@@ -731,10 +743,15 @@ function schematic_export() {
 		TAG_Compound("")
 		TAG_Int("DataVersion", 1519)
 		TAG_List("size", 3, 3)
-			buffer_write_int_be(32)
-			buffer_write_int_be(hei)
-			if (len <= 32) buffer_write_int_be(len)
-			else buffer_write_int_be(32)
+			if (o.sch_exp_format = 1) {
+				buffer_write_int_be(wid)
+				buffer_write_int_be(hei)
+				buffer_write_int_be(len)
+			} else {
+				buffer_write_int_be(min(wid, 32))
+				buffer_write_int_be(min(hei, 32))
+				buffer_write_int_be(min(len, 32))
+			}
 		insnum = ds_list_size(instrument_list)
 		TAG_List("palette", 29 + insnum * 26, 10)
 			TAG_String("Name", "minecraft:" + block_get_namespaced_id(block_walkway_block, block_walkway_data))
@@ -926,7 +943,9 @@ function schematic_export() {
 				TAG_End()
 			TAG_End()
 	    }
-		TAG_List("blocks", hei * len * wid + 1 + sch_loop, 10)
+		blockamount = 0
+		blocktagpos = buffer_tell(buffer)
+		TAG_List("blocks", 0, 10)
 			TAG_Compound("nbt")
 				TAG_String("Color", "black")
 				TAG_String("id", "minecraft:sign")
@@ -941,6 +960,7 @@ function schematic_export() {
 				buffer_write_int_be(signx)
 			TAG_Int("state", insnum * 26 + 19)
 	        TAG_End()
+			blockamount += 1
 			if (sch_loop) {
 				TAG_Compound("nbt")
 					TAG_String("Color", "black")
@@ -956,11 +976,13 @@ function schematic_export() {
 					buffer_write_int_be(signx)
 				TAG_Int("state", insnum * 26 + 19)
 				TAG_End()
+				blockamount += 1
 			}
 			var soundname, soundpitch, soundnote;
 			for (a = 0; a < noteblocks; a += 1) {
 				if (o.command_block) {
 					TAG_Compound("nbt")
+						TAG_String("id", "minecraft:command_block")
 						soundname = dat_instrument(noteblockins[a])
 						soundpitch = dat_pitch(noteblocknote[a] + 33 + noteblockpit[a] / 100)
 						if (noteblocknote[a] + noteblockpit[a] / 100 < 0) soundname += "_-1"
@@ -979,6 +1001,7 @@ function schematic_export() {
 					buffer_write_int_be(noteblockx[a])
 	            TAG_Int("state", 3 + insnum + (noteblockins[a] * 25 + noteblocknote[a]) * !o.command_block)
 	            TAG_End()
+				blockamount += 1
 	        }
 			if (chest) {
 				TAG_Compound("nbt")
@@ -997,11 +1020,14 @@ function schematic_export() {
 					buffer_write_int_be(chestx)
 				TAG_Int("state", insnum * 26 + 21)
 				TAG_End()
+				blockamount += 1
 			}
 			for (c = 0; c < hei; c += 1) {
 			    for (a = 0; a < len; a += 1) {
 			        for (b = wid - 1; b >= 0; b -= 1) {
-						if (sch_block_read(a, b, c) != 25 && sch_block_read(a, b, c) != 54) {
+						skipblock = (a = signx && b = signy && c = signz)
+						if (sch_loop) skipblock = skipblock || (a = signx && b = signy && c = signz - 1)
+						if (sch_block_read(a, b, c) != 25 && sch_block_read(a, b, c) != 54 && !skipblock) {
 						TAG_List("pos", 3, 3)
 							buffer_write_int_be(wid - b - 1)
 							buffer_write_int_be(c)
@@ -1040,11 +1066,16 @@ function schematic_export() {
 							}
 						}
 						TAG_End()
+						blockamount += 1
 						}
 			        }
 			    }
 			}
 		TAG_End()
+		}
+		if (o.structure) {
+			buffer_seek(buffer, buffer_seek_start, blocktagpos)
+			TAG_List("blocks", blockamount, 10)
 		}
 	    buffer_save(buffer, temp_file)
 	    buffer_delete(buffer)

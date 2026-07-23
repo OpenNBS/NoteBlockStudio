@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="audio/nbs">
+    <comment>Note Block Studio Song</comment>
+    <acronym>NBS</acronym>
+    <generic-icon name="audio-x-generic"/>
+    <glob pattern="*.nbs" weight="80"/>
+  </mime-type>
+</mime-info>
