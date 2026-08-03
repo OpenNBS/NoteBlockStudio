@@ -21,6 +21,7 @@ function save_song() {
 		log(string_char_at(fn, string_length(fn) - 3))
 	    if (fn = "") return 0
 	}
+	if (!backup && !asave) warn_working_directory_path(fn)
 	if ((!backup) && (cursong.selected > 0) && (!asave)) selection_place(0)
 
 	if (backup) {

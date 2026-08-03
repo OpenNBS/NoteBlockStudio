@@ -204,6 +204,7 @@
     {"id":{"name":"check_args","path":"scripts/check_args/check_args.yy",},"order":18,},
     {"id":{"name":"load_settings","path":"scripts/load_settings/load_settings.yy",},"order":3,},
     {"id":{"name":"load_song","path":"scripts/load_song/load_song.yy",},"order":4,},
+    {"id":{"name":"warn_working_directory_path","path":"scripts/warn_working_directory_path/warn_working_directory_path.yy",},"order":25,},
     {"id":{"name":"new_song","path":"scripts/new_song/new_song.yy",},"order":5,},
     {"id":{"name":"save_settings","path":"scripts/save_settings/save_settings.yy",},"order":6,},
     {"id":{"name":"__ba_sh_blur_gaussian","path":"shaders/__ba_sh_blur_gaussian/__ba_sh_blur_gaussian.yy",},"order":4,},
