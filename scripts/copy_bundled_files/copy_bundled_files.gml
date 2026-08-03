@@ -14,6 +14,19 @@ function copy_bundled_file(source, destination, nocopy=0) {
 	if (!nocopy) file_copy(source, destination)
 }
 
+function copy_bundled_songs(source, destination) {
+	if (!directory_exists(destination)) directory_create(destination)
+
+	var song = file_find_first(source + "*.*", 0)
+	while (song != "") {
+		if (string_lower(filename_ext(song)) == ".nbs") {
+			copy_bundled_file(source + song, destination + song)
+		}
+		song = file_find_next()
+	}
+	file_find_close()
+}
+
 function copy_bundled_files(copy_data = true, copy_songs = true, copy_patterns = true) {
 	if (copy_data) {
 		directory_create(data_directory)
@@ -28,7 +41,7 @@ function copy_bundled_files(copy_data = true, copy_songs = true, copy_patterns =
 
 	// Songs and patterns intentionally stay in ~/Music on macOS.
 	if (os_type != os_macosx) {
-		if (copy_songs) copy_bundled_directory(bundled_songs_directory, songs_directory)
+		if (copy_songs) copy_bundled_songs(bundled_songs_directory, songs_directory)
 		if (copy_patterns) copy_bundled_directory(bundled_pattern_directory, pattern_directory)
 	}
 
