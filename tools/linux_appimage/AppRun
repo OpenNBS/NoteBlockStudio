@@ -116,6 +116,7 @@ Exec="$nbs_escaped_image" %f
 Icon=org.opennbs.onbs
 Terminal=false
 Categories=AudioVideo;Audio;
+Keywords=nbs;
 MimeType=audio/nbs;
 StartupNotify=true
 EOF
