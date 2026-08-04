@@ -10,6 +10,9 @@ function warn_working_directory_path(path) {
 		selected_path = string_lower(selected_path)
 		program_path1 = string_lower(program_path1)
 	}
+	
+	log("program_directory", program_path1)
+	log("selected_path", selected_path)
 
 	if (string_copy(selected_path, 1, string_length(program_path1)) != program_path1) return;
 
