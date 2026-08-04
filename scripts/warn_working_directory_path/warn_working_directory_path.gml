@@ -1,17 +1,17 @@
 function warn_working_directory_path(path) {
-	if (path == "" || program_directory == "") return
+	if (path == "" || program_directory == "") return;
 
 	var selected_path = string_replace_all(path, "\\", "/")
 	// working_directory resolves to game_save_id on newer runtimes; program_directory is the real bundle location.
-	var program_path = string_replace_all(program_directory, "\\", "/")
-	if (string_char_at(program_path, string_length(program_path)) != "/") program_path += "/"
+	var program_path1 = string_replace_all(program_directory, "\\", "/")
+	if (string_char_at(program_path1, string_length(program_path1)) != "/") program_path1 += "/"
 
 	if (os_type == os_windows) {
 		selected_path = string_lower(selected_path)
-		program_path = string_lower(program_path)
+		program_path1 = string_lower(program_path1)
 	}
 
-	if (string_copy(selected_path, 1, string_length(program_path)) != program_path) return
+	if (string_copy(selected_path, 1, string_length(program_path1)) != program_path1) return;
 
 	message(
 		condstr(
