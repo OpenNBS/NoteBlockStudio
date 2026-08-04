@@ -1,3 +1,36 @@
+Changes in v3.12.0-beta.4 (2026.08.05):
+
+* Added Litematica-compatible .nbt output to schematic and track export. This
+   writes the exact dimensions of the exported structure.
+* Added a unified format selector to schematic and track export. Track export
+   now also supports 1.11-1.12 and pre-1.11 .schematic files.
+* Added .nbs file association and nbs:// URL handling to Linux AppImage builds.
+* Added "nbs" as a Linux application launcher search keyword.
+* Added dynamic Source Han Sans fallback for characters that are not included
+   in the preloaded fonts.
+* Fixed decomposed Hangul and Japanese kana with dakuten or handakuten not
+   displaying correctly.
+* Fixed dynamically loaded characters not aligning with preloaded text.
+* Replaced platform-specific fonts with open-licensed alternatives and added
+   the appropriate licenses and credits.
+* Fixed selecting a custom instrument sound from a subfolder in the program
+   directory not copying it correctly to the user Sounds folder.
+* Fixed .ogg and .wav detection when an audio file's directory name contains
+   a period.
+* Fixed file dialogs not appearing on some KDE Linux systems.
+* Added a warning when opening or saving files in the program directory, where
+   GameMaker redirects file access to the user-data directory.
+* Added validation and error handling for song saving and buffer exports. A
+   full disk or unwritable destination now displays an error instead of
+   crashing or silently producing an incomplete file.
+* Fixed log writing being able to crash when the log file cannot be written.
+* Removed additional stale bundled files from the user-data directory.
+* Changed bundled song copying to copy only .nbs files and added a notice not
+   to store personal songs in the program's bundled Songs directory.
+* Added two demo songs showcasing the trumpet instruments and Sound Stopper.
+
+
+
 Changes in v3.12.0-beta.3 (2026.07.21):
 
 * Added support for copying and pasting notes with custom instruments between
