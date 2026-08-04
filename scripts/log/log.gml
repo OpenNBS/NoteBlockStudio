@@ -27,15 +27,24 @@ function log() {
 	show_debug_message(timestr + cap + valstr)
 	array_push(obj_controller.log_strs, timestr + cap + valstr)
     
-	// Write to file
-	var f = file_text_open_append(log_file);
-	if (f < 0)
-	    return 0
-	file_text_write_string(f, timestr + cap + valstr)
-	file_text_writeln(f)
-	file_text_close(f)
-
-	return 1
+	// Write to file. Logging must not crash the app when the disk is full.
+	var f = -1
+	try {
+		f = file_text_open_append(log_file)
+		if (f < 0) return 0
+		file_text_write_string(f, timestr + cap + valstr)
+		file_text_writeln(f)
+		file_text_close(f)
+		return 1
+	} catch (e) {
+		show_debug_message("Failed to write log file: " + string(e))
+		if (f >= 0) {
+			try {
+				file_text_close(f)
+			} catch (close_error) {}
+		}
+		return 0
+	}
 
 
 
