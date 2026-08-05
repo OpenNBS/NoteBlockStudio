@@ -1,3 +1,10 @@
+Changes in v3.12.0-beta.5 (2026.08.05):
+
+* Fixed bundled song copying deleting non-demo songs from the user-data Songs
+   directory during updates.
+
+
+
 Changes in v3.12.0-beta.4 (2026.08.05):
 
 * Added Litematica-compatible .nbt output to schematic and track export. This
