@@ -353,6 +353,22 @@ function control_draw() {
 	            break
 	        }
 	    }
+	    if (show_numbers && current_song.starta + a <= current_song.enda && current_song.colamount[current_song.starta + a] > 0) {
+	        for (var sound_stopper_layer = current_song.colfirst[current_song.starta + a]; sound_stopper_layer <= current_song.collast[current_song.starta + a]; sound_stopper_layer += 1) {
+	            if (current_song.song_exists[current_song.starta + a, sound_stopper_layer] && current_song.song_ins[current_song.starta + a, sound_stopper_layer].name = "Sound Stopper") {
+	                draw_sound_stopper_guide(
+	                    x1 + 2 + 32 * a - note_offset,
+	                    abs(current_song.song_pit[current_song.starta + a, sound_stopper_layer]),
+	                    panning_velocity_to_short(current_song.song_pan[current_song.starta + a, sound_stopper_layer], current_song.song_vel[current_song.starta + a, sound_stopper_layer]),
+	                    x1 + 2,
+	                    y1 + 34,
+	                    x1 + 2 + 32 * totalcols,
+	                    y1 + 34 + 32 * totalrows,
+	                    current_song.startb
+	                )
+	            }
+	        }
+	    }
 	    draw_theme_color()
 	}
 	} else if (dropmode) {
@@ -419,7 +435,7 @@ function control_draw() {
 	}
 
 	// Draw selection
-	if (current_song.selected > 0) selection_draw(x1 + 2 - note_offset, y1 + 34, totalcols, totalrows)
+	if (current_song.selected > 0) selection_draw(x1 + 2 - note_offset, y1 + 34, totalcols, totalrows, x1 + 2)
 	current_song.marker_prevpos = current_song.marker_pos
 	if (window = w_dragselection) {
 	    if (!mouse_check_button(mb_left)) {
