@@ -117,7 +117,7 @@ Icon=org.opennbs.onbs
 Terminal=false
 Categories=AudioVideo;Audio;
 Keywords=nbs;
-MimeType=audio/nbs;
+MimeType=audio/vnd.opennbs.nbs;
 StartupNotify=true
 EOF
 	if nbs_replace_if_changed "$nbs_main_temp" "$nbs_main_desktop"; then
@@ -163,7 +163,7 @@ EOF
 		if [ ! -f "$nbs_installed_mime" ] || ! cmp -s "$nbs_mime_source" "$nbs_installed_mime"; then
 			if command -v xdg-mime >/dev/null 2>&1; then
 				xdg-mime install --mode user "$nbs_mime_source" >/dev/null 2>&1 || \
-					nbs_warn "could not install the audio/nbs MIME definition"
+					nbs_warn "could not install the audio/vnd.opennbs.nbs MIME definition"
 			else
 				mkdir -p "$nbs_data_home/mime/packages"
 				if nbs_copy_if_changed "$nbs_mime_source" "$nbs_installed_mime"; then
@@ -171,7 +171,7 @@ EOF
 						update-mime-database "$nbs_data_home/mime" >/dev/null 2>&1 || \
 							nbs_warn "update-mime-database failed"
 					else
-						nbs_warn "xdg-mime is unavailable; the audio/nbs MIME database was not refreshed"
+						nbs_warn "xdg-mime is unavailable; the audio/vnd.opennbs.nbs MIME database was not refreshed"
 					fi
 				fi
 			fi
@@ -179,9 +179,9 @@ EOF
 	fi
 
 	if command -v xdg-mime >/dev/null 2>&1; then
-		nbs_current_file_handler=$(xdg-mime query default audio/nbs 2>/dev/null || true)
+		nbs_current_file_handler=$(xdg-mime query default audio/vnd.opennbs.nbs 2>/dev/null || true)
 		if [ "$nbs_main_was_present" -eq 0 ] || [ -z "$nbs_current_file_handler" ] || [ "$nbs_current_file_handler" = "$nbs_main_desktop_id" ]; then
-			xdg-mime default "$nbs_main_desktop_id" audio/nbs >/dev/null 2>&1 || \
+			xdg-mime default "$nbs_main_desktop_id" audio/vnd.opennbs.nbs >/dev/null 2>&1 || \
 				nbs_warn "could not set the default .nbs file handler"
 		fi
 
