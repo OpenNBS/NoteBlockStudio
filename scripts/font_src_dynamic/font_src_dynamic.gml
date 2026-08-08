@@ -19,6 +19,20 @@ function font_src_dynamic_init() {
 	o.src_dynamic_handles = ds_map_create()
 	o.src_dynamic_glyph_states = ds_map_create()
 	o.src_dynamic_queue = ds_queue_create()
+	o.src_dynamic_text_cache = ds_map_create()
+	o.src_dynamic_layout_cache = ds_map_create()
+	o.src_dynamic_truncate_cache = ds_map_create()
+	o.src_dynamic_text_cache_order = ds_queue_create()
+	o.src_dynamic_layout_cache_order = ds_queue_create()
+	o.src_dynamic_truncate_cache_order = ds_queue_create()
+	o.src_dynamic_text_cache_limit = 256
+	o.src_dynamic_layout_cache_limit = 512
+	o.src_dynamic_truncate_cache_limit = 256
+	o.src_dynamic_cache_tick = 0
+	o.src_dynamic_cache_frame = 0
+	o.src_dynamic_cache_max_age = 1800
+	o.src_dynamic_cache_prune_interval = 600
+	o.src_dynamic_layout_revision = 0
 	o.src_dynamic_glyphs_per_step = 8
 	o.src_dynamic_step_budget_us = 500
 	o.src_dynamic_texture_page_size = 1024
@@ -27,6 +41,203 @@ function font_src_dynamic_init() {
 	if (!o.src_dynamic_available) {
 		log("Dynamic Source Han fonts unavailable; using baked fnt_src_* assets")
 	}
+}
+
+/// @description Update the age metadata of a cached text entry.
+function text_dynamic_cache_touch(entry) {
+	var o = obj_controller
+	o.src_dynamic_cache_tick += 1
+	entry.last_used = o.src_dynamic_cache_tick
+	entry.last_frame = o.src_dynamic_cache_frame
+}
+
+/// @description Insert into a bounded cache using constant-time FIFO eviction.
+function text_dynamic_cache_store(cache, order, limit, key, entry) {
+	text_dynamic_cache_touch(entry)
+	entry.cache_token = entry.last_used
+	while (ds_map_size(cache) >= limit && !ds_queue_empty(order)) {
+		var oldest = ds_queue_dequeue(order)
+		var oldest_key = oldest[0]
+		if (ds_map_exists(cache, oldest_key)) {
+			var oldest_entry = cache[? oldest_key]
+			if (oldest_entry.cache_token = oldest[1]) ds_map_delete(cache, oldest_key)
+		}
+	}
+	// Keep the cache bounded even if an order queue was externally cleared.
+	if (ds_map_size(cache) >= limit) ds_map_delete(cache, ds_map_find_first(cache))
+	cache[? key] = entry
+	ds_queue_enqueue(order, [key, entry.cache_token])
+}
+
+/// @description Remove cached text that has not been used recently.
+function text_dynamic_cache_prune(cache, order, minimum_frame) {
+	var count = ds_map_size(cache)
+	var key, next_key, entry
+	if (count > 0) {
+		key = ds_map_find_first(cache)
+		repeat (count) {
+			next_key = ds_map_find_next(cache, key)
+			entry = cache[? key]
+			if (entry.last_frame < minimum_frame) ds_map_delete(cache, key)
+			key = next_key
+		}
+	}
+
+	// Drop stale queue records left behind by expiration or cache invalidation.
+	ds_queue_clear(order)
+	count = ds_map_size(cache)
+	if (count <= 0) return;
+	key = ds_map_find_first(cache)
+	repeat (count) {
+		entry = cache[? key]
+		ds_queue_enqueue(order, [key, entry.cache_token])
+		key = ds_map_find_next(cache, key)
+	}
+}
+
+/// @description Age bounded text caches without scanning them every frame.
+function text_dynamic_cache_step() {
+	var o = obj_controller
+	if (!variable_instance_exists(o, "src_dynamic_initialized") || !o.src_dynamic_initialized) return;
+
+	o.src_dynamic_cache_frame += 1
+	if (o.src_dynamic_cache_frame mod o.src_dynamic_cache_prune_interval != 0) return;
+
+	var minimum_frame = o.src_dynamic_cache_frame - o.src_dynamic_cache_max_age
+	text_dynamic_cache_prune(o.src_dynamic_layout_cache, o.src_dynamic_layout_cache_order, minimum_frame)
+	text_dynamic_cache_prune(o.src_dynamic_truncate_cache, o.src_dynamic_truncate_cache_order, minimum_frame)
+	text_dynamic_cache_prune(o.src_dynamic_text_cache, o.src_dynamic_text_cache_order, minimum_frame)
+}
+
+/// @description Return a cached display-composed string entry.
+function text_dynamic_text_get(text) {
+	var o = obj_controller
+	var can_cache = variable_instance_exists(o, "src_dynamic_initialized") && o.src_dynamic_initialized
+	if (can_cache && ds_map_exists(o.src_dynamic_text_cache, text)) {
+		var cached = o.src_dynamic_text_cache[? text]
+		text_dynamic_cache_touch(cached)
+		return cached
+	}
+
+	var entry = {
+		text: string_compose_display(text),
+		length: -1,
+		chars: undefined,
+		codes: undefined,
+		categories: undefined,
+		last_used: 0,
+		last_frame: 0,
+		cache_token: 0
+	}
+	if (can_cache) {
+		text_dynamic_cache_store(o.src_dynamic_text_cache, o.src_dynamic_text_cache_order,
+			o.src_dynamic_text_cache_limit, text, entry)
+	}
+	return entry
+}
+
+/// @description Lazily split a composed display string into reusable glyph data.
+function text_dynamic_text_parse(entry) {
+	if (entry.length >= 0) return entry;
+
+	var length = string_length(entry.text)
+	entry.length = length
+	entry.chars = array_create(length)
+	entry.codes = array_create(length)
+	entry.categories = array_create(length)
+	for (var i = 0; i < length; i += 1) {
+		var char = string_char_at(entry.text, i + 1)
+		var char_code = ord(char)
+		entry.chars[i] = char
+		entry.codes[i] = char_code
+		entry.categories[i] = is_nonascii(char_code)
+	}
+	return entry
+}
+
+/// @description Resolve and measure a parsed string for one font configuration.
+function text_dynamic_layout_get(text_entry, type, force_lores = false) {
+	var o = obj_controller
+	text_entry = text_dynamic_text_parse(text_entry)
+
+	var can_cache = variable_instance_exists(o, "src_dynamic_initialized") && o.src_dynamic_initialized
+	var is_fluent = (o.theme = 3)
+	var is_hires = o.hires * !force_lores * is_fluent
+	var revision = can_cache ? o.src_dynamic_layout_revision : 0
+	var key = string(type) + ":" + string(is_fluent) + ":" + string(is_hires)
+		+ ":" + string(revision) + ":" + string(text_entry.text)
+	if (can_cache && ds_map_exists(o.src_dynamic_layout_cache, key)) {
+		var cached = o.src_dynamic_layout_cache[? key]
+		// Validate the exact values as string() can round numeric key components.
+		if (cached.type = type && cached.is_fluent = is_fluent
+			&& cached.is_hires = is_hires && cached.revision = revision
+			&& cached.text_entry.text = text_entry.text) {
+			text_dynamic_cache_touch(cached)
+			return cached
+		}
+		ds_map_delete(o.src_dynamic_layout_cache, key)
+	}
+
+	var length = text_entry.length
+	var fonts = array_create(length)
+	var widths = array_create(length)
+	var dynamic_fonts = array_create(length)
+	var line_widths = [0]
+	var line = 0
+	var line_width = 0
+	var max_width = 0
+	var category_prev = -2
+	var selected_font = draw_get_font()
+	for (var i = 0; i < length; i += 1) {
+		var char = text_entry.chars[i]
+		var char_code = text_entry.codes[i]
+		var category = text_entry.categories[i]
+		var uses_dynamic_font = false
+		if (category = 1) {
+			uses_dynamic_font = font_src_dynamic_select(type, char, char_code, force_lores)
+			selected_font = draw_get_font()
+		} else if (category != category_prev) {
+			draw_theme_font(type, category, force_lores)
+			selected_font = draw_get_font()
+		}
+
+		var char_width = string_width(char)
+		fonts[i] = selected_font
+		widths[i] = char_width
+		dynamic_fonts[i] = uses_dynamic_font
+		line_widths[line] += char_width
+		line_width += char_width / (1 + is_hires + 2 * (is_hires && category != 1))
+		if (char = "\n") {
+			if (line_width >= max_width) max_width = line_width
+			line_width = 0
+			line += 1
+			array_push(line_widths, 0)
+		}
+		category_prev = category
+	}
+	if (line_width >= max_width) max_width = line_width
+
+	var layout = {
+		text_entry: text_entry,
+		length: length,
+		fonts: fonts,
+		widths: widths,
+		dynamic_fonts: dynamic_fonts,
+		line_widths: line_widths,
+		max_width: max_width,
+		type: type,
+		is_fluent: is_fluent,
+		is_hires: is_hires,
+		revision: revision,
+		last_used: 0,
+		last_frame: 0,
+		cache_token: 0
+	}
+	if (can_cache) {
+		text_dynamic_cache_store(o.src_dynamic_layout_cache, o.src_dynamic_layout_cache_order,
+			o.src_dynamic_layout_cache_limit, key, layout)
+	}
+	return layout
 }
 
 /// @description Report whether a baked fnt_src_* asset contains a character.
@@ -127,6 +338,7 @@ function font_src_dynamic_step() {
 
 	var started = get_timer()
 	var processed = 0
+	var layout_changed = false
 	while (!ds_queue_empty(o.src_dynamic_queue) && processed < o.src_dynamic_glyphs_per_step) {
 		var request = ds_queue_dequeue(o.src_dynamic_queue)
 		var font_key = request[0]
@@ -163,12 +375,20 @@ function font_src_dynamic_step() {
 		if (font != -1 && font_exists(font)) {
 			font_cache_glyph(font, char_code)
 			o.src_dynamic_glyph_states[? glyph_key] = 1
+			layout_changed = true
 		} else {
 			o.src_dynamic_glyph_states[? glyph_key] = -1
 		}
 
 		processed += 1
 		if (get_timer() - started >= o.src_dynamic_step_budget_us) break;
+	}
+	if (layout_changed) {
+		o.src_dynamic_layout_revision += 1
+		ds_map_clear(o.src_dynamic_layout_cache)
+		ds_map_clear(o.src_dynamic_truncate_cache)
+		ds_queue_clear(o.src_dynamic_layout_cache_order)
+		ds_queue_clear(o.src_dynamic_truncate_cache_order)
 	}
 }
 
@@ -188,6 +408,12 @@ function font_src_dynamic_shutdown() {
 	}
 
 	ds_queue_destroy(o.src_dynamic_queue)
+	ds_queue_destroy(o.src_dynamic_truncate_cache_order)
+	ds_queue_destroy(o.src_dynamic_layout_cache_order)
+	ds_queue_destroy(o.src_dynamic_text_cache_order)
+	ds_map_destroy(o.src_dynamic_truncate_cache)
+	ds_map_destroy(o.src_dynamic_layout_cache)
+	ds_map_destroy(o.src_dynamic_text_cache)
 	ds_map_destroy(o.src_dynamic_glyph_states)
 	ds_map_destroy(o.src_dynamic_handles)
 	ds_map_destroy(o.src_dynamic_baked_glyphs)
