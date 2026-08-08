@@ -36,7 +36,7 @@
         {"name":"_python_prepare_buffer","path":"extensions/pygml/pygml.yy",},
         {"name":"python_set_buffer_size","path":"extensions/pygml/pygml.yy",},
       ],},
-    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"pygml.dll","origname":"","init":"","final":"_python_finalize","kind":1,"uncompress":false,"functions":[
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"pygml.dll","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"_python_call_function","externalName":"_python_call_function","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
           ],"documentation":"",},

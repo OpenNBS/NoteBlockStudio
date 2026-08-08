@@ -35,6 +35,7 @@ function macros() {
 #macro songs_directory   (os_type = os_macosx ? music_directory : file_directory + "songs" + (os_type = os_windows ? "\\" : "/"))
 #macro pattern_directory (os_type = os_macosx ? music_directory : file_directory + "patterns" + (os_type = os_windows ? "\\" : "/"))
 #macro log_file          file_directory + "log.txt"
+#macro acrylic_startup_guard_file file_directory + "acrylic_startup.pending"
 #macro temp_file         file_directory + "tmp.file"
 #macro update_file       file_directory + "note block studio installer.exe"
 #macro settings_file     file_directory + "settings.ini"

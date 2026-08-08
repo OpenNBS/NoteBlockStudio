@@ -230,32 +230,8 @@ function control_create() {
 	sound_import_download_version_url_list = []
 	sound_import_download_files_list = []
 	sound_import_download_files_index = 0
-	if (os_type == os_macosx) {
-		EnvironmentSetVariable("PYTHONHOME", current_directory + "data/python/python38_darwin_universal/");
-		EnvironmentSetVariable("PYTHONPATH", current_directory + "data/python/" + ":" + 
-											 current_directory + "data/python/lib/site-packages/" + ":" + 
-											 current_directory + "data/python/lib/site-packages.zip/");
-		EnvironmentSetVariable("PYTHONDONTWRITEBYTECODE", "1");
-		EnvironmentSetVariable("PYTHONNOUSERSITE", "1");
-		var tempenvpath = EnvironmentGetVariable("PATH")
-		EnvironmentSetVariable("PATH", tempenvpath + ":" + current_directory)
-	}
-	if (os_type == os_linux) {
-		EnvironmentSetVariable("PYTHONHOME", current_directory + "data/python/python38/");
-		EnvironmentSetVariable("PYTHONPATH", current_directory + "data/python/" + ":" + 
-											 current_directory + "data/python/python38/lib/python3.8/lib-dynload/" + ":" +
-											 current_directory + "data/python/python38/lib/python3.8/" + ":" +
-											 current_directory + "data/python/lib/site-packages/" + ":" + 
-											 current_directory + "data/python/lib/site-packages.zip/");
-		EnvironmentSetVariable("PYTHONDONTWRITEBYTECODE", "1");
-		EnvironmentSetVariable("PYTHONNOUSERSITE", "1");
-		EnvironmentSetVariable("LD_LIBRARY_PATH",
-		    current_directory + "data/python/python38/lib:" + EnvironmentGetVariable("LD_LIBRARY_PATH")
-		);
-		var tempenvpath = EnvironmentGetVariable("PATH")
-		EnvironmentSetVariable("PATH", tempenvpath + ":" + current_directory)
-	}
-	_python_initialize()
+	// Audio export initializes the embedded interpreter on first use.
+	python_initialized = false
 
 	// Instruments
 	current_resource = "Vanilla"
@@ -661,13 +637,9 @@ function control_create() {
 	if (channelstoggle) channels = 1024
 	else channels = 256
 	audio_channel_num(channels)
-	if (acrylic_successful) {
+	if (acrylic_successful && !file_exists(acrylic_startup_guard_file)) {
 		if (acrylic) {
-			acrylic_successful = 0
-			save_settings()
-			change_theme()
-			acrylic_successful = 1
-			save_settings()
+			change_theme_startup_guarded()
 		}
 	} else {
 		acrylic = 0
@@ -676,6 +648,7 @@ function control_create() {
 		else message("Note Block Studio 在创建背景贴图时遇到错误，透明效果将被关闭。\n这种情况一般是由于您的桌面壁纸图片过高或过长。", "Note Block Studio")
 		acrylic_successful = 1
 		save_settings()
+		acrylic_startup_guard_clear()
 	}
 	if (window_scale = 0) {
 		if (language != 1) message("Note Block Studio detected that the window scale has been set to 0. It has been reverted to default.\nYou may need to restart Note Block Studio for a smooth experience.", "Note Block Studio")
@@ -755,7 +728,7 @@ function control_create() {
 	if (os_type = os_windows) register_url_protocol()
 	
 	// Init wallpaper
-	change_theme()
+	change_theme_startup_guarded()
 
 	// Auto-recovery
 	// PREVIOUSLY DISABLED DUE TO https://github.com/OpenNBS/OpenNoteBlockStudio/issues/196
@@ -883,6 +856,7 @@ function control_create() {
 	}
 
 	log("Startup OK")
+	log_flush()
 	
 	}
 
