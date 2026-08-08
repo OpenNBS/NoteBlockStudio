@@ -43,18 +43,35 @@ function font_src_dynamic_init() {
 	}
 }
 
-/// @description Update the age metadata of a cached text entry.
-function text_dynamic_cache_touch(entry) {
+/// @description Remove stale lazy-LRU records while preserving recency order.
+function text_dynamic_cache_compact(cache, order) {
+	var count = ds_queue_size(order)
+	repeat (count) {
+		var record = ds_queue_dequeue(order)
+		var key = record[0]
+		if (ds_map_exists(cache, key)) {
+			var entry = cache[? key]
+			if (entry.cache_token = record[1]) ds_queue_enqueue(order, record)
+		}
+	}
+}
+
+/// @description Mark a cached entry as most recently used.
+function text_dynamic_cache_touch(cache, order, limit, key, entry) {
 	var o = obj_controller
 	o.src_dynamic_cache_tick += 1
 	entry.last_used = o.src_dynamic_cache_tick
 	entry.last_frame = o.src_dynamic_cache_frame
+	entry.cache_token = entry.last_used
+	ds_queue_enqueue(order, [key, entry.cache_token])
+
+	// Hits create lazy queue records. Compact them before metadata can grow
+	// beyond a small multiple of the bounded cache itself.
+	if (ds_queue_size(order) > limit * 4) text_dynamic_cache_compact(cache, order)
 }
 
-/// @description Insert into a bounded cache using constant-time FIFO eviction.
+/// @description Insert into a bounded cache using amortized constant-time LRU eviction.
 function text_dynamic_cache_store(cache, order, limit, key, entry) {
-	text_dynamic_cache_touch(entry)
-	entry.cache_token = entry.last_used
 	while (ds_map_size(cache) >= limit && !ds_queue_empty(order)) {
 		var oldest = ds_queue_dequeue(order)
 		var oldest_key = oldest[0]
@@ -66,7 +83,7 @@ function text_dynamic_cache_store(cache, order, limit, key, entry) {
 	// Keep the cache bounded even if an order queue was externally cleared.
 	if (ds_map_size(cache) >= limit) ds_map_delete(cache, ds_map_find_first(cache))
 	cache[? key] = entry
-	ds_queue_enqueue(order, [key, entry.cache_token])
+	text_dynamic_cache_touch(cache, order, limit, key, entry)
 }
 
 /// @description Remove cached text that has not been used recently.
@@ -83,15 +100,19 @@ function text_dynamic_cache_prune(cache, order, minimum_frame) {
 		}
 	}
 
-	// Drop stale queue records left behind by expiration or cache invalidation.
-	ds_queue_clear(order)
+	// Drop stale queue records left behind by expiration while keeping the
+	// surviving entries in least-to-most-recently-used order.
+	text_dynamic_cache_compact(cache, order)
 	count = ds_map_size(cache)
 	if (count <= 0) return;
-	key = ds_map_find_first(cache)
-	repeat (count) {
-		entry = cache[? key]
-		ds_queue_enqueue(order, [key, entry.cache_token])
-		key = ds_map_find_next(cache, key)
+	// Recover the eviction index if an external caller cleared only the queue.
+	if (ds_queue_empty(order)) {
+		key = ds_map_find_first(cache)
+		repeat (count) {
+			entry = cache[? key]
+			ds_queue_enqueue(order, [key, entry.cache_token])
+			key = ds_map_find_next(cache, key)
+		}
 	}
 }
 
@@ -115,7 +136,8 @@ function text_dynamic_text_get(text) {
 	var can_cache = variable_instance_exists(o, "src_dynamic_initialized") && o.src_dynamic_initialized
 	if (can_cache && ds_map_exists(o.src_dynamic_text_cache, text)) {
 		var cached = o.src_dynamic_text_cache[? text]
-		text_dynamic_cache_touch(cached)
+		text_dynamic_cache_touch(o.src_dynamic_text_cache, o.src_dynamic_text_cache_order,
+			o.src_dynamic_text_cache_limit, text, cached)
 		return cached
 	}
 
@@ -172,7 +194,8 @@ function text_dynamic_layout_get(text_entry, type, force_lores = false) {
 		if (cached.type = type && cached.is_fluent = is_fluent
 			&& cached.is_hires = is_hires && cached.revision = revision
 			&& cached.text_entry.text = text_entry.text) {
-			text_dynamic_cache_touch(cached)
+			text_dynamic_cache_touch(o.src_dynamic_layout_cache, o.src_dynamic_layout_cache_order,
+				o.src_dynamic_layout_cache_limit, key, cached)
 			return cached
 		}
 		ds_map_delete(o.src_dynamic_layout_cache, key)

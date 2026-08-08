@@ -17,7 +17,8 @@ function string_truncate(str, maxwidth, truncate_start = false) {
 			&& cached.is_hires = is_hires && cached.revision = revision
 			&& cached.maxwidth = maxwidth && cached.truncate_start = truncate_start
 			&& cached.source_is_string = is_string(str) && cached.source = str) {
-			text_dynamic_cache_touch(cached)
+			text_dynamic_cache_touch(o.src_dynamic_truncate_cache, o.src_dynamic_truncate_cache_order,
+				o.src_dynamic_truncate_cache_limit, key, cached)
 			draw_theme_font(currentfont)
 			return cached.result
 		}
