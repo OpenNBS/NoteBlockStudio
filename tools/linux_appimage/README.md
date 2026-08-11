@@ -39,7 +39,7 @@ The resulting AppDir can then be passed to `appimagetool`.
 On every AppImage launch, `AppRun` uses the AppImage-provided `$APPIMAGE` value
 to update two per-user desktop entries:
 
-- `org.opennbs.onbs.desktop` opens `audio/nbs` files in the editor.
+- `org.opennbs.onbs.desktop` opens `audio/vnd.opennbs.nbs` files in the editor.
 - `org.opennbs.onbs-protocol.desktop` opens `nbs://` URLs with
   `--protocol-launcher`, which selects player mode.
 

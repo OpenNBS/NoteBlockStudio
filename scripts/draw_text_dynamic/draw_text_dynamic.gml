@@ -1,6 +1,7 @@
 function draw_text_dynamic(x, y, string, force = false){
 	// draw_text_dynamic()
-	var draw_string = string_compose_display(string)
+	var text_entry = text_dynamic_text_get(string)
+	var draw_string = text_entry.text
 
 	// Skip drawing dynamic text when using English
 	var o = obj_controller
@@ -22,66 +23,51 @@ function draw_text_dynamic(x, y, string, force = false){
 	var width = 0;
 	var lines = 0;
 	var linewidth = [0];
-	var totalwidth = 0;
-	var longline = 0;
 	var halign = draw_get_halign();
-	var char, char_code, is_not_ascii, y_offset, font_changed, uses_dynamic_font;
-	var is_not_ascii_prev = -2
-	draw_set_halign(fa_left)
+	var currentfont = o.currentfont
+	var is_hires_theme = o.hires && o.theme = 3
+	var align_layout = undefined
+	if (halign != fa_left) draw_set_halign(fa_left)
 	if (halign != fa_left) {
-		for (var i = 1; i <= string_length(draw_string); i += 1) {
-			char = string_char_at(draw_string, i)
-			char_code = ord(char)
-			is_not_ascii = is_nonascii(char_code)
-			font_changed = is_not_ascii != is_not_ascii_prev
-			if (font_changed) {
-				if (is_not_ascii = 1) font_src_dynamic_select(o.currentfont, char, char_code, true)
-				else draw_theme_font(o.currentfont, is_not_ascii, true)
-			} else if (is_not_ascii = 1) {
-				font_src_dynamic_select(o.currentfont, char, char_code, true)
-			}
-			linewidth[lines] += string_width(char)
-			if (char = "\n") {lines += 1 array_push(linewidth, 0)}
-			is_not_ascii_prev = is_not_ascii
-		}
-		for (var i = 0; i <= lines; i += 1) {
-			if (linewidth[i] >= linewidth[longline]) longline = i
-		}
-		totalwidth = linewidth[longline]
-		lines = 0
-		is_not_ascii_prev = -2
+		align_layout = text_dynamic_layout_get(text_entry, currentfont, true)
+		linewidth = align_layout.line_widths
 	}
-	for(var i = 1; i <= string_length(draw_string); i += 1) {
-		char = string_char_at(draw_string, i)
-		char_code = ord(char)
-		is_not_ascii = is_nonascii(char_code)
-		font_changed = is_not_ascii != is_not_ascii_prev
-		uses_dynamic_font = false
-		if (font_changed) {
-			if (is_not_ascii = 1) uses_dynamic_font = font_src_dynamic_select(o.currentfont, char, char_code)
-			else draw_theme_font(o.currentfont, is_not_ascii)
-		} else if (is_not_ascii = 1) {
-			uses_dynamic_font = font_src_dynamic_select(o.currentfont, char, char_code)
+	var layout = text_dynamic_layout_get(text_entry, currentfont)
+	var length = layout.length
+	var line_x = x
+	if (halign = fa_center) line_x = x - floor(linewidth[0] / 2)
+	else if (halign = fa_right) line_x = x - linewidth[0]
+	var line_y = y
+	var selected_font = draw_get_font()
+	for(var i = 0; i < length; i += 1) {
+		var char = text_entry.chars[i]
+		var is_not_ascii = text_entry.categories[i]
+		var font = layout.fonts[i]
+		if (selected_font != font) {
+			draw_set_font(font)
+			selected_font = font
 		}
 		// Runtime font_add() rasterizes Source Han one logical pixel lower than
 		// the equivalent baked fnt_src_* asset in this GameMaker runtime.
-		y_offset = lines * 16 - uses_dynamic_font
+		var draw_y = line_y - 1 * !(!is_not_ascii) - layout.dynamic_fonts[i]
 		
-		if (!o.hires || o.theme != 3) {
-			if (halign = fa_left) draw_text (x + width, y - 1 * !(!is_not_ascii) + y_offset, char)
-			else if (halign = fa_center) draw_text (x - floor(linewidth[lines] / 2) + width, y - 1 * !(!is_not_ascii) + y_offset, char)
-			else if (halign = fa_right) draw_text (x - linewidth[lines] + width, y - 1 * !(!is_not_ascii) + y_offset, char)
+		if (!is_hires_theme) {
+			draw_text(line_x + width, draw_y, char)
 		} else {
-			if (halign = fa_left) draw_text_transformed (x + width, y - 1 * !(!is_not_ascii) + y_offset, char, 0.5 - 0.25 * (is_not_ascii != 1), 0.5 - 0.25 * (is_not_ascii != 1), 0)
-			else if (halign = fa_center) draw_text_transformed (x - floor(linewidth[lines] / 2) + width, y - 1 * !(!is_not_ascii) + y_offset, char, 0.5 - 0.25 * (is_not_ascii != 1), 0.5 - 0.25 * (is_not_ascii != 1), 0)
-			else if (halign = fa_right) draw_text_transformed (x - linewidth[lines] + width, y - 1 * !(!is_not_ascii) + y_offset, char, 0.5 - 0.25 * (is_not_ascii != 1), 0.5 - 0.25 * (is_not_ascii != 1), 0)
+			var scale = 0.5 - 0.25 * (is_not_ascii != 1)
+			draw_text_transformed(line_x + width, draw_y, char, scale, scale, 0)
 		}
-		width += string_width(char) / (1 + (o.hires || o.theme != 3) * (o.theme = 3) + 2 * ((o.hires || o.theme != 3) && is_not_ascii != 1) * (o.theme = 3))
-		if (char = "\n") {lines += 1 width = 0}
-		is_not_ascii_prev = is_not_ascii
+		width += layout.widths[i] / (1 + is_hires_theme + 2 * (is_hires_theme && is_not_ascii != 1))
+		if (char = "\n") {
+			lines += 1
+			width = 0
+			line_y += 16
+			if (halign = fa_center) line_x = x - floor(linewidth[lines] / 2)
+			else if (halign = fa_right) line_x = x - linewidth[lines]
+		}
 	}
-	draw_set_halign(halign)
-	draw_theme_font(o.currentfont, 0)
+	if (halign != fa_left) draw_set_halign(halign)
+	draw_theme_font(currentfont, 0)
 }
 
 function is_nonascii(char_code){

@@ -1,7 +1,7 @@
-function selection_draw(argument0, argument1, argument2, argument3) {
-	// selection_draw(x, y, w, h)
+function selection_draw(argument0, argument1, argument2, argument3, argument4) {
+	// selection_draw(x, y, w, h, editor_left)
 	// Draws the selection.
-	var xs, ys, x1, y1, x2, y2, w, h, sa, sb, salpha, a, b, c, d, e, xx;
+	var xs, ys, x1, y1, x2, y2, w, h, editor_left, sa, sb, salpha, a, b, c, d, e, xx;
 	x1 = songs[song].selection_x
 	y1 = songs[song].selection_y
 	x2 = x1 + songs[song].selection_l
@@ -10,6 +10,7 @@ function selection_draw(argument0, argument1, argument2, argument3) {
 	ys = argument1
 	w = argument2
 	h = argument3
+	editor_left = argument4
 	draw_set_halign(fa_center)
 	// Play
 	if ((floor(songs[song].marker_pos) != floor(songs[song].marker_prevpos) || (songs[song].marker_prevpos == 0 && songs[song].marker_pos != songs[song].marker_prevpos)) && songs[song].marker_pos >= songs[song].selection_x && songs[song].marker_pos < songs[song].selection_x + songs[song].selection_l) {
@@ -46,7 +47,29 @@ function selection_draw(argument0, argument1, argument2, argument3) {
 	    }
 	}
 
-	if (x1 > songs[song].starta + w || y1 > songs[song].startb + h || x2 <= songs[song].starta || y2 <= songs[song].startb) return 0 // Outside
+	if (x1 > songs[song].starta + w || x2 <= songs[song].starta) return 0 // Outside horizontally
+	if (show_numbers) {
+		for (a = max(songs[song].starta, x1); a < min(songs[song].starta + w, x2); a += 1) {
+			sa = a - songs[song].selection_x
+			if (songs[song].selection_colfirst[sa] > -1) {
+				for (sb = songs[song].selection_colfirst[sa]; sb <= songs[song].selection_collast[sa]; sb += 1) {
+					if (songs[song].selection_exists[sa, sb] && songs[song].selection_ins[sa, sb].name = "Sound Stopper") {
+						draw_sound_stopper_guide(
+							xs + (a - songs[song].starta) * 32,
+							abs(songs[song].selection_pit[sa, sb]),
+							panning_velocity_to_short(songs[song].selection_pan[sa, sb], songs[song].selection_vel[sa, sb]),
+							editor_left,
+							ys,
+							editor_left + w * 32,
+							ys + h * 32,
+							songs[song].startb
+						)
+					}
+				}
+			}
+		}
+	}
+	if (y1 > songs[song].startb + h || y2 <= songs[song].startb) return 0 // Outside vertically
 	for (a = max(songs[song].starta, x1); a < min(songs[song].starta + w, x2); a += 1) {
 	    sa = a - songs[song].selection_x
 	    if (songs[song].selection_colfirst[sa] > -1) {

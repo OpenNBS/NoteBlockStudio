@@ -1,6 +1,6 @@
 function draw_window_preferences() {
 	// draw_window_preferences()
-	var x1, y1, a, b, c, as, stabx, stabw, nsel, str, accentclick;
+	var x1, y1, a, b, c, as, stabx, stabw, nsel, str, strw, accentclick;
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
@@ -63,18 +63,19 @@ function draw_window_preferences() {
 	}
 	if (theme != 3) {
 	for (a = 0; a < array_length(str); a += 1) {
-	    c = mouse_rectangle(x1 + b, y1 + 28, string_width_dynamic(str[a]) + 12, 18)
+		strw = string_width_dynamic(str[a])
+	    c = mouse_rectangle(x1 + b, y1 + 28, strw + 12, 18)
 	    if (selected_tab = a) {
 	        stabx = b - 2
-	        stabw = string_width_dynamic(str[a]) + 15
+	        stabw = strw + 15
 	    } else {
 			draw_sprite(spr_tabbuttons, 0 + 3 * c + 6 * theme, x1 + b, y1 + 28)
-			draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme, x1 + b + 2, y1 + 28, string_width_dynamic(str[a]) / 2 + 4, 1, 0, -1, draw_get_alpha())
-			draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme, x1 + b + string_width_dynamic(str[a]) + 10, y1 + 28)	
+			draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme, x1 + b + 2, y1 + 28, strw / 2 + 4, 1, 0, -1, draw_get_alpha())
+			draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme, x1 + b + strw + 10, y1 + 28)
 	        draw_text_dynamic(x1 + b + 6, y1 + 30, str[a])
 	    }
 	    if (mouse_check_button_pressed(mb_left) && c) nsel = a
-	    b += string_width_dynamic(str[a]) + 12
+	    b += strw + 12
 	}
 	if (theme = 0 || theme = 2 || theme = 3) {
 	    draw_set_color(c_white)
@@ -107,9 +108,10 @@ function draw_window_preferences() {
 	} else {
 	draw_theme_font(font_med)
 	for (a = 0; a < array_length(str); a += 1) {
+		strw = string_width_dynamic(str[a])
 		draw_set_color(c_black)
 		if (fdark) draw_set_color(c_white)
-	    c = mouse_rectangle(x1 + b, y1 + 28 + 21 - 19, string_width_dynamic(str[a]) + 12, 18 + 21)
+	    c = mouse_rectangle(x1 + b, y1 + 28 + 21 - 19, strw + 12, 18 + 21)
 	    if (selected_tab = a) {
 			//draw_set_color(accent[7])
 			//if (fdark) draw_set_color(accent[8])
@@ -124,11 +126,11 @@ function draw_window_preferences() {
 	        //draw_line(x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 6, y1 + 30 + 21 + 18 - 6, x1 + b + 5 + string_width_dynamic(str[a]) / 2 + 6, y1 + 30 + 21 + 18 - 6)
 	        //draw_line(x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 7, y1 + 30 + 21 + 19 - 6, x1 + b + 5 + string_width_dynamic(str[a]) / 2 + 7, y1 + 30 + 21 + 19 - 6)
 	        //draw_line(x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 6, y1 + 30 + 21 + 20 - 6, x1 + b + 5 + string_width_dynamic(str[a]) / 2 + 6, y1 + 30 + 21 + 20 - 6)
-			draw_sprite_ext(spr_tabsel, 2 * hires, x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 6, y1 + 30 + 21 + 18 - 6, 1 - 0.75 * hires, 1 - 0.75 * hires, 0, accent[4], draw_get_alpha())
+			draw_sprite_ext(spr_tabsel, 2 * hires, x1 + b + 5 + strw / 2 - 6, y1 + 30 + 21 + 18 - 6, 1 - 0.75 * hires, 1 - 0.75 * hires, 0, accent[4], draw_get_alpha())
 			draw_set_color(c_black)
 			if (fdark) draw_set_color(c_white)
 	    }
-		if (mouse_check_button(mb_left) && c && mouse_press_in_rectangle(x1 + b, y1 + 28 + 21 - 19, string_width_dynamic(str[a]) + 12, 18 + 21)) {
+		if (mouse_check_button(mb_left) && c && mouse_press_in_rectangle(x1 + b, y1 + 28 + 21 - 19, strw + 12, 18 + 21)) {
 			// draw_sprite(spr_tabbuttons_f, 6 + 9 * fdark, x1 + b, y1 + 28 + 21 - 19)
 			// draw_sprite_ext(spr_tabbuttons_f, 7 + 9 * fdark, x1 + b + 2, y1 + 28 + 21 - 19, string_width_dynamic(str[a]) / 2 + 4, 1, 0, -1, 1)
 			// draw_sprite(spr_tabbuttons_f, 8 + 9 * fdark, x1 + b + string_width_dynamic(str[a]) + 10, y1 + 28 + 21 - 19)	
@@ -144,8 +146,8 @@ function draw_window_preferences() {
 			if (selected_tab = a && fdark) draw_set_color(11579568)
 		}
 	    draw_text_dynamic(x1 + b + 6, y1 + 30 + 21 - 8, str[a])
-	    if (mouse_rectangle_click(x1 + b, y1 + 28 + 21 - 19, string_width_dynamic(str[a]) + 12, 18 + 21)) nsel = a
-	    b += string_width_dynamic(str[a]) + 12
+	    if (mouse_rectangle_click(x1 + b, y1 + 28 + 21 - 19, strw + 12, 18 + 21)) nsel = a
+	    b += strw + 12
 	}
 	}
 	if (nsel > -1) selected_tab = nsel

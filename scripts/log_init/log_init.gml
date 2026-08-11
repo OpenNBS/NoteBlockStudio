@@ -1,5 +1,9 @@
 /// log_init()
 function log_init() {
+	log_strs = ["__ Note Block Studio log __"]
+	// Avoid opening and closing the log file for every line during startup.
+	log_startup_lines = []
+	log_startup_buffering = true
 
 	// Write header
 	var f = file_text_open_write(log_file);
@@ -12,7 +16,6 @@ function log_init() {
 	file_text_write_string(f, "__ Note Block Studio log __");
 	file_text_writeln(f)
 	file_text_close(f)
-	log_strs = ["__ Note Block Studio log __"]
 
 	// System info
 	log("version", version)

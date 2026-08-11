@@ -1,7 +1,7 @@
 function macros() {
 #macro gm_runtime_version "2022.0.3 LTS"
-#macro version_date "2026.7.21"
-#macro version "3.12.0-beta.3"
+#macro version_date "2026.8.5"
+#macro version "3.12.0-beta.5"
 #macro is_prerelease 1 // remember to change to 0 in the release!
 #macro is_development 0 // the more frequent versions that are not on github (no auto update)
 #macro nbs_version 6
@@ -35,6 +35,7 @@ function macros() {
 #macro songs_directory   (os_type = os_macosx ? music_directory : file_directory + "songs" + (os_type = os_windows ? "\\" : "/"))
 #macro pattern_directory (os_type = os_macosx ? music_directory : file_directory + "patterns" + (os_type = os_windows ? "\\" : "/"))
 #macro log_file          file_directory + "log.txt"
+#macro acrylic_startup_guard_file file_directory + "acrylic_startup.pending"
 #macro temp_file         file_directory + "tmp.file"
 #macro update_file       file_directory + "note block studio installer.exe"
 #macro settings_file     file_directory + "settings.ini"

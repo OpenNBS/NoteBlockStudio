@@ -23,21 +23,60 @@ function log() {
 	    }
 	}
     
-	// Debug message
-	show_debug_message(timestr + cap + valstr)
-	array_push(obj_controller.log_strs, timestr + cap + valstr)
-    
-	// Write to file
-	var f = file_text_open_append(log_file);
-	if (f < 0)
-	    return 0
-	file_text_write_string(f, timestr + cap + valstr)
-	file_text_writeln(f)
-	file_text_close(f)
+	var line = timestr + cap + valstr
+	show_debug_message(line)
+	array_push(obj_controller.log_strs, line)
 
-	return 1
+	if (obj_controller.log_startup_buffering) {
+		array_push(obj_controller.log_startup_lines, line)
+		return 1
+	}
 
+	// Write to file. Logging must not crash the app when the disk is full.
+	var f = -1
+	try {
+		f = file_text_open_append(log_file)
+		if (f < 0) return 0
+		file_text_write_string(f, line)
+		file_text_writeln(f)
+		file_text_close(f)
+		return 1
+	} catch (e) {
+		show_debug_message("Failed to write log file: " + string(e))
+		if (f >= 0) {
+			try {
+				file_text_close(f)
+			} catch (close_error) {}
+		}
+		return 0
+	}
+}
 
+function log_flush() {
+	if (!obj_controller.log_startup_buffering) return 1
 
+	var lines = obj_controller.log_startup_lines
+	obj_controller.log_startup_lines = []
+	obj_controller.log_startup_buffering = false
+	if (array_length(lines) == 0) return 1
 
+	var f = -1
+	try {
+		f = file_text_open_append(log_file)
+		if (f < 0) return 0
+		for (var i = 0; i < array_length(lines); i++) {
+			file_text_write_string(f, lines[i])
+			file_text_writeln(f)
+		}
+		file_text_close(f)
+		return 1
+	} catch (e) {
+		show_debug_message("Failed to flush log file: " + string(e))
+		if (f >= 0) {
+			try {
+				file_text_close(f)
+			} catch (close_error) {}
+		}
+		return 0
+	}
 }

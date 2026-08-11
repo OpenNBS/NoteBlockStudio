@@ -44,7 +44,7 @@ function reference_audio_sync(song_instance, force_resync) {
 			if (force_resync || abs(actual_position - target_position) > 0.1) {
 				audio_sound_set_track_position(song_instance.reference_sound, target_position)
 			}
-			audio_sound_gain(song_instance.reference_sound, (song_instance.reference_volume * mastervol) / 100, 0)
+			audio_sound_gain(song_instance.reference_audio, (song_instance.reference_volume * mastervol) / 100, 0)
 			return
 		}
 	}

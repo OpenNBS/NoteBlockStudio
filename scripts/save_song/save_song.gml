@@ -21,6 +21,7 @@ function save_song() {
 		log(string_char_at(fn, string_length(fn) - 3))
 	    if (fn = "") return 0
 	}
+	if (!backup && !asave) warn_working_directory_path(fn)
 	if ((!backup) && (cursong.selected > 0) && (!asave)) selection_place(0)
 
 	if (backup) {
@@ -138,8 +139,32 @@ function save_song() {
 	        buffer_write_byte(ins.press)
 	    }
 	}
-	buffer_export(buffer, fn)
+	var save_succeeded = false
+	try {
+		save_succeeded = buffer_export(buffer, fn)
+	} catch (e) {
+		// Avoid writing to the log here: this path can run when the disk is full.
+		show_debug_message("Failed to save song: " + string(e))
+	}
 	buffer_delete(buffer)
+	buffer = -1
+
+	if (!save_succeeded) {
+		if (!backup) {
+			var error_text = condstr(language != 1,
+				"The song could not be saved.\n\nCheck that the destination is writable and has enough free disk space, then try again. Your changes are still open in Note Block Studio.",
+				"歌曲无法保存。\n\n请确认保存位置可写且磁盘有足够的可用空间，然后重试。你的更改仍保留在 Note Block Studio 中。")
+			var error_title = condstr(language != 1, "Save failed", "保存失败")
+			try {
+				message(error_text, error_title)
+			} catch (e) {
+				// message() writes to the log first, which may also fail on a full disk.
+				widget_set_caption(error_title)
+				show_message(error_text)
+			}
+		}
+		return false
+	}
 
 	if (!backup) {
 		cursong.filename = fn;

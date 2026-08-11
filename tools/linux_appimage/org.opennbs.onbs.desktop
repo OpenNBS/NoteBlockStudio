@@ -7,5 +7,6 @@ Exec=AppRun %f
 Icon=org.opennbs.onbs
 Terminal=false
 Categories=AudioVideo;Audio;
-MimeType=audio/nbs;
+Keywords=nbs;
+MimeType=audio/vnd.opennbs.nbs;
 StartupNotify=true

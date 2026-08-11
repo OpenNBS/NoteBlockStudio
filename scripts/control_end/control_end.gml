@@ -15,5 +15,10 @@ function control_end() {
 	}
 	font_src_dynamic_shutdown()
 	rtmidi_deinit()
+	log_flush()
+	if (variable_instance_exists(id, "python_initialized") && python_initialized) {
+		_python_finalize()
+		python_initialized = false
+	}
 
 }

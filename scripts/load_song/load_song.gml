@@ -22,6 +22,7 @@ function load_song() {
 	} else {
 		if (os_type = os_macosx) macos_bookmark_begin(fn)
 	}
+	if (!backup) warn_working_directory_path(fn)
 	if (fn = "" || !file_exists_lib(fn)) return 0
 
 	// When not opening from auto-recovery, delete the backup file

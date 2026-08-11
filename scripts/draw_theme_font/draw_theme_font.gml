@@ -13,5 +13,5 @@ function draw_theme_font() {
 	is_hires = obj_controller.hires * !force_lores * (obj_controller.theme = 3)
 	font = obj_controller.font_table[@ is_hires][@ symbols ? 8 : type][@ index]
 	obj_controller.currentfont = type
-	draw_set_font(font);
+	if (draw_get_font() != font) draw_set_font(font);
 }

@@ -1,6 +1,6 @@
 function draw_window_minecraft() {
 	// draw_window_minecraft()
-	var x1, y1, a, b, c, stabx, stabw, str, nsel;
+	var x1, y1, a, b, c, stabx, stabw, str, strw, nsel;
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
@@ -40,18 +40,19 @@ function draw_window_minecraft() {
 
 	// Draw tabs
 	for (a = 0; a < 2; a += 1) {
-	    c = mouse_rectangle(x1 + b, yy + 28, string_width_dynamic(str[a]) + 12, 18)
+		strw = string_width_dynamic(str[a])
+	    c = mouse_rectangle(x1 + b, yy + 28, strw + 12, 18)
 	    if (selected_tab_mc = a) {
 	        stabx = b - 2
-	        stabw = string_width_dynamic(str[a]) + 15
+	        stabw = strw + 15
 	    } else {
 	        draw_sprite(spr_tabbuttons, 0 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b, yy + 28)
-	        draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + 2, yy + 28, string_width_dynamic(str[a]) / 2 + 4, 1, 0, -1, draw_get_alpha())
-	        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + string_width_dynamic(str[a]) + 10, yy + 28)
+	        draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + 2, yy + 28, strw / 2 + 4, 1, 0, -1, draw_get_alpha())
+	        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, yy + 28)
 	        draw_text_dynamic(x1 + b + 6, yy + 30, str[a])
 	    }
 	    if (mouse_check_button_pressed(mb_left) && c) nsel = a
-	    b += string_width_dynamic(str[a]) + 12
+	    b += strw + 12
 	}
 	if (theme = 0 || theme = 3) {
 	    draw_set_color(c_white)

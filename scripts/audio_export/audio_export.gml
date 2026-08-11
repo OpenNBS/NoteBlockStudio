@@ -38,6 +38,7 @@ function mp3_export() {
 	}
 	
 	try {
+		python_initialize_for_audio_export()
 		var result = python_call_function("audio_export", "main", args, kwargs);
 	} catch (e) {
 		if (language != 1) message("An error occurred while exporting the song:\n\n" + e, "Note Block Studio")
@@ -50,4 +51,38 @@ function mp3_export() {
 
 
 
+}
+
+function python_initialize_for_audio_export() {
+	if (obj_controller.python_initialized) return
+
+	if (os_type == os_macosx) {
+		EnvironmentSetVariable("PYTHONHOME", current_directory + "data/python/python38_darwin_universal/")
+		EnvironmentSetVariable("PYTHONPATH", current_directory + "data/python/" + ":" +
+											 current_directory + "data/python/lib/site-packages/" + ":" +
+											 current_directory + "data/python/lib/site-packages.zip/")
+		EnvironmentSetVariable("PYTHONDONTWRITEBYTECODE", "1")
+		EnvironmentSetVariable("PYTHONNOUSERSITE", "1")
+		var temp_env_path = EnvironmentGetVariable("PATH")
+		EnvironmentSetVariable("PATH", temp_env_path + ":" + current_directory)
+	}
+
+	if (os_type == os_linux) {
+		EnvironmentSetVariable("PYTHONHOME", current_directory + "data/python/python38/")
+		EnvironmentSetVariable("PYTHONPATH", current_directory + "data/python/" + ":" +
+											 current_directory + "data/python/python38/lib/python3.8/lib-dynload/" + ":" +
+											 current_directory + "data/python/python38/lib/python3.8/" + ":" +
+											 current_directory + "data/python/lib/site-packages/" + ":" +
+											 current_directory + "data/python/lib/site-packages.zip/")
+		EnvironmentSetVariable("PYTHONDONTWRITEBYTECODE", "1")
+		EnvironmentSetVariable("PYTHONNOUSERSITE", "1")
+		EnvironmentSetVariable("LD_LIBRARY_PATH",
+			current_directory + "data/python/python38/lib:" + EnvironmentGetVariable("LD_LIBRARY_PATH")
+		)
+		var temp_env_path = EnvironmentGetVariable("PATH")
+		EnvironmentSetVariable("PATH", temp_env_path + ":" + current_directory)
+	}
+
+	_python_initialize()
+	obj_controller.python_initialized = true
 }

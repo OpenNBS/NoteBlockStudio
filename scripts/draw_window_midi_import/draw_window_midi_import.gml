@@ -1,6 +1,6 @@
 function draw_window_midi_import() {
 	// draw_window_midi_import()
-	var x1, y1, xx, a, b, c, menun, menua, menub, stabx, stabw, nsel, tabs, tabw, tabstr, tabtip, str, fade_locked;
+	var x1, y1, xx, a, b, c, menun, menua, menub, stabx, stabw, nsel, tabs, tabw, tabstr, tabtip, str, strw, fade_locked;
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
@@ -138,18 +138,19 @@ function draw_window_midi_import() {
 	    draw_window(x1 + 4, y1 + 145, x1 + 596, y1 + 364)
 	}
 	for (a = 0; a < 3; a += 1) {
-	    c = mouse_rectangle(x1 + b, y1 + 128, string_width_dynamic(str[a]) + 12, 18)
+		strw = string_width_dynamic(str[a])
+	    c = mouse_rectangle(x1 + b, y1 + 128, strw + 12, 18)
 	    if (w_midi_tab = a) {
 	        stabx = b - 2
-	        stabw = string_width_dynamic(str[a]) + 15
+	        stabw = strw + 15
 	    } else {
 	        draw_sprite(spr_tabbuttons, 0 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b, y1 + 128)
-	        draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + 2, y1 + 128, string_width_dynamic(str[a]) / 2 + 4, 1, 0, -1, draw_get_alpha())
-	        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + string_width_dynamic(str[a]) + 10, y1 + 128)
+	        draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + 2, y1 + 128, strw / 2 + 4, 1, 0, -1, draw_get_alpha())
+	        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, y1 + 128)
 	        draw_text_dynamic(x1 + b + 6, y1 + 130, str[a])
 	    }
 	    if (mouse_check_button_pressed(mb_left) && c) nsel = a
-	    b += string_width_dynamic(str[a]) + 12
+	    b += strw + 12
 	}
 	if (theme = 0 || theme = 3) {
 	    draw_set_color(c_white)
