@@ -201,6 +201,7 @@ function open_song_nbs(fn, sounds_path = "", safeopen, replace) {
 	if (str != "")
 	    if (language != 1) {if (question("This song uses custom instruments. However, some sounds could not be loaded:\n\n" + str+"\nMake sure that you have put the sounds in the \"Sounds\" folder. Open Instrument settings?", "Error")) window = w_instruments}
 	    else {if (question("此歌曲使用自定义音色。但是一些音色未能被加载：\n\n" + str+"\n确保您已将声音文件放到“Sounds”文件夹。打开音色设置吗？", "错误")) window = w_instruments}
+	if (is_struct(minecraft_export_sounds_json)) resourcepack_auto_map_custom_sounds(minecraft_export_pack_root, minecraft_export_sounds_json)
 	buffer_delete(buffer)
 	
 	return newsong

@@ -81,6 +81,8 @@ function load_settings() {
 	hires =              ini_read_real(  "preferences", "hires",              hires)
 	current_resource =   ini_read_string("preferences", "current_resource",   current_resource)
 	resourcepack_sounds_json = ini_read_real("preferences", "resourcepack_sounds_json", resourcepack_sounds_json)
+	minecraft_export_catalog_path = ini_read_string("minecraft_export", "catalog_path", minecraft_export_catalog_path)
+	minecraft_export_catalog_access_root = ini_read_string("minecraft_export", "catalog_access_root", minecraft_export_catalog_access_root)
 	acrylic_successful = ini_read_real(  "preferences", "acrylic_successful", acrylic_successful)
 	advancedinterface  = ini_read_real(  "preferences", "advancedinterface",  advancedinterface)
 	wpapernoblur       = ini_read_real(  "preferences", "wpapernoblur",       wpapernoblur)
@@ -146,6 +148,11 @@ function load_settings() {
 	   sch_exp_ins_data[a] =  ini_read_real("schematic_export", "ins_data_"  + string(a), sch_exp_ins_data[a])
 	}
 	command_block =            ini_read_real("schematic_export", "command_block",  command_block)
+	sch_command_source =       ini_read_string("schematic_export", "command_source", sch_command_source)
+	sch_command_tempo_grid =   ini_read_real("schematic_export", "tempo_grid", sch_command_tempo_grid)
+	for (a = 0; a < array_length(sch_command_allowed_sources); a++) {
+		sch_command_allowed_sources[a] = ini_read_real("schematic_export", "source_" + minecraft_export_sources()[a], sch_command_allowed_sources[a])
+	}
 
 	// Branch export settings
 	sch_exp_stereo =      ini_read_real("branch_export", "stereo",      sch_exp_stereo)
@@ -164,6 +171,9 @@ function load_settings() {
 	dat_namespace =         ini_read_string("datapack_export", "namespace",     dat_namespace)
 	dat_path =              ini_read_string("datapack_export", "path",          dat_path)
 	dat_source =            ini_read_string("datapack_export", "source",        dat_source)
+	for (a = 0; a < array_length(dat_allowed_sources); a++) {
+		dat_allowed_sources[a] = ini_read_real("datapack_export", "source_" + minecraft_export_sources()[a], dat_allowed_sources[a])
+	}
 	dat_usezip =            ini_read_real(  "datapack_export", "use_zip",       dat_usezip)
 	dat_mcversion =         ini_read_real(  "datapack_export", "mcversion",     dat_mcversion)
 	dat_includelocked =     ini_read_real(  "datapack_export", "locked",        dat_includelocked)

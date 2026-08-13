@@ -23,13 +23,15 @@ function draw_window_datapack_export() {
 	if (language != 1) {
 	str[0] = "Settings"
 	str[1] = "Visualizer"
+	str[2] = "Sound Stoppers"
 	} else {
 	str[0] = "设置"
 	str[1] = "效果"
+	str[2] = "声音抑制器"
 	}
 	nsel = -1
 	menun = -1
-	for (a = 0; a < 2; a += 1) {
+	for (a = 0; a < 3; a += 1) {
 		strw = string_width_dynamic(str[a])
 	    c = mouse_rectangle(x1 + b, y1 + 28, strw + 12, 18)
 	    if (selected_tab_dat = a) {
@@ -87,8 +89,8 @@ function draw_window_datapack_export() {
 	}
 	if (nsel > -1) selected_tab_dat = nsel
 	selected_tab_dat += keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left)
-	if (selected_tab_dat < 0) selected_tab_dat = 1
-	if (selected_tab_dat > 1) selected_tab_dat = 0
+	if (selected_tab_dat < 0) selected_tab_dat = 2
+	if (selected_tab_dat > 2) selected_tab_dat = 0
 	if (language != 1) {
 	if (selected_tab_dat = 0) {
 		draw_sprite(spr_datapack_exp, 2, x1 + 66, y1 + -40)
@@ -177,7 +179,7 @@ function draw_window_datapack_export() {
 			datapack_getextranotes()
 		}
 	
-	} else {
+	} else if (selected_tab_dat = 1) {
 		if (draw_checkbox(x1 + 33, y1 + 55, dat_visualizer, "Enable visualizer", "NOTE: Please use a VOID world as falling blocks will pile up!", false, true)) dat_visualizer=!dat_visualizer
 		//Type
 		draw_sprite(spr_datapack_exp, 1, x1 + 125, y1 + 55)
@@ -201,6 +203,12 @@ function draw_window_datapack_export() {
 		if (draw_button2(x1 + 13, y1 + 360, 152, "Get note block textures", 0, 1)) {
 			datapack_getinstextures()
 		}
+	} else {
+		dat_allowed_sources = minecraft_export_draw_source_allowlist(x1 + 32, y1 + 70, dat_allowed_sources, dat_source)
+		draw_text_dynamic(x1 + 32, y1 + 282, "Preferred source: " + dat_source)
+		draw_text_dynamic(x1 + 32, y1 + 306, "Custom sound-event mappings and default keys are shared by both exporters.")
+		draw_text_dynamic(x1 + 32, y1 + 326, "Edit them in Instrument Settings. Event instruments stay intentionally blank.")
+		draw_text_dynamic(x1 + 32, y1 + 354, "Sound Stopper diagnostics are written to the normal NBS log.")
 	}
 	if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
 
@@ -317,7 +325,7 @@ function draw_window_datapack_export() {
 			datapack_getextranotes()
 		}
 	
-	} else {
+	} else if (selected_tab_dat = 1) {
 		if (draw_checkbox(x1 + 33, y1 + 55, dat_visualizer, "启用效果器", "注意：请使用一个虚空地图不然方块就会堆起来！", false, true)) dat_visualizer=!dat_visualizer
 		//Type
 		draw_sprite(spr_datapack_exp, 1, x1 + 125, y1 + 55)
@@ -341,6 +349,12 @@ function draw_window_datapack_export() {
 		if (draw_button2(x1 + 13, y1 + 360, 152, "保存音符盒资源包", 0, 1)) {
 			datapack_getinstextures()
 		}
+	} else {
+		dat_allowed_sources = minecraft_export_draw_source_allowlist(x1 + 32, y1 + 70, dat_allowed_sources, dat_source)
+		draw_text_dynamic(x1 + 32, y1 + 282, "首选声源：" + dat_source)
+		draw_text_dynamic(x1 + 32, y1 + 306, "两个导出器共享自定义声音事件映射和默认音高。")
+		draw_text_dynamic(x1 + 32, y1 + 326, "请在音色设置中编辑；事件音色特意留空。")
+		draw_text_dynamic(x1 + 32, y1 + 354, "声音抑制器诊断信息会写入 NBS 常规日志。")
 	}
 	if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
 

@@ -469,6 +469,20 @@ function menu_click(argument0) {
 			update_asset_index_menu();
 			break;
 		}
+		case "minecraft_sound_event": {
+			var instrument_index = obj_menu.menub
+			if (instrument_index >= first_custom_index && instrument_index < ds_list_size(songs[song].instrument_list) && sel >= 0 && sel < array_length(minecraft_export_catalog_menu_events)) {
+				var instrument = songs[song].instrument_list[| instrument_index]
+				if (!minecraft_export_is_event(instrument)) {
+					instrument.minecraft_sound = minecraft_export_catalog_menu_events[sel]
+					instrument.minecraft_sound_manual = true
+					insselect = instrument_index
+					text_exists[66] = false
+					sch_command_plan = undefined
+				}
+			}
+			break;
+		}
 		case "add_event_ins": {
 			songs[song].changed = true
 			switch (sel) {

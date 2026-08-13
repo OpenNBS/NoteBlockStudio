@@ -30,6 +30,11 @@ function new_instrument() {
 	ins.sound = -1
 	ins.sound_duration = 0
 	ins.resourcepack_pitch = 1
+	// Export-only Minecraft sound-event mapping. Functional/event instruments
+	// intentionally keep this blank; ordinary custom instruments are lazily
+	// populated from their display name and may be edited in Instrument Settings.
+	ins.minecraft_sound = ""
+	ins.minecraft_sound_manual = false
 
 	return ins
 
