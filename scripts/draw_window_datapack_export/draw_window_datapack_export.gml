@@ -127,16 +127,16 @@ function draw_window_datapack_export() {
 
 		//Source
 		draw_text_dynamic(x1 + 187, y1 + 208, "Sound source")
-		if (draw_radiobox(x1 + 192, y1 + 228, dat_source = "ambient", "ambient", "Controlled by Ambient/Environment slider")) dat_source = "ambient"
-		if (draw_radiobox(x1 + 192, y1 + 247, dat_source = "block", "block", "Controlled by Blocks slider")) dat_source = "block"
-		if (draw_radiobox(x1 + 192, y1 + 266, dat_source = "hostile", "hostile", "Controlled by Hostile Creatures slider")) dat_source = "hostile"
-		if (draw_radiobox(x1 + 192, y1 + 285, dat_source = "master", "master", "Controlled by Master Volume slider")) dat_source = "master"
-		if (draw_radiobox(x1 + 192, y1 + 304, dat_source = "music", "music", "Controlled by Music slider")) dat_source = "music"
-		if (draw_radiobox(x1 + 264, y1 + 228, dat_source = "neutral", "neutral", "Controlled by Friendly Creatures slider")) dat_source = "neutral"
-		if (draw_radiobox(x1 + 264, y1 + 247, dat_source = "player", "player", "Controlled by Players slider")) dat_source = "player"
-		if (draw_radiobox(x1 + 264, y1 + 266, dat_source = "record", "record", "Controlled by Jukebox/Note Blocks slider")) dat_source = "record"
-		if (draw_radiobox(x1 + 264, y1 + 285, dat_source = "voice", "voice", "Controlled by Voice/Speech slider")) dat_source = "voice"
-		if (draw_radiobox(x1 + 264, y1 + 304, dat_source = "weather", "weather", "Controlled by Weather slider")) dat_source = "weather"
+		if (draw_radiobox(x1 + 192, y1 + 228, dat_source = "ambient", minecraft_export_source_label("ambient"), "Controlled by Ambient/Environment slider")) dat_source = "ambient"
+		if (draw_radiobox(x1 + 192, y1 + 247, dat_source = "block", minecraft_export_source_label("block"), "Controlled by Blocks slider")) dat_source = "block"
+		if (draw_radiobox(x1 + 192, y1 + 266, dat_source = "hostile", minecraft_export_source_label("hostile"), "Controlled by Hostile Creatures slider")) dat_source = "hostile"
+		if (draw_radiobox(x1 + 192, y1 + 285, dat_source = "master", minecraft_export_source_label("master"), "Controlled by Master Volume slider")) dat_source = "master"
+		if (draw_radiobox(x1 + 192, y1 + 304, dat_source = "music", minecraft_export_source_label("music"), "Controlled by Music slider")) dat_source = "music"
+		if (draw_radiobox(x1 + 264, y1 + 228, dat_source = "neutral", minecraft_export_source_label("neutral"), "Controlled by Friendly Creatures slider")) dat_source = "neutral"
+		if (draw_radiobox(x1 + 264, y1 + 247, dat_source = "player", minecraft_export_source_label("player"), "Controlled by Players slider")) dat_source = "player"
+		if (draw_radiobox(x1 + 264, y1 + 266, dat_source = "record", minecraft_export_source_label("record"), "Controlled by Jukebox/Note Blocks slider")) dat_source = "record"
+		if (draw_radiobox(x1 + 264, y1 + 285, dat_source = "voice", minecraft_export_source_label("voice"), "Controlled by Voice/Speech slider")) dat_source = "voice"
+		if (draw_radiobox(x1 + 264, y1 + 304, dat_source = "weather", minecraft_export_source_label("weather"), "Controlled by Weather slider")) dat_source = "weather"
 
 		// Minecraft version
 		draw_text_dynamic(x1 + 187, y1 + 334, "Minecraft version")
@@ -205,7 +205,7 @@ function draw_window_datapack_export() {
 		}
 	} else {
 		dat_allowed_sources = minecraft_export_draw_source_allowlist(x1 + 32, y1 + 70, dat_allowed_sources, dat_source)
-		draw_text_dynamic(x1 + 32, y1 + 282, "Preferred source: " + dat_source)
+		draw_text_dynamic(x1 + 32, y1 + 282, "Preferred source: " + minecraft_export_source_label(dat_source))
 		draw_text_dynamic(x1 + 32, y1 + 306, "Custom sound-event mappings and default keys are shared by both exporters.")
 		draw_text_dynamic(x1 + 32, y1 + 326, "Edit them in Instrument Settings. Event instruments stay intentionally blank.")
 		draw_text_dynamic(x1 + 32, y1 + 354, "Sound Stopper diagnostics are written to the normal NBS log.")
@@ -273,16 +273,16 @@ function draw_window_datapack_export() {
 
 		//Source
 		draw_text_dynamic(x1 + 187, y1 + 208, "声音类型")
-		if (draw_radiobox(x1 + 192, y1 + 228, dat_source = "ambient", "环境", "由环境音量控制")) dat_source = "ambient"
-		if (draw_radiobox(x1 + 192, y1 + 247, dat_source = "block", "方块", "由方块音量控制")) dat_source = "block"
-		if (draw_radiobox(x1 + 192, y1 + 266, dat_source = "hostile", "敌对", "由敌对生物音量控制")) dat_source = "hostile"
-		if (draw_radiobox(x1 + 192, y1 + 285, dat_source = "master", "主源", "由主音量控制")) dat_source = "master"
-		if (draw_radiobox(x1 + 192, y1 + 304, dat_source = "music", "音乐", "由音乐音量控制")) dat_source = "music"
-		if (draw_radiobox(x1 + 264, y1 + 228, dat_source = "neutral", "中立", "由友好生物音量控制")) dat_source = "neutral"
-		if (draw_radiobox(x1 + 264, y1 + 247, dat_source = "player", "玩家", "由玩家音量控制")) dat_source = "player"
-		if (draw_radiobox(x1 + 264, y1 + 266, dat_source = "record", "唱片", "由唱片机/音符盒音量控制")) dat_source = "record"
-		if (draw_radiobox(x1 + 264, y1 + 285, dat_source = "voice", "语音", "由语音音量控制")) dat_source = "voice"
-		if (draw_radiobox(x1 + 264, y1 + 304, dat_source = "weather", "天气", "由天气音量控制")) dat_source = "weather"
+		if (draw_radiobox(x1 + 192, y1 + 228, dat_source = "ambient", minecraft_export_source_label("ambient"), "由环境音量控制")) dat_source = "ambient"
+		if (draw_radiobox(x1 + 192, y1 + 247, dat_source = "block", minecraft_export_source_label("block"), "由方块音量控制")) dat_source = "block"
+		if (draw_radiobox(x1 + 192, y1 + 266, dat_source = "hostile", minecraft_export_source_label("hostile"), "由敌对生物音量控制")) dat_source = "hostile"
+		if (draw_radiobox(x1 + 192, y1 + 285, dat_source = "master", minecraft_export_source_label("master"), "由主音量控制")) dat_source = "master"
+		if (draw_radiobox(x1 + 192, y1 + 304, dat_source = "music", minecraft_export_source_label("music"), "由音乐音量控制")) dat_source = "music"
+		if (draw_radiobox(x1 + 264, y1 + 228, dat_source = "neutral", minecraft_export_source_label("neutral"), "由友好生物音量控制")) dat_source = "neutral"
+		if (draw_radiobox(x1 + 264, y1 + 247, dat_source = "player", minecraft_export_source_label("player"), "由玩家音量控制")) dat_source = "player"
+		if (draw_radiobox(x1 + 264, y1 + 266, dat_source = "record", minecraft_export_source_label("record"), "由唱片机/音符盒音量控制")) dat_source = "record"
+		if (draw_radiobox(x1 + 264, y1 + 285, dat_source = "voice", minecraft_export_source_label("voice"), "由复述功能/语音音量控制")) dat_source = "voice"
+		if (draw_radiobox(x1 + 264, y1 + 304, dat_source = "weather", minecraft_export_source_label("weather"), "由天气音量控制")) dat_source = "weather"
 
 		// Minecraft version
 		draw_text_dynamic(x1 + 187, y1 + 334, "Minecraft 版本")
@@ -351,7 +351,7 @@ function draw_window_datapack_export() {
 		}
 	} else {
 		dat_allowed_sources = minecraft_export_draw_source_allowlist(x1 + 32, y1 + 70, dat_allowed_sources, dat_source)
-		draw_text_dynamic(x1 + 32, y1 + 282, "首选声源：" + dat_source)
+		draw_text_dynamic(x1 + 32, y1 + 282, "首选声源：" + minecraft_export_source_label(dat_source))
 		draw_text_dynamic(x1 + 32, y1 + 306, "两个导出器共享自定义声音事件映射和默认音高。")
 		draw_text_dynamic(x1 + 32, y1 + 326, "请在音色设置中编辑；事件音色特意留空。")
 		draw_text_dynamic(x1 + 32, y1 + 354, "声音抑制器诊断信息会写入 NBS 常规日志。")

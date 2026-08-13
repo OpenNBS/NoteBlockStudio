@@ -7,6 +7,25 @@ function minecraft_export_sources() {
 	return ["ambient", "block", "hostile", "master", "music", "neutral", "player", "record", "voice", "weather"]
 }
 
+function minecraft_export_source_label(source) {
+	// Keep command identifiers visible in English; use Minecraft's official
+	// Simplified Chinese sound-category names in the Chinese interface.
+	if (obj_controller.language != 1) return source
+	switch (source) {
+		case "ambient": return "环境"
+		case "block": return "方块"
+		case "hostile": return "敌对生物"
+		case "master": return "主音量"
+		case "music": return "音乐"
+		case "neutral": return "友好生物"
+		case "player": return "玩家"
+		case "record": return "唱片机/音符盒"
+		case "voice": return "复述功能/语音"
+		case "weather": return "天气"
+	}
+	return source
+}
+
 function minecraft_export_default_allowed_sources() {
 	// Master is deliberately opt-in. Music remains independently toggleable.
 	return [true, true, true, false, true, true, true, true, true, true]
@@ -920,10 +939,11 @@ function minecraft_export_draw_source_allowlist(x, y, allowed, preferred) {
 	for (var i = 0; i < array_length(names); i++) {
 		var column = i mod 2
 		var row = floor(i / 2)
-		var label = names[i] + condstr(names[i] == "master", " (opt-in)", "")
+		var label = minecraft_export_source_label(names[i])
+		if (names[i] == "master") label += condstr(obj_controller.language != 1, " (opt-in)", "（需单独启用）")
 		if (draw_checkbox(x + column * 180, y + 24 + row * 23, allowed[i], label, condstr(obj_controller.language != 1, "Allow the allocator to place song sounds on this Minecraft volume category.", "允许分配器将歌曲声音放在此 Minecraft 音量类别。"), false, true)) { allowed[i] = !allowed[i]; changed = true }
 	}
-	if (draw_button2(x, y + 148, 112, condstr(obj_controller.language != 1, "Default (no Master)", "默认（无主声源）"), false, 1)) {
+	if (draw_button2(x, y + 148, 112, condstr(obj_controller.language != 1, "Default (no Master)", "默认（不含主音量）"), false, 1)) {
 		for (var i = 0; i < array_length(names); i++) allowed[i] = names[i] != "master"
 		changed = true
 	}
@@ -940,7 +960,7 @@ function minecraft_export_draw_source_allowlist(x, y, allowed, preferred) {
 	if (!allowed[preferred_index]) {
 		draw_set_color(c_red)
 		var warning = (preferred == "master")
-			? condstr(obj_controller.language != 1, "Master is disabled; another allowed source will be preferred.", "主声源已禁用；将优先使用其他允许的声源。")
+		? condstr(obj_controller.language != 1, "Master is disabled; another allowed source will be preferred.", "主音量类别已禁用；将优先使用其他允许的声源。")
 			: condstr(obj_controller.language != 1, "Preferred source is disabled; it will be enabled during export.", "首选声源已禁用；导出时会启用。")
 		draw_text_dynamic(x, y + 184, warning)
 		draw_theme_color()
@@ -958,7 +978,7 @@ function minecraft_export_draw_schematic_sound_settings(x, y) {
 	for (var i = 0; i < array_length(names); i++) {
 		var column = i mod 5
 		var row = floor(i / 5)
-		if (draw_radiobox(x + column * 100, y + 22 + row * 20, controller.sch_command_source == names[i], names[i], condstr(controller.language != 1, "Use this Minecraft volume category first.", "优先使用此 Minecraft 音量类别。"))) controller.sch_command_source = names[i]
+		if (draw_radiobox(x + column * 100, y + 22 + row * 20, controller.sch_command_source == names[i], minecraft_export_source_label(names[i]), condstr(controller.language != 1, "Use this Minecraft volume category first.", "优先使用此 Minecraft 音量类别。"))) controller.sch_command_source = names[i]
 	}
 	draw_theme_font(font_main)
 	controller.sch_command_allowed_sources = minecraft_export_draw_source_allowlist(x, y + 66, controller.sch_command_allowed_sources, controller.sch_command_source)
