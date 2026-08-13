@@ -55,7 +55,7 @@ function draw_window_midi_import() {
 	
 	if (draw_checkbox(x1 + 12, y1 + 374, w_midi_remember, "Remember changes", "Whether to use these settings the\nnext time you import a MIDI file.", false, true) && wmenu = 0) w_midi_remember=!w_midi_remember
 	if (draw_button2(x1 + 520, y1 + 368, 72, "Import") && wmenu = 0) {w_midi_tab = 0 window = -1 import_midi() windowalpha = 0 windowclose = 0 windowopen = 0}
-	if (draw_button2(x1 + 520 - 80, y1 + 368, 72, "Cancel") && wmenu = 0 && (windowopen = 1 || theme != 3)) {songs[song].midifile = "" w_midi_tab = 0 windowclose = 1}
+	if (draw_button2(x1 + 520 - 80, y1 + 368, 72, "Cancel", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) {songs[song].midifile = "" w_midi_tab = 0 windowclose = 1}
 	} else {
 	draw_theme_font(font_main_bold)
 	draw_text_dynamic(x1 + 8, y1 + 8, "导入MIDI")
@@ -96,9 +96,9 @@ function draw_window_midi_import() {
 	
 	if (draw_checkbox(x1 + 12, y1 + 374, w_midi_remember, "记住我的更改", "下次导入 MIDI 文件时是否使用同样的设定。", false, true) && wmenu = 0) w_midi_remember=!w_midi_remember
 	if (draw_button2(x1 + 520, y1 + 368, 72, "导入") && wmenu = 0) {w_midi_tab = 0 window = -1 import_midi() windowalpha = 0 windowclose = 0 windowopen = 0}
-	if (draw_button2(x1 + 520 - 80, y1 + 368, 72, "取消") && wmenu = 0 && (windowopen = 1 || theme != 3)) {songs[song].midifile = "" w_midi_tab = 0 windowclose = 1}
+	if (draw_button2(x1 + 520 - 80, y1 + 368, 72, "取消", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) {songs[song].midifile = "" w_midi_tab = 0 windowclose = 1}
 	}
-	if (draw_button2(x1 + 520 - 160, y1 + 368, 72, condstr(language != 1, "Use default", "使用默认值")) && wmenu = 0) {
+	if (draw_button2(x1 + 520 - 160, y1 + 368, 72, condstr(language != 1, "Use default", "使用默认值"), false, true) && wmenu = 0) {
 	    if (question(condstr(language != 1, "Are you sure?", "你确定吗？"), condstr(language != 1, "Confirm", "确定"))) { 
 	        midi_instruments()
 	        for (a = 0; a < 16; a += 1) { // Load channel settings from database

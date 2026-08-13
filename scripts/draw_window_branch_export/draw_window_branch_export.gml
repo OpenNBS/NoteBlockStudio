@@ -269,11 +269,11 @@ function draw_window_branch_export() {
 	        branch_export()
 	    }
 	}
-	if (draw_button2(x1 + 470 - 80 * 1, y1 + 368, 72, "Cancel") && wmenu = 0 && (windowopen = 1 || theme != 3)) {
+	if (draw_button2(x1 + 470 - 80 * 1, y1 + 368, 72, "Cancel", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) {
 		windowclose = 1
 		selected_tab_sch = 0
 	}
-	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "Use default") && wmenu = 0) {
+	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "Use default", false, true) && wmenu = 0) {
 	    if (question("Are you sure?", "Confirm")) reset_schematic_export(1)
 	}
 	} else {
@@ -293,11 +293,11 @@ function draw_window_branch_export() {
 	        branch_export()
 	    }
 	}
-	if (draw_button2(x1 + 470 - 80 * 1, y1 + 368, 72, "取消") && wmenu = 0 && windowopen = 1) {
+	if (draw_button2(x1 + 470 - 80 * 1, y1 + 368, 72, "取消", false, true) && wmenu = 0 && windowopen = 1) {
 		windowclose = 1
 		selected_tab_sch = 0
 	}
-	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "使用默认值") && wmenu = 0) {
+	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "使用默认值", false, true) && wmenu = 0) {
 	    if (question("你确定吗？", "确定")) reset_schematic_export(1)
 	}
 	}

@@ -419,7 +419,7 @@ function draw_window_preferences() {
 		if (language != 1) draw_text_dynamic(x1 + 276, y1 + 166 + (theme = 3) * 22, "Scale:               %")
 		else draw_text_dynamic(x1 + 276, y1 + 166 + (theme = 3) * 22, "缩放:                %")
 		window_scale = median(50, draw_dragvalue(19, x1 + 332, y1 + 166 + (theme = 3) * 22, window_scale * 100, (1/power(window_scale, 2)) ), 400) / 100
-		if (draw_button2(x1 + 308, y1 + 161 + (theme = 3) * 22, 20, "-")) {
+		if (draw_button2(x1 + 308, y1 + 161 + (theme = 3) * 22, 20, "-", false, true)) {
 			if (window_scale <= 4 && window_scale > 3.5) {window_scale = 3.5}
 			else if (window_scale > 3) {window_scale = 3}
 			else if (window_scale > 2.5) {window_scale = 2.5}
@@ -434,7 +434,7 @@ function draw_window_preferences() {
 			else if (window_scale > 0.67) {window_scale = 0.67}
 			else if (window_scale > 0.5) {window_scale = 0.5}
 		}
-		if (draw_button2(x1 + 366, y1 + 161 + (theme = 3) * 22, 20, "+")) {
+		if (draw_button2(x1 + 366, y1 + 161 + (theme = 3) * 22, 20, "+", false, true)) {
 			if (window_scale >= 0.5 && window_scale < 0.67) {window_scale = 0.67}
 			else if (window_scale < 0.75) {window_scale = 0.75}
 			else if (window_scale < 0.8) {window_scale = 0.8}
@@ -450,12 +450,12 @@ function draw_window_preferences() {
 			else if (window_scale < 4) {window_scale = 4}
 		}
 		if (language != 1) {
-		if (draw_button2(x1 + 394, y1 + 161 + (theme = 3) * 22, 72, "Reset", (window_scale == get_default_window_scale()))) {
+		if (draw_button2(x1 + 394, y1 + 161 + (theme = 3) * 22, 72, "Reset", (window_scale == get_default_window_scale()), true)) {
 			window_scale = get_default_window_scale()
 		}
 		if (draw_checkbox(x1 + 276, y1 + 195 + (theme = 3) * 22, hires, "Optimize for high resolutions", "Whether to use higher resolution textures on the interface.\n" + condstr(theme = 3, "(May reduce performance and reduce readability at lower resolutions.)", "(Only applies to the Fluent theme.)"), (theme != 3), true)) hires = !hires
 		} else {
-		if (draw_button2(x1 + 394, y1 + 161 + (theme = 3) * 22, 72, "重置", (window_scale == get_default_window_scale()))) {
+		if (draw_button2(x1 + 394, y1 + 161 + (theme = 3) * 22, 72, "重置", (window_scale == get_default_window_scale()), true)) {
 			window_scale = get_default_window_scale()
 		}
 		if (draw_checkbox(x1 + 276, y1 + 195 + (theme = 3) * 22, hires, "为高分辨率优化", "是否在界面上使用更高分辨率的纹理。\n" + condstr(theme = 3, "（可能减弱性能并在低分辨率下减小可读性）", "（仅限 Fluent 主题）"), theme != 3, true)) hires = !hires
@@ -585,7 +585,7 @@ function draw_window_preferences() {
 		if (theme = 3) draw_theme_font(font_main)
 	    if (draw_checkbox(x1 + 40, y1 + 256 + (theme = 3) * 22, select_lastpressed, "Set selected key to pressed one", "If the selected key should be set\nto the one pressed using the keyboard.")) select_lastpressed=!select_lastpressed
 	    draw_text_dynamic(x1 + 40, y1 + 290 + (theme = 3) * 22, "Right-click on keys to change their shortcuts.")
-	    if (draw_button2(x1 + 40, y1 + 310 + (theme = 3) * 22, 160, "Reset key shortcuts")) {
+	    if (draw_button2(x1 + 40, y1 + 310 + (theme = 3) * 22, 160, "Reset key shortcuts", false, true)) {
 	        if (question("Are you sure?", "Confirm")) init_keys()
 	    }
 		} else {
@@ -609,7 +609,7 @@ function draw_window_preferences() {
 		if (theme = 3) draw_theme_font(font_main)
 	    if (draw_checkbox(x1 + 40, y1 + 256 + (theme = 3) * 22, select_lastpressed, "选择按下的键", "是否选择按下的键所对应的音。")) select_lastpressed=!select_lastpressed
 	    draw_text_dynamic(x1 + 40, y1 + 290 + (theme = 3) * 22, "对琴键右键可更改键位。")
-	    if (draw_button2(x1 + 40, y1 + 310 + (theme = 3) * 22, 160, "重置键位")) {
+	    if (draw_button2(x1 + 40, y1 + 310 + (theme = 3) * 22, 160, "重置键位", false, true)) {
 	        if (question("你确定吗？", "确认")) init_keys()
 	    }
 		}
@@ -721,7 +721,7 @@ function draw_window_preferences() {
 		}
 	}
 	
-	if (draw_button2(x1 + 420, y1 + 478 - isplayer * 100, 72, condstr(language != 1, "OK", "确定")) || keyboard_check_released(vk_escape) || (prevwindow == window && check_ctrl() && keyboard_check_pressed(ord("P")) || (keyboard_check_pressed(188) && os_type = os_macosx))) {
+	if (draw_button2(x1 + 420, y1 + 478 - isplayer * 100, 72, condstr(language != 1, "OK", "确定")) || (prevwindow == window && check_ctrl() && keyboard_check_pressed(ord("P")) || (keyboard_check_pressed(188) && os_type = os_macosx))) {
 		if (theme != 3) {
 			window = 0
 			window_set_cursor(curs)

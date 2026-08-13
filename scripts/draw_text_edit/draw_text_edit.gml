@@ -91,6 +91,9 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	    inserttext = ""
 	    lh = string_height_dynamic(" ")
 	    mouseover = (mouse_x >= xx && mouse_x < xx + w && mouse_y >= yy && mouse_y < yy + h)
+	    if (instance_exists(obj_controller) && obj_controller.window != 0 && text_focus = i) {
+	        obj_controller.window_text_input_active = true
+	    }
 	    if (text_menu_target != -1 && text_menu_target != text_focus) {
 	        text_menu_action = text_cmd_none
 	        text_menu_target = -1
@@ -683,6 +686,9 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
     
 	    text_lastwidth[i] = w
 	    text_laststr[i] = text_str[i]
+	    if (instance_exists(obj_controller) && obj_controller.window != 0 && text_focus = i) {
+	        obj_controller.window_text_input_active = true
+	    }
 	    draw_set_color(col_normal)
 	    return text_str[i]
 	}

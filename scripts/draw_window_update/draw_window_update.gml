@@ -41,10 +41,10 @@ function draw_window_update() {
 	
 	// Refresh changelog button (debug)
 	if (NOT_RUN_FROM_IDE != 1) {
-		if (draw_button2(x1 + 500 - 144 - 16, y1 + 8 + 24, 72, "Open file")) {
+		if (draw_button2(x1 + 500 - 144 - 16, y1 + 8 + 24, 72, "Open file", false, true)) {
 			open_url(bundled_data_directory + "changelog.txt");
 		}
-		if (draw_button2(x1 + 500 - 72 - 8, y1 + 8 + 24, 72, "Refresh")) {
+		if (draw_button2(x1 + 500 - 72 - 8, y1 + 8 + 24, 72, "Refresh", false, true)) {
 			changelogstr = load_text(bundled_data_directory + "changelog.txt");
 		}
 	}
@@ -58,7 +58,7 @@ function draw_window_update() {
 			draw_text_dynamic(x1 + 32, y1 + 32, "感谢你更新到 " + version + " 版本！")
 		}
 	}
-	if (draw_button2(x1 + 500 - 120 - 8, y1 + 8, 120, language != 1 ? "Watch release video" : "观看更新视频")) {
+	if (draw_button2(x1 + 500 - 120 - 8, y1 + 8, 120, language != 1 ? "Watch release video" : "观看更新视频", false, true)) {
 		if (language != 1) {
 			open_url("https://youtu.be/gya4NAQunEc");
 		} else {
@@ -82,7 +82,7 @@ function draw_window_update() {
 	}
 	draw_theme_font(font_main)
 	draw_scrollbar(update_scrollbar, x1 + 470 + theme_offset, y1 + 60, 12, 22, n, 0, 1)
-	if (draw_button2(x1 + 16, y1 + 365, 96, condstr(language != 1, "Older versions...", "查看更旧版本…"))) {
+	if (draw_button2(x1 + 16, y1 + 365, 96, condstr(language != 1, "Older versions...", "查看更旧版本…"), false, true)) {
 		open_url(link_changelog)
 	}
 	if (draw_button2(x1 + 487 - 72 + theme_offset, y1 + 365, 72, condstr(language != 1, "OK", "确认")) && (windowopen = 1 || theme != 3)) {

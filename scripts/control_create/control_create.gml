@@ -470,6 +470,10 @@ function control_create() {
 	// Interface
 	window = 0
 	prevwindow = 0
+	window_enter_pressed = false
+	window_escape_pressed = false
+	window_text_input_active = false
+	window_drawn_this_frame = false
 	selected_tab = 0
 	global.popup = 0
 	globalvar text_focus, text_focus_last;

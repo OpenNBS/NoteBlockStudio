@@ -77,10 +77,10 @@ function draw_window_instruments() {
 			sounds++
 		}
 	}
-	if (language != 1) {if (draw_button2(x1 + 12, y1 + 318, 86, "Export sounds", (cursong.user_instruments == 0 || sounds == 0))) pack_instruments()}
-	else {if (draw_button2(x1 + 12, y1 + 318, 86, "导出音色", (cursong.user_instruments == 0 || sounds == 0))) pack_instruments()}
+	if (language != 1) {if (draw_button2(x1 + 12, y1 + 318, 86, "Export sounds", (cursong.user_instruments == 0 || sounds == 0), true)) pack_instruments()}
+	else {if (draw_button2(x1 + 12, y1 + 318, 86, "导出音色", (cursong.user_instruments == 0 || sounds == 0), true)) pack_instruments()}
 	c = 0
-	if (draw_button2(x1 + 110, y1 + 318, 80, condstr(language != 1, "Add", "添加"), cursong.user_instruments >= 240) && wmenu = 0) {
+	if (draw_button2(x1 + 110, y1 + 318, 80, condstr(language != 1, "Add", "添加"), cursong.user_instruments >= 240, true) && wmenu = 0) {
 	    cursong.changed = true
 	    insselect = ds_list_size(cursong.instrument_list)
 	    ds_list_add(cursong.instrument_list, new_instrument("Custom instrument #" + string(cursong.user_instruments + 1), "", true))
@@ -157,7 +157,7 @@ function draw_window_instruments() {
 		draw_text_dynamic(x1 + 552, y1 + 309, "_-1 / _1 " + condstr(language != 1, "event aliases.", "事件别名。"))
 	}
 	if (language != 1) {
-	if (draw_button2(x1 + 194, y1 + 318, 80, "Remove", userselect < 0) && wmenu = 0) {
+	if (draw_button2(x1 + 194, y1 + 318, 80, "Remove", userselect < 0, true) && wmenu = 0) {
 		if ((userselect.num_blocks == 0) || (message_yesnocancel("This will remove " + string(userselect.num_blocks) + " block" + condstr(userselect.num_blocks > 1, "s") + " using this instrument and cannot be undone. Confirm?", "Warning"))) {
 			instrument_remove(userselect)
 			insselect = min(ds_list_size(cursong.instrument_list) - 1, insselect)
@@ -169,12 +169,12 @@ function draw_window_instruments() {
 			c = 1
 		}
 	}
-	if (draw_button2(x1 + 278, y1 + 318, 80, "Shift up", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == first_custom_index)) && wmenu = 0) {
+	if (draw_button2(x1 + 278, y1 + 318, 80, "Shift up", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == first_custom_index), true) && wmenu = 0) {
 		insselect -= 1
 		instrument_swap(userselect, cursong.instrument_list[| insselect])
 		c = 1
 	}
-	if (draw_button2(x1 + 362, y1 + 318, 80, "Shift down", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == ds_list_size(cursong.instrument_list) - 1) && wmenu = 0)) {
+	if (draw_button2(x1 + 362, y1 + 318, 80, "Shift down", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == ds_list_size(cursong.instrument_list) - 1) && wmenu = 0, true)) {
 		insselect += 1
 		instrument_swap(userselect, cursong.instrument_list[| insselect])
 		c = 1
@@ -188,7 +188,7 @@ function draw_window_instruments() {
 		save_settings()
 	}
 	} else {
-	if (draw_button2(x1 + 194, y1 + 318, 80, "移除", userselect < 0) && wmenu = 0) {
+	if (draw_button2(x1 + 194, y1 + 318, 80, "移除", userselect < 0, true) && wmenu = 0) {
 		if ((userselect.num_blocks == 0) || (message_yesnocancel("这将移除使用该音色的 " + string(userselect.num_blocks) + " 个方块并且不能撤销。确定吗？", "警告"))) {
 			instrument_remove(userselect)
 			insselect = min(ds_list_size(cursong.instrument_list) - 1, insselect)
@@ -200,12 +200,12 @@ function draw_window_instruments() {
 			c = 1
 		}
 	}
-	if (draw_button2(x1 + 278, y1 + 318, 80, "上移", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == first_custom_index)) && wmenu = 0) {
+	if (draw_button2(x1 + 278, y1 + 318, 80, "上移", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == first_custom_index), true) && wmenu = 0) {
 		insselect -= 1
 		instrument_swap(userselect, cursong.instrument_list[| insselect])
 		c = 1
 	}
-	if (draw_button2(x1 + 362, y1 + 318, 80, "下移", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == ds_list_size(cursong.instrument_list) - 1) && wmenu = 0)) {
+	if (draw_button2(x1 + 362, y1 + 318, 80, "下移", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == ds_list_size(cursong.instrument_list) - 1) && wmenu = 0, true)) {
 		insselect += 1
 		instrument_swap(userselect, cursong.instrument_list[| insselect])
 		c = 1

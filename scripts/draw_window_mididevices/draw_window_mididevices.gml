@@ -36,7 +36,7 @@ function draw_window_mididevices() {
 	draw_text_dynamic(x1 + 18, y1 + 70, "Name")
 
 	if (draw_button2(x1 + 408, y1 + 318, 80, "OK") && wmenu = 0 && (windowopen = 1 || theme != 3)) windowclose = 1
-	if (draw_button2(x1 + 12, y1 + 318, 80, "Refresh") && wmenu = 0 && (windowopen = 1 || theme != 3)) midi_refresh_device()
+	if (draw_button2(x1 + 12, y1 + 318, 80, "Refresh", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) midi_refresh_device()
 	} else {
 	draw_window(x1 + 13 + 250 + 75, y1 + 67, x1 + 14 + 250 + 75 + 64 + 85 + 1, y1 + 67 + 20, 1) 
 	popup_set_window(x1 + 13 + 250 + 75, y1 + 67, 64 + 85, 20, "为该 MIDI 设备指定的音色。")
@@ -47,7 +47,7 @@ function draw_window_mididevices() {
 	draw_text_dynamic(x1 + 18, y1 + 70, "名称")
 
 	if (draw_button2(x1 + 408, y1 + 318, 80, "确定") && wmenu = 0 && (windowopen = 1 || theme != 3)) windowclose = 1
-	if (draw_button2(x1 + 12, y1 + 318, 80, "刷新设备") && wmenu = 0 && (windowopen = 1 || theme != 3)) midi_refresh_device()
+	if (draw_button2(x1 + 12, y1 + 318, 80, "刷新设备", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) midi_refresh_device()
 	}
 
 	// Instruments

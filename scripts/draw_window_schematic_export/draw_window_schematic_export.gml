@@ -330,14 +330,14 @@ function draw_window_schematic_export() {
 	        schematic_export()
 	    }
 	}
-	if (draw_button2(x1 + 470 - 80 * 1, y1 + 368, 72, "Cancel") && wmenu = 0 && (windowopen = 1 || theme != 3)) {
+	if (draw_button2(x1 + 470 - 80 * 1, y1 + 368, 72, "Cancel", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) {
 		windowclose = 1
 	}
-	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "Use default") && wmenu = 0) {
+	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "Use default", false, true) && wmenu = 0) {
 	    if (question("Are you sure?", "Confirm")) reset_schematic_export(1)
 	}
 	if (structure = true) {
-		if (draw_button2(x1 + 470 - 80 * 4, y1 + 368, 152, "Get extra notes pack", !command_block)) {
+		if (draw_button2(x1 + 470 - 80 * 4, y1 + 368, 152, "Get extra notes pack", !command_block, true)) {
 			datapack_getextranotes()
 		}
 	}
@@ -351,14 +351,14 @@ function draw_window_schematic_export() {
 	        schematic_export()
 	    }
 	}
-	if (draw_button2(x1 + 470 - 80 * 1, y1 + 368, 72, "取消") && wmenu = 0 && (windowopen = 1 || theme != 3)) {
+	if (draw_button2(x1 + 470 - 80 * 1, y1 + 368, 72, "取消", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) {
 		windowclose = 1
 	}
-	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "使用默认值") && wmenu = 0) {
+	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "使用默认值", false, true) && wmenu = 0) {
 	    if (question("你确定吗？", "确定")) reset_schematic_export(1)
 	}
 	if (structure = true) {
-		if (draw_button2(x1 + 470 - 80 * 4, y1 + 368, 152, "保存更多音符资源包", !command_block)) {
+		if (draw_button2(x1 + 470 - 80 * 4, y1 + 368, 152, "保存更多音符资源包", !command_block, true)) {
 			datapack_getextranotes()
 		}
 	}

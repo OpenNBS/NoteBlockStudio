@@ -229,12 +229,12 @@ function draw_window_datapack_export() {
 	if (draw_checkbox(x1 + 12, y1 + 404, dat_remember, "Remember changes", "Whether to use these settings the\nnext time you export a data pack.", false, true) && wmenu = 0) dat_remember = !dat_remember
 
 	//Use default
-	if (draw_button2(x1 + 310, y1 + 398, 72, "Use default") && wmenu = 0) {
+	if (draw_button2(x1 + 310, y1 + 398, 72, "Use default", false, true) && wmenu = 0) {
 	    if (question("Are you sure?", "Confirm")) dat_reset(1)
 	}
 
 	//Cancel button
-	if (draw_button2(x1 + 390, y1 + 398, 72, "Cancel", false) && (windowopen = 1 || theme != 3)) {
+	if (draw_button2(x1 + 390, y1 + 398, 72, "Cancel", false, true) && (windowopen = 1 || theme != 3)) {
 		windowclose = 1
 	}
 	} else {
@@ -375,12 +375,12 @@ function draw_window_datapack_export() {
 	if (draw_checkbox(x1 + 12, y1 + 404, dat_remember, "记住我的更改", "下次导出数据包时是否使用同样的设定。", false, true) && wmenu = 0) dat_remember = !dat_remember
 
 	//Use default
-	if (draw_button2(x1 + 310, y1 + 398, 72, "使用默认值") && wmenu = 0) {
+	if (draw_button2(x1 + 310, y1 + 398, 72, "使用默认值", false, true) && wmenu = 0) {
 	    if (question("你确定吗？", "确定")) dat_reset(1)
 	}
 
 	//Cancel button
-	if (draw_button2(x1 + 390, y1 + 398, 72, "取消", false) && (windowopen = 1 || theme != 3)) {
+	if (draw_button2(x1 + 390, y1 + 398, 72, "取消", false, true) && (windowopen = 1 || theme != 3)) {
 		windowclose = 1
 	}
 	}

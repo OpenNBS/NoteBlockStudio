@@ -1,5 +1,6 @@
 function draw_window() {
 	// draw_window(x1, y1, x2, y2[, sml])
+	window_drawn_this_frame = true
 	var x1, y1, x2, y2, sml;
 	x1 = argument[0]
 	y1 = argument[1]

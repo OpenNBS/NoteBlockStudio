@@ -64,7 +64,7 @@ function draw_window_tempo_tapper() {
 			else message("发生了一个错误。", "速度测量器")
 		}
 	}
-	if (draw_button2(x1 + 70, y1 + 98, 60, condstr(language != 1, "Cancel", "取消"))) {
+	if (draw_button2(x1 + 70, y1 + 98, 60, condstr(language != 1, "Cancel", "取消"), false, true)) {
 		taptempo = 0
 		tapping = 0
 		ltime = 0
