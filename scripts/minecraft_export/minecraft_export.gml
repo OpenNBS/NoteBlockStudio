@@ -37,6 +37,23 @@ function minecraft_export_clone_array(values) {
 	return result
 }
 
+function minecraft_export_set_snapshot_survivors(snapshot, values) {
+	var survivors = minecraft_export_clone_array(values)
+	// The target voices are supposed to end in this output batch, so they are
+	// not collateral victims of their own delayed stopsound command.
+	for (var i = 0; i < array_length(snapshot.targets); i++) minecraft_export_array_remove_value(survivors, snapshot.targets[i])
+	snapshot.survivors = survivors
+}
+
+function minecraft_export_add_snapshot_survivors(snapshot, values) {
+	if (!variable_struct_exists(snapshot, "survivors")) snapshot.survivors = []
+	for (var i = 0; i < array_length(values); i++) {
+		var occurrence_index = values[i]
+		if (minecraft_export_array_contains(snapshot.targets, occurrence_index)) continue
+		if (!minecraft_export_array_contains(snapshot.survivors, occurrence_index)) array_push(snapshot.survivors, occurrence_index)
+	}
+}
+
 function minecraft_export_source_palette(preferred, allowed) {
 	var names = minecraft_export_sources()
 	if (!is_array(allowed) || array_length(allowed) != array_length(names)) {
@@ -182,6 +199,42 @@ function minecraft_export_array_remove_value(values, wanted) {
 	}
 }
 
+function minecraft_export_tempo_speed_after_tick(song_instance, tick, include_locked, current_speed) {
+	if (tick < 0 || tick > song_instance.enda || song_instance.colamount[tick] <= 0) return current_speed
+	for (var layer_index = 0; layer_index <= song_instance.collast[tick]; layer_index++) {
+		if (!song_instance.song_exists[tick, layer_index]) continue
+		if (!include_locked && obj_controller.lockedlayer[layer_index]) continue
+		var instrument_index = ds_list_find_index(song_instance.instrument_list, song_instance.song_ins[tick, layer_index])
+		if (instrument_index >= 0 && song_instance.instrument_list[| instrument_index].name == "Tempo Changer") {
+			current_speed = minecraft_export_snapped_speed(minecraft_export_tempo_from_note(song_instance, tick, layer_index))
+		}
+	}
+	return current_speed
+}
+
+function minecraft_export_datapack_server_grid(song_instance, include_locked, start_tick) {
+	var result = array_create(song_instance.enda + 2, -1)
+	var playback_speed = minecraft_export_snapped_speed(song_instance.real_tempo)
+	for (var tick = 0; tick <= start_tick; tick++) playback_speed = minecraft_export_tempo_speed_after_tick(song_instance, tick, include_locked, playback_speed)
+
+	// Playback advances once before dispatching columns. Work in the same
+	// 80-score-units-per-song-tick space as the generated data pack so columns
+	// crossed by one 20 TPS update receive the same server-tick bucket.
+	var playback_position = start_tick * 80 + playback_speed
+	var server_tick = 1
+	for (var tick = start_tick; tick <= song_instance.enda; tick++) {
+		var threshold = tick * 80
+		if (playback_position < threshold) {
+			var advances = ceil((threshold - playback_position) / playback_speed)
+			playback_position += advances * playback_speed
+			server_tick += advances
+		}
+		result[tick] = server_tick
+		playback_speed = minecraft_export_tempo_speed_after_tick(song_instance, tick, include_locked, playback_speed)
+	}
+	return result
+}
+
 function minecraft_export_timing(song_instance, mode, include_locked, tempo_grid, direct_tps) {
 	var wall = array_create(song_instance.enda + 2, 0)
 	var grid_ticks = array_create(song_instance.enda + 2, 0)
@@ -191,21 +244,18 @@ function minecraft_export_timing(song_instance, mode, include_locked, tempo_grid
 			if (mode == "command" && !tempo_grid) wall[tick] = tick / direct_tps
 			else wall[tick] = wall[tick - 1] + 4 / tempo_speed
 		}
-		if (tick <= song_instance.enda && (mode == "datapack" || tempo_grid) && song_instance.colamount[tick] > 0) {
-			for (var layer_index = 0; layer_index <= song_instance.collast[tick]; layer_index++) {
-				if (!song_instance.song_exists[tick, layer_index]) continue
-				if (!include_locked && obj_controller.lockedlayer[layer_index]) continue
-				var instrument_index = ds_list_find_index(song_instance.instrument_list, song_instance.song_ins[tick, layer_index])
-				if (instrument_index >= 0 && song_instance.instrument_list[| instrument_index].name == "Tempo Changer") {
-					tempo_speed = minecraft_export_snapped_speed(minecraft_export_tempo_from_note(song_instance, tick, layer_index))
-				}
-			}
-		}
+		if (tick <= song_instance.enda && (mode == "datapack" || tempo_grid)) tempo_speed = minecraft_export_tempo_speed_after_tick(song_instance, tick, include_locked, tempo_speed)
 		// Command structures may use a 10, 5, or 2.5 redstone-tick grid.
 		// direct_tps is the grid selected in the export window.
 		grid_ticks[tick] = (mode == "command" && tempo_grid) ? round(wall[tick] * direct_tps) : tick
 	}
-	return { wall: wall, grid: grid_ticks }
+	var server_ticks = []
+	var loop_server_ticks = []
+	if (mode == "datapack") {
+		server_ticks = minecraft_export_datapack_server_grid(song_instance, include_locked, 0)
+		loop_server_ticks = minecraft_export_datapack_server_grid(song_instance, include_locked, song_instance.loopstart)
+	}
+	return { wall: wall, grid: grid_ticks, server: server_ticks, loop_server: loop_server_ticks }
 }
 
 function minecraft_export_add_unique_target(stopper, occurrence_index) {
@@ -594,7 +644,6 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 	var stoppers = []
 	var play_at = []
 	var stopper_at = []
-	var omitted = []
 	var occupied_ticks = []
 	for (var tick = 0; tick <= song_instance.enda; tick++) {
 		if (song_instance.colamount[tick] <= 0) continue
@@ -608,7 +657,7 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 			if (instrument_index < 0) continue
 			var instrument = song_instance.instrument_list[| instrument_index]
 			if (instrument.name == "Sound Stopper") {
-				var stopper = { tick: tick, layer: layer_index, layer_range: minecraft_export_stopper_range(song_instance, tick, layer_index), instrument: instrument_index, targets: [], snapshots: [] }
+				var stopper = { tick: tick, layer: layer_index, layer_range: minecraft_export_stopper_range(song_instance, tick, layer_index), instrument: instrument_index, targets: [], snapshots: [], grid_delay: 0 }
 				stopper_at[tick, layer_index] = array_length(stoppers)
 				array_push(stoppers, stopper)
 				continue
@@ -625,28 +674,40 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 			}
 			play_at[tick, layer_index] = occurrence.index
 			array_push(occurrences, occurrence)
-			array_push(omitted, false)
 		}
 	}
 
-	// Command blocks sharing a physical redstone batch are unordered. Omit a
-	// play that the intended NBS order starts and stops inside that same batch.
-	if (mode == "command") {
+	// When snapping collapses a play and its intended stopper into one output
+	// batch, keep the play and move that stopper one output tick later. Command
+	// structures use the selected redstone grid; data packs use their exact
+	// 20-TPS accumulator buckets, including mid-song Tempo Changers.
+	var delayed_stopper_count = 0
+	var delay_phase_count = (mode == "datapack" && looping) ? 2 : 1
+	for (var delay_phase = 0; delay_phase < delay_phase_count; delay_phase++) {
+		var delay_grid = (mode == "command") ? timing.grid : ((delay_phase == 0) ? timing.server : timing.loop_server)
+		var delay_start_tick = (mode == "datapack" && delay_phase > 0) ? song_instance.loopstart : 0
 		var batch = -1
 		var local_active = []
 		for (var occupied_position = 0; occupied_position < array_length(occupied_ticks); occupied_position++) {
 			var tick = occupied_ticks[occupied_position]
-			if (timing.grid[tick] != batch) { batch = timing.grid[tick]; local_active = [] }
+			if (tick < delay_start_tick) continue
+			if (delay_grid[tick] != batch) { batch = delay_grid[tick]; local_active = [] }
 			for (var layer_index = 0; layer_index <= song_instance.collast[tick]; layer_index++) {
-					if (is_array(play_at[tick]) && play_at[tick, layer_index] >= 0) array_push(local_active, play_at[tick, layer_index])
-					else if (is_array(stopper_at[tick]) && stopper_at[tick, layer_index] >= 0) {
-						var stop_range = stoppers[stopper_at[tick, layer_index]].layer_range
-						for (var i = array_length(local_active) - 1; i >= 0; i--) {
-							var occurrence = occurrences[local_active[i]]
-							if (minecraft_export_layer_targeted(occurrence.layer + 1, stop_range)) {
-							omitted[occurrence.index] = true
+				if (is_array(play_at[tick]) && play_at[tick, layer_index] >= 0) array_push(local_active, play_at[tick, layer_index])
+				else if (is_array(stopper_at[tick]) && stopper_at[tick, layer_index] >= 0) {
+					var local_stopper = stoppers[stopper_at[tick, layer_index]]
+					var stop_range = local_stopper.layer_range
+					var delays_this_stopper = false
+					for (var i = array_length(local_active) - 1; i >= 0; i--) {
+						var occurrence = occurrences[local_active[i]]
+						if (minecraft_export_layer_targeted(occurrence.layer + 1, stop_range)) {
+							delays_this_stopper = true
 							array_delete(local_active, i, 1)
 						}
+					}
+					if (delays_this_stopper && local_stopper.grid_delay == 0) {
+						local_stopper.grid_delay = 1
+						delayed_stopper_count++
 					}
 				}
 			}
@@ -659,16 +720,19 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 	if (mode == "datapack") loop_start = song_instance.loopstart
 	var phases = looping ? 3 : 1
 	var wall_span = timing.wall[song_instance.enda + 1] - timing.wall[loop_start]
+	var datapack_pending_snapshots = []
 	for (var phase = 0; phase < phases; phase++) {
 		var start_tick = (phase == 0) ? 0 : loop_start
 		var wall_offset = (phase == 0) ? 0 : timing.wall[song_instance.enda + 1] + (phase - 1) * wall_span
+		var phase_grid = (mode == "command") ? timing.grid : ((phase == 0) ? timing.server : timing.loop_server)
+		var pending_snapshots = []
 		var occupied_position = 0
 		while (occupied_position < array_length(occupied_ticks) && occupied_ticks[occupied_position] < start_tick) occupied_position++
 		while (occupied_position < array_length(occupied_ticks)) {
 			var source_tick = occupied_ticks[occupied_position]
-			var batch_key = (mode == "command") ? timing.grid[source_tick] : source_tick
+			var batch_key = phase_grid[source_tick]
 			var batch_end_position = occupied_position
-			if (mode == "command") while (batch_end_position + 1 < array_length(occupied_ticks) && timing.grid[occupied_ticks[batch_end_position + 1]] == batch_key) batch_end_position++
+			while (batch_end_position + 1 < array_length(occupied_ticks) && phase_grid[occupied_ticks[batch_end_position + 1]] == batch_key) batch_end_position++
 			var batch_snapshots = []
 			for (var batch_position = occupied_position; batch_position <= batch_end_position; batch_position++) {
 				var source_tick = occupied_ticks[batch_position]
@@ -679,7 +743,6 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 				for (var layer_index = 0; layer_index <= song_instance.collast[source_tick]; layer_index++) {
 						if (is_array(play_at[source_tick]) && play_at[source_tick, layer_index] >= 0) {
 						var play_index = play_at[source_tick, layer_index]
-						if (omitted[play_index]) continue
 						if (!minecraft_export_array_contains(active, play_index)) array_push(active, play_index)
 						expiry[play_index] = (occurrences[play_index].duration == infinity) ? infinity : now + occurrences[play_index].duration
 						} else if (is_array(stopper_at[source_tick]) && stopper_at[source_tick, layer_index] >= 0) {
@@ -693,7 +756,11 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 								minecraft_export_add_unique_target(stopper, occurrence.index)
 							}
 						}
-						var snapshot = { stopper: stopper, active: before, targets: targets, absolute_tick: source_tick + phase * (song_instance.enda + 1 - loop_start) }
+						var snapshot = {
+							stopper: stopper, active: before, targets: targets,
+							absolute_tick: source_tick + phase * (song_instance.enda + 1 - loop_start),
+							output_grid: batch_key + stopper.grid_delay
+						}
 						array_push(batch_snapshots, snapshot)
 						array_push(stopper.snapshots, snapshot)
 						for (var i = 0; i < array_length(targets); i++) minecraft_export_array_remove_value(active, targets[i])
@@ -701,12 +768,69 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 				}
 			}
 			if (mode == "command") {
+				// Voices targeted by a newly delayed stopper must survive this batch,
+				// so protect them from every other stopsound command emitted here.
+				var physical_survivors = minecraft_export_clone_array(active)
 				for (var s = 0; s < array_length(batch_snapshots); s++) {
 					var snapshot = batch_snapshots[s]
-					snapshot.survivors = minecraft_export_clone_array(active)
+					if (snapshot.output_grid > batch_key) {
+						for (var t = 0; t < array_length(snapshot.targets); t++) {
+							var target = snapshot.targets[t]
+							if (!minecraft_export_array_contains(physical_survivors, target)) array_push(physical_survivors, target)
+						}
+					}
+				}
+
+				var next_pending = []
+				for (var s = 0; s < array_length(pending_snapshots); s++) {
+					var snapshot = pending_snapshots[s]
+					if (snapshot.output_grid <= batch_key) minecraft_export_set_snapshot_survivors(snapshot, physical_survivors)
+					else array_push(next_pending, snapshot)
+				}
+				for (var s = 0; s < array_length(batch_snapshots); s++) {
+					var snapshot = batch_snapshots[s]
+					if (snapshot.output_grid <= batch_key) minecraft_export_set_snapshot_survivors(snapshot, physical_survivors)
+					else array_push(next_pending, snapshot)
+				}
+				pending_snapshots = next_pending
+
+				// If the delayed command lands in an otherwise empty grid step, no
+				// later play rows can collide with it; resolve it using the current
+				// intended survivors without waiting for the next occupied batch.
+				var next_occupied_position = batch_end_position + 1
+				var next_batch_key = infinity
+				if (next_occupied_position < array_length(occupied_ticks)) next_batch_key = timing.grid[occupied_ticks[next_occupied_position]]
+				if (next_batch_key > batch_key + 1) {
+					for (var s = 0; s < array_length(pending_snapshots); s++) minecraft_export_set_snapshot_survivors(pending_snapshots[s], active)
+					pending_snapshots = []
+				}
+			} else {
+				// A scheduled 1t stop runs at the next server boundary. Protect every
+				// sound surviving the original batch and, conservatively, every sound
+				// dispatched in the following server bucket. Minecraft versions differ
+				// in where scheduled functions run relative to #minecraft:tick.
+				for (var s = 0; s < array_length(datapack_pending_snapshots); s++) {
+					var pending_entry = datapack_pending_snapshots[s]
+					// Within a pass, only an occupied bucket exactly one server tick
+					// later can race the scheduled command. Across a loop boundary,
+					// bucket 1 is the immediately following server tick.
+					var immediate = (pending_entry.phase == phase && pending_entry.grid == batch_key)
+						|| (pending_entry.phase + 1 == phase && batch_key == 1)
+					if (immediate) minecraft_export_add_snapshot_survivors(pending_entry.snapshot, active)
+				}
+				datapack_pending_snapshots = []
+				for (var s = 0; s < array_length(batch_snapshots); s++) {
+					var snapshot = batch_snapshots[s]
+					if (snapshot.stopper.grid_delay > 0) {
+						minecraft_export_set_snapshot_survivors(snapshot, active)
+						array_push(datapack_pending_snapshots, { snapshot: snapshot, phase: phase, grid: batch_key + 1 })
+					}
 				}
 			}
 			occupied_position = batch_end_position + 1
+		}
+		if (mode == "command") {
+			for (var s = 0; s < array_length(pending_snapshots); s++) minecraft_export_set_snapshot_survivors(pending_snapshots[s], active)
 		}
 	}
 
@@ -719,7 +843,7 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 		var stopper = stoppers[s]
 		for (var p = 0; p < array_length(stopper.snapshots); p++) {
 			var snapshot = stopper.snapshots[p]
-			var possible_victims = (mode == "command") ? snapshot.survivors : snapshot.active
+			var possible_victims = (mode == "command" || snapshot.stopper.grid_delay > 0) ? snapshot.survivors : snapshot.active
 			for (var t = 0; t < array_length(stopper.targets); t++) {
 				var target = stopper.targets[t]
 				for (var v = 0; v < array_length(possible_victims); v++) {
@@ -737,7 +861,9 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 	var assignment = minecraft_export_assign_colors(array_length(occurrences), risks, array_length(palette), full_search)
 	var rows = []
 	var rows_by_tick = array_create(song_instance.enda + 1)
-	var rows_by_grid = array_create(timing.grid[song_instance.enda] + 1)
+	// One extra grid position is reserved for Sound Stoppers delayed out of a
+	// collapsed play/stop batch.
+	var rows_by_grid = array_create(timing.grid[song_instance.enda] + 2)
 	for (var i = 0; i < array_length(rows_by_tick); i++) rows_by_tick[i] = []
 	for (var i = 0; i < array_length(rows_by_grid); i++) rows_by_grid[i] = []
 	var target_selector = (mode == "command" || nearby) ? "@a" : "@s"
@@ -746,7 +872,6 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 		for (var layer_index = 0; layer_index <= song_instance.collast[tick]; layer_index++) {
 				if (is_array(play_at[tick]) && play_at[tick, layer_index] >= 0) {
 				var play_index = play_at[tick, layer_index]
-				if (omitted[play_index]) continue
 				var occurrence = occurrences[play_index]
 				var source = palette[assignment.colors[play_index]]
 				var command = ""
@@ -759,10 +884,13 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 					if (nearby) command = "execute at @s run playsound " + occurrence.event + " " + source + " @a ~ ~ ~ " + string(obj_controller.dat_radiusvalue) + " " + minecraft_export_pitch(occurrence.key)
 					else command = "playsound " + occurrence.event + " " + source + " @s ^" + string(position) + " ^ ^ " + string(volume) + " " + minecraft_export_pitch(occurrence.key) + " 1"
 				}
-					var row = { index: array_length(rows), kind: "play", tick: tick, layer: occurrence.layer, instrument: occurrence.instrument, command: command, event: occurrence.event, source: source }
-					array_push(rows, row); array_push(rows_by_tick[tick], row); array_push(rows_by_grid[timing.grid[tick]], row)
+					var output_grid = timing.grid[tick]
+					var row = { index: array_length(rows), kind: "play", tick: tick, grid: output_grid, layer: occurrence.layer, instrument: occurrence.instrument, command: command, event: occurrence.event, source: source }
+					array_push(rows, row); array_push(rows_by_tick[tick], row); array_push(rows_by_grid[output_grid], row)
 				} else if (is_array(stopper_at[tick]) && stopper_at[tick, layer_index] >= 0) {
-					var stopper = stoppers[stopper_at[tick, layer_index]]
+					var stopper_index = stopper_at[tick, layer_index]
+					var stopper = stoppers[stopper_index]
+					var output_grid = timing.grid[tick] + ((mode == "command") ? stopper.grid_delay : 0)
 				var pairs = ds_map_create()
 				for (var i = 0; i < array_length(stopper.targets); i++) {
 					var target = stopper.targets[i]
@@ -771,15 +899,20 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 					if (!ds_map_exists(pairs, pair)) {
 						ds_map_add(pairs, pair, true)
 						var command = "stopsound " + target_selector + " " + source + " " + occurrences[target].event
-							var row = { index: array_length(rows), kind: "stop", tick: tick, layer: stopper.layer, instrument: stopper.instrument, command: command, event: occurrences[target].event, source: source }
-						array_push(rows, row); array_push(rows_by_tick[tick], row); array_push(rows_by_grid[timing.grid[tick]], row)
+							var row = {
+								index: array_length(rows), kind: "stop", tick: tick, grid: output_grid,
+								layer: stopper.layer, instrument: stopper.instrument, command: command,
+								event: occurrences[target].event, source: source,
+								stopper_index: stopper_index, delayed: mode == "datapack" && stopper.grid_delay > 0
+							}
+						array_push(rows, row); array_push(rows_by_tick[tick], row); array_push(rows_by_grid[output_grid], row)
 					}
 				}
 				ds_map_destroy(pairs)
 			} else if (mode == "datapack" && song_instance.song_exists[tick, layer_index]) {
 				var instrument_index = ds_list_find_index(song_instance.instrument_list, song_instance.song_ins[tick, layer_index])
 				if (instrument_index >= 0 && song_instance.instrument_list[| instrument_index].name == "Tempo Changer" && (include_locked || !controller.lockedlayer[layer_index])) {
-					var row = { index: array_length(rows), kind: "tempo", tick: tick, layer: layer_index, instrument: instrument_index, command: "", speed: minecraft_export_snapped_speed(minecraft_export_tempo_from_note(song_instance, tick, layer_index)) }
+					var row = { index: array_length(rows), kind: "tempo", tick: tick, grid: tick, layer: layer_index, instrument: instrument_index, command: "", speed: minecraft_export_snapped_speed(minecraft_export_tempo_from_note(song_instance, tick, layer_index)) }
 					array_push(rows, row); array_push(rows_by_tick[tick], row)
 				}
 			}
@@ -807,17 +940,15 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 		maximum_slots = max(maximum_slots, array_length(slots_by_grid[grid_tick]))
 	}
 	var used_sources = 0
-	for (var i = 0; i < array_length(occurrences); i++) if (!omitted[i]) used_sources = max(used_sources, assignment.colors[i] + 1)
+	for (var i = 0; i < array_length(occurrences); i++) used_sources = max(used_sources, assignment.colors[i] + 1)
 	var stopper_commands = 0
 	var last_command_grid = 0
 	for (var i = 0; i < array_length(rows); i++) {
 		if (rows[i].kind == "stop") stopper_commands++
-		if (rows[i].kind != "tempo") last_command_grid = max(last_command_grid, timing.grid[rows[i].tick])
+		if (rows[i].kind != "tempo") last_command_grid = max(last_command_grid, rows[i].grid)
 	}
 	var ignored_stoppers = 0
 	for (var i = 0; i < array_length(stoppers); i++) ignored_stoppers += array_length(stoppers[i].targets) == 0
-	var omitted_count = 0
-	for (var i = 0; i < array_length(omitted); i++) omitted_count += omitted[i]
 	return {
 		mode: mode, palette: palette, occurrences: occurrences, rows: rows, risks: risks, colors: assignment.colors,
 		rows_by_tick: rows_by_tick, rows_by_grid: rows_by_grid,
@@ -828,7 +959,8 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 		cutoff_proven: assignment.cutoff_proven,
 		used_sources: used_sources, cutoff_count: assignment.cutoffs,
 		lost_ticks: assignment.lost_ticks, stopper_commands: stopper_commands,
-		ignored_stoppers: ignored_stoppers, omitted_count: omitted_count
+		ignored_stoppers: ignored_stoppers, omitted_count: 0,
+		delayed_stoppers: delayed_stopper_count
 	}
 }
 
@@ -914,7 +1046,7 @@ function minecraft_export_log_report(plan, preferred_source, export_kind) {
 	log("Minecraft sound export summary", minecraft_export_summary(plan))
 	log("Minecraft sound export preferred source", preferred_source)
 	log("Minecraft sound export ignored no-op Sound Stoppers", plan.ignored_stoppers)
-	log("Minecraft sound export omitted unordered same-batch plays", plan.omitted_count)
+	log("Minecraft sound export Sound Stoppers delayed one grid tick", plan.delayed_stoppers)
 	if (plan.search_limited) log("Minecraft sound export source optimization reached its safety limit; the exported assignment remains valid but its reported minimum may be bounded.")
 	var seen_victims = ds_map_create()
 	for (var i = 0; i < array_length(plan.risks); i++) {

@@ -1,3 +1,19 @@
+function datapack_runtime_objective(pack_name, functionpath) {
+	// Scoreboard objective names, including the _t/_s suffixes, must stay at or
+	// below 16 characters. Include a compact hash of the full resource path so
+	// two enabled exports with the same song name cannot drive the same scores.
+	var identity = string_lower(functionpath + pack_name)
+	var hash_value = 0
+	for (var i = 1; i <= string_length(identity); i++) hash_value = (hash_value * 131 + ord(string_char_at(identity, i))) mod 1679616
+	var digits = "0123456789abcdefghijklmnopqrstuvwxyz"
+	var hash_text = ""
+	for (var i = 0; i < 4; i++) {
+		hash_text = string_char_at(digits, (hash_value mod 36) + 1) + hash_text
+		hash_value = floor(hash_value / 36)
+	}
+	return "nbs_" + string_copy(string_lettersdigits(pack_name), 1, 5) + "_" + hash_text
+}
+
 function datapack_export() {
 	// datapack_export()
 	var fn, o
@@ -22,8 +38,8 @@ function datapack_export() {
 		var name = string_path(o.dat_name)
 		var namespace = string_path(o.dat_namespace)
 		var path = dat_getpath(o.dat_path)
-		var objective = "nbs_" + string_copy(string_lettersdigits(o.dat_name), 1, 10)
-		var tag = objective
+		var objective
+		var tag
 		
 		// https://minecraft.wiki/w/Pack_format
 		var pack_format = (o.dat_mcversion == 0) ? 41 : 48
@@ -54,6 +70,8 @@ function datapack_export() {
 			path += "/" + name
 			functionpath = namespace+":"+path+"/"
 		}
+		objective = datapack_runtime_objective(o.dat_name, functionpath)
+		tag = objective
 	
 		// Create folder structure
 		tempdir = game_save_id + "tempdatapack" + condstr(os_type = os_windows, "\\", "/")

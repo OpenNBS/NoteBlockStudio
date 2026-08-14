@@ -3,6 +3,25 @@ function dat_generate(functionpath, functiondir, objective, plan) {
 	var song_instance = o.songs[o.song]
 	var speed_objective = objective + "_s"
 	var occupied = array_create(song_instance.enda + 1, false)
+	var delayed_stop_rows = []
+	for (var r = 0; r < array_length(plan.rows); r++) {
+		var row = plan.rows[r]
+		if (row.kind != "stop" || !variable_struct_exists(row, "delayed") || !row.delayed) continue
+		while (array_length(delayed_stop_rows) <= row.stopper_index) array_push(delayed_stop_rows, undefined)
+		if (!is_array(delayed_stop_rows[row.stopper_index])) delayed_stop_rows[row.stopper_index] = []
+		array_push(delayed_stop_rows[row.stopper_index], row)
+	}
+	if (array_length(delayed_stop_rows) > 0) directory_create_lib(functiondir + "delayed")
+	for (var stopper_index = 0; stopper_index < array_length(delayed_stop_rows); stopper_index++) {
+		if (!is_array(delayed_stop_rows[stopper_index])) continue
+		var pending_tag = objective + "_d" + string(stopper_index)
+		var text = ""
+		for (var r = 0; r < array_length(delayed_stop_rows[stopper_index]); r++) {
+			text += "execute as @a[tag=" + pending_tag + "] at @s run " + delayed_stop_rows[stopper_index][r].command + br
+		}
+		text += "tag @a[tag=" + pending_tag + "] remove " + pending_tag
+		dat_writefile(text, functiondir + "delayed/" + string(stopper_index) + ".mcfunction")
+	}
 
 	for (var tick = 0; tick <= song_instance.enda; tick++) {
 		var rows = plan.rows_by_tick[tick]
@@ -11,12 +30,22 @@ function dat_generate(functionpath, functiondir, objective, plan) {
 		if (array_length(rows) == 0 && tick != song_instance.enda) continue
 		occupied[tick] = true
 		var text = ""
+		var scheduled_stoppers = ds_map_create()
 		for (var r = 0; r < array_length(rows); r++) {
 			var row = rows[r]
-			if (row.kind == "tempo") text += "scoreboard players set @s " + speed_objective + " " + string(row.speed) + br
+			if (row.kind == "stop" && variable_struct_exists(row, "delayed") && row.delayed) {
+				var stopper_key = string(row.stopper_index)
+				if (!ds_map_exists(scheduled_stoppers, stopper_key)) {
+					ds_map_add(scheduled_stoppers, stopper_key, true)
+					var pending_tag = objective + "_d" + stopper_key
+					text += "tag @s add " + pending_tag + br
+					text += "schedule function " + functionpath + "delayed/" + stopper_key + " 1t append" + br
+				}
+			} else if (row.kind == "tempo") text += "scoreboard players set @s " + speed_objective + " " + string(row.speed) + br
 			else text += row.command + br
 			if (row.kind == "play" && o.dat_visualizer) text += dat_generate_visualizer(row, tick)
 		}
+		ds_map_destroy(scheduled_stoppers)
 		if (tick < song_instance.enda) {
 			text += "scoreboard players set @s " + objective + "_t " + string(tick)
 		} else if (o.dat_enablelooping) {
