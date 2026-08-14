@@ -93,7 +93,7 @@ function selection_flip(flipVertically){
 	    }
 	}
 
-	// find the fist row number in the columns
+	// find the first row number in the columns
 	for (var i = 0; i < current_song.selection_l; i++) {
 		for (var j = 0; j < current_song.selection_h; j++) {
 			if (current_song.selection_exists[i,j]) {
@@ -104,8 +104,8 @@ function selection_flip(flipVertically){
 	}
 
 	// find the last row number in the columns
-	for (var i = current_song.selection_l; i >= 0; i--) {
-		for (var j = current_song.selection_h; j >= 0; j--) {
+	for (var i = current_song.selection_l - 1; i >= 0; i--) {
+		for (var j = current_song.selection_h - 1; j >= 0; j--) {
 			if (current_song.selection_exists[i,j]) {
 				current_song.selection_collast[i] = j;
 				break;
