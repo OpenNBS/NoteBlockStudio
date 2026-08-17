@@ -101,6 +101,7 @@ function control_create() {
 	icon_time = -1
 	last_icon = -1
 	icon_display = 1
+	hires_manual = 0
 	hires = (window_scale > 1.25)
 	surface_depth_disable(true)
 	donate_banner = 1
@@ -638,6 +639,11 @@ function control_create() {
 
 	// Settings
 	if (!check_args("--prefreset")) load_settings()
+	// "hires" is derived from the interface scale, so a stored value must not
+	// outlive the scale it was derived from. Without this, changing the scale in
+	// Preferences (or carrying settings over to a display with a different scale)
+	// leaves the high resolution textures switched off for good.
+	if (!hires_manual) hires = (window_scale > 1.25)
 	var vers_tmp = vers
 	var vers_date_tmp = vers_date
 	if (vers_tmp != version || vers_date_tmp != version_date) copy_bundled_files()
@@ -674,7 +680,7 @@ function control_create() {
 		    else window_scale = 1
 		}
 		if (window_scale > 2 && is_mobile()) window_scale = 2
-		hires = (window_scale > 1.25)
+		if (!hires_manual) hires = (window_scale > 1.25)
 	}
 	if (show_welcome) window = w_greeting
 	draw_accent_init()

@@ -453,12 +453,12 @@ function draw_window_preferences() {
 		if (draw_button2(x1 + 394, y1 + 161 + (theme = 3) * 22, 72, "Reset", (window_scale == get_default_window_scale()), true)) {
 			window_scale = get_default_window_scale()
 		}
-		if (draw_checkbox(x1 + 276, y1 + 195 + (theme = 3) * 22, hires, "Optimize for high resolutions", "Whether to use higher resolution textures on the interface.\n" + condstr(theme = 3, "(May reduce performance and reduce readability at lower resolutions.)", "(Only applies to the Fluent theme.)"), (theme != 3), true)) hires = !hires
+		if (draw_checkbox(x1 + 276, y1 + 195 + (theme = 3) * 22, hires, "Optimize for high resolutions", "Whether to use higher resolution textures on the interface.\n" + condstr(theme = 3, "(May reduce performance and reduce readability at lower resolutions.)", "(Only applies to the Fluent theme.)"), (theme != 3), true)) { hires = !hires; hires_manual = (hires != (window_scale > 1.25)) }
 		} else {
 		if (draw_button2(x1 + 394, y1 + 161 + (theme = 3) * 22, 72, "重置", (window_scale == get_default_window_scale()), true)) {
 			window_scale = get_default_window_scale()
 		}
-		if (draw_checkbox(x1 + 276, y1 + 195 + (theme = 3) * 22, hires, "为高分辨率优化", "是否在界面上使用更高分辨率的纹理。\n" + condstr(theme = 3, "（可能减弱性能并在低分辨率下减小可读性）", "（仅限 Fluent 主题）"), theme != 3, true)) hires = !hires
+		if (draw_checkbox(x1 + 276, y1 + 195 + (theme = 3) * 22, hires, "为高分辨率优化", "是否在界面上使用更高分辨率的纹理。\n" + condstr(theme = 3, "（可能减弱性能并在低分辨率下减小可读性）", "（仅限 Fluent 主题）"), theme != 3, true)) { hires = !hires; hires_manual = (hires != (window_scale > 1.25)) }
 		}
 		if (theme != 3 || (theme != 2 && !fdark)) draw_set_color(c_black)
 		else draw_set_color(c_white)

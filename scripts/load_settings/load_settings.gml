@@ -79,6 +79,7 @@ function load_settings() {
 	window_icon =        ini_read_real(  "preferences", "window_icon",        window_icon)
 	keynames_flat =      ini_read_real(  "preferences", "keynames_flat",      keynames_flat)
 	hires =              ini_read_real(  "preferences", "hires",              hires)
+	hires_manual =       ini_read_real(  "preferences", "hires_manual",       hires_manual)
 	current_resource =   ini_read_string("preferences", "current_resource",   current_resource)
 	resourcepack_sounds_json = ini_read_real("preferences", "resourcepack_sounds_json", resourcepack_sounds_json)
 	minecraft_export_catalog_path = ini_read_string("minecraft_export", "catalog_path", minecraft_export_catalog_path)
