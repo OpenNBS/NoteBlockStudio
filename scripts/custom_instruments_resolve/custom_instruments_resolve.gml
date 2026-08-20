@@ -34,7 +34,10 @@ function custom_instruments_resolve(source_instruments) {
 		}
 	}
 
-	var available_instruments = max(0, 240 - songs[song].user_instruments)
+	var limit_version = songs[song].save_version
+	if (limit_version < 5) limit_version = nbs_version
+	var instrument_limit = nbs_custom_instrument_limit(limit_version, song_uses_v6_instruments(songs[song]))
+	var available_instruments = max(0, instrument_limit - songs[song].user_instruments)
 	if (array_length(missing_instruments) > available_instruments) {
 		return {
 			ok: false,
@@ -67,7 +70,10 @@ function custom_instruments_resolve(source_instruments) {
 		}
 	}
 
-	if (array_length(missing_instruments) > 0) songs[song].changed = true
+	if (array_length(missing_instruments) > 0) {
+		songs[song].changed = true
+		if (songs[song].save_version < 5 && songs[song].user_instruments > 18) songs[song].save_version = nbs_version
+	}
 	return {
 		ok: true,
 		instrument_map: instrument_map,

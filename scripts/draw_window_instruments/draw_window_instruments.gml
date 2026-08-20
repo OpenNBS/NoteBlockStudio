@@ -28,6 +28,11 @@ function draw_window_instruments() {
 	}
 	tempo_changer_exists = 0
 	sound_stopper_exists = 0
+	var instrument_limit_version = cursong.save_version
+	// Older formats are automatically upgraded after their 18-instrument limit.
+	if (instrument_limit_version < 5) instrument_limit_version = nbs_version
+	var custom_instrument_max = nbs_custom_instrument_limit(instrument_limit_version, song_uses_v6_instruments(cursong))
+	var custom_instruments_full = cursong.user_instruments >= custom_instrument_max
 	for (a = 0; a < ds_list_size(songs[song].instrument_list); a++) {
 		if (songs[song].instrument_list[| a].name == "Tempo Changer") {
 			tempo_changer_exists = 1
@@ -36,7 +41,7 @@ function draw_window_instruments() {
 			sound_stopper_exists = 1
 		}
 	}
-	if (mouse_rectangle(x1 + 11, y1 + 67, 524, 245) && mouse_check_button_released(mb_right)) show_menu_ext("add_event_ins", mouse_x, mouse_y, inactive(tempo_changer_exists) + condstr(language != 1, "Add tempo changer", "添加变速器") + "|" + inactive(sound_stopper_exists) + condstr(language != 1, "Add sound stopper", "添加声音抑制器"))
+	if (mouse_rectangle(x1 + 11, y1 + 67, 524, 245) && mouse_check_button_released(mb_right)) show_menu_ext("add_event_ins", mouse_x, mouse_y, inactive(tempo_changer_exists || custom_instruments_full) + condstr(language != 1, "Add tempo changer", "添加变速器") + "|" + inactive(sound_stopper_exists || custom_instruments_full) + condstr(language != 1, "Add sound stopper", "添加声音抑制器"))
 	if (language != 1) {
 	if (draw_button2(x1 + 705, y1 + 9, 80, "Import", 0, 1)) load_instruments("")
 	if (draw_button2(x1 + 705, y1 + 36, 80, "Open Folder", 0, 1)) open_url(sounds_directory)
@@ -80,10 +85,11 @@ function draw_window_instruments() {
 	if (language != 1) {if (draw_button2(x1 + 12, y1 + 318, 86, "Export sounds", (cursong.user_instruments == 0 || sounds == 0), true)) pack_instruments()}
 	else {if (draw_button2(x1 + 12, y1 + 318, 86, "导出音色", (cursong.user_instruments == 0 || sounds == 0), true)) pack_instruments()}
 	c = 0
-	if (draw_button2(x1 + 110, y1 + 318, 80, condstr(language != 1, "Add", "添加"), cursong.user_instruments >= 240, true) && wmenu = 0) {
+	if (draw_button2(x1 + 110, y1 + 318, 80, condstr(language != 1, "Add", "添加"), custom_instruments_full, true) && wmenu = 0) {
 	    cursong.changed = true
 	    insselect = ds_list_size(cursong.instrument_list)
 	    ds_list_add(cursong.instrument_list, new_instrument("Custom instrument #" + string(cursong.user_instruments + 1), "", true))
+		if (cursong.save_version < 5 && cursong.user_instruments > 18) cursong.save_version = nbs_version
 	    c = 1
 	}
 	var userselect = -1;

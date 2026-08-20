@@ -484,6 +484,10 @@ function menu_click(argument0) {
 			break;
 		}
 		case "add_event_ins": {
+			var limit_version = songs[song].save_version
+			if (limit_version < 5) limit_version = nbs_version
+			var instrument_limit = nbs_custom_instrument_limit(limit_version, song_uses_v6_instruments(songs[song]))
+			if (songs[song].user_instruments >= instrument_limit) break
 			songs[song].changed = true
 			switch (sel) {
 				case 0:
@@ -493,6 +497,7 @@ function menu_click(argument0) {
 					ds_list_add(songs[song].instrument_list, new_instrument("Sound Stopper", "", true))
 					break;
 			}
+			if (songs[song].save_version < 5 && songs[song].user_instruments > 18) songs[song].save_version = nbs_version
 		}
 	}
 	mouse_clear(mb_left)

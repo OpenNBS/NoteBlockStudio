@@ -185,6 +185,9 @@ function open_song_nbs(fn, sounds_path = "", safeopen, replace) {
 	
 	// Custom instruments
 	a = buffer_read_byte()
+	// Preserve v5 when upgrading its 237-240 custom instruments to v6 would
+	// overflow the one-byte note instrument ID.
+	if (newsong.song_nbs_version == 5 && a > nbs_custom_instrument_limit(6)) newsong.save_version = 5
 	str = ""
 	for (b = 0; b < a; b++) {
 	    var name = buffer_read_string_int();
