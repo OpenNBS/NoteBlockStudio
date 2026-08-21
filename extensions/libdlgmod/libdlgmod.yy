@@ -223,6 +223,7 @@
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"btn_no","value":"5","hidden":false,},
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"btn_retry","value":"6","hidden":false,},
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"ws_x11","value":"\"X11\"","hidden":false,},
+        {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"ws_osascript","value":"\"OSAScript\"","hidden":false,},
       ],"ProxyFiles":[
         {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libdlgmod.dylib","TargetMask":1,},
         {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"libdlgmod.so","TargetMask":7,},
