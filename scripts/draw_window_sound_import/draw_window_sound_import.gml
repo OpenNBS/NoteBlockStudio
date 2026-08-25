@@ -201,7 +201,7 @@ function draw_window_sound_import() {
 	
 	// OK button
 	x1 = startx + width - 72 - 8 - 12;
-	if (draw_button2(x1, y1, 72, ((language == 0) ? "OK" : "确定"), (sound_import_download_toggle && sound_import_status == 1), false)) {
+	if (draw_button2(x1, y1, 72, ((language == 0) ? "OK" : "确定"), (sound_import_download_toggle && sound_import_status == 1), true)) {
 		sound_import_status = 0;
 		windowclose = 1;
 	}

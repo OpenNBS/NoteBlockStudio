@@ -1,7 +1,7 @@
 function schematic_export() {
 	// schematic_export()
 	var fn, a, b, c, d, p, xx, yy, zz, len, wid, hei, o, chestx, chesty, chestz, signx, signy, signz, nblocks, layers, cyy, y1, insnum, ins, blockamount, blocktagpos, skipblock;
-	var REPEATER, TORCHON, TORCHOFF, WIRE, LADDER, RAIL, POWEREDRAIL, noteblocks, noteblockx, noteblocky, noteblockz, noteblocknote, noteblockins, noteblockpit;
+	var REPEATER, TORCHON, TORCHOFF, WIRE, LADDER, RAIL, POWEREDRAIL, noteblocks, noteblockx, noteblocky, noteblockz, noteblocknote, noteblockins, noteblockpit, command_plan, export_end;
 	structure = (sch_exp_format <= 1)
 	sch_exp_minecraft_old = (sch_exp_format = 3)
 	if (!structure) fn = string(get_save_filename_ext("Minecraft Schematics (*.schematic)|*.schematic", filename_new_ext(songs[song].filename, "") + ".schematic", "", "Export Schematic"))
@@ -12,6 +12,18 @@ function schematic_export() {
 	//fn = string_replace_all(fn, ".schematic", "")
 	//fn += ".schematic"
 	o = obj_controller
+	command_plan = undefined
+	if (structure && command_block && sch_exp_layout < 2) {
+		command_plan = minecraft_export_get_schematic_plan(true)
+		if (array_length(command_plan.rows) <= 0) {
+			message(condstr(language != 1, "There are no sound commands to export!", "没有声音命令可以导出！"), condstr(language != 1, "Schematic export", "导出结构"))
+			return 0
+		}
+		if (schematic_length() >= 2000 || schematic_width() >= 2000 || schematic_height() >= 256) {
+			message(condstr(language != 1, "The Schematic is too big. The maximum size is 2000x2000x256.\nTry changing the \"Repeaters per row\" value to decrease the size.", "这个结构太大了。大小限制为 2000x2000x256。\n可以更改“每行中继器个数”来减小大小。"), condstr(language != 1, "Error", "错误"))
+			return 0
+		}
+	}
 	window = -1
 	with (create(obj_dummy2)) {
 	    // Initialize variables
@@ -55,8 +67,10 @@ function schematic_export() {
 				ins[16 + a] = "harp"
 			}
 		}
-		instrument_list = o.songs[o.song].instrument_list
-	    layers = ceil(o.sch_exp_maxheight[o.sch_exp_compress] / 4)
+			instrument_list = o.songs[o.song].instrument_list
+			command_plan = undefined
+			if (o.structure && o.command_block && o.sch_exp_layout < 2) command_plan = o.sch_command_plan
+	    layers = ceil((is_struct(command_plan) ? command_plan.maximum_slots : o.sch_exp_maxheight[o.sch_exp_compress]) / 4)
 	    block_walkway_block = o.sch_exp_walkway_block
 	    block_walkway_data = o.sch_exp_walkway_data
 	    block_circuit_block = o.sch_exp_circuit_block
@@ -68,7 +82,7 @@ function schematic_export() {
 	    sch_loop = (o.sch_exp_loop && layout = 0)                       // Whether to loop
 	    minecart = (o.sch_exp_minecart && layout < 2)               // Whether to add minecart tracks
 	    chest = (o.sch_exp_chest && minecart)                     // Whether to add a minecart chest
-	    blocksam = o.sch_exp_totalblocks[o.sch_exp_includelocked] // Amount of blocks
+	    blocksam = is_struct(command_plan) ? array_length(command_plan.rows) : o.sch_exp_totalblocks[o.sch_exp_includelocked] // Amount of blocks
 	    with (o) {
 	        len = schematic_length()
 	        wid = schematic_width()
@@ -212,12 +226,27 @@ function schematic_export() {
 	        lturnx = -1
 	        lturny = -1
 	        lturndel = 0
-	        for (a = 0; a <= o.songs[o.song].enda; a += 1) {
+			export_end = is_struct(command_plan) ? command_plan.last_command_grid : o.songs[o.song].enda
+	        for (a = 0; a <= export_end; a += 1) {
 	            nblocks = 0
 	            rep += 1
 	            if (o.sch_exp_tempo = 1) rep += 1
 	            if (o.sch_exp_tempo = 2) rep += 3
-	            if (o.songs[o.song].colamount[a] > 0) { // Calculate note blocks for this tick
+			if (is_struct(command_plan)) {
+				var slots = command_plan.slots_by_grid[a]
+				for (b = 0; b < array_length(slots); b++) {
+					if (is_undefined(slots[b])) {
+						nblockins[nblocks] = -1
+						nblockkey[nblocks] = 33
+						nblockpit[nblocks] = -1
+					} else {
+						nblockins[nblocks] = slots[b].instrument
+						nblockkey[nblocks] = 33
+						nblockpit[nblocks] = slots[b].index
+					}
+					nblocks++
+				}
+			} else if (o.songs[o.song].colamount[a] > 0) { // Calculate note blocks for this tick
 	                for (b = 0; b <= o.songs[o.song].collast[a]; b += 1) {
 	                    if (o.songs[o.song].song_exists[a, b] && (o.lockedlayer[b] = 0 || o.sch_exp_includelocked)) {
 	                        if ((o.songs[o.song].song_key[a, b] > 32 && o.songs[o.song].song_key[a, b] < 58) || (o.structure && o.command_block && o.songs[o.song].song_key[a, b] >= 9 && o.songs[o.song].song_key[a, b] <= 81)) {
@@ -342,11 +371,11 @@ function schematic_export() {
 	                    if (dir = 1) turn = (yy >= wid - 3)
 	                    if (dir = -1) turn = (yy <= 2)
 	                }
-	                if (a = o.songs[o.song].enda) turn = 0
+	                if (a = export_end) turn = 0
 	                if (turn) {
 	                    for (b = 0; b < layers; b += 1) { // Connect to new row
 	                        block_other(xx, yy, b * 3 + 1, WIRE, 0)
-	                        if (b > 0 && b < layers - 1) block_circuit(xx, yy, b * 4)
+	                        if (b > 0 && b < layers - 1) block_circuit(xx, yy, b * 3)
 	                        block_other(xx, yy + dir, b * 3 + 2, WIRE, 0)
 	                        block_circuit(xx, yy + dir, b * 3 + 1)
 	                        for (c = 0; c < 4; c += 1) {
@@ -359,7 +388,7 @@ function schematic_export() {
 	                    if (circ = -1 && dir = 1) {
 	                        lturnx = xx
 	                        lturny = yy - 1
-	                        lturndel = (o.songs[o.song].enda - a) - 8
+	                        lturndel = (export_end - a) - 8
 	                    }
 	                    xx += 3 * circ
 	                    if (xx <= 0) break
@@ -978,16 +1007,11 @@ function schematic_export() {
 				TAG_End()
 				blockamount += 1
 			}
-			var soundname, soundpitch, soundnote;
 			for (a = 0; a < noteblocks; a += 1) {
 				if (o.command_block) {
 					TAG_Compound("nbt")
 						TAG_String("id", "minecraft:command_block")
-						soundname = dat_instrument(noteblockins[a])
-						soundpitch = dat_pitch(noteblocknote[a] + 33 + noteblockpit[a] / 100)
-						if (noteblocknote[a] + noteblockpit[a] / 100 < 0) soundname += "_-1"
-						else if (noteblocknote[a] + noteblockpit[a] / 100 > 24) soundname += "_1"
-						TAG_String("Command", "playsound "+ soundname +" block @a ~ ~ ~ 3 " + string(soundpitch))
+						TAG_String("Command", command_plan.rows[noteblockpit[a]].command)
 						TAG_Byte("TrackOutput", 0)
 						TAG_Byte("powered", 0)
 						TAG_Byte("auto", 0)
@@ -1080,6 +1104,7 @@ function schematic_export() {
 	    buffer_save(buffer, temp_file)
 	    buffer_delete(buffer)
 	    gzzip(temp_file, fn)
+		if (is_struct(command_plan)) minecraft_export_log_report(command_plan, o.sch_command_source, "Standard command-block structure")
 	    instance_destroy()
 	}
 	if (o.language != 1) message("Schematic saved!", "Schematic Export")

@@ -185,6 +185,9 @@ function open_song_nbs(fn, sounds_path = "", safeopen, replace) {
 	
 	// Custom instruments
 	a = buffer_read_byte()
+	// Preserve v5 when upgrading its 237-240 custom instruments to v6 would
+	// overflow the one-byte note instrument ID.
+	if (newsong.song_nbs_version == 5 && a > nbs_custom_instrument_limit(6)) newsong.save_version = 5
 	str = ""
 	for (b = 0; b < a; b++) {
 	    var name = buffer_read_string_int();
@@ -201,6 +204,7 @@ function open_song_nbs(fn, sounds_path = "", safeopen, replace) {
 	if (str != "")
 	    if (language != 1) {if (question("This song uses custom instruments. However, some sounds could not be loaded:\n\n" + str+"\nMake sure that you have put the sounds in the \"Sounds\" folder. Open Instrument settings?", "Error")) window = w_instruments}
 	    else {if (question("此歌曲使用自定义音色。但是一些音色未能被加载：\n\n" + str+"\n确保您已将声音文件放到“Sounds”文件夹。打开音色设置吗？", "错误")) window = w_instruments}
+	if (is_struct(minecraft_export_sounds_json)) resourcepack_auto_map_custom_sounds(minecraft_export_pack_root, minecraft_export_sounds_json)
 	buffer_delete(buffer)
 	
 	return newsong

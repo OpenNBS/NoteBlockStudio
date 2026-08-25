@@ -642,6 +642,7 @@
     {"id":{"name":"nbt_tag_compound","path":"scripts/nbt_tag_compound/nbt_tag_compound.yy",},"order":11,},
     {"id":{"name":"nbt_tags_read","path":"scripts/nbt_tags_read/nbt_tags_read.yy",},"order":12,},
     {"id":{"name":"datapack_export","path":"scripts/datapack_export/datapack_export.yy",},"order":0,},
+    {"id":{"name":"minecraft_export","path":"scripts/minecraft_export/minecraft_export.yy",},"order":1,},
     {"id":{"name":"dat_generate","path":"scripts/dat_generate/dat_generate.yy",},"order":1,},
     {"id":{"name":"dat_reset","path":"scripts/dat_reset/dat_reset.yy",},"order":2,},
     {"id":{"name":"dat_pitch","path":"scripts/dat_pitch/dat_pitch.yy",},"order":3,},

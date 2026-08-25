@@ -1,3 +1,19 @@
+function datapack_runtime_objective(pack_name, functionpath) {
+	// Scoreboard objective names, including the _t/_s suffixes, must stay at or
+	// below 16 characters. Include a compact hash of the full resource path so
+	// two enabled exports with the same song name cannot drive the same scores.
+	var identity = string_lower(functionpath + pack_name)
+	var hash_value = 0
+	for (var i = 1; i <= string_length(identity); i++) hash_value = (hash_value * 131 + ord(string_char_at(identity, i))) mod 1679616
+	var digits = "0123456789abcdefghijklmnopqrstuvwxyz"
+	var hash_text = ""
+	for (var i = 0; i < 4; i++) {
+		hash_text = string_char_at(digits, (hash_value mod 36) + 1) + hash_text
+		hash_value = floor(hash_value / 36)
+	}
+	return "nbs_" + string_copy(string_lettersdigits(pack_name), 1, 5) + "_" + hash_text
+}
+
 function datapack_export() {
 	// datapack_export()
 	var fn, o
@@ -22,15 +38,20 @@ function datapack_export() {
 		var name = string_path(o.dat_name)
 		var namespace = string_path(o.dat_namespace)
 		var path = dat_getpath(o.dat_path)
-		var objective = "nbs_" + string_copy(string_lettersdigits(o.dat_name), 1, 10)
-		var tag = objective
+		var objective
+		var tag
 		
 		// https://minecraft.wiki/w/Pack_format
 		var pack_format = (o.dat_mcversion == 0) ? 41 : 48
 		// https://minecraft.wiki/w/Java_Edition_1.21#Command_format_2
 		var function_registry = (o.dat_mcversion == 0) ? "functions" : "function";
 
-		var playspeed = min(round(o.songs[o.song].real_tempo * 4), 120)
+		var sound_plan = minecraft_export_build_plan(
+			"datapack", o.dat_source, o.dat_allowed_sources, o.dat_includelocked,
+			o.dat_includeoutofrange, o.dat_enableradius, false, 10,
+			o.dat_enablelooping, true
+		)
+		var playspeed = minecraft_export_snapped_speed(minecraft_export_tempo_at_tick(o.songs[o.song], 0, o.dat_includelocked))
 		var rootfunction = "0_" + string(power(2, floor(log2(o.songs[o.song].enda))+1)-1)
 		var tempdir
 		var functionpath
@@ -49,6 +70,8 @@ function datapack_export() {
 			path += "/" + name
 			functionpath = namespace+":"+path+"/"
 		}
+		objective = datapack_runtime_objective(o.dat_name, functionpath)
+		tag = objective
 	
 		// Create folder structure
 		tempdir = game_save_id + "tempdatapack" + condstr(os_type = os_windows, "\\", "/")
@@ -76,18 +99,21 @@ function datapack_export() {
 		//load.mcfunction
 		inputString = "scoreboard objectives add " + objective + " dummy" + br
 		inputString += "scoreboard objectives add " + objective + "_t dummy" + br
-		inputString += "scoreboard players set speed " + objective + " " + string(playspeed)
+		inputString += "scoreboard objectives add " + objective + "_s dummy"
 		dat_writefile(inputString, functiondir + "load.mcfunction")
 	
 		//tick.mcfunction
-		inputString = "execute as @a[tag=" + tag + "] run scoreboard players operation @s " + objective + " += speed " + objective + br
+		inputString = "execute as @a[tag=" + tag + "] run scoreboard players operation @s " + objective + " += @s " + objective + "_s" + br
 		if(o.dat_enableradius) inputString += "execute as @a[tag=" + tag + "] run function " + functionpath + "tree/" + rootfunction
 		else inputString += "execute as @a[tag=" + tag + "] at @s run function " + functionpath + "tree/" + rootfunction
 		dat_writefile(inputString, functiondir + "tick.mcfunction")
 	
 		//play.mcfunction
 		inputString = "tag @s add " + tag + br
-		inputString += "scoreboard players set @s " + objective + "_t -1" + br
+		inputString += "scoreboard players add @s " + objective + " 0" + br
+		inputString += "execute unless score @s " + objective + "_t matches -2147483648..2147483647 run scoreboard players set @s " + objective + "_t -1" + br
+		inputString += "scoreboard players add @s " + objective + "_s 0" + br
+		inputString += "execute if score @s " + objective + "_s matches ..0 run scoreboard players set @s " + objective + "_s " + string(playspeed) + br
 		if (add_teams) {
 			inputString += "function " + functionpath + "add_teams"
 		}
@@ -100,16 +126,23 @@ function datapack_export() {
 		//stop.mcfunction
 		inputString = "tag @s remove " + tag + br
 		inputString += "scoreboard players reset @s " + objective + br
-		inputString += "scoreboard players reset @s " + objective + "_t"
+		inputString += "scoreboard players reset @s " + objective + "_t" + br
+		inputString += "scoreboard players reset @s " + objective + "_s"
 		if (add_teams) {
 			inputString += br + "function " + functionpath + "remove_teams"
 		}
 		dat_writefile(inputString, functiondir + "stop.mcfunction")
+
+		//restart.mcfunction
+		inputString = "function " + functionpath + "stop" + br
+		inputString += "function " + functionpath + "play"
+		dat_writefile(inputString, functiondir + "restart.mcfunction")
 	
 		//uninstall.mcfunction
 		inputString = "tag @e remove " + tag + br
 		inputString += "scoreboard objectives remove " + objective + br
 		inputString += "scoreboard objectives remove " + objective + "_t" + br
+		inputString += "scoreboard objectives remove " + objective + "_s" + br
 		if (add_teams) {
 			inputString += "kill @e[type=falling_block,tag=nbs]" + br
 			inputString += "function " + functionpath + "remove_teams" + br
@@ -182,7 +215,8 @@ function datapack_export() {
 		}
 	
 		//Generate binary tree and notes
-		dat_generate(functionpath, functiondir, objective)
+		dat_generate(functionpath, functiondir, objective, sound_plan)
+		minecraft_export_log_report(sound_plan, o.dat_source, "Data pack")
 	
 		// Execute shell command to create ZIP, or to move temp folder to location
 		if (o.dat_usezip) {

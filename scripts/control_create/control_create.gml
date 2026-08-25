@@ -237,6 +237,17 @@ function control_create() {
 	current_resource = "Vanilla"
 	resourcepack_sounds_json = 0
 	resourcepacks = []
+	minecraft_export_pack_root = ""
+	minecraft_export_sounds_json = undefined
+	minecraft_export_catalog_events = []
+	minecraft_export_catalog_source = ""
+	minecraft_export_catalog_path = ""
+	minecraft_export_catalog_access_root = ""
+	minecraft_export_catalog_filter_cache_key = ""
+	minecraft_export_catalog_filter_cache_result = undefined
+	minecraft_export_catalog_filter = ""
+	minecraft_export_catalog_menu_events = []
+	minecraft_export_mapping_edit_instrument = -1
 	refresh_resourcepacks()
 	
 	original_instruments = []
@@ -459,6 +470,10 @@ function control_create() {
 	// Interface
 	window = 0
 	prevwindow = 0
+	window_enter_pressed = false
+	window_escape_pressed = false
+	window_text_input_active = false
+	window_drawn_this_frame = false
 	selected_tab = 0
 	global.popup = 0
 	globalvar text_focus, text_focus_last;
@@ -680,6 +695,7 @@ function control_create() {
 	if (current_resource != "Vanilla") {
 		set_resourcepack(current_resource)
 	}
+	minecraft_export_restore_sound_catalog()
 
 	if (date_compare_date(date_current_datetime(), donate_banner_time) > 0) {
 		donate_banner = 1

@@ -126,7 +126,7 @@ function draw_window_set_accent() {
 	}
 
 	draw_theme_color()
-	if (draw_button2(x1 + 10, y1 + 408, 72, condstr(language != 1, "Use default", "使用默认值")) && wmenu = 0) {
+	if (draw_button2(x1 + 10, y1 + 408, 72, condstr(language != 1, "Use default", "使用默认值"), false, true) && wmenu = 0) {
 	    if ((language == 0 && question("Are you sure?", "Confirm")) || (language == 1 && question("你确定吗？", "确定"))) {
 			accent1 = 0
 			accent2 = 120
@@ -135,7 +135,7 @@ function draw_window_set_accent() {
 			resetcolor = true
 		}
 	}
-	if (draw_button2(x1 + 104, y1 + 408, 72, condstr(language != 1, "Cancel", "取消"))) {window = w_preferences}
+	if (draw_button2(x1 + 104, y1 + 408, 72, condstr(language != 1, "Cancel", "取消"), false, true)) {window = w_preferences}
 	if (draw_button2(x1 + 198, y1 + 408, 72, condstr(language != 1, "OK", "确定")) && windowopen = 1) {
 		try {
 			accent1 = real(rr)

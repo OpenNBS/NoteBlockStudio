@@ -26,9 +26,11 @@ function draw_window_save_options() {
 		min_version = 5
 	}
 	cursong.save_version = max(cursong.save_version, min_version)
+	var v6_instrument_limit = nbs_custom_instrument_limit(6)
+	if (cursong.save_version >= 6 && cursong.user_instruments > v6_instrument_limit) cursong.save_version = 5
 
 	if (language != 1) {
-	if (draw_radiobox(x1 + 15, y1 + 23, cursong.save_version = 6, "v6", "Added the new instruments introduced in Minecraft 26", min_version > 6)) cursong.save_version = 6
+	if (draw_radiobox(x1 + 15, y1 + 23, cursong.save_version = 6, "v6", "Added the new instruments introduced in Minecraft 26", min_version > 6 || cursong.user_instruments > v6_instrument_limit)) cursong.save_version = 6
 	if (draw_radiobox(x1 + 15, y1 + 38, cursong.save_version = 5, "v5", "Increases custom instrument limit\nAllows custom sounds in subfolders", min_version > 5)) cursong.save_version = 5
 	if (draw_radiobox(x1 + 15, y1 + 53, cursong.save_version = 4, "v4", "Includes note velocity/pan/pitch and looping", min_version > 4)) cursong.save_version = 4
 	if (draw_radiobox(x1 + 15, y1 + 68, cursong.save_version = 3, "v3", "Includes song length", min_version > 3)) cursong.save_version = 3
@@ -42,7 +44,7 @@ function draw_window_save_options() {
 		windowclose = 1
 		}
 	} else {
-	if (draw_radiobox(x1 + 15, y1 + 23, cursong.save_version = 6, "v6", "增加在 Minecraft 26 中推出的新音色", min_version > 6)) cursong.save_version = 6
+	if (draw_radiobox(x1 + 15, y1 + 23, cursong.save_version = 6, "v6", "增加在 Minecraft 26 中推出的新音色", min_version > 6 || cursong.user_instruments > v6_instrument_limit)) cursong.save_version = 6
 	if (draw_radiobox(x1 + 15, y1 + 38, cursong.save_version = 5, "v5", "增加自定义音色限制、允许自定义文件在子目录", min_version > 5)) cursong.save_version = 5
 	if (draw_radiobox(x1 + 15, y1 + 53, cursong.save_version = 4, "v4", "包含音符音量、声道、音高和循环", min_version > 4)) cursong.save_version = 4
 	if (draw_radiobox(x1 + 15, y1 + 68, cursong.save_version = 3, "v3", "包含歌曲长度", min_version > 3)) cursong.save_version = 3

@@ -1,7 +1,7 @@
 function track_export() {
 	// track_export()
-	var fn, a, b, c, d, p, xx, yy, zz, len, wid, hei, o, chestx, chesty, chestz, signx, signy, signz, nblocks, layers, cyy, y1, x1, insnum, ins, repeats, remain, replen, blockamount, nbamount, cpan, cpanvol, cvol, blocktagpos, sizepos;
-	var REPEATER, TORCHON, TORCHOFF, WIRE, LADDER, RAIL, POWEREDRAIL, SLAB, noteblocks, noteblockx, noteblocky, noteblockz, noteblocknote, noteblockins, noteblockpit;
+	var fn, a, b, c, d, p, xx, yy, zz, len, wid, hei, o, chestx, chesty, chestz, signx, signy, signz, nblocks, layers, cyy, y1, x1, insnum, ins, repeats, remain, replen, blockamount, nbamount, cpan, cpanvol, cvol, blocktagpos, sizepos, channels, row_index, row, track_tick_delay;
+	var REPEATER, TORCHON, TORCHOFF, WIRE, LADDER, RAIL, POWEREDRAIL, SLAB, noteblocks, noteblockx, noteblocky, noteblockz, noteblocknote, noteblockins, noteblockpit, command_plan, export_end;
 	structure = (sch_exp_format <= 1)
 	sch_exp_minecraft_old = (sch_exp_format = 3)
 	if (structure) fn = string(get_save_filename_ext("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(songs[song].filename), " ", "_"), "") + ".nbt", "", "Export Track"))
@@ -10,6 +10,23 @@ function track_export() {
 	if (structure) fn = enforce_extension(fn, ".nbt")
 	else fn = enforce_extension(fn, ".schematic")
 	o = obj_controller
+	command_plan = undefined
+	if (structure && command_block) {
+		command_plan = minecraft_export_prepare_track_plan(minecraft_export_get_schematic_plan(true))
+		if (array_length(command_plan.rows) <= 0) {
+			message(condstr(language != 1, "There are no sound commands to export!", "没有声音命令可以导出！"), condstr(language != 1, "Schematic export", "导出结构"))
+			return 0
+		}
+		// Modern structure NBT uses signed 32-bit dimensions and this exporter writes
+		// its block list sparsely. Do not apply the legacy dense-array 2000x2000x256
+		// guard here; GameMaker's grow-buffer capacity is the effective limit.
+		var planned_track_height = max(20, ceil(command_plan.track_maximum_slots / 4) * 4 + 4)
+		var planned_track_length = 40 + command_plan.last_command_grid * 2
+		if (planned_track_length > 2147483647 || planned_track_height > 2147483647) {
+			message(condstr(language != 1, "The Track dimensions exceed the signed 32-bit Structure NBT limit.", "直轨尺寸超过了结构 NBT 的 32 位有符号整数限制。"), condstr(language != 1, "Error", "错误"))
+			return 0
+		}
+	}
 	window = -1
 	with (create(obj_dummy2)) {
 	    // Initialize variables
@@ -48,8 +65,10 @@ function track_export() {
 		for (var a = 0; a < 240; a++) {
 			ins[20 + a] = "harp"
 		}
-		instrument_list = o.songs[o.song].instrument_list
-	    layers = 4
+			instrument_list = o.songs[o.song].instrument_list
+			command_plan = undefined
+			if (o.structure && o.command_block) command_plan = o.sch_command_plan
+	    layers = is_struct(command_plan) ? max(1, ceil(command_plan.track_maximum_slots / 4)) : 4
 	    block_walkway_block = o.sch_exp_walkway_block
 	    block_walkway_data = o.sch_exp_walkway_data
 	    block_circuit_block = o.sch_exp_circuit_block
@@ -61,12 +80,14 @@ function track_export() {
 	    sch_loop = (o.sch_exp_loop && layout = 0)                       // Whether to loop
 	    minecart = (o.sch_exp_minecart && layout < 2)               // Whether to add minecart tracks
 	    chest = (o.sch_exp_chest && minecart)                     // Whether to add a minecart chest
-	    blocksam = o.sch_exp_totalblocks[o.sch_exp_includelocked] // Amount of blocks
+		blocksam = is_struct(command_plan) ? array_length(command_plan.rows) : o.sch_exp_totalblocks[o.sch_exp_includelocked] // Amount of blocks
 		totalblocksc = 0
+		export_end = is_struct(command_plan) ? command_plan.last_command_grid : o.songs[o.song].enda
+		track_tick_delay = (o.sch_exp_tempo == 0) ? 0 : ((o.sch_exp_tempo == 1) ? 1 : 3)
 	    with (o) {
-	        len = 40 + songs[song].enda * 2
+	        len = 40 + export_end * 2
 	        wid = 99
-	        hei = 20
+	        hei = max(20, layers * 4 + 4)
 	    }
 	    noteblocks = 0
 		//repeats = (len div 100) + 1
@@ -471,7 +492,7 @@ function track_export() {
 		noteblocknote = 0
 		noteblockins = 0
 		noteblockpit = 0
-		for (a = 0; a <= o.songs[o.song].enda; a += 1) {
+		for (a = 0; a <= export_end; a += 1) {
 		    nblocks = 0
 			nblockins = 0
 			nblockkey = 0
@@ -509,7 +530,45 @@ function track_export() {
 			nblockkeyr4 = 0
 			nblockpitr4 = 0
 		    rep += 1
-		    if (o.songs[o.song].colamount[a] > 0) { // Calculate note blocks for this tick
+			if (is_struct(command_plan)) {
+				channels = command_plan.track_rows_by_grid[a]
+				for (row_index = 0; row_index < array_length(channels[0]); row_index++) {
+					row = channels[0][row_index]
+					nblockinsl4[nblocksl4] = row.instrument; nblockkeyl4[nblocksl4] = 33; nblockpitl4[nblocksl4] = row.index; nblocksl4++
+				}
+				for (row_index = 0; row_index < array_length(channels[1]); row_index++) {
+					row = channels[1][row_index]
+					nblockinsl3[nblocksl3] = row.instrument; nblockkeyl3[nblocksl3] = 33; nblockpitl3[nblocksl3] = row.index; nblocksl3++
+				}
+				for (row_index = 0; row_index < array_length(channels[2]); row_index++) {
+					row = channels[2][row_index]
+					nblockinsl2[nblocksl2] = row.instrument; nblockkeyl2[nblocksl2] = 33; nblockpitl2[nblocksl2] = row.index; nblocksl2++
+				}
+				for (row_index = 0; row_index < array_length(channels[3]); row_index++) {
+					row = channels[3][row_index]
+					nblockinsl1[nblocksl1] = row.instrument; nblockkeyl1[nblocksl1] = 33; nblockpitl1[nblocksl1] = row.index; nblocksl1++
+				}
+				for (row_index = 0; row_index < array_length(channels[4]); row_index++) {
+					row = channels[4][row_index]
+					nblockins[nblocks] = row.instrument; nblockkey[nblocks] = 33; nblockpit[nblocks] = row.index; nblocks++
+				}
+				for (row_index = 0; row_index < array_length(channels[5]); row_index++) {
+					row = channels[5][row_index]
+					nblockinsr1[nblocksr1] = row.instrument; nblockkeyr1[nblocksr1] = 33; nblockpitr1[nblocksr1] = row.index; nblocksr1++
+				}
+				for (row_index = 0; row_index < array_length(channels[6]); row_index++) {
+					row = channels[6][row_index]
+					nblockinsr2[nblocksr2] = row.instrument; nblockkeyr2[nblocksr2] = 33; nblockpitr2[nblocksr2] = row.index; nblocksr2++
+				}
+				for (row_index = 0; row_index < array_length(channels[7]); row_index++) {
+					row = channels[7][row_index]
+					nblockinsr3[nblocksr3] = row.instrument; nblockkeyr3[nblocksr3] = 33; nblockpitr3[nblocksr3] = row.index; nblocksr3++
+				}
+				for (row_index = 0; row_index < array_length(channels[8]); row_index++) {
+					row = channels[8][row_index]
+					nblockinsr4[nblocksr4] = row.instrument; nblockkeyr4[nblocksr4] = 33; nblockpitr4[nblocksr4] = row.index; nblocksr4++
+				}
+		    } else if (o.songs[o.song].colamount[a] > 0) { // Calculate note blocks for this tick
 		        for (b = 0; b <= o.songs[o.song].collast[a]; b += 1) {
 		            if (o.songs[o.song].song_exists[a, b] && (o.lockedlayer[b] = 0 || o.sch_exp_includelocked)) {
 		                if ((o.songs[o.song].song_key[a, b] > 32 && o.songs[o.song].song_key[a, b] < 58) || (o.structure && o.command_block && o.songs[o.song].song_key[a, b] >= 9 && o.songs[o.song].song_key[a, b] <= 81)) {
@@ -570,7 +629,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -641,7 +700,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir - 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -712,7 +771,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir - 12 - 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -783,7 +842,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir - 12 - 12 - 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -854,7 +913,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir - 12 - 12 - 12 - 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -925,7 +984,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir + 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -996,7 +1055,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir + 12 + 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -1067,7 +1126,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir + 12 + 12 + 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -1138,7 +1197,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir + 12 + 12 + 12 + 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -1211,15 +1270,11 @@ function track_export() {
 		}
     
 		if (o.structure) {
-			var soundname, soundpitch, soundnote;
 			for (a = 0; a < noteblocks; a += 1) {
 				TAG_Compound("nbt") // the non-command-block setting still needs this part because of magic
 					if (o.command_block) TAG_String("id", "minecraft:command_block")
-					soundname = dat_instrument(noteblockins[a])
-					soundpitch = dat_pitch(noteblocknote[a] + 33 + noteblockpit[a] / 100)
-					if (noteblocknote[a] + noteblockpit[a] / 100 < 0) soundname += "_-1"
-					else if (noteblocknote[a] + noteblockpit[a] / 100 > 24) soundname += "_1"
-					TAG_String("Command", "playsound "+ soundname +" block @a ~ ~ ~ 3 " + string(soundpitch))
+					if (o.command_block) TAG_String("Command", command_plan.rows[noteblockpit[a]].command)
+					else TAG_String("Command", "")
 					TAG_Byte("TrackOutput", 0)
 					TAG_Byte("powered", 0)
 					TAG_Byte("auto", 0)
@@ -1322,6 +1377,7 @@ function track_export() {
 		log("totalblocksc: " + string(totalblocksc))
 		totalblocksc = 0
 	    gzzip(temp_file, fn)
+		if (is_struct(command_plan)) minecraft_export_log_report(command_plan, o.sch_command_source, "Track command-block structure")
 	    instance_destroy()
 	}
 	if (o.language != 1) message(condstr(structure, "Structure saved!", "Schematic saved!"), "Track Export")

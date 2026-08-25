@@ -41,7 +41,7 @@ function draw_window_stats() {
 	draw_set_halign(fa_right)
 	draw_text_dynamic(x1 + 260, y1 + 226, string(floor(songs[song].work_mins)) + "\n" + string(songs[song].work_left) + "\n" + string(songs[song].work_right) + "\n" + string(songs[song].work_add) + "\n" + string(songs[song].work_remove))
 	draw_set_halign(fa_left)
-	if (!isplayer && draw_button2(x1 + 200, y1 + 320, 72, "Reset")) {
+	if (!isplayer && draw_button2(x1 + 200, y1 + 320, 72, "Reset", false, true)) {
 	    if (question("Are you sure? This cannot be undone.", "Confirm")) {
 	        songs[song].work_mins = 0
 	        songs[song].work_left = 0
@@ -59,7 +59,7 @@ function draw_window_stats() {
 	draw_set_halign(fa_right)
 	draw_text_dynamic(x1 + 260, y1 + 226, string(floor(songs[song].work_mins)) + "\n" + string(songs[song].work_left) + "\n" + string(songs[song].work_right) + "\n" + string(songs[song].work_add) + "\n" + string(songs[song].work_remove))
 	draw_set_halign(fa_left)
-	if (!isplayer && draw_button2(x1 + 200, y1 + 320, 72, "重置")) {
+	if (!isplayer && draw_button2(x1 + 200, y1 + 320, 72, "重置", false, true)) {
 	    if (question("你确定吗？这将无法恢复。", "确定")) {
 	        songs[song].work_mins = 0
 	        songs[song].work_left = 0

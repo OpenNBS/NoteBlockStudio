@@ -6,9 +6,9 @@ function draw_window_instruments() {
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
 	menun = -1
-	x1 = floor(rw / 2 - 275)
+	x1 = floor(rw / 2 - 400)
 	y1 = floor(rh / 2 - 175) + windowoffset
-	draw_window(x1, y1, x1 + 550, y1 + 350)
+	draw_window(x1, y1, x1 + 800, y1 + 350)
 	draw_theme_font(font_main_bold)
 	if (language != 1) draw_text_dynamic(x1 + 10, y1 + 8, "Instrument Settings")
 	else draw_text_dynamic(x1 + 10, y1 + 8, "音色设置")
@@ -28,6 +28,11 @@ function draw_window_instruments() {
 	}
 	tempo_changer_exists = 0
 	sound_stopper_exists = 0
+	var instrument_limit_version = cursong.save_version
+	// Older formats are automatically upgraded after their 18-instrument limit.
+	if (instrument_limit_version < 5) instrument_limit_version = nbs_version
+	var custom_instrument_max = nbs_custom_instrument_limit(instrument_limit_version, song_uses_v6_instruments(cursong))
+	var custom_instruments_full = cursong.user_instruments >= custom_instrument_max
 	for (a = 0; a < ds_list_size(songs[song].instrument_list); a++) {
 		if (songs[song].instrument_list[| a].name == "Tempo Changer") {
 			tempo_changer_exists = 1
@@ -36,10 +41,10 @@ function draw_window_instruments() {
 			sound_stopper_exists = 1
 		}
 	}
-	if (mouse_rectangle(x1 + 11, y1 + 67, 524, 245) && mouse_check_button_released(mb_right)) show_menu_ext("add_event_ins", mouse_x, mouse_y, inactive(tempo_changer_exists) + condstr(language != 1, "Add tempo changer", "添加变速器") + "|" + inactive(sound_stopper_exists) + condstr(language != 1, "Add sound stopper", "添加声音抑制器"))
+	if (mouse_rectangle(x1 + 11, y1 + 67, 524, 245) && mouse_check_button_released(mb_right)) show_menu_ext("add_event_ins", mouse_x, mouse_y, inactive(tempo_changer_exists || custom_instruments_full) + condstr(language != 1, "Add tempo changer", "添加变速器") + "|" + inactive(sound_stopper_exists || custom_instruments_full) + condstr(language != 1, "Add sound stopper", "添加声音抑制器"))
 	if (language != 1) {
-	if (draw_button2(x1 + 455, y1 + 9, 80, "Import", 0, 1)) load_instruments("")
-	if (draw_button2(x1 + 455, y1 + 36, 80, "Open Folder", 0, 1)) open_url(sounds_directory)
+	if (draw_button2(x1 + 705, y1 + 9, 80, "Import", 0, 1)) load_instruments("")
+	if (draw_button2(x1 + 705, y1 + 36, 80, "Open Folder", 0, 1)) open_url(sounds_directory)
 	// Tabs
 	draw_window(x1 + 13 + 194 + 160 + 80, y1 + 67, x1 + 14 + 194 + 160 + 80 + 88 - 1, y1 + 67 + 20, 1)
 	popup_set_window(x1 + 13 + 194 + 160 + 80 - 1, y1 + 67, 88, 20, "Whether notes of this type should be\npressed when the marker reaches them.")
@@ -54,8 +59,8 @@ function draw_window_instruments() {
 	popup_set_window(x1 + 13 - 2, y1 + 67, 194, 20, "The name of this instrument.")
 	draw_text_dynamic(x1 + 18 - 2, y1 + 70, "Name")
 	} else {
-	if (draw_button2(x1 + 455, y1 + 9, 80, "导入", 0, 1)) load_instruments("")
-	if (draw_button2(x1 + 455, y1 + 36, 80, "打开目录", 0, 1)) open_url(sounds_directory)
+	if (draw_button2(x1 + 705, y1 + 9, 80, "导入", 0, 1)) load_instruments("")
+	if (draw_button2(x1 + 705, y1 + 36, 80, "打开目录", 0, 1)) open_url(sounds_directory)
 	draw_window(x1 + 13 + 194 + 160 + 80, y1 + 67, x1 + 14 + 194 + 160 + 80 + 88 - 1, y1 + 67 + 20, 1)
 	popup_set_window(x1 + 13 + 194 + 160 + 80 - 1, y1 + 67, 88, 20, "播放该音色时是否在琴键上显示。")
 	draw_text_dynamic(x1 + 18 + 194 + 160 + 80 - 1, y1 + 70, "显示")
@@ -77,20 +82,88 @@ function draw_window_instruments() {
 			sounds++
 		}
 	}
-	if (language != 1) {if (draw_button2(x1 + 12, y1 + 318, 86, "Export sounds", (cursong.user_instruments == 0 || sounds == 0))) pack_instruments()}
-	else {if (draw_button2(x1 + 12, y1 + 318, 86, "导出音色", (cursong.user_instruments == 0 || sounds == 0))) pack_instruments()}
+	if (language != 1) {if (draw_button2(x1 + 12, y1 + 318, 86, "Export sounds", (cursong.user_instruments == 0 || sounds == 0), true)) pack_instruments()}
+	else {if (draw_button2(x1 + 12, y1 + 318, 86, "导出音色", (cursong.user_instruments == 0 || sounds == 0), true)) pack_instruments()}
 	c = 0
-	if (draw_button2(x1 + 110, y1 + 318, 80, condstr(language != 1, "Add", "添加"), cursong.user_instruments >= 240) && wmenu = 0) {
+	if (draw_button2(x1 + 110, y1 + 318, 80, condstr(language != 1, "Add", "添加"), custom_instruments_full, true) && wmenu = 0) {
 	    cursong.changed = true
 	    insselect = ds_list_size(cursong.instrument_list)
 	    ds_list_add(cursong.instrument_list, new_instrument("Custom instrument #" + string(cursong.user_instruments + 1), "", true))
+		if (cursong.save_version < 5 && cursong.user_instruments > 18) cursong.save_version = nbs_version
 	    c = 1
 	}
 	var userselect = -1;
 	if (insselect > -1 && cursong.instrument_list[| insselect].user)
 	    userselect = cursong.instrument_list[| insselect]
+
+	// Minecraft sound-event mapping. This is deliberately a resource location,
+	// not the OGG file path; Sound Stopper and playsound both use this exact ID.
+	draw_theme_font(font_main_bold)
+	draw_text_dynamic(x1 + 552, y1 + 74, condstr(language != 1, "Minecraft export", "Minecraft 导出"))
+	draw_theme_font(font_main)
+	if (userselect < 0) {
+		draw_set_color(c_gray)
+		draw_text_dynamic(x1 + 552, y1 + 100, condstr(language != 1, "Select a custom instrument.", "请选择自定义音色。"))
+		draw_theme_color()
+	} else if (minecraft_export_is_event(userselect)) {
+		minecraft_export_mapping_edit_instrument = -1
+		userselect.minecraft_sound = ""
+		userselect.minecraft_sound_manual = false
+		draw_set_color(c_gray)
+		draw_text_dynamic(x1 + 552, y1 + 100, condstr(language != 1, "Reserved event instrument", "保留事件音色"))
+		draw_text_dynamic(x1 + 552, y1 + 120, condstr(language != 1, "Sound event intentionally blank.", "声音事件特意留空。"))
+		draw_theme_color()
+	} else {
+		if (minecraft_export_mapping_edit_instrument != insselect) {
+			minecraft_export_mapping_edit_instrument = insselect
+			text_exists[66] = false
+			if (text_focus == 66) text_focus = -1
+		}
+		minecraft_export_ensure_mapping(userselect, insselect)
+		draw_text_dynamic(x1 + 552, y1 + 100, condstr(language != 1, "Sound event:", "声音事件："))
+		var previous_mapping = userselect.minecraft_sound
+		userselect.minecraft_sound = draw_inputbox(66, x1 + 552, y1 + 118, 230, userselect.minecraft_sound, condstr(language != 1, "Minecraft sound-event resource location, not an OGG path.", "Minecraft 声音事件资源位置，不是 OGG 路径。"))
+		if (userselect.minecraft_sound != previous_mapping) {
+			userselect.minecraft_sound_manual = true
+			obj_controller.sch_command_plan = undefined
+		}
+			draw_text_dynamic(x1 + 552, y1 + 147, condstr(language != 1, "Catalog filter:", "目录筛选："))
+			minecraft_export_catalog_filter = draw_inputbox(67, x1 + 552, y1 + 164, 208, minecraft_export_catalog_filter, condstr(language != 1, "Type part of an event ID, then open the dropdown.", "输入事件 ID 的一部分，然后打开下拉菜单。"))
+			// Searching the full Minecraft catalog is deliberately click-triggered.
+			// Instrument names and filter text are editable every frame, so ranking
+			// here unconditionally would cause one visible stall per typed character.
+			if (draw_abutton(x1 + 765, y1 + 165, array_length(minecraft_export_catalog_events) == 0) && wmenu = 0) {
+				var catalog_result = minecraft_export_filter_sound_catalog(minecraft_export_catalog_filter, 18, [userselect.minecraft_sound, userselect.name, userselect.filename])
+				if (array_length(catalog_result.events) > 0) {
+					minecraft_export_catalog_menu_events = catalog_result.events
+					var catalog_menu = ""
+					for (var catalog_index = 0; catalog_index < array_length(catalog_result.events); catalog_index++) {
+						catalog_menu += check(userselect.minecraft_sound == catalog_result.events[catalog_index]) + catalog_result.events[catalog_index] + "|"
+					}
+					menu = show_menu_ext("minecraft_sound_event", x1 + 552, y1 + 185, catalog_menu)
+					menu.menub = insselect
+				}
+			}
+		if (draw_button2(x1 + 552, y1 + 193, 104, condstr(language != 1, "Load JSON...", "加载 JSON……"), false, 1)) minecraft_export_load_sound_catalog()
+		draw_theme_font(font_small)
+		var catalog_status = (array_length(minecraft_export_catalog_events) == 0)
+			? condstr(language != 1, "No catalog loaded", "未加载目录")
+			: string_truncate(minecraft_export_catalog_source, 128, true) + " (" + string(array_length(minecraft_export_catalog_events)) + ")"
+		draw_text_dynamic(x1 + 662, y1 + 197, catalog_status)
+			draw_theme_font(font_main)
+		draw_text_dynamic(x1 + 552, y1 + 239, condstr(language != 1, "Default key: ", "默认音高：") + string(userselect.key))
+		if (draw_button2(x1 + 552, y1 + 260, 120, condstr(language != 1, "Use instrument name", "使用音色名称"), false, 1)) {
+			userselect.minecraft_sound = ""
+			userselect.minecraft_sound_manual = false
+			minecraft_export_ensure_mapping(userselect, insselect)
+			text_exists[66] = false
+			obj_controller.sch_command_plan = undefined
+		}
+		draw_text_dynamic(x1 + 552, y1 + 291, condstr(language != 1, "Out-of-range notes use", "超范围音符使用"))
+		draw_text_dynamic(x1 + 552, y1 + 309, "_-1 / _1 " + condstr(language != 1, "event aliases.", "事件别名。"))
+	}
 	if (language != 1) {
-	if (draw_button2(x1 + 194, y1 + 318, 80, "Remove", userselect < 0) && wmenu = 0) {
+	if (draw_button2(x1 + 194, y1 + 318, 80, "Remove", userselect < 0, true) && wmenu = 0) {
 		if ((userselect.num_blocks == 0) || (message_yesnocancel("This will remove " + string(userselect.num_blocks) + " block" + condstr(userselect.num_blocks > 1, "s") + " using this instrument and cannot be undone. Confirm?", "Warning"))) {
 			instrument_remove(userselect)
 			insselect = min(ds_list_size(cursong.instrument_list) - 1, insselect)
@@ -102,12 +175,12 @@ function draw_window_instruments() {
 			c = 1
 		}
 	}
-	if (draw_button2(x1 + 278, y1 + 318, 80, "Shift up", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == first_custom_index)) && wmenu = 0) {
+	if (draw_button2(x1 + 278, y1 + 318, 80, "Shift up", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == first_custom_index), true) && wmenu = 0) {
 		insselect -= 1
 		instrument_swap(userselect, cursong.instrument_list[| insselect])
 		c = 1
 	}
-	if (draw_button2(x1 + 362, y1 + 318, 80, "Shift down", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == ds_list_size(cursong.instrument_list) - 1) && wmenu = 0)) {
+	if (draw_button2(x1 + 362, y1 + 318, 80, "Shift down", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == ds_list_size(cursong.instrument_list) - 1) && wmenu = 0, true)) {
 		insselect += 1
 		instrument_swap(userselect, cursong.instrument_list[| insselect])
 		c = 1
@@ -121,7 +194,7 @@ function draw_window_instruments() {
 		save_settings()
 	}
 	} else {
-	if (draw_button2(x1 + 194, y1 + 318, 80, "移除", userselect < 0) && wmenu = 0) {
+	if (draw_button2(x1 + 194, y1 + 318, 80, "移除", userselect < 0, true) && wmenu = 0) {
 		if ((userselect.num_blocks == 0) || (message_yesnocancel("这将移除使用该音色的 " + string(userselect.num_blocks) + " 个方块并且不能撤销。确定吗？", "警告"))) {
 			instrument_remove(userselect)
 			insselect = min(ds_list_size(cursong.instrument_list) - 1, insselect)
@@ -133,12 +206,12 @@ function draw_window_instruments() {
 			c = 1
 		}
 	}
-	if (draw_button2(x1 + 278, y1 + 318, 80, "上移", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == first_custom_index)) && wmenu = 0) {
+	if (draw_button2(x1 + 278, y1 + 318, 80, "上移", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == first_custom_index), true) && wmenu = 0) {
 		insselect -= 1
 		instrument_swap(userselect, cursong.instrument_list[| insselect])
 		c = 1
 	}
-	if (draw_button2(x1 + 362, y1 + 318, 80, "下移", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == ds_list_size(cursong.instrument_list) - 1) && wmenu = 0)) {
+	if (draw_button2(x1 + 362, y1 + 318, 80, "下移", (userselect < 0) || (cursong.user_instruments <= 1) || (insselect == ds_list_size(cursong.instrument_list) - 1) && wmenu = 0, true)) {
 		insselect += 1
 		instrument_swap(userselect, cursong.instrument_list[| insselect])
 		c = 1
@@ -156,7 +229,8 @@ function draw_window_instruments() {
 	    insedit = -1
 	}
 	if (mouse_check_button_released(mb_left) && c = 0) {
-	    if (!mouse_rectangle(x1 + 14, y1 + 88, 476, min(ds_list_size(cursong.instrument_list) * 20, 220)) && (!mouse_rectangle(x1 + 14, y1 + 318, 476, 24))) {
+		var in_minecraft_export_panel = mouse_rectangle(x1 + 545, y1 + 66, 245, 262)
+	    if (!mouse_rectangle(x1 + 14, y1 + 88, 476, min(ds_list_size(cursong.instrument_list) * 20, 220)) && (!mouse_rectangle(x1 + 14, y1 + 318, 476, 24)) && !in_minecraft_export_panel) {
 			insselect = -1
 		}
 	}

@@ -1,6 +1,7 @@
 function draw_button2() {
-	// draw_button2(x, y, w, str[, lock])
-	var xx, yy, w, str, lock, m, clr, a, pressed_in;
+	// draw_button2(x, y, w, str[, lock, secondary])
+	// The accent (non-secondary) button is the window's default Enter action.
+	var xx, yy, w, str, lock, m, clr, a, pressed_in, keyboard_invoke;
 	xx = argument[0]
 	yy = argument[1]
 	w = argument[2]
@@ -12,6 +13,7 @@ function draw_button2() {
 	if (argument_count > 5)
 	    a = argument[5]
 	pressed_in = mouse_press_in_rectangle(xx, yy, w, 23)
+	keyboard_invoke = !lock && !a && window != 0 && window_drawn_this_frame && window_enter_pressed && !window_text_input_active
 	m = 0
 	clr = draw_get_color()
 	if (!hires || theme != 3) {
@@ -122,7 +124,8 @@ function draw_button2() {
 	draw_text_dynamic(xx + w / 2 + (m = 2), yy + 4 + (m = 2), str)
 	if (theme = 3) draw_set_color(clr)
 	draw_set_halign(fa_left)
-	return (m && pressed_in && mouse_check_button_released(mb_left)) * (!instance_exists(obj_menu))
+	if (keyboard_invoke && windowsound && theme = 3) play_sound(soundinvoke, 45, 100, 50, 0)
+	return ((m && pressed_in && mouse_check_button_released(mb_left)) * (!instance_exists(obj_menu))) || keyboard_invoke
 
 
 }

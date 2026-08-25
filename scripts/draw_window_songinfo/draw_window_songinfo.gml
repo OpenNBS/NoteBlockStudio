@@ -129,10 +129,10 @@ function draw_window_songinfo() {
 
 	if (window = w_songinfoedit) {
 		if (language != 1) {
-	    if (draw_button2(x1 + floor(w / 2) - 70, y1 + h - 30, 70, "Edit")) window = w_properties
+	    if (draw_button2(x1 + floor(w / 2) - 70, y1 + h - 30, 70, "Edit", false, true)) window = w_properties
 	    if (draw_button2(x1 + floor(w / 2) + 5, y1 + h - 30, 70, "OK") && (windowopen = 1 || theme != 3)) windowclose = 1
 		} else {
-	    if (draw_button2(x1 + floor(w / 2) - 70, y1 + h - 30, 70, "修改")) window = w_properties
+	    if (draw_button2(x1 + floor(w / 2) - 70, y1 + h - 30, 70, "修改", false, true)) window = w_properties
 	    if (draw_button2(x1 + floor(w / 2) + 5, y1 + h - 30, 70, "确定") && (windowopen = 1 || theme != 3)) windowclose = 1
 		}
 	} else {

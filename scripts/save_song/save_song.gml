@@ -26,12 +26,29 @@ function save_song() {
 
 	if (backup) {
 		nbsver = nbs_version
+		// A v5 song may validly contain 237-240 custom instruments. Keep its
+		// backup in v5 because v6 has only 236 byte-sized custom IDs available.
+		if (cursong.user_instruments > nbs_custom_instrument_limit(nbsver)) nbsver = 5
 	} else {
 		nbsver = cursong.save_version
 	}
 	
 	if (argument_count > 3) {
 		nbsver = argument[3];
+	}
+
+	if (nbsver < 6) has_v6_ins = song_uses_v6_instruments(cursong)
+	var custom_instrument_max = nbs_custom_instrument_limit(nbsver, has_v6_ins)
+	var instrument_limit_version = nbsver
+	if (nbsver < 6 && has_v6_ins && cursong.user_instruments > custom_instrument_max) instrument_limit_version = nbs_version
+	if (cursong.user_instruments > custom_instrument_max) {
+		if (!backup) {
+			message(condstr(language != 1,
+				"This song has " + string(cursong.user_instruments) + " custom instruments, but NBS v" + string(instrument_limit_version) + " can store at most " + string(custom_instrument_max) + " with the current instrument set.\n\nRemove some custom instruments or choose a compatible save version.",
+				"此歌曲包含 " + string(cursong.user_instruments) + " 个自定义音色，但按当前音色配置，NBS v" + string(instrument_limit_version) + " 最多只能存储 " + string(custom_instrument_max) + " 个。\n\n请删除部分自定义音色，或选择兼容的保存版本。"),
+				condstr(language != 1, "Save failed", "保存失败"))
+		}
+		return false
 	}
 
 	buffer = buffer_create(8, buffer_grow, 1)
@@ -80,12 +97,6 @@ function save_song() {
 	buffer_write_short(cursong.loopstart)
 	}
 	
-	if (nbsver < 6) {
-		for (var ind = 16; ind < 20; ind++) {
-			if(songs[song].instrument_list[| ind].num_blocks > 0) has_v6_ins = true
-		}
-	}
-
 	ca = 0
 	var ins = 0
 	for (a = 0; a <= cursong.enda; a += 1) {

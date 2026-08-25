@@ -28,8 +28,8 @@ function draw_window_set_tempo() {
 	
 	var otempo = songs[song].real_tempo;
 	
-	// Set tempo and close
-	if ((mouse_check_button_released(mb_left) && !settempo && !mouse_rectangle(xx, 57 + song_tab_offset, w, 22)) || keyboard_check_pressed(vk_enter)) {
+	// Set tempo and close when focus leaves the editor; Enter stays with the text field.
+	if (mouse_check_button_released(mb_left) && !settempo && !mouse_rectangle(xx, 57 + song_tab_offset, w, 22)) {
 		try {
 			songs[song].real_tempo = real(string_digits_symbol(string_replace(input, ",", "."), ".") / bpm_multiplier)
 		} catch (e) {
@@ -66,4 +66,3 @@ function draw_window_set_tempo() {
 		}
 	}
 }
-

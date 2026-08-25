@@ -469,7 +469,25 @@ function menu_click(argument0) {
 			update_asset_index_menu();
 			break;
 		}
+		case "minecraft_sound_event": {
+			var instrument_index = obj_menu.menub
+			if (instrument_index >= first_custom_index && instrument_index < ds_list_size(songs[song].instrument_list) && sel >= 0 && sel < array_length(minecraft_export_catalog_menu_events)) {
+				var instrument = songs[song].instrument_list[| instrument_index]
+				if (!minecraft_export_is_event(instrument)) {
+					instrument.minecraft_sound = minecraft_export_catalog_menu_events[sel]
+					instrument.minecraft_sound_manual = true
+					insselect = instrument_index
+					text_exists[66] = false
+					sch_command_plan = undefined
+				}
+			}
+			break;
+		}
 		case "add_event_ins": {
+			var limit_version = songs[song].save_version
+			if (limit_version < 5) limit_version = nbs_version
+			var instrument_limit = nbs_custom_instrument_limit(limit_version, song_uses_v6_instruments(songs[song]))
+			if (songs[song].user_instruments >= instrument_limit) break
 			songs[song].changed = true
 			switch (sel) {
 				case 0:
@@ -479,6 +497,7 @@ function menu_click(argument0) {
 					ds_list_add(songs[song].instrument_list, new_instrument("Sound Stopper", "", true))
 					break;
 			}
+			if (songs[song].save_version < 5 && songs[song].user_instruments > 18) songs[song].save_version = nbs_version
 		}
 	}
 	mouse_clear(mb_left)

@@ -79,6 +79,8 @@ function save_settings() {
 	ini_write_real_clean("preferences", "hires",              hires)
 	ini_write_string(    "preferences", "current_resource",   current_resource)
 	ini_write_real_clean("preferences", "resourcepack_sounds_json", resourcepack_sounds_json)
+	ini_write_string(    "minecraft_export", "catalog_path",        minecraft_export_catalog_path)
+	ini_write_string(    "minecraft_export", "catalog_access_root", minecraft_export_catalog_access_root)
 	ini_write_real_clean("preferences", "acrylic_successful", acrylic_successful)
 	ini_write_real_clean("preferences", "advancedinterface",  advancedinterface)
 	ini_write_real_clean("preferences", "wpapernoblur",       wpapernoblur)
@@ -139,6 +141,11 @@ function save_settings() {
 		}
 	}
 	ini_write_real_clean("schematic_export", "command_block",  command_block)
+	ini_write_string(    "schematic_export", "command_source", sch_command_source)
+	ini_write_real_clean("schematic_export", "tempo_grid",     sch_command_tempo_grid)
+	for (a = 0; a < array_length(sch_command_allowed_sources); a++) {
+		ini_write_real_clean("schematic_export", "source_" + minecraft_export_sources()[a], sch_command_allowed_sources[a])
+	}
 
 	// Branch export settings
 	ini_write_real_clean("branch_export", "stereo",      sch_exp_stereo)
@@ -157,6 +164,9 @@ function save_settings() {
 	ini_write_string(    "datapack_export", "namespace",     dat_namespace)
 	ini_write_string(    "datapack_export", "path",          dat_path)
 	ini_write_string(    "datapack_export", "source",        dat_source)
+	for (a = 0; a < array_length(dat_allowed_sources); a++) {
+		ini_write_real_clean("datapack_export", "source_" + minecraft_export_sources()[a], dat_allowed_sources[a])
+	}
 	ini_write_real_clean("datapack_export", "mcversion",     dat_mcversion)
 	ini_write_real_clean("datapack_export", "use_zip",       dat_usezip)
 	ini_write_real_clean("datapack_export", "locked",        dat_includelocked)

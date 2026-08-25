@@ -62,6 +62,13 @@ function reset_schematic_export(argument0) {
 	sch_exp_chest = 1
 	sch_exp_minecraft_old = false // For pre 1.11
 
+	// Command-block sound export settings are independent from data packs.
+	sch_command_source = "block"
+	sch_command_allowed_sources = minecraft_export_default_allowed_sources()
+	sch_command_tempo_grid = false
+	sch_command_plan = undefined
+	sch_command_plan_signature = ""
+
 
 
 

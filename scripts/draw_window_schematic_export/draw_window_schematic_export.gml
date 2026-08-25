@@ -23,9 +23,11 @@ function draw_window_schematic_export() {
 	if (language != 1) {
 	str[0] = "Design"
 	str[1] = "Blocks"
+	str[2] = "Sounds"
 	} else {
 	str[0] = "设计"
 	str[1] = "方块"
+	str[2] = "声音"
 	}
 	nsel = -1
 	menun = -1
@@ -33,7 +35,7 @@ function draw_window_schematic_export() {
 	else {if (draw_checkbox(x1 + 12, y1 + 374, sch_exp_remember, "记住我的更改", "下次导出结构时是否使用同样的设定。", false, true) && wmenu = 0) sch_exp_remember=!sch_exp_remember}
 
 	if (theme = 1) draw_window(x1 + 4, y1 + 45, x1 + 496 + 50, y1 + 364)
-	for (a = 0; a < 2; a += 1) {
+	for (a = 0; a < 3; a += 1) {
 		strw = string_width_dynamic(str[a])
 	    c = mouse_rectangle(x1 + b, y1 + 28, strw + 12, 18)
 	    if (selected_tab_sch = a) {
@@ -90,8 +92,8 @@ function draw_window_schematic_export() {
 	}
 	if (nsel > -1) selected_tab_sch = nsel
 	selected_tab_sch += keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left)
-	if (selected_tab_sch < 0) selected_tab_sch = 1
-	if (selected_tab_sch > 1) selected_tab_sch = 0
+	if (selected_tab_sch < 0) selected_tab_sch = 2
+	if (selected_tab_sch > 2) selected_tab_sch = 0
 	if (selected_tab_sch = 0) {
 		if (language != 1) {
 	    draw_sprite(spr_schematic_exp, sch_exp_layout, x1 + 15, y1 + 56)
@@ -133,14 +135,21 @@ function draw_window_schematic_export() {
 	    draw_text_dynamic(x1 + 380, y1 + 220 + 16 * 1, "Repeaters:")
 	    draw_text_dynamic(x1 + 380, y1 + 220 + 16 * 2, "Size:")
 	    draw_set_halign(fa_right)
-	    draw_text_dynamic(x1 + 520, y1 + 220, string(max(0, sch_exp_totalblocks[sch_exp_includelocked])))
-	    draw_text_dynamic(x1 + 520, y1 + 220 + 16 * 1, string(sch_exp_repeaters[sch_exp_includelocked, sch_exp_tempo]) + "x" + string(ceil(sch_exp_maxheight[sch_exp_compress] / 4)))
-	    draw_text_dynamic(x1 + 520, y1 + 220 + 16 * 2, string(schematic_length()) + "x" + string(schematic_width()) + "x" + string(schematic_height()))
+		if (structure && command_block) {
+			draw_text_dynamic(x1 + 520, y1 + 220, "On export")
+			draw_text_dynamic(x1 + 520, y1 + 220 + 16 * 1, "On export")
+			draw_text_dynamic(x1 + 520, y1 + 220 + 16 * 2, "On export")
+		} else {
+			draw_text_dynamic(x1 + 520, y1 + 220, string(max(0, sch_exp_totalblocks[sch_exp_includelocked])))
+			draw_text_dynamic(x1 + 520, y1 + 220 + 16 * 1, string(sch_exp_repeaters[sch_exp_includelocked, sch_exp_tempo]) + "x" + string(ceil(sch_exp_maxheight[sch_exp_compress] / 4)))
+			draw_text_dynamic(x1 + 520, y1 + 220 + 16 * 2, string(schematic_length()) + "x" + string(schematic_width()) + "x" + string(schematic_height()))
+		}
 	    draw_set_halign(fa_left)
 	    draw_text_dynamic(x1 + 380, y1 + 220 + 16 * 3, "Tempo:")
 	    if (draw_radiobox(x1 + 396, y1 + 220 + 16 * 3 + 20, sch_exp_tempo = 0, "10 ticks / second", "Generate song at 10 ticks / second")) sch_exp_tempo = 0
 	    if (draw_radiobox(x1 + 396, y1 + 220 + 16 * 3 + 40, sch_exp_tempo = 1, "5 ticks / second", "Generate song at 5 ticks / second")) sch_exp_tempo = 1
 	    if (draw_radiobox(x1 + 396, y1 + 220 + 16 * 3 + 60, sch_exp_tempo = 2, "2.5 ticks / second", "Generate song at 2.5 ticks / second")) sch_exp_tempo = 2
+		if (structure && command_block && draw_checkbox(x1 + 380, y1 + 348, sch_command_tempo_grid, "Snap notes to grid", "Use the song tempo and Tempo Changers, snapped to the selected 10, 5, or 2.5 redstone-tick grid.", false, true)) sch_command_tempo_grid = !sch_command_tempo_grid
 		} else {
 		draw_sprite(spr_schematic_exp, sch_exp_layout, x1 + 15, y1 + 56)
 	    draw_text_dynamic(x1 + 16, y1 + 220, "分布:")
@@ -181,16 +190,23 @@ function draw_window_schematic_export() {
 	    draw_text_dynamic(x1 + 380, y1 + 220 + 16 * 1, "中继器:")
 	    draw_text_dynamic(x1 + 380, y1 + 220 + 16 * 2, "大小:")
 	    draw_set_halign(fa_right)
-	    draw_text_dynamic(x1 + 520, y1 + 220, string(max(0, sch_exp_totalblocks[sch_exp_includelocked])))
-	    draw_text_dynamic(x1 + 520, y1 + 220 + 16 * 1, string(sch_exp_repeaters[sch_exp_includelocked, sch_exp_tempo]) + "x" + string(ceil(sch_exp_maxheight[sch_exp_compress] / 4)))
-	    draw_text_dynamic(x1 + 520, y1 + 220 + 16 * 2, string(schematic_length()) + "x" + string(schematic_width()) + "x" + string(schematic_height()))
+		if (structure && command_block) {
+			draw_text_dynamic(x1 + 520, y1 + 220, "导出时计算")
+			draw_text_dynamic(x1 + 520, y1 + 220 + 16 * 1, "导出时计算")
+			draw_text_dynamic(x1 + 520, y1 + 220 + 16 * 2, "导出时计算")
+		} else {
+			draw_text_dynamic(x1 + 520, y1 + 220, string(max(0, sch_exp_totalblocks[sch_exp_includelocked])))
+			draw_text_dynamic(x1 + 520, y1 + 220 + 16 * 1, string(sch_exp_repeaters[sch_exp_includelocked, sch_exp_tempo]) + "x" + string(ceil(sch_exp_maxheight[sch_exp_compress] / 4)))
+			draw_text_dynamic(x1 + 520, y1 + 220 + 16 * 2, string(schematic_length()) + "x" + string(schematic_width()) + "x" + string(schematic_height()))
+		}
 	    draw_set_halign(fa_left)
 	    draw_text_dynamic(x1 + 380, y1 + 220 + 16 * 3, "速度:")
 	    if (draw_radiobox(x1 + 396, y1 + 220 + 16 * 3 + 20, sch_exp_tempo = 0, "10 红石刻 / 秒", "生成一个 10 红石刻 / 秒 的歌曲")) sch_exp_tempo = 0
 	    if (draw_radiobox(x1 + 396, y1 + 220 + 16 * 3 + 40, sch_exp_tempo = 1, "5 红石刻 / 秒", "生成一个 5 红石刻 / 秒 的歌曲")) sch_exp_tempo = 1
 	    if (draw_radiobox(x1 + 396, y1 + 220 + 16 * 3 + 60, sch_exp_tempo = 2, "2.5 红石刻 / 秒", "生成一个 2.5 红石刻 / 秒 的歌曲")) sch_exp_tempo = 2
+		if (structure && command_block && draw_checkbox(x1 + 380, y1 + 348, sch_command_tempo_grid, "将音符吸附到网格", "使用歌曲速度和速度更改事件，并吸附到所选的每秒 10、5 或 2.5 个红石刻网格。", false, true)) sch_command_tempo_grid = !sch_command_tempo_grid
 		}
-	} else {
+	} else if (selected_tab_sch = 1) {
 	    if (theme = 1) {
 	        draw_set_color(c_white)
 	        draw_rectangle(x1 + 10, y1 + 52, x1 + 539, y1 + 255, 0)
@@ -297,49 +313,52 @@ function draw_window_schematic_export() {
 	        menua = 2
 	    }
 	    if (language != 1) popup_set_window(x1 + 200, y1 + 265 + 60, 140, 21, "The block that should be used for the ground.\nChoosing grass will result with a bunch of animals spawning.")
-	    else popup_set_window(x1 + 200, y1 + 265 + 60, 140, 21, "为地面用的方块。选草方块会刷一堆生物。")
+	    else popup_set_window(x1 + 200, y1 + 265 + 60, 140, 21, "为地面用的方块。选草方块会刷新很多生物。")
 	    draw_theme_color()
 	    draw_text_dynamic(x1 + 204, y1 + 264 + 4 + 60, block_get_name(sch_exp_ground_block, sch_exp_ground_data))
+	} else {
+		if (structure && command_block) minecraft_export_draw_schematic_sound_settings(x1 + 16, y1 + 58)
+		else draw_text_dynamic(x1 + 16, y1 + 62, condstr(language != 1, "Sound-source assignment is used by Structure exports with command blocks.", "声源分配仅用于启用命令方块的结构导出。"))
 	}
 	if (language != 1) {
 	if (draw_button2(x1 + 470, y1 + 368, 72, "Export") && wmenu = 0) {
-	    if (sch_exp_totalblocks[sch_exp_includelocked] <= 0) {
-	        message("There are no blocks to export!", "Schematic export")
-	    } else if (schematic_length() >= 2000 || schematic_width() >= 2000 || schematic_height() >= 256) {
+		    if (sch_exp_totalblocks[sch_exp_includelocked] <= 0) {
+		        message("There are no blocks to export!", "Schematic export")
+		    } else if ((!structure || !command_block) && (schematic_length() >= 2000 || schematic_width() >= 2000 || schematic_height() >= 256)) {
 	        message("The Schematic is too big. The maximum size is 2000x2000x256.\nTry changing the \"Repeaters per row\" value to decrease the size.", "Error")
 	    } else {
 	        schematic_export()
 	    }
 	}
-	if (draw_button2(x1 + 470 - 80 * 1, y1 + 368, 72, "Cancel") && wmenu = 0 && (windowopen = 1 || theme != 3)) {
+	if (draw_button2(x1 + 470 - 80 * 1, y1 + 368, 72, "Cancel", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) {
 		windowclose = 1
 	}
-	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "Use default") && wmenu = 0) {
+	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "Use default", false, true) && wmenu = 0) {
 	    if (question("Are you sure?", "Confirm")) reset_schematic_export(1)
 	}
 	if (structure = true) {
-		if (draw_button2(x1 + 470 - 80 * 4, y1 + 368, 152, "Get extra notes pack", !command_block)) {
+		if (draw_button2(x1 + 470 - 80 * 4, y1 + 368, 152, "Get extra notes pack", !command_block, true)) {
 			datapack_getextranotes()
 		}
 	}
 	} else {
 	if (draw_button2(x1 + 470, y1 + 368, 72, "导出") && wmenu = 0) {
-	    if (sch_exp_totalblocks[sch_exp_includelocked] <= 0) {
-	        message("没有方块可以导出！", "导出结构")
-	    } else if (schematic_length() >= 2000 || schematic_width() >= 2000 || schematic_height() >= 256) {
+		    if (sch_exp_totalblocks[sch_exp_includelocked] <= 0) {
+		        message("没有方块可以导出！", "导出结构")
+		    } else if ((!structure || !command_block) && (schematic_length() >= 2000 || schematic_width() >= 2000 || schematic_height() >= 256)) {
 	        message("这个结构太大了。大小限制为 2000x2000x256。\n可以更改“每行中继器个数”来减小大小。", "错误")
 	    } else {
 	        schematic_export()
 	    }
 	}
-	if (draw_button2(x1 + 470 - 80 * 1, y1 + 368, 72, "取消") && wmenu = 0 && (windowopen = 1 || theme != 3)) {
+	if (draw_button2(x1 + 470 - 80 * 1, y1 + 368, 72, "取消", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) {
 		windowclose = 1
 	}
-	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "使用默认值") && wmenu = 0) {
+	if (draw_button2(x1 + 470 - 80 * 2, y1 + 368, 72, "使用默认值", false, true) && wmenu = 0) {
 	    if (question("你确定吗？", "确定")) reset_schematic_export(1)
 	}
 	if (structure = true) {
-		if (draw_button2(x1 + 470 - 80 * 4, y1 + 368, 152, "保存更多音符资源包", !command_block)) {
+		if (draw_button2(x1 + 470 - 80 * 4, y1 + 368, 152, "保存更多音符资源包", !command_block, true)) {
 			datapack_getextranotes()
 		}
 	}

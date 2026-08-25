@@ -10,6 +10,7 @@ function dat_reset(argument0) {
 	dat_namespace = ""
 	dat_path = ""
 	dat_source = "record"
+	dat_allowed_sources = minecraft_export_default_allowed_sources()
 	dat_mcversion = 1  // Default to 1.21+
 	dat_usezip = 1
 	dat_includelocked = 0
