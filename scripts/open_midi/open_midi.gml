@@ -221,6 +221,7 @@ function open_midi() {
 	sb_val[midi_sb1] = 0
 	sb_val[midi_sb2] = 0
 	sb_val[midi_sb3] = 0
+	sb_val[midi_sb4] = 0
 	for (a = 0; a < 16; a += 1) { // Load channel settings from database
 		try {
 			midi_channelins[a] = midi_ins[midi_channelpatch[a], 1]

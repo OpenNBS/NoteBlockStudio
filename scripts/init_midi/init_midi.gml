@@ -18,6 +18,8 @@ function init_midi() {
 	midi_tracklength[0] = 0
 	midi_tracks = 0
 	midi_channels = 0
+	midi_parts = []
+	midi_part_lookup = {}
 	for (a = 0; a < 16; a += 1) {
 	    midi_channelpatch[a] = 0
 	    midi_channelins[a] = 0

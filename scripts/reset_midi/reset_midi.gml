@@ -11,6 +11,8 @@ function reset_midi() {
 	        midi_eventx[a, b] = 0
 	        midi_eventnote[a, b] = 0
 	        midi_eventchannel[a, b] = 0
+	        midi_eventpatch[a, b] = 0
+	        midi_eventpart[a, b] = -1
 			midi_eventuntil[a, b] = -1
 	    }
 	    midi_trackname[a] = ""
@@ -18,6 +20,8 @@ function reset_midi() {
 	    midi_tracklength[a] = 0
 	}
 	midi_channels = 0
+	midi_parts = []
+	midi_part_lookup = {}
 	for (a = 0; a < 16; a += 1) {
 	    midi_channelpatch[a] = 0
 	    midi_channelins[a] = 0

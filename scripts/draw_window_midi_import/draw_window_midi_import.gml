@@ -1,6 +1,6 @@
 function draw_window_midi_import() {
 	// draw_window_midi_import()
-	var x1, y1, xx, a, b, c, menun, menua, menub, stabx, stabw, nsel, tabs, tabw, tabstr, tabtip, str, strw, fade_locked;
+	var x1, y1, xx, a, b, c, menun, menua, menub, stabx, stabw, nsel, tabs, tabw, tabstr, tabtip, str, strw, fade_locked, tab_count, part;
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
@@ -25,7 +25,10 @@ function draw_window_midi_import() {
 	if (draw_radiobox(x1 + 52, y1 + 32 + 60, !w_midi_name_patch, "...channel numbers", "If the layers should be named\nafter the channels in the MIDI file.", !w_midi_name) && wmenu = 0) w_midi_name_patch = 0
 	if (draw_checkbox(x1 + 260, y1 + 32, w_midi_tempo, "Same tempo as in file", "Set the song's tempo to match\nthe one of the MIDI file.") && wmenu = 0) w_midi_tempo=!w_midi_tempo
 	if (draw_checkbox(x1 + 410, y1 + 32, w_midi_tempo_changer, "Tempo changes", "Whether to add tempo changes found in the MIDI file.\nTempo changes are not supported in-game and in most NBS-compatible tools.") && wmenu = 0) {w_midi_tempo_changer=!w_midi_tempo_changer}
-	if (draw_checkbox(x1 + 260, y1 + 52, w_midi_note_duration, "Note Duration", "Whether to include the note duration as a stereo trail of notes.") && wmenu = 0) {w_midi_note_duration=!w_midi_note_duration}
+	if (draw_checkbox(x1 + 260, y1 + 52, w_midi_note_duration, "Note Duration", "Whether to include the note duration as a stereo trail of notes.\nChoose individual parts in the Note Duration tab.") && wmenu = 0) {
+		w_midi_note_duration = !w_midi_note_duration
+		if (w_midi_note_duration) w_midi_tab = 3
+	}
 	draw_text_dynamic(x1 + 260, y1 + 72, "Max. channel height:")
 	popup_set_window(x1 + 260, y1 + 72, 140, 16, "The maximum allowed layers per channel.\nClick and drag to adjust.")
 	w_midi_maxheight = median(1, draw_dragvalue(1, x1 + 380, y1 + 72, w_midi_maxheight, 1), 20)
@@ -66,7 +69,10 @@ function draw_window_midi_import() {
 	if (draw_radiobox(x1 + 52, y1 + 32 + 60, !w_midi_name_patch, "......根据层号", "是否根据 MIDI 中的层序号为每层命名。", !w_midi_name) && wmenu = 0) w_midi_name_patch = 0
 	if (draw_checkbox(x1 + 300, y1 + 32, w_midi_tempo, "导入速度", "是否将速度设定为与 MIDI 文件中一样。") && wmenu = 0) w_midi_tempo=!w_midi_tempo
 	if (draw_checkbox(x1 + 410, y1 + 32, w_midi_tempo_changer, "速度变化", "是否添加 MIDI 文件中的速度变化。\n速度调节器（Tempo Changer）在游戏中及大多数NBS兼容软件中不被支持。") && wmenu = 0) {w_midi_tempo_changer=!w_midi_tempo_changer}
-	if (draw_checkbox(x1 + 300, y1 + 52, w_midi_note_duration, "音符长度", "是否将长音以震荡式的排列方式表示。") && wmenu = 0) {w_midi_note_duration=!w_midi_note_duration}
+	if (draw_checkbox(x1 + 300, y1 + 52, w_midi_note_duration, "音符长度", "是否将长音以震荡式的排列方式表示。\n可在“音符长度”页面为各声部分别设置。") && wmenu = 0) {
+		w_midi_note_duration = !w_midi_note_duration
+		if (w_midi_note_duration) w_midi_tab = 3
+	}
 	draw_text_dynamic(x1 + 300, y1 + 72, "通道最高层数:")
 	popup_set_window(x1 + 300, y1 + 72, 140, 16, "每个通道所允许使用的最多层数。拖拽来更改。")
 	w_midi_maxheight = median(1, draw_dragvalue(1, x1 + 420, y1 + 72, w_midi_maxheight, 1), 20)
@@ -101,6 +107,9 @@ function draw_window_midi_import() {
 	if (draw_button2(x1 + 520 - 160, y1 + 368, 72, condstr(language != 1, "Use default", "使用默认值"), false, true) && wmenu = 0) {
 	    if (question(condstr(language != 1, "Are you sure?", "你确定吗？"), condstr(language != 1, "Confirm", "确定"))) { 
 	        midi_instruments()
+	        for (a = 0; a < array_length(midi_parts); a += 1) {
+	            midi_parts[a].note_duration = midi_parts[a].channel != 9
+	        }
 	        for (a = 0; a < 16; a += 1) { // Load channel settings from database
 	            midi_channelins[a] = midi_ins[midi_channelpatch[a], 1]
 	            midi_channeloctave[a] = midi_ins[midi_channelpatch[a], 2]
@@ -124,20 +133,24 @@ function draw_window_midi_import() {
 			w_midi_note_duration_fade_end = 50
 	    }
 	}
+	tab_count = 3 + (w_midi_note_duration != 0)
+	if (w_midi_tab >= tab_count) w_midi_tab = 0
 	b = 8
 	if (language != 1) {
 	str[0] = "Instruments"
 	str[1] = "Percussion"
 	str[2] = "Tracks"
+	str[3] = "Note Duration"
 	} else {
 	str[0] = "乐器"
 	str[1] = "打击乐"
 	str[2] = "轨道"
+	str[3] = "音符长度"
 	}
 	if (theme = 1) {
 	    draw_window(x1 + 4, y1 + 145, x1 + 596, y1 + 364)
 	}
-	for (a = 0; a < 3; a += 1) {
+	for (a = 0; a < tab_count; a += 1) {
 		strw = string_width_dynamic(str[a])
 	    c = mouse_rectangle(x1 + b, y1 + 128, strw + 12, 18)
 	    if (w_midi_tab = a) {
@@ -407,7 +420,7 @@ function draw_window_midi_import() {
 	        draw_line(x1 + 8 + tabw[0] + tabw[1] + tabw[2], y1 + 170, x1 + 8 + tabw[0] + tabw[1] + tabw[2], y1 + 170 + 20 * a)
 	    }
 	    draw_scrollbar(midi_sb2, x1 + 572, y1 + 171, 17, 9, max(1, midi_percamount), 0, 1)
-	} else {
+	} else if (w_midi_tab = 2) {
 		if (language != 1) {
 	    tabs = 3
 	    tabstr[0] = "Track number"
@@ -447,6 +460,50 @@ function draw_window_midi_import() {
 	    draw_line(x1 + 9 + tabw[0] + tabw[1], y1 + 170, x1 + 9 + tabw[0] + tabw[1], y1 + 170 + 20 * a)
 	    draw_line(x1 + 9 + tabw[0] + tabw[1] + tabw[2], y1 + 170, x1 + 9 + tabw[0] + tabw[1] + tabw[2], y1 + 170 + 20 * a)
 	    draw_scrollbar(midi_sb3, x1 + 572, y1 + 171, 17, 9, midi_tracks, 0, 1)
+	} else {
+		tabs = 4
+		tabstr[0] = condstr(language != 1, "Track", "轨道")
+		tabtip[0] = condstr(language != 1, "The track containing this part.\nHover over a track number to see its name.", "声部所在的轨道。\n将鼠标移到轨道序号上可查看名称。")
+		tabw[0] = 50
+		tabstr[1] = condstr(language != 1, "Channel", "通道")
+		tabtip[1] = condstr(language != 1, "The MIDI channel used by this part.\nParts on different tracks have separate duration settings.", "声部使用的 MIDI 通道。\n不同轨道上的声部可分别设置音符长度。")
+		tabw[1] = 60
+		tabstr[2] = condstr(language != 1, "Patch name", "乐器名")
+		tabtip[2] = condstr(language != 1, "The MIDI instrument used by this part.", "声部使用的 MIDI 乐器。")
+		tabw[2] = 320
+		tabstr[3] = condstr(language != 1, "Note Duration", "音符长度")
+		tabtip[3] = condstr(language != 1, "Include duration for this part in the current file.\nNew MIDI files start with all melodic parts enabled.", "为当前文件中的此声部导入音符长度。\n新 MIDI 文件默认启用所有非打击乐声部。")
+		tabw[3] = 151
+		for (a = 0; a < 9; a += 1) {
+			b = floor(sb_val[midi_sb4] + a)
+			if (b >= array_length(midi_parts)) break
+			part = midi_parts[b]
+			draw_theme_color()
+			draw_text_dynamic(x1 + 16, y1 + 174 + 20 * a, string(part.track + 1))
+			popup_set_window(x1 + 12, y1 + 172 + 20 * a, tabw[0] - 4, 18, midi_trackname[part.track])
+			draw_text_dynamic(x1 + 16 + tabw[0], y1 + 174 + 20 * a, string(part.channel + 1))
+			str = condstr(language != 1, "Unknown", "未知")
+			if (part.patch >= 0 && part.patch < 128) str = string(part.patch + 1) + ". " + midi_ins[part.patch, 0]
+			if (part.channel = 9) str = condstr(language != 1, "Percussion", "打击乐")
+			draw_text_dynamic(x1 + 16 + tabw[0] + tabw[1], y1 + 174 + 20 * a, str)
+			str = tabtip[3]
+			if (part.channel = 9) str = condstr(language != 1, "Percussion is imported as single notes.", "打击乐以单个音符导入。")
+			if (draw_checkbox(x1 + 24 + tabw[0] + tabw[1] + tabw[2], y1 + 175 + 20 * a, part.note_duration, "", str, part.channel = 9) && wmenu = 0) {
+				part.note_duration = !part.note_duration
+			}
+			draw_set_color(12632256)
+			draw_line(x1 + 12, y1 + 190 + 20 * a, x1 + 570, y1 + 190 + 20 * a)
+		}
+		draw_set_color(12632256)
+		draw_line(x1 + 12, y1 + 170, x1 + 12, y1 + 170 + 20 * a)
+		draw_line(x1 + 10 + tabw[0], y1 + 170, x1 + 10 + tabw[0], y1 + 170 + 20 * a)
+		draw_line(x1 + 9 + tabw[0] + tabw[1], y1 + 170, x1 + 9 + tabw[0] + tabw[1], y1 + 170 + 20 * a)
+		draw_line(x1 + 8 + tabw[0] + tabw[1] + tabw[2], y1 + 170, x1 + 8 + tabw[0] + tabw[1] + tabw[2], y1 + 170 + 20 * a)
+		if (array_length(midi_parts) = 0) {
+			draw_theme_color()
+			draw_text_dynamic(x1 + 16, y1 + 178, condstr(language != 1, "No notes found in this file.", "此文件中没有音符。"))
+		}
+		draw_scrollbar(midi_sb4, x1 + 572, y1 + 171, 17, 9, max(1, array_length(midi_parts)), 0, 1)
 	}
 	xx = x1 + 588
 	for (a = tabs - 1; a >= 0; a -= 1) {
@@ -457,8 +514,8 @@ function draw_window_midi_import() {
 	}
 	if (nsel > -1) w_midi_tab = nsel
 	w_midi_tab += keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left)
-	if (w_midi_tab < 0) w_midi_tab = 2
-	if (w_midi_tab > 2) w_midi_tab = 0
+	if (w_midi_tab < 0) w_midi_tab = tab_count - 1
+	if (w_midi_tab >= tab_count) w_midi_tab = 0
 	draw_theme_color()
 	if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) {
