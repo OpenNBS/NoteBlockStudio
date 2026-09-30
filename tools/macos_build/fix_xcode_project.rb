@@ -44,6 +44,7 @@ module NoteBlockStudio
     ICON_ASSETS = ["Icon.xcassets", "NBS Icon macOS.icon"].freeze
     OPTIONAL_EXECUTABLES = %w[ffmpeg ffprobe].freeze
     APP_ICON_NAME = "NBS Icon macOS"
+    MACOS_DEPLOYMENT_TARGET = "12.0"
     DEFAULT_TEAM_ID = "2WJ25NL8J5"
     DEFAULT_PROFILE = "onbs"
 
@@ -441,6 +442,10 @@ module NoteBlockStudio
         raise FixerError, "Manual signing requires NBS_MAC_PROVISIONING_PROFILE."
       end
 
+      (project.build_configurations + target.build_configurations).each do |configuration|
+        configuration.build_settings["MACOSX_DEPLOYMENT_TARGET"] = MACOS_DEPLOYMENT_TARGET
+      end
+
       target.build_configurations.each do |configuration|
         settings = configuration.build_settings
         settings["ASSETCATALOG_COMPILER_APPICON_NAME"] = APP_ICON_NAME
@@ -533,6 +538,12 @@ module NoteBlockStudio
         project.files.any? { |file| file.path && File.basename(file.path.to_s) == name }
       end
       raise FixerError, "Xcode project verification failed; missing references: #{missing.join(", ")}" unless missing.empty?
+
+      (project.build_configurations + target.build_configurations).each do |configuration|
+        unless configuration.build_settings["MACOSX_DEPLOYMENT_TARGET"] == MACOS_DEPLOYMENT_TARGET
+          raise FixerError, "macOS deployment target was not set to #{MACOS_DEPLOYMENT_TARGET} in #{configuration.name}."
+        end
+      end
 
       target.build_configurations.each do |configuration|
         settings = configuration.build_settings

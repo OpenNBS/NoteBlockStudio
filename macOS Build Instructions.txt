@@ -27,6 +27,8 @@ Recommended: one-click Xcode project fixer
    The fixer reads the GameMaker output directory from options/mac/options_mac.yy,
    selects the final Xcode project, ignores GameMaker's "FromPC" staging project,
    validates the bundle ID, applies all required settings, and opens the project in Xcode.
+   This includes setting the macOS deployment target to 12.0 for every project and app
+   target configuration; lower deployment targets fail to build.
 
    On its first run, the command downloads the pinned "xcodeproj" Ruby dependency into:
 
@@ -106,6 +108,8 @@ Use these steps if the fixer cannot run on a particular Mac.
    on each existing file so it can be launched by the app.
 
 7. Under Build Settings -> Packaging, set Product Name to "Note Block Studio".
+   Also set macOS Deployment Target to 12.0 for every configuration at both the project
+   and app target levels.
 
 8. Choose Product -> Archive, then distribute the archive through Organizer as described
    above.
