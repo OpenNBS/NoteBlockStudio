@@ -162,7 +162,7 @@ function draw_window_midi_import() {
 	        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, y1 + 128)
 	        draw_text_dynamic(x1 + b + 6, y1 + 130, str[a])
 	    }
-	    if (mouse_check_button_pressed(mb_left) && c) nsel = a
+	    if (nbs_mouse_check_button_pressed(mb_left) && c) nsel = a
 	    b += strw + 12
 	}
 	if (theme = 0 || theme = 3) {
@@ -283,7 +283,7 @@ function draw_window_midi_import() {
 	                else popup_set_window(x1 + 8 + tabw[0] + tabw[1] + tabw[2], y1 + 170 + 20 * a, tabw[3] - 20, 20, "点击预览声音")
 	                if (mouse_rectangle(x1 + 8 + tabw[0] + tabw[1] + tabw[2], y1 + 170 + 20 * a, tabw[3] - 20, 20) && wmenu = 0) {
 	                    curs = cr_handpoint
-	                    if (mouse_check_button_pressed(mb_left)) {
+	                    if (nbs_mouse_check_button_pressed(mb_left)) {
 	                        play_sound(songs[song].instrument_list[| midi_channelins[b]], 45 + midi_channeloctave[b] * 12, 100 ,100, 0)
 	                    }
 	                }
@@ -369,7 +369,7 @@ function draw_window_midi_import() {
 	                else popup_set_window(x1 + 8 + tabw[0] + tabw[1], y1 + 170 + 20 * a, tabw[2] - 20, 20, "点击预览声音")
 	                if (mouse_rectangle(x1 + 8 + tabw[0] + tabw[1], y1 + 170 + 20 * a, tabw[2] - 20, 20) && wmenu = 0) {
 	                    curs = cr_handpoint
-	                    if (mouse_check_button_pressed(mb_left)) {
+	                    if (nbs_mouse_check_button_pressed(mb_left)) {
 	                        play_sound(songs[song].instrument_list[| midi_percins[b]], midi_percpitch[b], 100 ,100, 0)
 	                    }
 	                }
@@ -517,7 +517,7 @@ function draw_window_midi_import() {
 	if (w_midi_tab < 0) w_midi_tab = tab_count - 1
 	if (w_midi_tab >= tab_count) w_midi_tab = 0
 	draw_theme_color()
-	if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+	if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) {
 		window_set_cursor(curs)
 		if (array_length(text_mouseover) = 0) window_set_cursor(cr_default)

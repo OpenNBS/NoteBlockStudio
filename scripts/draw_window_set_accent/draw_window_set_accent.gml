@@ -39,10 +39,10 @@ function draw_window_set_accent() {
 	draw_theme_color()
 	draw_sprite(spr_radiobox, 18, x1 + 20 + floor(187 * (hsv[0] / 360)) - 5, y1 + 43 + 225 - floor(225 * (hsv[1] / 100)) - 5)
 	draw_sprite(spr_radiobox, 21, x1 + 20 + floor(232 * (hsv[2] / 100)), y1 + 43 + 225 + 10 - 2)
-	if (mouse_check_button(mb_left)) {
+	if (nbs_mouse_check_button(mb_left)) {
 		if ((mouse_rectangle(x1 + 20, y1 + 43, 187, 225) && nocdrag = 0 && vdrag = 0) || hsdrag = 1) {
-			hsv[0] = 360 - ((187 - (mouse_x - x1 - 20) + (mouse_x - x1 - 20) * (mouse_x < x1 + 20 || mouse_x >= x1 + 20 + 187) - 187 * (mouse_x >= x1 + 20 + 187)) / 187) * 360
-			hsv[1] = ((225 - (mouse_y - y1 - 43) + (mouse_y - y1 - 43) * (mouse_y < y1 + 43 || mouse_y > y1 + 43 + 225) - 225 * (mouse_y > y1 + 43 + 225)) / 225) * 100
+			hsv[0] = 360 - ((187 - (nbs_mouse_x() - x1 - 20) + (nbs_mouse_x() - x1 - 20) * (nbs_mouse_x() < x1 + 20 || nbs_mouse_x() >= x1 + 20 + 187) - 187 * (nbs_mouse_x() >= x1 + 20 + 187)) / 187) * 360
+			hsv[1] = ((225 - (nbs_mouse_y() - y1 - 43) + (nbs_mouse_y() - y1 - 43) * (nbs_mouse_y() < y1 + 43 || nbs_mouse_y() > y1 + 43 + 225) - 225 * (nbs_mouse_y() > y1 + 43 + 225)) / 225) * 100
 			dhsv = scr_HSBtoRGB(hsv[0], hsv[1], hsv[2])
 			rr = dhsv[0]
 			gg = dhsv[1]
@@ -52,7 +52,7 @@ function draw_window_set_accent() {
 			text_str[62] = string(bb)
 			hsdrag = 1
 		} else if ((mouse_rectangle(x1 + 20, y1 + 43 + 225 + 10, 240, 8) && nocdrag = 0 && hsdrag = 0) || vdrag = 1) {
-			hsv[2] = 100 - ((240 - (mouse_x - x1 - 20) + (mouse_x - x1 - 20) * (mouse_x < x1 + 20 || mouse_x >= x1 + 20 + 240) - 240 * (mouse_x >= x1 + 20 + 240)) / 240) * 100
+			hsv[2] = 100 - ((240 - (nbs_mouse_x() - x1 - 20) + (nbs_mouse_x() - x1 - 20) * (nbs_mouse_x() < x1 + 20 || nbs_mouse_x() >= x1 + 20 + 240) - 240 * (nbs_mouse_x() >= x1 + 20 + 240)) / 240) * 100
 			dhsv = scr_HSBtoRGB(hsv[0], hsv[1], hsv[2])
 			rr = dhsv[0]
 			gg = dhsv[1]

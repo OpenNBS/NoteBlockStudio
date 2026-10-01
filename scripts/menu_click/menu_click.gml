@@ -89,8 +89,8 @@ function menu_click(argument0) {
 					} else {
 						y1a = 52 + get_tab_offset()
 					}
-					var selbxa = songs[song].starta + floor((mouse_x - (x1a + 2)) / 32)
-					var selbya = songs[song].startb + floor((mouse_y - (y1a + 34)) / 32)
+					var selbxa = songs[song].starta + floor((nbs_mouse_x() - (x1a + 2)) / 32)
+					var selbya = songs[song].startb + floor((nbs_mouse_y() - (y1a + 34)) / 32)
 					if (selbxa > -1 && selbya > -1) action_paste(selbxa, selbya)
 					else action_paste(songs[song].starta, songs[song].startb)
 			}
@@ -500,8 +500,8 @@ function menu_click(argument0) {
 			if (songs[song].save_version < 5 && songs[song].user_instruments > 18) songs[song].save_version = nbs_version
 		}
 	}
-	mouse_clear(mb_left)
-	io_clear()
+	nbs_mouse_clear(mb_left)
+	nbs_io_clear()
 
 
 

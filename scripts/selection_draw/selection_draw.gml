@@ -85,7 +85,7 @@ function selection_draw(argument0, argument1, argument2, argument3, argument4) {
 	                            if (mouse_rectangle(xs + (a - songs[song].starta) * 32, ys + (b - songs[song].startb) * 32, 32, 32)) {
 	                                salpha = selection_alpha * (0.8 * (selection_alpha > 0.4) - 0.08 * (selection_alpha > 0.4))
 	                                curs = cr_size_all
-	                                if (mouse_check_button_pressed(mb_left)) {
+	                                if (nbs_mouse_check_button_pressed(mb_left)) {
 	                                    window = w_dragselection
 	                                    select_pressa = sa
 	                                    select_pressb = sb

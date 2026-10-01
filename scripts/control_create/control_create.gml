@@ -11,6 +11,7 @@ function control_create() {
 	log_init()
 
 	// Initialize DLLs
+	nbs_mouse_init()
 	if (os_type = os_windows) lib_init()
 	rtmidi_init()
 	macos_scroll_init()
@@ -518,8 +519,8 @@ function control_create() {
 	delay = 0
 	insedit = -1
 	insselect = -1
-	mouse_xprev = mouse_x
-	mouse_yprev = mouse_y
+	mouse_xprev = nbs_mouse_x()
+	mouse_yprev = nbs_mouse_y()
 	mousepress_x = -1
 	mousepress_y = -1
 	mousepress_window = -1

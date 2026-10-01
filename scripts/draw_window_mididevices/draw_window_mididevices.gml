@@ -83,7 +83,7 @@ function draw_window_mididevices() {
 	        menu.mididevice = a
 	    }
 	}
-	if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+	if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 	draw_set_color(12632256)
 	draw_line(x1 + 18 + 250 + 70, y1 + 87, x1 + 18 + 250 + 70, y1 + 86 + 20 * a)
 	draw_line(x1 + 18 + 250 + 70 + 64 + 85, y1 + 87, x1 + 18 + 250 + 70 + 64 + 85, y1 + 86 + 20 * a)

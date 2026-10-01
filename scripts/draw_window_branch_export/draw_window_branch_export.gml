@@ -45,7 +45,7 @@ function draw_window_branch_export() {
 	        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, y1 + 28)
 	        draw_text_dynamic(x1 + b + 6, y1 + 30, str[a])
 	    }
-	    if (mouse_check_button_pressed(mb_left) && c && wmenu = 0) nsel = a
+	    if (nbs_mouse_check_button_pressed(mb_left) && c && wmenu = 0) nsel = a
 	    b += strw + 12
 	}
 	if (theme = 0 || theme = 3) {
@@ -242,7 +242,7 @@ function draw_window_branch_export() {
 		if(theme = 2 || (fdark && theme = 3)) draw_set_color(c_dark)
 	    draw_rectangle(x1 + 200, y1 + 265 + 30, x1 + 200 + 140, y1 + 265 + 21 + 30, 0)
 	    draw_area(x1 + 200, y1 + 265 + 30, x1 + 200 + 140, y1 + 265 + 21 + 30)
-	    if ((draw_abutton(x1 + 200 + 121, y1 + 267 + 30) || (mouse_rectangle(x1 + 200, y1 + 265 + 30, 140, 21) && mouse_check_button_pressed(mb_left))) && wmenu = 0) {
+	    if ((draw_abutton(x1 + 200 + 121, y1 + 267 + 30) || (mouse_rectangle(x1 + 200, y1 + 265 + 30, 140, 21) && nbs_mouse_check_button_pressed(mb_left))) && wmenu = 0) {
 	        menun = 1
 	        menua = 1
 	    }
@@ -301,7 +301,7 @@ function draw_window_branch_export() {
 	    if (question("你确定吗？", "确定")) reset_schematic_export(1)
 	}
 	}
-	if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+	if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 
 	draw_theme_font(font_small)
 	if (menun > -1) {

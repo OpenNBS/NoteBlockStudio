@@ -70,7 +70,7 @@ function load_song() {
 	}
 	//backup_clear()
 	blocks_set_instruments()
-	io_clear()
+	nbs_io_clear()
 	update_tempo_changes()
 	newsong.tempo = newsong.real_tempo
 

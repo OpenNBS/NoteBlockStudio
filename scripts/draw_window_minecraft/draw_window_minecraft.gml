@@ -51,7 +51,7 @@ function draw_window_minecraft() {
 	        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, yy + 28)
 	        draw_text_dynamic(x1 + b + 6, yy + 30, str[a])
 	    }
-	    if (mouse_check_button_pressed(mb_left) && c) nsel = a
+	    if (nbs_mouse_check_button_pressed(mb_left) && c) nsel = a
 	    b += strw + 12
 	}
 	if (theme = 0 || theme = 3) {

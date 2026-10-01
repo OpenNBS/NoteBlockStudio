@@ -19,7 +19,7 @@ function draw_icon() {
 	if (window = 0) popup_set(xx, yy, 25, 25, str)
 	else if (iswindow) popup_set_window(xx, yy, 25, 25, str)
 	a = (mouse_rectangle(xx, yy, 25, 25) && (window = 0 || iswindow) && locked = 0 && sb_drag = -1)
-	a += ((mouse_check_button(mb_left) || mouse_check_button_released(mb_left)) && a && pressed_in)
+	a += ((nbs_mouse_check_button(mb_left) || nbs_mouse_check_button_released(mb_left)) && a && pressed_in)
 	if (pressed = 1) {
 	    if (hires && theme = 3) draw_sprite_ext(spr_frame1_hires, 2 + dark * 3 - (a = 1) * dark, xx, yy, 0.25, 0.25, 0, -1, draw_get_alpha())
 	    else draw_sprite(spr_frame1, 2 + 3 * theme + dark * 3 - (a = 1) * dark, xx, yy)
@@ -43,7 +43,7 @@ function draw_icon() {
 	}
 	// Repeat trigger when holding fast-forward and rewind
 	if (i = 7 || i = 8) return (a = 2)
-	return (a && pressed_in && mouse_check_button_released(mb_left) && aa = 0)
+	return (a && pressed_in && nbs_mouse_check_button_released(mb_left) && aa = 0)
 
 
 

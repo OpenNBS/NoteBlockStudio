@@ -43,7 +43,7 @@ function draw_window_datapack_export() {
 	        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, y1 + 28)
 	        draw_text_dynamic(x1 + b + 6, y1 + 30, str[a])
 	    }
-	    if (mouse_check_button_pressed(mb_left) && c && wmenu = 0) nsel = a
+	    if (nbs_mouse_check_button_pressed(mb_left) && c && wmenu = 0) nsel = a
 	    b += strw + 12
 	}
 	//Background panel
@@ -210,7 +210,7 @@ function draw_window_datapack_export() {
 		draw_text_dynamic(x1 + 32, y1 + 326, "Edit them in Instrument Settings. Event instruments stay intentionally blank.")
 		draw_text_dynamic(x1 + 32, y1 + 354, "Sound Stopper diagnostics are written to the normal NBS log.")
 	}
-	if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+	if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 
 	//Submit button
 	if (draw_button2(x1 + 470, y1 + 398, 72, "Export", false)) {
@@ -356,7 +356,7 @@ function draw_window_datapack_export() {
 		draw_text_dynamic(x1 + 32, y1 + 326, "请在音色设置中编辑；事件音色特意留空。")
 		draw_text_dynamic(x1 + 32, y1 + 354, "声音抑制器诊断信息会写入 NBS 常规日志。")
 	}
-	if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+	if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 
 	//Submit button
 	if (draw_button2(x1 + 470, y1 + 398, 72, "导出", false)) {

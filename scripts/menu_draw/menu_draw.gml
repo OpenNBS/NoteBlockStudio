@@ -213,8 +213,8 @@ function menu_draw() {
 	        }
 	    }
 	}
-	if (mouse_check_button_released(mb_left) && ani = 1 && !noclick) {
-		if (m && mouse_check_button_released(mb_left) && obj_controller.windowsound && theme = 3) with (obj_controller) play_sound(soundhide, 45, 100, 100, 0)
+	if (nbs_mouse_check_button_released(mb_left) && ani = 1 && !noclick) {
+		if (m && nbs_mouse_check_button_released(mb_left) && obj_controller.windowsound && theme = 3) with (obj_controller) play_sound(soundhide, 45, 100, 100, 0)
 	    var a;
 	    a = sel
 	    with (obj_controller) menu_click(a)

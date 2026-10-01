@@ -41,7 +41,7 @@ function draw_window_preferences() {
 	}
 	}
 	if (theme = 3) {
-		c = (mouse_check_button(mb_left) && mouse_press_in_rectangle(x1, y1 + 30, 40, 40))
+		c = (nbs_mouse_check_button(mb_left) && mouse_press_in_rectangle(x1, y1 + 30, 40, 40))
 		if (mouse_rectangle(x1, y1 + 30, 40, 40)) {
 			draw_set_color(15395562)
 			if (fdark) draw_set_color(4539717)
@@ -74,7 +74,7 @@ function draw_window_preferences() {
 			draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme, x1 + b + strw + 10, y1 + 28)
 	        draw_text_dynamic(x1 + b + 6, y1 + 30, str[a])
 	    }
-	    if (mouse_check_button_pressed(mb_left) && c) nsel = a
+	    if (nbs_mouse_check_button_pressed(mb_left) && c) nsel = a
 	    b += strw + 12
 	}
 	if (theme = 0 || theme = 2 || theme = 3) {
@@ -130,7 +130,7 @@ function draw_window_preferences() {
 			draw_set_color(c_black)
 			if (fdark) draw_set_color(c_white)
 	    }
-		if (mouse_check_button(mb_left) && c && mouse_press_in_rectangle(x1 + b, y1 + 28 + 21 - 19, strw + 12, 18 + 21)) {
+		if (nbs_mouse_check_button(mb_left) && c && mouse_press_in_rectangle(x1 + b, y1 + 28 + 21 - 19, strw + 12, 18 + 21)) {
 			// draw_sprite(spr_tabbuttons_f, 6 + 9 * fdark, x1 + b, y1 + 28 + 21 - 19)
 			// draw_sprite_ext(spr_tabbuttons_f, 7 + 9 * fdark, x1 + b + 2, y1 + 28 + 21 - 19, string_width_dynamic(str[a]) / 2 + 4, 1, 0, -1, 1)
 			// draw_sprite(spr_tabbuttons_f, 8 + 9 * fdark, x1 + b + string_width_dynamic(str[a]) + 10, y1 + 28 + 21 - 19)	
@@ -196,7 +196,7 @@ function draw_window_preferences() {
 				}
 			}
 		}
-		if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+		if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 		// Auto-saving
 		if (!isplayer) {
 		if (theme = 3) draw_theme_font(font_info_med)
@@ -359,7 +359,7 @@ function draw_window_preferences() {
 			if (theme = 3) draw_set_color(15987699)
 			if (theme = 3 && fdark) draw_set_color(2105376)
 			accentclick = mouse_rectangle(xx - 2, yy - 2, 17, 17)
-			if (accentclick = 1) accentclick += (mouse_check_button(mb_left) && mouse_press_in_rectangle(xx - 2, yy - 2, 17, 17))
+			if (accentclick = 1) accentclick += (nbs_mouse_check_button(mb_left) && mouse_press_in_rectangle(xx - 2, yy - 2, 17, 17))
 			draw_roundrect_ext(xx - 2, yy - 2, xx + 15, yy + 15, 4, 4, false)
 			draw_theme_color()
 			draw_roundrect_ext(xx - 2, yy - 2, xx + 15, yy + 15, 4, 4, true)
@@ -390,7 +390,7 @@ function draw_window_preferences() {
 	    }
 	    if (language != 1) draw_text_dynamic(x1 + 277, y1 + 74 + 19 + (theme = 3) * 22 + 5, condstr(refreshrate = 0, "30FPS") + condstr(refreshrate = 1, "60FPS") + condstr(refreshrate = 2, "120FPS") + condstr(refreshrate = 3, "144FPS") + condstr(refreshrate = 4, "240FPS"))
 	    else draw_text_dynamic(x1 + 277, y1 + 74 + 19 + (theme = 3) * 22 + 5, condstr(refreshrate = 0, "30帧") + condstr(refreshrate = 1, "60帧") + condstr(refreshrate = 2, "120帧") + condstr(refreshrate = 3, "144帧") + condstr(refreshrate = 4, "240帧"))
-		if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+		if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 	    //if (draw_radiobox(x1+274,y1+164+16 + (theme = 3) * 22,refreshrate == 0,"30FPS","Run the program at 30FPS.")) {
 	    //    game_set_speed(30,gamespeed_fps)
 		//	refreshrate=0
@@ -660,7 +660,7 @@ function draw_window_preferences() {
 			menu = show_menu_ext("resourcepack", x1 + 233 + 22 + 18, y1 + 329 + (theme = 3) * 22 + 16 + 5 + 21, rp_str)
 		}
 		draw_text_dynamic(x1 + 233 + 22 + 18 + 3, y1 + 329 + (theme = 3) * 22 + 19 + 5, display_resource)
-		if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+		if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 		if (draw_checkbox(x1 + 233 + 22 + 18, y1 + 359 + (theme = 3) * 22 + 19 + 5, resourcepack_sounds_json, "Use sounds.json", "Load note block sound paths and pitch shifts defined by the selected resource pack.")) {
 			resourcepack_sounds_json = !resourcepack_sounds_json
 			set_resourcepack(current_resource)
@@ -712,7 +712,7 @@ function draw_window_preferences() {
 			menu = show_menu_ext("resourcepack", x1 + 233 + 22 + 18, y1 + 329 + (theme = 3) * 22 + 16 + 5 + 21, rp_str)
 		}
 		draw_text_dynamic(x1 + 233 + 22 + 18 + 3, y1 + 329 + (theme = 3) * 22 + 19 + 5, display_resource)
-		if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+		if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 		if (draw_checkbox(x1 + 233 + 22 + 18, y1 + 359 + (theme = 3) * 22 + 19 + 5, resourcepack_sounds_json, "使用 sounds.json", "根据所选资源包的 sounds.json 定义加载音符盒声音路径和音高偏移。")) {
 			resourcepack_sounds_json = !resourcepack_sounds_json
 			set_resourcepack(current_resource)

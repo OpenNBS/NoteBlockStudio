@@ -41,7 +41,7 @@ function draw_window_instruments() {
 			sound_stopper_exists = 1
 		}
 	}
-	if (mouse_rectangle(x1 + 11, y1 + 67, 524, 245) && mouse_check_button_released(mb_right)) show_menu_ext("add_event_ins", mouse_x, mouse_y, inactive(tempo_changer_exists || custom_instruments_full) + condstr(language != 1, "Add tempo changer", "添加变速器") + "|" + inactive(sound_stopper_exists || custom_instruments_full) + condstr(language != 1, "Add sound stopper", "添加声音抑制器"))
+	if (mouse_rectangle(x1 + 11, y1 + 67, 524, 245) && nbs_mouse_check_button_released(mb_right)) show_menu_ext("add_event_ins", nbs_mouse_x(), nbs_mouse_y(), inactive(tempo_changer_exists || custom_instruments_full) + condstr(language != 1, "Add tempo changer", "添加变速器") + "|" + inactive(sound_stopper_exists || custom_instruments_full) + condstr(language != 1, "Add sound stopper", "添加声音抑制器"))
 	if (language != 1) {
 	if (draw_button2(x1 + 705, y1 + 9, 80, "Import", 0, 1)) load_instruments("")
 	if (draw_button2(x1 + 705, y1 + 36, 80, "Open Folder", 0, 1)) open_url(sounds_directory)
@@ -225,10 +225,10 @@ function draw_window_instruments() {
 		save_settings()
 	}
 	}
-	if (mouse_check_button_pressed(mb_left)) {
+	if (nbs_mouse_check_button_pressed(mb_left)) {
 	    insedit = -1
 	}
-	if (mouse_check_button_released(mb_left) && c = 0) {
+	if (nbs_mouse_check_button_released(mb_left) && c = 0) {
 		var in_minecraft_export_panel = mouse_rectangle(x1 + 545, y1 + 66, 245, 262)
 	    if (!mouse_rectangle(x1 + 14, y1 + 88, 476, min(ds_list_size(cursong.instrument_list) * 20, 220)) && (!mouse_rectangle(x1 + 14, y1 + 318, 476, 24)) && !in_minecraft_export_panel) {
 			insselect = -1
@@ -267,7 +267,7 @@ function draw_window_instruments() {
 	    else if (!ins.loaded) popup_set_window(x1 + 14 + 194, y1 + 88 + 20 * a, 160, 20, "找不到该声音文件。")
 		}
 	    if (mouse_rectangle(x1 + 14 + 194, y1 + 88 + 20 * a, 160, 20) && insselect = b && wmenu = 0) {
-	        if (mouse_check_button_pressed(mb_left)) {
+	        if (nbs_mouse_check_button_pressed(mb_left)) {
 	            if (ins.user) {
 					instrument_change(ins)
 	            } else {
@@ -316,12 +316,12 @@ function draw_window_instruments() {
 	    if (language != 1) draw_text_dynamic(x1 + 18 + 194 + 160 + 80, y1 + 90 + 20 * a, test(ins.press, "Yes", "No"))
 	    else draw_text_dynamic(x1 + 18 + 194 + 160 + 80, y1 + 90 + 20 * a, test(ins.press, "是", "否"))
 	    if (mouse_rectangle(x1 + 14, y1 + 88 + 20 * a, 460, 20) && wmenu = 0) {
-	        if (mouse_check_button_pressed(mb_left)) {
+	        if (nbs_mouse_check_button_pressed(mb_left)) {
 	            insselect = b
 	        }
 	    }
 	}
-	if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+	if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 	draw_set_color(12632256)
 	draw_line(x1 + 13 + 194, y1 + 87, x1 + 13 + 194, y1 + 86 + 20 * a)
 	draw_line(x1 + 13 + 194 + 160, y1 + 87, x1 + 13 + 194 + 160, y1 + 86 + 20 * a)

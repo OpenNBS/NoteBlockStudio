@@ -14,6 +14,7 @@ function control_end() {
 		save_settings()
 	}
 	font_src_dynamic_shutdown()
+	nbs_mouse_shutdown()
 	rtmidi_deinit()
 	log_flush()
 	if (variable_instance_exists(id, "python_initialized") && python_initialized) {

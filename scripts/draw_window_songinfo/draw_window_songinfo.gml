@@ -136,7 +136,7 @@ function draw_window_songinfo() {
 	    if (draw_button2(x1 + floor(w / 2) + 5, y1 + h - 30, 70, "确定") && (windowopen = 1 || theme != 3)) windowclose = 1
 		}
 	} else {
-	    if (mouse_check_button_pressed(mb_left)) {
+	    if (nbs_mouse_check_button_pressed(mb_left)) {
 			windowopen = 1
 			windowclose = 1
 		}

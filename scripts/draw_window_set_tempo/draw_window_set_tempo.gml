@@ -22,14 +22,14 @@ function draw_window_set_tempo() {
 	else input = draw_inputbox(64, xx, 57 + song_tab_offset, w, input, "输入新速度（" + condstr(use_bpm, "拍数 / 分钟", "红石刻 / 秒") + "）", (0.3 + 0.3 * !fdark) * (acrylic && wpaperexist) + (!acrylic || !wpaperexist))
 	
 	// Prevent closing the box if last mouse press was on top of it
-	if (mouse_check_button_pressed(mb_left)) {
+	if (nbs_mouse_check_button_pressed(mb_left)) {
 		settempo = mouse_rectangle(xx, 57 + song_tab_offset, w, 22)
 	}
 	
 	var otempo = songs[song].real_tempo;
 	
 	// Set tempo and close when focus leaves the editor; Enter stays with the text field.
-	if (mouse_check_button_released(mb_left) && !settempo && !mouse_rectangle(xx, 57 + song_tab_offset, w, 22)) {
+	if (nbs_mouse_check_button_released(mb_left) && !settempo && !mouse_rectangle(xx, 57 + song_tab_offset, w, 22)) {
 		try {
 			songs[song].real_tempo = real(string_digits_symbol(string_replace(input, ",", "."), ".") / bpm_multiplier)
 		} catch (e) {

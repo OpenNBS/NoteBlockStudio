@@ -28,8 +28,8 @@ function reset_add() {
 	window = 0
 	global.popup = 0
 	delay = 0
-	mouse_xprev = mouse_x
-	mouse_yprev = mouse_y
+	mouse_xprev = nbs_mouse_x()
+	mouse_yprev = nbs_mouse_y()
 	sb_val[0] = 0
 	sb_val[1] = 0
 	sb_val[2] = 0
