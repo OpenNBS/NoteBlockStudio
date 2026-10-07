@@ -4,6 +4,7 @@ function draw_tab(argument0) {
 	str = argument0
 	xx = tab_x
 	yy = 1
+	draw_theme_font(font_small)
 	w = string_width_dynamic(str) + 12
 	tab_x += w
 	pressed_in = mouse_press_in_rectangle(xx, yy, w, 18)
