@@ -64,7 +64,7 @@ function menu_click(argument0) {
 	            if (calculate_size()) window = w_track_export
 	        }
 			if(sel = b + 19) window = w_datapack_export
-	        if (sel = b + 20) game_end()
+	        if (sel = b + 20) request_quit()
 	        break
 	    }
 	    case "edit": {
@@ -364,7 +364,7 @@ function menu_click(argument0) {
 				var temppath = string(get_open_filename_ext("Image Files (*.png, *.jpg, *.jpeg)|*.png;*.jpg;*.jpeg", "", "", condstr(language != 1, "Open background image", "打开背景图片")))
 				wallpaper_init(temppath)
 			}
-	        if (sel = b + 6) game_end()
+	        if (sel = b + 6) request_quit()
 	        break
 	    }
 		case "settingsp": {

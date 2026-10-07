@@ -35,6 +35,8 @@ function control_create() {
 	if (!NOT_RUN_FROM_IDE) copy_bundled_files()
 	//if (NOT_RUN_FROM_IDE != 1) isplayer = 1
 	destroy_self = 0
+	quit_confirmed = false
+	quit_prompting = false
 	port_taken = 0
 	server_socket = -1
 	if (!isplayer) server_socket = network_create_server(network_socket_tcp, 30010, 1)
