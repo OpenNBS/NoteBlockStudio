@@ -74,6 +74,7 @@ function load_settings() {
 	addpitch =           ini_read_real(  "preferences", "addpitch",           addpitch)
 	language =           ini_read_real(  "preferences", "language",           language)
 	acrylic =            ini_read_real(  "preferences", "acrylic",            acrylic)
+	liquid_glass =       ini_read_real(  "preferences", "liquid_glass",       liquid_glass)
 	taskbar =            ini_read_real(  "preferences", "taskbar",            taskbar)
 	remove_effect =      ini_read_real(  "preferences", "remove_effect",      remove_effect)
 	window_icon =        ini_read_real(  "preferences", "window_icon",        window_icon)

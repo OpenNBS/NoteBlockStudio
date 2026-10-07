@@ -83,10 +83,12 @@ function draw_checkbox() {
 					if (expression) draw_set_color(8947848)
 					else draw_set_color(15987699)
 				}
-				draw_roundrect_ext(xx - 1, yy - 1, xx + 12, yy + 12, 4, 4, 0)
+				var rectircle_shader = __rectircle_begin()
+				draw_rectircle(xx - 1, yy - 1, xx + 12, yy + 12, 0, 4)
 				if (fdark) draw_set_color(3684408)
 				else draw_set_color(13421772)
-				if (!expression) draw_roundrect_ext(xx - 1, yy - 1, xx + 12, yy + 12, 2, 2, 1)
+				if (!expression) draw_rectircle(xx - 1, yy - 1, xx + 12, yy + 12, 1, 2)
+				__rectircle_end(rectircle_shader)
 				if (expression) {
 					if (fdark) {
 						draw_set_color(0)
@@ -159,14 +161,16 @@ function draw_checkbox() {
 						if (m == 2) draw_set_color(14474460)
 					}
 				}
-				draw_roundrect_ext(xx - 1, yy - 1, xx + 12, yy + 12, 4, 4, 0)
+				var rectircle_shader = __rectircle_begin()
+				draw_rectircle(xx - 1, yy - 1, xx + 12, yy + 12, 0, 4)
 				if (fdark) draw_set_color(10066329)
 				else draw_set_color(8947848)
 				if (m == 2) {
 					if (fdark) draw_set_color(5000268)
 					else draw_set_color(11711154)
 				}
-				if (!expression) draw_roundrect_ext(xx - 1, yy - 1, xx + 12, yy + 12, 2, 2, 1)
+				if (!expression) draw_rectircle(xx - 1, yy - 1, xx + 12, yy + 12, 1, 2)
+				__rectircle_end(rectircle_shader)
 				if (expression) {
 					if (fdark) {
 						draw_set_color(2105376)

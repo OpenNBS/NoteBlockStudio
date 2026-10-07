@@ -12,7 +12,7 @@ function draw_window_midi_import() {
 	if (theme = 3){
 	draw_set_color(13421772)
 	if (fdark) draw_set_color(3355443)
-	draw_roundrect(x1+1,y1+1,x1+598,y1+148,0)
+	draw_rectircle(x1+1,y1+1,x1+598,y1+148,0)
 	draw_theme_color()
 	}
 	if (language != 1) {
@@ -176,7 +176,7 @@ function draw_window_midi_import() {
 		if (theme != 3) {
 	    draw_rectangle(x1 + stabx + 1, y1 + 127, x1 + stabx + stabw, y1 + 126 + 20, 0)
 		} else {
-		draw_roundrect(x1 + stabx + 1, y1 + 127, x1 + stabx + stabw, y1 + 126 + 25, 0)
+		draw_rectircle(x1 + stabx + 1, y1 + 127, x1 + stabx + stabw, y1 + 126 + 25, 0)
 		}
 	    draw_set_color(make_color_rgb(137, 140, 149))
 	    if (theme != 3) draw_rectangle(x1 + stabx, y1 + 126, x1 + stabx + stabw, y1 + 126 + 20, 1)

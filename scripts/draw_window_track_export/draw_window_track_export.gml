@@ -10,7 +10,7 @@ function draw_window_track_export() {
 	if (theme = 3){
 	draw_set_color(13421772)
 	if (fdark) draw_set_color(3355443)
-	draw_roundrect(x1+1,y1+1,x1+548,y1+48,0)
+	draw_rectircle(x1+1,y1+1,x1+548,y1+48,0)
 	draw_set_color(c_black)
 	draw_theme_color()
 	}
@@ -61,7 +61,7 @@ function draw_window_track_export() {
 		if (theme != 3) {
 	    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 0)
 		} else {
-		draw_roundrect(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 25, 0)
+		draw_rectircle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 25, 0)
 		}
 	    draw_set_color(make_color_rgb(137, 140, 149))
 	    if (theme != 3) draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 1)

@@ -14,6 +14,9 @@ function control_end() {
 		save_settings()
 	}
 	font_src_dynamic_shutdown()
+	surface_effects_shutdown()
+	if (variable_instance_exists(id, "wpaperblur") && sprite_exists(wpaperblur) && wpaperblur != wpaper) sprite_delete(wpaperblur)
+	if (variable_instance_exists(id, "wpaper") && sprite_exists(wpaper)) sprite_delete(wpaper)
 	nbs_mouse_shutdown()
 	rtmidi_deinit()
 	log_flush()

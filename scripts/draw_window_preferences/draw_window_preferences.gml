@@ -49,7 +49,7 @@ function draw_window_preferences() {
 				draw_set_color(15658734)
 				if (fdark) draw_set_color(5789784)
 			}
-			draw_roundrect(x1 + 1, y1 + 31, x1 + 41, y1 + 67, 0)
+			draw_rectircle(x1 + 1, y1 + 31, x1 + 41, y1 + 67, 0)
 			if (mouse_rectangle_click(x1, y1 + 30, 40, 40) && windowopen = 1) {
 				if (windowsound && theme = 3) play_sound(soundgoback, 45, 100, 100, 0)
 				windowclose = 1
@@ -86,7 +86,7 @@ function draw_window_preferences() {
 	    draw_set_color(c_white)
 		if(theme = 2 || (fdark && theme = 3)) draw_set_color(c_dark)
 	    if (theme = 3) {
-			draw_roundrect(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 25, 0)
+			draw_rectircle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 25, 0)
 		} else {
 			draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 0)
 		}
@@ -98,7 +98,7 @@ function draw_window_preferences() {
 	    draw_theme_color()
 	    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab])
 	    draw_set_color(make_color_rgb(213, 223, 229))
-	    if(theme = 0) draw_roundrect(x1 + 10, y1 + 50, x1 + 490, y1 + 468 - isplayer * 100, 1)
+	    if(theme = 0) draw_rectircle(x1 + 10, y1 + 50, x1 + 490, y1 + 468 - isplayer * 100, 1)
 	}else{
 	    draw_sprite(spr_tabbuttons, 24, x1 + stabx - 1, y1 + 26)
 	    draw_sprite_ext(spr_tabbuttons, 25, x1 + stabx + 1, y1 + 26, stabw / 2 - 1, 1, 0, -1, 1)
@@ -323,8 +323,8 @@ function draw_window_preferences() {
 		}
 	} else if (selected_tab = 1) {
 		if (theme = 3) draw_theme_font(font_info_med)
-	    if (language != 1) draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 218, 140, "Theme")
-	    else draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 218, 140, "主题")
+	    if (language != 1) draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 218, 160, "Theme")
+	    else draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 218, 160, "主题")
 		if (theme = 3) draw_theme_font(font_main)
 		draw_area(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 5, x1 + 140, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 5)
 		if (draw_abutton(x1 + 140 - 17, y1 + 74 + 17 + (theme = 3) * 22 + 5) && wmenu = 0) {
@@ -338,18 +338,23 @@ function draw_window_preferences() {
 	    //if (draw_radiobox(x1 + 40, y1 + (theme = 3) * 22 + 164 + 16 + 20 + 20, theme == 1, "90s", "Use the 90s theme.")) {theme = 1 change_theme()}
 	    //if (draw_radiobox(x1 + 40, y1 + (theme = 3) * 22 + 164 + 16 + 20 + 20 + 20, theme == 3, "Fluent", "Use the fluent theme.")) {theme = 3 change_theme()}
 		if (language != 1) {
-		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 20 + 25, blackout, "Blackout mode", "Makes the workspace background solid black, so you can\nremove in your video editor when recording the screen.", false, true)) blackout = !blackout
+		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 20 + 20 + 25, blackout, "Blackout mode", "Makes the workspace background solid black, so you can\nremove in your video editor when recording the screen.", false, true)) blackout = !blackout
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 25, windowsound, "Navigation sound", "Whether to play sound effects when navigating the interface.\n(Only applies to the Fluent theme.)", (theme != 3), true)) windowsound = !windowsound
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 25, fdark, "Dark mode", "Whether to use darker colors on the interface.\n(Only applies to the Fluent theme.)", (theme != 3), true)) {fdark = !fdark if (fdark) window_set_darkmode() else window_unset_darkmode()}
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "Transparency effects", "Whether to show transparency effects on the interface.\n(Only applies to the Fluent theme.)", theme != 3, true)) {acrylic = !acrylic change_theme()}
 		} else {
-		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 20 + 25, blackout, "全黑模式", "使背景变为纯黑色，可以用于剪辑时扣掉。", false, true)) blackout = !blackout
+		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 20 + 20 + 25, blackout, "全黑模式", "使背景变为纯黑色，可以用于剪辑时扣掉。", false, true)) blackout = !blackout
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 25, windowsound, "界面音效", "是否在浏览时播放音效。\n（仅限 Fluent 主题）", (theme != 3), true)) windowsound = !windowsound
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 25, fdark, "暗色模式", "是否在界面上使用暗色调。\n（仅限 Fluent 主题）", (theme != 3), true)) {fdark = !fdark if (fdark) window_set_darkmode() else window_unset_darkmode()}
 		//if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "透明效果", condstr(os_type = os_windows, "是否在界面上显示透明效果。\n（仅限 Fluent 主题）", "该功能在非Windows平台不可用。"), (theme != 3 || os_type != os_windows), true)) {acrylic = !acrylic change_theme()}
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "透明效果", "是否在界面上显示透明效果。\n（仅限 Fluent 主题）", theme != 3, true)) {acrylic = !acrylic change_theme()}
 		}
 		
+		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 195, liquid_glass,
+			condstr(language != 1, "Liquid Glass", "液态玻璃"),
+			condstr(language != 1, "[Experimental] Use glass refraction on context menus, tooltips, and messages.\nTurn off to use the original acrylic style.", "[实验性] 在右键菜单、工具提示和提示消息上显示玻璃折射效果。\n关闭后使用原有的亚克力样式。"),
+			theme != 3 || !acrylic, true)) liquid_glass = !liquid_glass
+
 		// Accent color picker
 		if (theme == 3) {
 			var xx = x1 + 160
@@ -360,11 +365,13 @@ function draw_window_preferences() {
 			if (theme = 3 && fdark) draw_set_color(2105376)
 			accentclick = mouse_rectangle(xx - 2, yy - 2, 17, 17)
 			if (accentclick = 1) accentclick += (nbs_mouse_check_button(mb_left) && mouse_press_in_rectangle(xx - 2, yy - 2, 17, 17))
-			draw_roundrect_ext(xx - 2, yy - 2, xx + 15, yy + 15, 4, 4, false)
+			var rectircle_shader = __rectircle_begin()
+			draw_rectircle(xx - 2, yy - 2, xx + 15, yy + 15, false, 4)
 			draw_theme_color()
-			draw_roundrect_ext(xx - 2, yy - 2, xx + 15, yy + 15, 4, 4, true)
+			draw_rectircle(xx - 2, yy - 2, xx + 15, yy + 15, true, 4)
 			draw_set_color(accent[3 + (accentclick = 1) * 3 - (accentclick = 2) * 3])
-			draw_roundrect_ext(xx, yy, xx + 13, yy + 13, 4, 4, false)
+			draw_rectircle(xx, yy, xx + 13, yy + 13, false, 4)
+			__rectircle_end(rectircle_shader)
 			if (language != 1) popup_set_window(xx - 2, yy - 2, 17, 17, "Click to change the theme's accent color.")
 			else popup_set_window(xx - 2, yy - 2, 17, 17, "点击更改此主题的主题色。")
 			if (mouse_rectangle_click(xx - 2, yy - 2, 17, 17)) {

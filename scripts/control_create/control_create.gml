@@ -86,6 +86,9 @@ function control_create() {
 	msgstart = 0
 	currentfont = 0
 	acrylic = 1
+	liquid_glass = false
+	menu_glass_material = {} // Glass overrides for menus, tooltips, and messages.
+	menu_blur_radius = 24
 	can_draw_mica = 1
 	acrylic_successful = 1
 	mouseover = 0
@@ -138,7 +141,9 @@ function control_create() {
 	wpaperexist = 0
 	wpaperside = 0
 	wpaperwidth = 0
-	wpaperblur = 0
+	wpaperblur = -1
+	wallpaper_prepare_pending = false
+	wallpaper_blur_radius = 300
 	
 	wpaperanchor = 0
 	wpapernoblur = 0

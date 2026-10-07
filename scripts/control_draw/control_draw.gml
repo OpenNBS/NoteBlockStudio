@@ -40,6 +40,7 @@ function control_draw() {
 	draw_set_alpha(1)
 	draw_theme_color()
 	draw_theme_font(font_main)
+	wallpaper_prepare()
 
 	if (theme = 0) window_background = 15790320
 	if (theme = 1) window_background = 13160660
@@ -49,7 +50,7 @@ function control_draw() {
 	if (theme = 3 && fdark) window_background = 2105376
 	draw_clear(window_background)
 	if (theme = 3 && acrylic && wpaperexist && can_draw_mica) {
-		var wpapertodraw = wpaperblur
+		var wpapertodraw = sprite_exists(wpaperblur) ? wpaperblur : wpaper
 		if (wpapernoblur = 1) wpapertodraw = wpaper
 		var wpaperscale = 1
 		if (wpaperanchor = 0) {
@@ -1635,8 +1636,8 @@ function control_draw() {
 			}
 		} else {
 			draw_set_color(make_color_rgb(70, 70, 70))
-			if (show_layers) draw_roundrect(x1, y1 + 32, x1 + 255, y1 + 32 + 38, 1)
-			else draw_roundrect(x1, y1 + 52, x1 + 380, y1 + 52 + 21, 1)
+			if (show_layers) draw_rectircle(x1, y1 + 32, x1 + 255, y1 + 32 + 38, 1)
+			else draw_rectircle(x1, y1 + 52, x1 + 380, y1 + 52 + 21, 1)
 		}
 		xx = x1 + 6
 		var yy = y1+37
@@ -1680,7 +1681,7 @@ function control_draw() {
 	if (dropmode && theme = 3) {
 		draw_set_color(0)
 		draw_set_alpha(0.2 * dropalpha)
-		draw_roundrect_ext(0, 0, 530, 90, 20, 20, 0)
+		draw_rectircle(0, 0, 530, 90, 0, 20)
 		draw_set_alpha(dropalpha)
 	}
 
@@ -2632,9 +2633,9 @@ function control_draw() {
 				if (wpaperexist && acrylic && can_draw_mica) draw_set_alpha(0.1)
 				if (taba = 1) draw_set_color(hover_color)
 				if (tab = song) draw_set_color(sel_color)
-				if (taba = 1 || tab = song) draw_roundrect(7 + tab * (tabwidth - 1), 24 + 2 * (tab != song), 7 + (tabwidth - 1) + tab * (tabwidth - 1), 24 + 40 - 7, 0)
+				if (taba = 1 || tab = song) draw_rectircle(7 + tab * (tabwidth - 1), 24 + 2 * (tab != song), 7 + (tabwidth - 1) + tab * (tabwidth - 1), 24 + 40 - 7, 0)
 				if (closea) draw_set_color(close_color)
-				if (closea) draw_roundrect(7 + (tabwidth - 1) + tab * (tabwidth - 1) - 35, 24 + 5, 7 + (tabwidth - 1) + tab * (tabwidth - 1) - 4, 24 + 28, 0)
+				if (closea) draw_rectircle(7 + (tabwidth - 1) + tab * (tabwidth - 1) - 35, 24 + 5, 7 + (tabwidth - 1) + tab * (tabwidth - 1) - 4, 24 + 28, 0)
 				draw_set_alpha(0.5)
 				draw_separator(7 + (tabwidth - 1) + tab * (tabwidth - 1) + 1, 24 + 8)
 				draw_set_alpha(1)
@@ -2722,7 +2723,7 @@ function control_draw() {
 			if (wpaperexist && acrylic && can_draw_mica) draw_set_alpha(0.1)
 			if (taba = 1) draw_set_color(hover_color)
 			if (tab = song) draw_set_color(sel_color)
-			if (taba = 1) draw_roundrect(7 + array_length(songs) * (tabwidth - 1), 24 + 2, 7 + (newsongbtnwidth - 1) + array_length(songs) * (tabwidth - 1), 24 + 40 - 7, 0)
+			if (taba = 1) draw_rectircle(7 + array_length(songs) * (tabwidth - 1), 24 + 2, 7 + (newsongbtnwidth - 1) + array_length(songs) * (tabwidth - 1), 24 + 40 - 7, 0)
 			draw_set_alpha(1)
 			draw_sprite_ext(spr_newtab, 0, 7 + array_length(songs) * (tabwidth - 1) + 15 - 6, 24 + 2 + 15 - 7, 1, 1, 0, -1 + (!fdark), 1)
 		}

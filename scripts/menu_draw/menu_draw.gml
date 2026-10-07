@@ -40,27 +40,40 @@ function menu_draw() {
 			}
 		}
 	    iy = 8
-	    if (!o.fdark) draw_theme_color()
-	    else draw_set_color(197379)
-	    draw_set_alpha(0.25)
-	    if (theme = 3) draw_rectangle(dx + menu_wid[m] - 7, dy + hei - 7, dx + menu_wid[m] + 1, dy + hei + 1, 0)
-	    draw_set_alpha(1)
-	    if (o.theme != 3) draw_set_color(window_background)
-	    else draw_set_color(16382457)
-		//if (obj_controller.fdark && theme = 3) draw_set_color(2829099)
-		if (obj_controller.fdark && theme = 3) draw_set_color(2697513)
-		if (o.theme = 3) {
-			draw_sprite(spr_shadowext, 0 + 5 * (obj_controller.fdark && theme = 3), dx + 4, dy + hei + 1)
-			draw_sprite_ext(spr_shadowext, 1 + 5 * (obj_controller.fdark && theme = 3), dx + 9, dy + hei + 1, menu_wid[m] - 7, 1, 0, -1, 1)
-			draw_sprite(spr_shadowext, 2 + 5 * (obj_controller.fdark && theme = 3), dx + menu_wid[m] + 1, dy + hei + 1)
-			draw_sprite_ext(spr_shadowext, 3 + 5 * (obj_controller.fdark && theme = 3), dx + menu_wid[m] + 1, dy + 9, 1, hei - 7, 0, -1, 1)
-			draw_sprite(spr_shadowext, 4 + 5 * (obj_controller.fdark && theme = 3), dx + menu_wid[m] + 1, dy + 4)
+		var glass_drawn = false
+		var rectircle_shader = undefined
+		var material = liquid_glass_settings("menu", o.fdark, o.menu_glass_material)
+		if (theme == 3 && o.acrylic && o.liquid_glass) {
+			draw_set_alpha(realpha)
+			glass_drawn = draw_liquid_glass(application_surface, dx, dy, menu_wid[m] + 1, hei + 1, material)
 		}
-		if (theme = 3 && o.acrylic) draw_surface_blur_alt(application_surface, dx, dy, menu_wid[m] + 1, hei + 1, 0.5)
-		if (theme = 3 && o.acrylic) draw_set_alpha(0.6)
-		if (theme = 3 && o.acrylic) draw_acrylic_texture(dx, dy, menu_wid[m] + 1, hei + 1)
-	    if (theme != 3) draw_rectangle(dx, dy, dx + menu_wid[m], dy + hei, 0)
-		else draw_roundrect(dx, dy, dx + menu_wid[m], dy + hei, 0)
+		// Keep acrylic when glass is off or unavailable
+		if (!glass_drawn) {
+		    if (!o.fdark) draw_theme_color()
+		    else draw_set_color(197379)
+		    draw_set_alpha(0.25)
+		    if (theme = 3) draw_rectangle(dx + menu_wid[m] - 7, dy + hei - 7, dx + menu_wid[m] + 1, dy + hei + 1, 0)
+		    draw_set_alpha(1)
+		    if (o.theme != 3) draw_set_color(window_background)
+		    else draw_set_color(16382457)
+			//if (obj_controller.fdark && theme = 3) draw_set_color(2829099)
+			if (obj_controller.fdark && theme = 3) draw_set_color(2697513)
+			if (o.theme = 3) {
+				draw_sprite(spr_shadowext, 0 + 5 * (obj_controller.fdark && theme = 3), dx + 4, dy + hei + 1)
+				draw_sprite_ext(spr_shadowext, 1 + 5 * (obj_controller.fdark && theme = 3), dx + 9, dy + hei + 1, menu_wid[m] - 7, 1, 0, -1, 1)
+				draw_sprite(spr_shadowext, 2 + 5 * (obj_controller.fdark && theme = 3), dx + menu_wid[m] + 1, dy + hei + 1)
+				draw_sprite_ext(spr_shadowext, 3 + 5 * (obj_controller.fdark && theme = 3), dx + menu_wid[m] + 1, dy + 9, 1, hei - 7, 0, -1, 1)
+				draw_sprite(spr_shadowext, 4 + 5 * (obj_controller.fdark && theme = 3), dx + menu_wid[m] + 1, dy + 4)
+			}
+			if (theme = 3 && o.acrylic) draw_surface_blur(application_surface, dx, dy, menu_wid[m] + 1, hei + 1, o.menu_blur_radius)
+			if (theme = 3 && o.acrylic) draw_set_alpha(0.6)
+			if (theme = 3 && o.acrylic) draw_acrylic_texture(dx, dy, menu_wid[m] + 1, hei + 1)
+		    if (theme != 3) draw_rectangle(dx, dy, dx + menu_wid[m], dy + hei, 0)
+			else {
+				rectircle_shader = __rectircle_begin()
+				draw_rectircle(dx, dy, dx + menu_wid[m] + 1, dy + hei + 1, false, material.corner_radius)
+			}
+		}
 	    draw_set_alpha(0.25)
 	    draw_theme_color()
 	    if (o.theme != 3) draw_line(dx + 29, dy + 3, dx + 29, dy + hei - 3)
@@ -70,7 +83,10 @@ function menu_draw() {
 	    draw_theme_color()
 	    draw_set_alpha(0.25)
 	    if (theme != 3) draw_rectangle(dx, dy, dx + menu_wid[m], dy + hei, 1)
-	    else draw_roundrect(dx, dy, dx + menu_wid[m], dy + hei, 1)
+	    else if (!glass_drawn) {
+			draw_rectircle(dx, dy, dx + menu_wid[m] + 1, dy + hei + 1, true, material.corner_radius)
+			__rectircle_end(rectircle_shader)
+		}
 	    draw_set_alpha(1)
 	    for (i = 0; i < items[m]; i += 1) {
 	        if (iy >= hei - 3) break
@@ -120,16 +136,27 @@ function menu_draw() {
 	                }
 	            }
 	            draw_theme_color()
+				var selection_text = c_white
 	            if (issel) {
 					if (o.theme != 3) {
 	                draw_set_color(16684072)
 	                draw_rectangle(dx + 3, dy + iy - 5, dx + menu_wid[m] - 2, dy + iy - 5 + 22, 0)
 	                draw_set_color(c_white)
 					} else {
-					draw_set_color(15987699)
-					if (obj_controller.fdark) draw_set_color(4276545)
-	                draw_roundrect(dx + 3, dy + iy - 5, dx + menu_wid[m] - 2, dy + iy - 5 + 22, 0)
-	                draw_theme_color()
+					var selection_color = o.accent[5]
+					var red = color_get_red(selection_color) / 255
+					var green = color_get_green(selection_color) / 255
+					var blue = color_get_blue(selection_color) / 255
+					red = red <= 0.04045 ? red / 12.92 : power((red + 0.055) / 1.055, 2.4)
+					green = green <= 0.04045 ? green / 12.92 : power((green + 0.055) / 1.055, 2.4)
+					blue = blue <= 0.04045 ? blue / 12.92 : power((blue + 0.055) / 1.055, 2.4)
+					var luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue
+					// Dark mode favors white except on very bright accents.
+					var black_text = o.fdark ? luminance >= 0.5 : (luminance + 0.05) / 0.05 >= 1.05 / (luminance + 0.05)
+					selection_text = black_text ? c_black : c_white
+					draw_set_color(selection_color)
+	                draw_rectircle(dx + 3, dy + iy - 5, dx + menu_wid[m] - 2, dy + iy - 5 + 22, false, 8)
+	                draw_set_color(selection_text)
 					}
 	            } //else if (inaissel && !obj_controller.fdark) {
 					//if (o.theme = 3) {
@@ -147,65 +174,24 @@ function menu_draw() {
 	                draw_set_halign(fa_left)
 	            }
 				if (theme != 3) {
-	            if (item_image[m, i] > -1) draw_sprite(spr_icons, item_image[m, i], dx + 2, dy + iy - 6)
-				} else {
-					if (obj_controller.fdark && theme = 3) {
-						if (item_image[m, i] > -1) {
-							if (!o.hires) {
-								draw_sprite(spr_icons_d, item_image[m, i], dx + 2, dy + iy - 6)
-								draw_sprite_ext(spr_icons_col, item_image[m, i], dx + 2, dy + iy - 6, 1, 1, 0, o.accent[6 - 2 * !o.fdark], draw_get_alpha())
-							} else {
-								draw_sprite_ext(spr_icons_d_hires, item_image[m, i], dx + 2, dy + iy - 6, 0.25, 0.25, 0, -1, draw_get_alpha())
-								draw_sprite_ext(spr_icons_col_hires, item_image[m, i], dx + 2, dy + iy - 6, 0.25, 0.25, 0, o.accent[6 - 2 * !o.fdark], draw_get_alpha())
-							}
-						}
-					} else {
-						if (item_image[m, i] > -1) {
-							if (!o.hires) {
-								draw_sprite(spr_icons_f, item_image[m, i], dx + 2, dy + iy - 6)
-								draw_sprite_ext(spr_icons_col, item_image[m, i], dx + 2, dy + iy - 6, 1, 1, 0, o.accent[6 - 2 * !o.fdark], draw_get_alpha())
-							} else {
-								draw_sprite_ext(spr_icons_f_hires, item_image[m, i], dx + 2, dy + iy - 6, 0.25, 0.25, 0, -1, draw_get_alpha())
-								draw_sprite_ext(spr_icons_col_hires, item_image[m, i], dx + 2, dy + iy - 6, 0.25, 0.25, 0, o.accent[6 - 2 * !o.fdark], draw_get_alpha())
-							}
-						}
+					if (item_image[m, i] > -1) draw_sprite(spr_icons, item_image[m, i], dx + 2, dy + iy - 6)
+					var arrow_color = theme == 2 ? (issel ? c_black : c_white) : (issel ? c_white : c_black)
+					if (item_hasmenu[m, i] > 0) draw_sprite_ext(spr_icons, icons.SUB_MENU, dx + menu_wid[m] - 24, dy + iy - 6, 1, 1, 0, arrow_color, draw_get_alpha())
+				} else if (item_image[m, i] > -1 || item_hasmenu[m, i] > 0) {
+					var light_icons = issel || o.fdark
+					var icon_sprite = o.hires ? (light_icons ? spr_icons_d_hires : spr_icons_f_hires) : (light_icons ? spr_icons_d : spr_icons_f)
+					var accent_sprite = o.hires ? spr_icons_col_hires : spr_icons_col
+					var icon_scale = o.hires ? 0.25 : 1
+					var icon_color = issel ? selection_text : c_white
+					var accent_color = issel ? selection_text : o.accent[6 - 2 * !o.fdark]
+					var arrow_color = issel ? selection_text : (o.fdark ? c_ltgray : c_gray)
+					if (item_image[m, i] > -1) {
+						draw_sprite_ext(icon_sprite, item_image[m, i], dx + 2, dy + iy - 6, icon_scale, icon_scale, 0, icon_color, draw_get_alpha())
+						draw_sprite_ext(accent_sprite, item_image[m, i], dx + 2, dy + iy - 6, icon_scale, icon_scale, 0, accent_color, draw_get_alpha())
 					}
-				}
-				var color;
-				if(obj_controller.theme = 2) {
-					if(issel)color = c_black;
-					else color = c_white;
-				} else if (theme = 3) {
-					if (obj_controller.fdark) {
-						if (issel) color = c_white
-						else color = c_ltgray
-					} else {
-						if (issel) color = c_dkgray
-						else color = c_gray
-					}
-				}else{
-					if(issel)color = c_white;
-					else color = c_black;
-				}	
-				if (theme != 3) {
-	            if (item_hasmenu[m, i] > 0) draw_sprite_ext(spr_icons, icons.SUB_MENU, dx + menu_wid[m] - 24, dy + iy - 6, 1, 1, 0, color, draw_get_alpha())
-				} else {
-					if (!o.hires) {
-						if (obj_controller.fdark && theme = 3) {
-							if (item_hasmenu[m, i] > 0) draw_sprite_ext(spr_icons_d, icons.SUB_MENU, dx + menu_wid[m] - 24, dy + iy - 6, 1, 1, 0, color, draw_get_alpha())
-							if (item_hasmenu[m, i] > 0) draw_sprite_ext(spr_icons_col, icons.SUB_MENU, dx + menu_wid[m] - 24, dy + iy - 6, 1, 1, 0, o.accent[6 - 2 * !o.fdark], draw_get_alpha())
-						} else {
-							if (item_hasmenu[m, i] > 0) draw_sprite_ext(spr_icons_f, icons.SUB_MENU, dx + menu_wid[m] - 24, dy + iy - 6, 1, 1, 0, color, draw_get_alpha())
-							if (item_hasmenu[m, i] > 0) draw_sprite_ext(spr_icons_col, icons.SUB_MENU, dx + menu_wid[m] - 24, dy + iy - 6, 1, 1, 0, o.accent[6 - 2 * !o.fdark], draw_get_alpha())
-						}
-					} else {
-						if (obj_controller.fdark && theme = 3) {
-							if (item_hasmenu[m, i] > 0) draw_sprite_ext(spr_icons_d_hires, icons.SUB_MENU, dx + menu_wid[m] - 24, dy + iy - 6, 0.25, 0.25, 0, color, draw_get_alpha())
-							if (item_hasmenu[m, i] > 0) draw_sprite_ext(spr_icons_col_hires, icons.SUB_MENU, dx + menu_wid[m] - 24, dy + iy - 6, 0.25, 0.25, 0, o.accent[6 - 2 * !o.fdark], draw_get_alpha())
-						} else {
-							if (item_hasmenu[m, i] > 0) draw_sprite_ext(spr_icons_f_hires, icons.SUB_MENU, dx + menu_wid[m] - 24, dy + iy - 6, 0.25, 0.25, 0, color, draw_get_alpha())
-							if (item_hasmenu[m, i] > 0) draw_sprite_ext(spr_icons_col_hires, icons.SUB_MENU, dx + menu_wid[m] - 24, dy + iy - 6, 0.25, 0.25, 0, o.accent[6 - 2 * !o.fdark], draw_get_alpha())
-						}
+					if (item_hasmenu[m, i] > 0) {
+						draw_sprite_ext(icon_sprite, icons.SUB_MENU, dx + menu_wid[m] - 24, dy + iy - 6, icon_scale, icon_scale, 0, arrow_color, draw_get_alpha())
+						draw_sprite_ext(accent_sprite, icons.SUB_MENU, dx + menu_wid[m] - 24, dy + iy - 6, icon_scale, icon_scale, 0, accent_color, draw_get_alpha())
 					}
 				}
 	            draw_set_alpha(1)

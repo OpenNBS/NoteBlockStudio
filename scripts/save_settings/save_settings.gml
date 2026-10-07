@@ -72,6 +72,7 @@ function save_settings() {
 	ini_write_real_clean("preferences", "addpitch",           addpitch)
 	ini_write_real_clean("preferences", "language",           language)
 	ini_write_real_clean("preferences", "acrylic",            acrylic)
+	ini_write_real_clean("preferences", "liquid_glass",       liquid_glass)
 	ini_write_real_clean("preferences", "taskbar",            taskbar)
 	ini_write_real_clean("preferences", "remove_effect",      remove_effect)
 	ini_write_real_clean("preferences", "window_icon",        window_icon)

@@ -119,7 +119,7 @@ function draw_window_songinfo() {
 	        draw_rectangle(x1 + floor(w / 2) - 118, yy, x1 + floor(w / 2) + 118, yy + 16 + songdeschei, 1)
 		} else if (theme = 3) {
 	        draw_set_color(make_color_rgb(70, 70, 70))
-	        draw_roundrect(x1 + floor(w / 2) - 118, yy, x1 + floor(w / 2) + 118, yy + 16 + songdeschei, 1)
+	        draw_rectircle(x1 + floor(w / 2) - 118, yy, x1 + floor(w / 2) + 118, yy + 16 + songdeschei, 1)
 	    } else {
 	        draw_frame(x1 + floor(w / 2) - 118, yy, x1 + floor(w / 2) + 118, yy + 16 + songdeschei)
 	    }
