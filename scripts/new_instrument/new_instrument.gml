@@ -56,8 +56,30 @@ function nbs_custom_instrument_limit(format_version, includes_v6_instruments = f
 }
 
 function song_uses_v6_instruments(song_instance) {
-	for (var instrument_index = 16; instrument_index < 20; instrument_index++) {
-		if (song_instance.instrument_list[| instrument_index].num_blocks > 0) return true
+	// Built-in instruments are shared across tabs, so num_blocks is not a
+	// per-song count. Check this song's notes, including its floating selection.
+	var selection_x = max(0, song_instance.selection_x)
+	var selection_y = max(0, song_instance.selection_y)
+	for (var tick = 0; tick <= song_instance.enda; tick++) {
+		if (song_instance.colamount[tick] == 0) continue
+		for (var row_index = song_instance.colfirst[tick]; row_index <= song_instance.collast[tick]; row_index++) {
+			if (!song_instance.song_exists[tick, row_index]) continue
+			var sx = tick - selection_x
+			var sy = row_index - selection_y
+			if (song_instance.selected > 0 && sx >= 0 && sx < song_instance.selection_l && sy >= 0 && sy < song_instance.selection_h && song_instance.selection_exists[sx, sy]) continue
+			var instrument_index = ds_list_find_index(song_instance.instrument_list, song_instance.song_ins[tick, row_index])
+			if (instrument_index >= 16 && instrument_index < 20) return true
+		}
+	}
+	if (song_instance.selected > 0) {
+		for (var tick = 0; tick < song_instance.selection_l; tick++) {
+			if (song_instance.selection_colfirst[tick] < 0) continue
+			for (var row_index = song_instance.selection_colfirst[tick]; row_index <= song_instance.selection_collast[tick]; row_index++) {
+				if (!song_instance.selection_exists[tick, row_index]) continue
+				var instrument_index = ds_list_find_index(song_instance.instrument_list, song_instance.selection_ins[tick, row_index])
+				if (instrument_index >= 16 && instrument_index < 20) return true
+			}
+		}
 	}
 	return false
 }

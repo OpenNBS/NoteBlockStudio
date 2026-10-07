@@ -1,6 +1,7 @@
 function save_song() {
-	// save_song(fn[, backup, is_autosave])
-	var fn, backup, nbsver, f, a, ca, cb, fsave, asave, has_v6_ins;
+	// save_song(fn[, backup, is_autosave, format_version, source_song])
+	// source_song lets recovery serialize an inactive tab without changing the UI.
+	var fn, backup, nbsver, f, a, b, ca, cb, fsave, asave, has_v6_ins;
 	fn = argument[0];
 	backup = false;
 	asave = false;
@@ -12,14 +13,18 @@ function save_song() {
 	if (argument_count > 2) {
 		asave = argument[2];
 	}
+	if (argument_count > 4) {
+		cursong = argument[4];
+		if (!backup && cursong != songs[song]) return false
+	}
 	if (isplayer) return 0
-	if ((!backup) && (fn = "" || string_lower(filename_ext(cursong.filename)) != ".nbs")) {
+	if ((!backup) && (fn == "" || string_lower(filename_ext(cursong.filename)) != ".nbs")) {
 	    playing = 0
 	    fsave = filename_name(cursong.filename)
 	    if (!directory_exists_lib(songfolder)) songfolder = songs_directory
 	    fn = string(get_save_filename_ext("Note Block Songs (*.nbs)|*.nbs", fsave + condstr(filename_ext(cursong.filename) != ".nbs", ".nbs"), songfolder, condstr(language !=1, "Save song", "保存歌曲")))
 		log(string_char_at(fn, string_length(fn) - 3))
-	    if (fn = "") return 0
+	    if (fn == "") return 0
 	}
 	if (!backup && !asave) warn_working_directory_path(fn)
 	if ((!backup) && (cursong.selected > 0) && (!asave)) selection_place(0)
@@ -33,7 +38,7 @@ function save_song() {
 		nbsver = cursong.save_version
 	}
 	
-	if (argument_count > 3) {
+	if (argument_count > 3 && !is_undefined(argument[3])) {
 		nbsver = argument[3];
 	}
 
@@ -51,113 +56,138 @@ function save_song() {
 		return false
 	}
 
-	buffer = buffer_create(8, buffer_grow, 1)
-
-	if nbsver >= 1 {
-	//First 2 bytes 0 to indicate new nbs format
-	buffer_write_short(0)
-
-	buffer_write_byte(nbsver)
-	var song_first_custom_index = first_custom_index
-	if (nbsver < 6) song_first_custom_index = 16
-	buffer_write_byte(song_first_custom_index)
-	}
-
-	if nbsver = 0 || nbsver >= 3 {
-	//song length (ticks)
-	buffer_write_short(cursong.enda)
-	}
-
-	//layer count
-	buffer_write_short(cursong.endb2)
-
-	buffer_write_string_int(cursong.song_name)
-	buffer_write_string_int(cursong.song_author)
-	buffer_write_string_int(cursong.song_orauthor)
-	buffer_write_string_int(cursong.song_desc)
-
-	buffer_write_short(cursong.real_tempo * 100)
-	// Per-song auto-save is deprecated. It is only written to
-	// the file to preserve auto-save behavior on older versions
-	buffer_write_byte(autosave)
-	buffer_write_byte(autosavemins)
-	buffer_write_byte(cursong.timesignature)
-
-	buffer_write_int(floor(cursong.work_mins))
-	buffer_write_int(cursong.work_left)
-	buffer_write_int(cursong.work_right)
-	buffer_write_int(cursong.work_add)
-	buffer_write_int(cursong.work_remove)
-
-	buffer_write_string_int(cursong.song_midi)
-
-	if nbsver >= 4 {
-	buffer_write_byte(cursong.loop)
-	buffer_write_byte(cursong.loopmax)
-	buffer_write_short(cursong.loopstart)
-	}
-	
-	ca = 0
-	var ins = 0
-	for (a = 0; a <= cursong.enda; a += 1) {
-	    ca += 1
-	    if (cursong.colamount[a] > 0) {
-	        buffer_write_short(ca)
-	        ca = 0
-	        cb = 0
-	        for (b = 0; b <= cursong.collast[a]; b += 1) {
-	            cb += 1
-	            if (cursong.song_exists[a, b]) {
-	                buffer_write_short(cb)
-	                cb = 0
-					ins = ds_list_find_index(cursong.instrument_list, cursong.song_ins[a, b])
-					if (nbsver < 6 && ins >= 20 && !has_v6_ins) ins -= 4
-	                buffer_write_byte(ins)
-	                buffer_write_byte(cursong.song_key[a, b])
-					if nbsver >= 4 {
-					buffer_write_byte(cursong.song_vel[a, b])
-					buffer_write_byte(cursong.song_pan[a, b])
-					buffer_write_short(cursong.song_pit[a, b])
-					}
-	            }
-	        }
-	        buffer_write_short(0)
-	    }
-	}
-	buffer_write_short(0)
-	// Layer names
-	for (b = 0; b < cursong.endb2; b += 1) {
-	    buffer_write_string_int(cursong.layername[b])
-		if nbsver >= 4 {
-		buffer_write_byte(cursong.layerlock[b])
-		}
-	    buffer_write_byte(cursong.layervol[b])
-		if nbsver >= 2 {
-		buffer_write_byte(cursong.layerstereo[b])
-		}
-	}
-
-	// Custom instruments
-	var user_ins = cursong.user_instruments
-	if (has_v6_ins) user_ins += 4
-	buffer_write_byte(user_ins)
-	for (b = 0; b < ds_list_size(cursong.instrument_list); b++) {
-	    var ins = cursong.instrument_list[| b];
-	    if (ins.user || (has_v6_ins && b > 15 && b < 20)) {
-	        buffer_write_string_int(ins.name)
-	        buffer_write_string_int(ins.filename)
-	        buffer_write_byte(ins.key)
-	        buffer_write_byte(ins.press)
-	    }
+	// Backups and autosaves include the floating selection without placing it,
+	// changing history, or switching tabs. Selected notes take precedence over
+	// notes beneath them, matching selection_place().
+	var include_selection = cursong.selected > 0
+	var selection_x = max(0, cursong.selection_x)
+	var selection_y = max(0, cursong.selection_y)
+	var saved_end = cursong.enda
+	var saved_layers = cursong.endb2
+	if (include_selection) {
+		saved_end = max(saved_end, selection_x + cursong.selection_l - 1)
+		saved_layers = max(saved_layers, selection_y + cursong.selection_h)
 	}
 	var save_succeeded = false
+	buffer = -1
 	try {
+		buffer = buffer_create(8, buffer_grow, 1)
+
+		if (nbsver >= 1) {
+		//First 2 bytes 0 to indicate new nbs format
+		buffer_write_short(0)
+
+		buffer_write_byte(nbsver)
+		var song_first_custom_index = first_custom_index
+		if (nbsver < 6) song_first_custom_index = 16
+		buffer_write_byte(song_first_custom_index)
+		}
+
+		if (nbsver == 0 || nbsver >= 3) {
+		//song length (ticks)
+		buffer_write_short(saved_end)
+		}
+
+		//layer count
+		buffer_write_short(saved_layers)
+
+		buffer_write_string_int(cursong.song_name)
+		buffer_write_string_int(cursong.song_author)
+		buffer_write_string_int(cursong.song_orauthor)
+		buffer_write_string_int(cursong.song_desc)
+
+		buffer_write_short(cursong.real_tempo * 100)
+		// Per-song auto-save is deprecated. It is only written to
+		// the file to preserve auto-save behavior on older versions
+		buffer_write_byte(autosave)
+		buffer_write_byte(autosavemins)
+		buffer_write_byte(cursong.timesignature)
+
+		buffer_write_int(floor(cursong.work_mins))
+		buffer_write_int(cursong.work_left)
+		buffer_write_int(cursong.work_right)
+		buffer_write_int(cursong.work_add)
+		buffer_write_int(cursong.work_remove)
+
+		buffer_write_string_int(cursong.song_midi)
+
+		if (nbsver >= 4) {
+		buffer_write_byte(cursong.loop)
+		buffer_write_byte(cursong.loopmax)
+		buffer_write_short(cursong.loopstart)
+		}
+	
+		ca = 0
+		var ins = 0
+		for (a = 0; a <= saved_end; a += 1) {
+			ca += 1
+			var grid_last = -1
+			if (a < cursong.arraylength && cursong.colamount[a] > 0) grid_last = cursong.collast[a]
+			var sx = a - selection_x
+			var selected_column = include_selection && sx >= 0 && sx < cursong.selection_l && cursong.selection_colfirst[sx] >= 0
+			var selected_last = -1
+			if (selected_column) selected_last = selection_y + cursong.selection_collast[sx]
+			var wrote_column = false
+			cb = 0
+			for (b = 0; b <= max(grid_last, selected_last); b += 1) {
+				cb += 1
+				var sy = b - selection_y
+				var selected_note = selected_column && sy >= cursong.selection_colfirst[sx] && sy <= cursong.selection_collast[sx] && cursong.selection_exists[sx, sy]
+				var grid_note = b <= grid_last && cursong.song_exists[a, b]
+				if (selected_note || grid_note) {
+					if (!wrote_column) {
+						buffer_write_short(ca)
+						ca = 0
+						wrote_column = true
+					}
+					buffer_write_short(cb)
+					cb = 0
+					var note_instrument = selected_note ? cursong.selection_ins[sx, sy] : cursong.song_ins[a, b]
+					ins = ds_list_find_index(cursong.instrument_list, note_instrument)
+					if (nbsver < 6 && ins >= 20 && !has_v6_ins) ins -= 4
+					buffer_write_byte(ins)
+					buffer_write_byte(selected_note ? cursong.selection_key[sx, sy] : cursong.song_key[a, b])
+					if (nbsver >= 4) {
+						buffer_write_byte(selected_note ? cursong.selection_vel[sx, sy] : cursong.song_vel[a, b])
+						buffer_write_byte(selected_note ? cursong.selection_pan[sx, sy] : cursong.song_pan[a, b])
+						buffer_write_short(selected_note ? cursong.selection_pit[sx, sy] : cursong.song_pit[a, b])
+					}
+				}
+			}
+			if (wrote_column) buffer_write_short(0)
+		}
+		buffer_write_short(0)
+		// Layer names
+		for (b = 0; b < saved_layers; b += 1) {
+		    buffer_write_string_int(b < cursong.endb2 ? cursong.layername[b] : "")
+			if (nbsver >= 4) {
+			buffer_write_byte(b < cursong.endb2 ? cursong.layerlock[b] : 0)
+			}
+		    buffer_write_byte(b < cursong.endb2 ? cursong.layervol[b] : 100)
+			if (nbsver >= 2) {
+			buffer_write_byte(b < cursong.endb2 ? cursong.layerstereo[b] : 100)
+			}
+		}
+
+		// Custom instruments
+		var user_ins = cursong.user_instruments
+		if (has_v6_ins) user_ins += 4
+		buffer_write_byte(user_ins)
+		for (b = 0; b < ds_list_size(cursong.instrument_list); b++) {
+		    var ins = cursong.instrument_list[| b];
+		    if (ins.user || (has_v6_ins && b > 15 && b < 20)) {
+		        buffer_write_string_int(ins.name)
+		        buffer_write_string_int(ins.filename)
+		        buffer_write_byte(ins.key)
+		        buffer_write_byte(ins.press)
+		    }
+		}
 		save_succeeded = buffer_export(buffer, fn)
 	} catch (e) {
 		// Avoid writing to the log here: this path can run when the disk is full.
 		show_debug_message("Failed to save song: " + string(e))
 	}
-	buffer_delete(buffer)
+	if (buffer >= 0) buffer_delete(buffer)
 	buffer = -1
 
 	if (!save_succeeded) {
@@ -190,8 +220,6 @@ function save_song() {
 			if (language != 1) set_msg("Song saved");
 			else set_msg("歌曲已保存");
 		}
-	} else {
-		tonextbackup = backupmins
 	}
 	return true
 

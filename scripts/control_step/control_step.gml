@@ -176,20 +176,7 @@ function control_step() {
 	}
 
 	// Auto-recovery
-	if (current_song.totalblocks > 0) {
-		tonextbackup -= 1 / room_speed / 60 * (1 / currspeed)
-		if (tonextbackup <= 0 && playing == 0) {
-		    for (var sss = 0; sss < array_length(songs); sss++) {
-                if (filename_name(songs[sss].filename) != "") {
-                    songs[sss].song_backupname = filename_name(filename_change_ext(songs[sss].filename, ".nbs"));
-                } else {
-                    songs[sss].song_backupname = "Unsaved song " + string(songs[sss].song_backupid) + ".nbs"
-                }
-                save_song(backup_directory + songs[sss].song_backupname, true)
-			}
-			tonextbackup = backupmins
-		}
-	}
+	backup_step(1 / room_speed / 60 * (1 / currspeed))
 
 	// Toggle fullscreen
 	if (keyboard_check_pressed(vk_f11)) {
