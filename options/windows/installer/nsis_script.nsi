@@ -57,6 +57,13 @@
 !define APP_NAME        "${PRODUCT_NAME}"
 !define SHORT_NAME        "${PRODUCT_NAME}"
 
+; Track installed files across upgrades, preserving pre-existing/user files.
+!define INSTDIR_REG_ROOT SHCTX
+!define INSTDIR_REG_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SHORT_NAME}"
+!define UNINSTALL_LOG "uninstall"
+!include AdvUninstLog.nsh
+!insertmacro UNATTENDED_UNINSTALL
+
 ;;USAGE:
 !define MIN_FRA_MAJOR "2"
 !define MIN_FRA_MINOR "0"
@@ -131,16 +138,18 @@ Section `${APP_NAME}`
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
   
-  ; Put file there
+  ; Log only files added by this installation, not other folder contents.
+  !insertmacro UNINSTALL.LOG_OPEN_INSTALL
   File "${LICENSE_NAME}"
   File /r "${SOURCE_DIR}\*.*"
+  !insertmacro UNINSTALL.LOG_CLOSE_INSTALL
   
   ; Write the uninstall keys for Windows
   WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SHORT_NAME}" "DisplayName" "${APP_NAME}"
   WriteRegStr SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SHORT_NAME}" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegDWORD SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SHORT_NAME}" "NoModify" 1
   WriteRegDWORD SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SHORT_NAME}" "NoRepair" 1
-  WriteUninstaller "uninstall.exe"
+  ; .onInstSuccess writes the uninstaller together with its completed log.
 
 SectionEnd
 
@@ -165,20 +174,39 @@ SectionEnd
 
 ;--------------------------------
 
+Function .onInit
+  !insertmacro UNINSTALL.LOG_PREPARE_INSTALL
+  ; Always exclude existing files, even when the previous log was lost.
+  ; The helper otherwise skips that snapshot after its missing-log warning.
+  StrCpy $unlog_error ""
+FunctionEnd
+
+Function .onInstSuccess
+  !insertmacro UNINSTALL.LOG_UPDATE_INSTALL
+FunctionEnd
+
+Function un.onInit
+  ; A missing log must stop uninstall rather than guess which files to delete.
+  !insertmacro UNINSTALL.LOG_BEGIN_UNINSTALL
+FunctionEnd
+
 ; Uninstaller
 
 Section "Uninstall"
+  SetOutPath "$TEMP"
+  !insertmacro UNINSTALL.LOG_UNINSTALL "$INSTDIR"
+  !insertmacro UNINSTALL.LOG_END_UNINSTALL
+
   ; Remove registry keys
   DeleteRegKey SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SHORT_NAME}"
-
-  ; Remove files and uninstaller (everything)
-  RMDir /r "$INSTDIR"
 
   ; Remove desktop icon
   Delete "$DESKTOP\${APP_NAME}.lnk" 
 
   ; Remove shortcuts, if any
-  Delete "$SMPROGRAMS\${APP_NAME}\*.*"
+  Delete "$SMPROGRAMS\${APP_NAME}\Uninstall.lnk"
+  Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
+  Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME} License.lnk"
 
   ; Remove directories used
   RMDir "$SMPROGRAMS\${APP_NAME}"
