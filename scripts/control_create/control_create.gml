@@ -793,38 +793,14 @@ function control_create() {
 		}
 	}
 	
-	if (file_find_first(backup_directory + "*.nbs", 0) != "" && !port_taken && !isplayer) {
+	var recovery_files = []
+	if (!port_taken && !isplayer) recovery_files = backup_restore_candidates()
+	if (array_length(recovery_files) > 0) {
 		var isrecover = 0
 		if (language != 1) isrecover = question("Note Block Studio quit unexpectedly while you were working on a song. Do you want to recover your work?\n\n(If you click 'No', you'll be prompted to recover it again the next time you open the program.)", "Auto-recovery")
 		else isrecover = question("Note Block Studio在您工作时意外关闭了。要恢复您的文档吗？\n\n（如果点击“No”，下次打开软件时将会再次提示恢复。）", "自动恢复")
 		if (isrecover) {
-			// Create restore folder
-			if (!directory_exists_lib(restore_directory)) {
-				directory_create_lib(restore_directory);
-			}
-			
-			// Copy files to a new, safe location
-			var file_to_restore = file_find_first(backup_directory + "*.nbs", 0);
-			var restored_count = 0;
-			while (file_to_restore != "") {
-				files_copy_lib(backup_directory + file_to_restore, restore_directory + file_to_restore);
-				restored_count += 1;
-				file_to_restore = file_find_next();
-			}
-			file_find_close();
-			
-			// Delete original songs (only after everything has been copied!)
-			var file_to_delete = file_find_first(backup_directory + "*.nbs", 0);
-			while (file_to_delete != "") {
-				files_delete_lib(backup_directory + file_to_delete)
-				file_to_delete = file_find_next();
-			}
-			file_find_close();
-			
-			// Open restore folder
-			if (language != 1) message(string(restored_count) + " " + condstr(restored_count > 1, "files have been restored.", "file has been restored."), "Auto-recovery");
-			else message(string(restored_count) + "个文件已恢复。", "自动恢复");
-			open_url(restore_directory);
+			backup_restore_report(backup_restore_files(recovery_files))
 		}
 	}
 
