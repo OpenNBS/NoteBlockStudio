@@ -450,7 +450,7 @@ function menu_click(argument0) {
 					var menutabvar = menutab
 					for (var i = array_length(songs) - 1; i >= 0; i--) {
 						if (i != menutabvar) {
-							close_song(i)
+							if (!close_song(i)) break
 							if (i < menutab) menutabvar--
 						}
 						set_song(menutabvar)
@@ -459,7 +459,7 @@ function menu_click(argument0) {
 				}
 				case 3: {
 					for (var i = array_length(songs) - 1; i > menutab; i--) {
-						close_song(i)
+						if (!close_song(i)) break
 					}
 					break;
 				}
