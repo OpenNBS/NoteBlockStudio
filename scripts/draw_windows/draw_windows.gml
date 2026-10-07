@@ -31,6 +31,7 @@ function draw_windows() {
 	// Escape dismisses an open drop-down/context menu before the window itself.
 	if (window_escape_pressed && (wmenu != 0 || instance_exists(obj_menu))) {
 		with (obj_menu) instance_destroy()
+		menu_shown = ""
 		window = window mod w_menu
 		wmenu = 0
 		window_escape_pressed = false

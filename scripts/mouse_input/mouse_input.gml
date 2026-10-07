@@ -1,6 +1,6 @@
 // One snapshot is shared by every Step and Draw consumer in a frame.
 global.nbs_mouse_state = {ready:false, valid:false, x:0, y:0,
-    held:0, pressed:0, released:0, cancelled:false}
+    held:0, pressed:0, released:0, cancelled:false, command:-1}
 global.nbs_mouse_retry = 0
 
 function nbs_mouse_init() {
@@ -9,6 +9,10 @@ function nbs_mouse_init() {
 
 function nbs_mouse_forget_press() {
     if (instance_exists(obj_controller)) {
+        if (obj_controller.window == w_dragtab) {
+            obj_controller.window = 0
+            obj_controller.windowopen = 0
+        }
         obj_controller.mousepress_x = -1
         obj_controller.mousepress_y = -1
         obj_controller.mousepress_window = -1
