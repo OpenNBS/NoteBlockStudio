@@ -43,6 +43,8 @@ module NoteBlockStudio
 
     ICON_ASSETS = ["Icon.xcassets", "NBS Icon macOS.icon"].freeze
     OPTIONAL_EXECUTABLES = %w[ffmpeg ffprobe].freeze
+    EMBEDDED_CODE_SIGN_SCRIPT = "tools/macos_build/sign_embedded_resource_code.rb"
+    EMBEDDED_CODE_SIGN_PHASE = "Sign Embedded Resource Code"
     APP_ICON_NAME = "NBS Icon macOS"
     MACOS_DEPLOYMENT_TARGET = "12.0"
     DEFAULT_TEAM_ID = "2WJ25NL8J5"
@@ -308,6 +310,7 @@ module NoteBlockStudio
       ]
       required.concat(ICON_ASSETS.map { |name| @repo_root.join(name) })
       required.concat(DYLIBS.map { |source, _destination| @repo_root.join(source) })
+      required << @repo_root.join(EMBEDDED_CODE_SIGN_SCRIPT)
 
       missing = required.reject(&:exist?)
       return if missing.empty?
@@ -431,6 +434,8 @@ module NoteBlockStudio
         build_file.settings["ATTRIBUTES"] = attributes | ["CodeSignOnCopy"]
       end
 
+      add_embedded_code_sign_phase(target)
+
       team_id = signing_team_id(target)
       signing_style = ENV.fetch("NBS_MAC_SIGNING_STYLE", "Manual").capitalize
       unless %w[Automatic Manual].include?(signing_style)
@@ -483,6 +488,17 @@ module NoteBlockStudio
       return groups.first if groups.length == 1
 
       raise FixerError, "Could not identify the Xcode Resources group."
+    end
+
+    def add_embedded_code_sign_phase(target)
+      phase = target.shell_script_build_phases.find { |candidate| candidate.name == EMBEDDED_CODE_SIGN_PHASE }
+      phase ||= target.new_shell_script_build_phase(EMBEDDED_CODE_SIGN_PHASE)
+      phase.shell_path = "/usr/bin/ruby"
+      phase.shell_script = @repo_root.join(EMBEDDED_CODE_SIGN_SCRIPT).read
+      phase.always_out_of_date = "1"
+      # GameMaker's many Copy Game Files phases and the dylib embed phase must run first.
+      target.build_phases.delete(phase)
+      target.build_phases << phase
     end
 
     def find_or_create_reference(project, group, path)
@@ -538,6 +554,12 @@ module NoteBlockStudio
         project.files.any? { |file| file.path && File.basename(file.path.to_s) == name }
       end
       raise FixerError, "Xcode project verification failed; missing references: #{missing.join(", ")}" unless missing.empty?
+
+      signing_phase = target.shell_script_build_phases.find { |phase| phase.name == EMBEDDED_CODE_SIGN_PHASE }
+      unless signing_phase && target.build_phases.last == signing_phase &&
+             signing_phase.shell_script == @repo_root.join(EMBEDDED_CODE_SIGN_SCRIPT).read
+        raise FixerError, "Embedded resource code signing phase is missing or out of date."
+      end
 
       (project.build_configurations + target.build_configurations).each do |configuration|
         unless configuration.build_settings["MACOSX_DEPLOYMENT_TARGET"] == MACOS_DEPLOYMENT_TARGET

@@ -29,6 +29,10 @@ Recommended: one-click Xcode project fixer
    validates the bundle ID, applies all required settings, and opens the project in Xcode.
    This includes setting the macOS deployment target to 12.0 for every project and app
    target configuration; lower deployment targets fail to build.
+   It also adds a final build phase that signs GameMaker's copied Python and
+   other embedded native files with the archive's identity. The four Python
+   executables need their own Hardened Runtime signatures for direct distribution;
+   enabling the capability on the app target alone does not sign those copies.
 
    On its first run, the command downloads the pinned "xcodeproj" Ruby dependency into:
 
@@ -113,3 +117,18 @@ Use these steps if the fixer cannot run on a particular Mac.
 
 8. Choose Product -> Archive, then distribute the archive through Organizer as described
    above.
+
+   If following these manual steps instead of running the fixer, add a final Run
+   Script phase to the app target after every Copy Game Files and Embed Frameworks
+   phase. Set its shell to /usr/bin/ruby and paste in the contents of
+   tools/macos_build/sign_embedded_resource_code.rb from this repository.
+
+
+If Xcode reports "Hardened Runtime is Not Enabled" for python3 or python3.8
+-------------------------------------------------------------------------
+
+Run the updated Prepare macOS Build.command on the generated Xcode project,
+then create a new archive. Changing the app target's Hardened Runtime switch
+does not repair Python executables already copied into an existing archive.
+The new archive must show "flags=0x10000(runtime)", a Developer ID Application
+authority, and a Timestamp for each Python executable when distributing directly.
