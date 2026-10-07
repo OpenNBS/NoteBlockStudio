@@ -21,12 +21,12 @@ function backup_clear() {
 
 }
 
-function backup_delete_own_tab() {
+function backup_delete_own_tab(source_song = songs[song]) {
 	// A display filename is not proof of ownership: other tabs/sessions may use it.
-	var path = songs[song].song_backup_path
+	var path = source_song.song_backup_path
 	if (path == "") return;
 	if (file_exists_lib(path)) files_delete_lib(path)
-	if (!file_exists_lib(path)) songs[song].song_backup_path = ""
+	if (!file_exists_lib(path)) source_song.song_backup_path = ""
 }
 
 function update_backup_name() {

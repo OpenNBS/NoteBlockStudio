@@ -45,6 +45,10 @@ The added exports are `gm_mouse_start`, `gm_mouse_poll`, `gm_mouse_clear`, and
 
 ## Saving and native quit
 
+`macos_choose_directory(title)` uses an in-process `NSOpenPanel` for folder
+exports. Selecting the parent folder grants access to its children in sandboxed
+builds. It returns an empty string on Cancel.
+
 `macos_replace_file(staged_path, destination, previous_path)` replaces a file
 selected through a native Save panel. GML first verifies a staged copy in the app
 container. The extension uses `NSFileCoordinator` and an item replacement

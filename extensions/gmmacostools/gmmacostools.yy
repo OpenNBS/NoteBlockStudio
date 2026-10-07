@@ -94,6 +94,9 @@
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_scroll_dy","externalName":"gm_scroll_dy","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_music_dir","externalName":"gm_music_dir","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_distribution_channel","externalName":"gm_distribution_channel","kind":1,"help":"Return testflight, direct, app_store, or unknown for the running macOS app.","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_choose_directory","externalName":"gm_choose_directory","kind":1,"help":"Choose a folder in-process so its sandbox grant includes exported child files; returns an empty string on Cancel.","hidden":false,"returnType":1,"argCount":1,"args":[
+            1,
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_replace_file","externalName":"gm_replace_file","kind":1,"help":"Replace a user-selected file from a verified staged file, retaining rollback data in the app container.","hidden":false,"returnType":2,"argCount":3,"args":[
             1,
             1,
@@ -135,6 +138,7 @@
         {"name":"macos_scroll_ended","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_scroll_is_trackpad","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_distribution_channel","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
+        {"name":"macos_choose_directory","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_replace_file","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_quit_reply","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_mouse_start","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},

@@ -14,6 +14,9 @@ function close_song(){
 		var decision = confirm(0, sid)
 		if (song != previous_song) set_song(previous_song)
 		if (decision < 0) return false
+		// Clean up before destroying the owner. Forced shutdown closes manage
+		// backups in control_end(), which may need to retain them for recovery.
+		backup_delete_own_tab(songs[sid])
 	}
 	for (var a = 0; a < 2000; a += 1) {try{songs[song].text_exists_song[a] = text_exists[a]}catch(ee){}; try{songs[song].text_str_song[a] = text_str[a]}catch(ee){}}
 	for (var i = first_custom_index; i < ds_list_size(songs[sid].instrument_list); i++)

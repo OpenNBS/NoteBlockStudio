@@ -837,6 +837,7 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"pyproject.toml","CopyToMask":-1,"filePath":"datafiles/Data/Python",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"README.md","CopyToMask":-1,"filePath":"datafiles/Data/Python",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"audio_export.py","CopyToMask":-1,"filePath":"datafiles/Data/Python",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"datapack_export.py","CopyToMask":-1,"filePath":"datafiles/Data/Python",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"poetry.toml","CopyToMask":-1,"filePath":"datafiles/Data/Python",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"poetry.lock","CopyToMask":-1,"filePath":"datafiles/Data/Python",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"package.py","CopyToMask":-1,"filePath":"datafiles/Data/Python",},
