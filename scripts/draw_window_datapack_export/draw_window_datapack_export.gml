@@ -4,17 +4,11 @@ function draw_window_datapack_export() {
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
+	var navigation_space = (theme == 3) * 32
 	x1 = floor(rw / 2 - 275)
-	y1 = floor(rh / 2 - 215) + windowoffset
-	draw_window(x1, y1, x1 + 550, y1 + 430)
-	if (theme = 3){
-	draw_set_color(13421772)
-	if (fdark) draw_set_color(3355443)
-	draw_rectircle(x1+1,y1+1,x1+548,y1+48,0)
-	draw_set_color(c_black)
-	draw_theme_color()
-	}
-	draw_theme_font(font_main_bold)
+	y1 = floor(rh / 2 - 215 - navigation_space / 2) + windowoffset
+	draw_window(x1, y1, x1 + 550, y1 + 430 + navigation_space)
+	draw_theme_font(theme == 3 ? font_main : font_main_bold)
 	if (language != 1) draw_text_dynamic(x1 + 8, y1 + 8, "Data Pack Export")
 	else draw_text_dynamic(x1 + 8, y1 + 8, "导出数据包")
 	draw_theme_font(font_main) 
@@ -31,66 +25,71 @@ function draw_window_datapack_export() {
 	}
 	nsel = -1
 	menun = -1
-	for (a = 0; a < 3; a += 1) {
-		strw = string_width_dynamic(str[a])
-	    c = mouse_rectangle(x1 + b, y1 + 28, strw + 12, 18)
-	    if (selected_tab_dat = a) {
-	        stabx = b - 2
-	        stabw = strw + 15
-	    } else {
-	        draw_sprite(spr_tabbuttons, 0 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b, y1 + 28)
-	        draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + 2, y1 + 28, strw / 2 + 4, 1, 0, -1, draw_get_alpha())
-	        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, y1 + 28)
-	        draw_text_dynamic(x1 + b + 6, y1 + 30, str[a])
-	    }
-	    if (nbs_mouse_check_button_pressed(mb_left) && c && wmenu = 0) nsel = a
-	    b += strw + 12
-	}
-	//Background panel
-	if (theme = 0 || theme = 3) {
-	    draw_set_color(c_white)
-	    if (theme != 3) draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 362, 0) 
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    if (theme != 3) draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 362, 1)
-	    draw_set_color(c_white)
-		if (theme = 3) draw_set_color(15987699)
-		if (theme = 3 && fdark) draw_set_color(2105376)
-		if (theme != 3) {
-	    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 0)
-		} else {
-		draw_rectircle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 25, 0)
+	if (theme == 3) {
+		nsel = draw_navigationview(x1, y1 + 30, str, selected_tab_dat)
+	} else {
+		for (a = 0; a < 3; a += 1) {
+			strw = string_width_dynamic(str[a])
+		    c = mouse_rectangle(x1 + b, y1 + 28, strw + 12, 18)
+		    if (selected_tab_dat = a) {
+		        stabx = b - 2
+		        stabw = strw + 15
+		    } else {
+		        draw_sprite(spr_tabbuttons, 0 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b, y1 + 28)
+		        draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + 2, y1 + 28, strw / 2 + 4, 1, 0, -1, draw_get_alpha())
+		        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, y1 + 28)
+		        draw_text_dynamic(x1 + b + 6, y1 + 30, str[a])
+		    }
+		    if (nbs_mouse_check_button_pressed(mb_left) && c && wmenu = 0) nsel = a
+		    b += strw + 12
 		}
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    if (theme != 3) draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 1)
-	    draw_set_color(c_white)
-		if (theme = 3) draw_set_color(15987699)
-		if (theme = 3 && fdark) draw_set_color(2105376)
-	    draw_rectangle(x1 + stabx + 1, y1 + 46, x1 + stabx + stabw - 1, y1 + 47, 0)
-	    draw_theme_color()
-	    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab_dat])
-	} else if(theme = 1){
-	    draw_sprite(spr_tabbuttons, 24, x1 + stabx - 1, y1 + 26)
-	    draw_sprite_ext(spr_tabbuttons, 25, x1 + stabx + 1, y1 + 26, stabw / 2 - 1, 1, 0, -1, 1)
-	    draw_sprite(spr_tabbuttons, 26, x1 + stabx + stabw - 1, y1 + 26)
-	    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab_dat])
-	}else{
-		draw_set_color(c_dark)
-	    draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 392, 0) 
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 392, 1)
-	    draw_set_color(c_dark)
-	    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 0)
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 1)
-	    draw_set_color(c_dark)
-	    draw_rectangle(x1 + stabx + 1, y1 + 46, x1 + stabx + stabw - 1, y1 + 47, 0)
-	    draw_theme_color()
-	    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab_dat])
+		//Background panel
+		if (theme = 0 || theme = 3) {
+		    draw_set_color(c_white)
+		    if (theme != 3) draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 362, 0)
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    if (theme != 3) draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 362, 1)
+		    draw_set_color(c_white)
+			if (theme = 3) draw_set_color(15987699)
+			if (theme = 3 && fdark) draw_set_color(2105376)
+			if (theme != 3) {
+		    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 0)
+			} else {
+			draw_rectircle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 25, 0)
+			}
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    if (theme != 3) draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 1)
+		    draw_set_color(c_white)
+			if (theme = 3) draw_set_color(15987699)
+			if (theme = 3 && fdark) draw_set_color(2105376)
+		    draw_rectangle(x1 + stabx + 1, y1 + 46, x1 + stabx + stabw - 1, y1 + 47, 0)
+		    draw_theme_color()
+		    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab_dat])
+		} else if(theme = 1){
+		    draw_sprite(spr_tabbuttons, 24, x1 + stabx - 1, y1 + 26)
+		    draw_sprite_ext(spr_tabbuttons, 25, x1 + stabx + 1, y1 + 26, stabw / 2 - 1, 1, 0, -1, 1)
+		    draw_sprite(spr_tabbuttons, 26, x1 + stabx + stabw - 1, y1 + 26)
+		    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab_dat])
+		}else{
+			draw_set_color(c_dark)
+		    draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 392, 0)
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 392, 1)
+		    draw_set_color(c_dark)
+		    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 0)
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 1)
+		    draw_set_color(c_dark)
+		    draw_rectangle(x1 + stabx + 1, y1 + 46, x1 + stabx + stabw - 1, y1 + 47, 0)
+		    draw_theme_color()
+		    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab_dat])
+		}
 	}
 	if (nsel > -1) selected_tab_dat = nsel
 	selected_tab_dat += keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left)
 	if (selected_tab_dat < 0) selected_tab_dat = 2
 	if (selected_tab_dat > 2) selected_tab_dat = 0
+	y1 += navigation_space
 	if (language != 1) {
 	if (selected_tab_dat = 0) {
 		draw_sprite(spr_datapack_exp, 2, x1 + 66, y1 + -40)

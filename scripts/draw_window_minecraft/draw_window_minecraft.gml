@@ -4,26 +4,28 @@ function draw_window_minecraft() {
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
+	var navigation_space = (theme == 3) * 32
 	x1 = floor(rw / 2 - 245)
-	y1 = floor(rh / 2 - 225) + windowoffset
-	draw_window(x1, y1, x1 + 490, y1 + 450)
+	y1 = floor(rh / 2 - 225 - navigation_space / 2) + windowoffset
+	draw_window(x1, y1, x1 + 490, y1 + 450 + navigation_space)
 	if (theme = 3){
 	draw_set_color(13421772)
 	if (fdark) draw_set_color(3355443)
-	draw_rectircle(x1+1,y1+1,x1+488,y1+98,0)
+	draw_rectircle(x1 + 8, y1 + 74, x1 + 482, y1 + 124, false)
 	draw_set_color(c_black)
 	draw_theme_color()
 	}
+	var description_y = y1 + (theme == 3 ? 82 : 32)
 	if (language != 1) {
-	draw_theme_font(font_main_bold)
+	draw_theme_font(theme == 3 ? font_main : font_main_bold)
 	draw_text_dynamic(x1 + 8, y1 + 8, "Minecraft Compatibility")
 	draw_theme_font(font_main)
-	draw_text_dynamic(x1 + 16, y1 + 32, "Due to the limitations of note blocks, the song must meet certain criteria in order\nto be properly imported into Minecraft.")
+	draw_text_dynamic(x1 + 16, description_y, "Due to the limitations of note blocks, the song must meet certain criteria in order\nto be properly imported into Minecraft.")
 	} else {
-	draw_theme_font(font_main_bold)
+	draw_theme_font(theme == 3 ? font_main : font_main_bold)
 	draw_text_dynamic(x1 + 8, y1 + 8, "Minecraft 兼容性")
 	draw_theme_font(font_main)
-	draw_text_dynamic(x1 + 16, y1 + 32, "由于音符盒的种种限制，歌曲需要满足特定条件才能导入进 Minecraft。")
+	draw_text_dynamic(x1 + 16, description_y, "由于音符盒的种种限制，歌曲需要满足特定条件才能导入进 Minecraft。")
 	}
 
 	yy = y1 + 50
@@ -38,62 +40,66 @@ function draw_window_minecraft() {
 	}
 	nsel = -1
 
-	// Draw tabs
-	for (a = 0; a < 2; a += 1) {
-		strw = string_width_dynamic(str[a])
-	    c = mouse_rectangle(x1 + b, yy + 28, strw + 12, 18)
-	    if (selected_tab_mc = a) {
-	        stabx = b - 2
-	        stabw = strw + 15
-	    } else {
-	        draw_sprite(spr_tabbuttons, 0 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b, yy + 28)
-	        draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + 2, yy + 28, strw / 2 + 4, 1, 0, -1, draw_get_alpha())
-	        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, yy + 28)
-	        draw_text_dynamic(x1 + b + 6, yy + 30, str[a])
-	    }
-	    if (nbs_mouse_check_button_pressed(mb_left) && c) nsel = a
-	    b += strw + 12
-	}
-	if (theme = 0 || theme = 3) {
-	    draw_set_color(c_white)
-	    if (theme != 3) draw_rectangle(x1 + 6, yy + 46, x1 + 484, yy + 350, 0) 
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    if (theme != 3) draw_rectangle(x1 + 6, yy + 46, x1 + 484, yy + 350, 1)
-	    draw_set_color(c_white)
-		if (theme = 3) draw_set_color(15987699)
-		if (theme = 3 && fdark) draw_set_color(2105376)
-		if (theme != 3) {
-		draw_rectangle(x1 + stabx, yy + 26, x1 + stabx + stabw, yy + 26 + 20, 0)
-		} else {
-	    draw_rectircle(x1 + stabx, yy + 26, x1 + stabx + stabw, yy + 26 + 25, 0)
-		}
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    if (theme != 3) draw_rectangle(x1 + stabx, yy + 26, x1 + stabx + stabw, yy + 26 + 20, 1)
-	    draw_set_color(c_white)
-		if (theme = 3) draw_set_color(15987699)
-		if (theme = 3 && fdark) draw_set_color(2105376)
-	    draw_rectangle(x1 + stabx + 1, yy + 46, x1 + stabx + stabw - 1, yy + 47, 0)
-	    draw_theme_color()
-	    draw_text_dynamic(x1 + stabx + 8, yy + 28, str[selected_tab_mc])
-	} else if(theme = 1){
-	    draw_sprite(spr_tabbuttons, 12, x1 + stabx - 1, yy + 26)
-	    draw_sprite_ext(spr_tabbuttons, 13, x1 + stabx + 1, yy + 26, stabw / 2 - 1, 1, 0, -1, 1)
-	    draw_sprite(spr_tabbuttons, 14, x1 + stabx + stabw - 1, yy + 26)
-	    draw_text_dynamic(x1 + stabx + 8, yy + 28, str[selected_tab_mc])
-		draw_window(x1 + 6, yy + 46, x1 + 484, yy + 350)
+	if (theme == 3) {
+		nsel = draw_navigationview(x1, y1 + 30, str, selected_tab_mc)
 	} else {
-		draw_set_color(c_dark)
-	    draw_rectangle(x1 + 6, yy + 46, x1 + 484, yy + 350, 0) 
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    draw_rectangle(x1 + 6, yy + 46, x1 + 484, yy + 350, 1)
-	    draw_set_color(c_dark)
-	    draw_rectangle(x1 + stabx, yy + 26, x1 + stabx + stabw, yy + 26 + 20, 0)
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    draw_rectangle(x1 + stabx, yy + 26, x1 + stabx + stabw, yy + 26 + 20, 1)
-	    draw_set_color(c_dark)
-	    draw_rectangle(x1 + stabx + 1, yy + 46, x1 + stabx + stabw - 1, yy + 47, 0)
-	    draw_theme_color()
-	    draw_text_dynamic(x1 + stabx + 8, yy + 28, str[selected_tab_mc])
+		// Draw tabs
+		for (a = 0; a < 2; a += 1) {
+			strw = string_width_dynamic(str[a])
+		    c = mouse_rectangle(x1 + b, yy + 28, strw + 12, 18)
+		    if (selected_tab_mc = a) {
+		        stabx = b - 2
+		        stabw = strw + 15
+		    } else {
+		        draw_sprite(spr_tabbuttons, 0 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b, yy + 28)
+		        draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + 2, yy + 28, strw / 2 + 4, 1, 0, -1, draw_get_alpha())
+		        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, yy + 28)
+		        draw_text_dynamic(x1 + b + 6, yy + 30, str[a])
+		    }
+		    if (nbs_mouse_check_button_pressed(mb_left) && c) nsel = a
+		    b += strw + 12
+		}
+		if (theme = 0 || theme = 3) {
+		    draw_set_color(c_white)
+		    if (theme != 3) draw_rectangle(x1 + 6, yy + 46, x1 + 484, yy + 350, 0)
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    if (theme != 3) draw_rectangle(x1 + 6, yy + 46, x1 + 484, yy + 350, 1)
+		    draw_set_color(c_white)
+			if (theme = 3) draw_set_color(15987699)
+			if (theme = 3 && fdark) draw_set_color(2105376)
+			if (theme != 3) {
+			draw_rectangle(x1 + stabx, yy + 26, x1 + stabx + stabw, yy + 26 + 20, 0)
+			} else {
+		    draw_rectircle(x1 + stabx, yy + 26, x1 + stabx + stabw, yy + 26 + 25, 0)
+			}
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    if (theme != 3) draw_rectangle(x1 + stabx, yy + 26, x1 + stabx + stabw, yy + 26 + 20, 1)
+		    draw_set_color(c_white)
+			if (theme = 3) draw_set_color(15987699)
+			if (theme = 3 && fdark) draw_set_color(2105376)
+		    draw_rectangle(x1 + stabx + 1, yy + 46, x1 + stabx + stabw - 1, yy + 47, 0)
+		    draw_theme_color()
+		    draw_text_dynamic(x1 + stabx + 8, yy + 28, str[selected_tab_mc])
+		} else if(theme = 1){
+		    draw_sprite(spr_tabbuttons, 12, x1 + stabx - 1, yy + 26)
+		    draw_sprite_ext(spr_tabbuttons, 13, x1 + stabx + 1, yy + 26, stabw / 2 - 1, 1, 0, -1, 1)
+		    draw_sprite(spr_tabbuttons, 14, x1 + stabx + stabw - 1, yy + 26)
+		    draw_text_dynamic(x1 + stabx + 8, yy + 28, str[selected_tab_mc])
+			draw_window(x1 + 6, yy + 46, x1 + 484, yy + 350)
+		} else {
+			draw_set_color(c_dark)
+		    draw_rectangle(x1 + 6, yy + 46, x1 + 484, yy + 350, 0)
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    draw_rectangle(x1 + 6, yy + 46, x1 + 484, yy + 350, 1)
+		    draw_set_color(c_dark)
+		    draw_rectangle(x1 + stabx, yy + 26, x1 + stabx + stabw, yy + 26 + 20, 0)
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    draw_rectangle(x1 + stabx, yy + 26, x1 + stabx + stabw, yy + 26 + 20, 1)
+		    draw_set_color(c_dark)
+		    draw_rectangle(x1 + stabx + 1, yy + 46, x1 + stabx + stabw - 1, yy + 47, 0)
+		    draw_theme_color()
+		    draw_text_dynamic(x1 + stabx + 8, yy + 28, str[selected_tab_mc])
+		}
 	}
 	if (nsel > -1) selected_tab_mc = nsel
 	selected_tab_mc += keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left)
@@ -101,7 +107,7 @@ function draw_window_minecraft() {
 	if (selected_tab_mc > 1) selected_tab_mc = 0
 
 	// Draw content
-	yy += 65
+	yy += 65 + navigation_space
 	if (selected_tab_mc = 0) { // Schematic
 
 		if(songs[song].real_tempo = 10 || songs[song].real_tempo = 5 || songs[song].real_tempo = 2.5){
@@ -486,7 +492,7 @@ function draw_window_minecraft() {
 		draw_theme_color()
 	}
 	
-	if (draw_button2(x1 + 240 - 36, y1 + 413, 72, condstr(language != 1, "OK", "确定")) && (windowopen = 1 || theme != 3)) windowclose = 1
+	if (draw_button2(x1 + 240 - 36, y1 + 413 + navigation_space, 72, condstr(language != 1, "OK", "确定")) && (windowopen = 1 || theme != 3)) windowclose = 1
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) {
 		if (array_length(text_mouseover) = 0) window_set_cursor(cr_default)
 	}

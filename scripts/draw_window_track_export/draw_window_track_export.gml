@@ -4,17 +4,11 @@ function draw_window_track_export() {
 	if (theme = 3) draw_set_alpha(windowalpha)
 	var x1, y1, a, b, c, d, str, strw, nsel, tabs, tabstr, tabw, tabtip, menun, menua, menub, block, blocks, c1, c2, formatstr, formatmenu, track_preview_plan, track_end, track_height;
 	curs = cr_default
+	var navigation_space = (theme == 3) * 32
 	x1 = floor(rw / 2 - 275)
-	y1 = floor(rh / 2 - 200) + windowoffset
-	draw_window(x1, y1, x1 + 550, y1 + 400)
-	if (theme = 3){
-	draw_set_color(13421772)
-	if (fdark) draw_set_color(3355443)
-	draw_rectircle(x1+1,y1+1,x1+548,y1+48,0)
-	draw_set_color(c_black)
-	draw_theme_color()
-	}
-	draw_theme_font(font_main_bold)
+	y1 = floor(rh / 2 - 200 - navigation_space / 2) + windowoffset
+	draw_window(x1, y1, x1 + 550, y1 + 400 + navigation_space)
+	draw_theme_font(theme == 3 ? font_main : font_main_bold)
 	if (language != 1) draw_text_dynamic(x1 + 8, y1 + 8, "Track Export")
 	else draw_text_dynamic(x1 + 8, y1 + 8, "导出直轨")
 	draw_theme_font(font_main)
@@ -31,69 +25,74 @@ function draw_window_track_export() {
 	}
 	nsel = -1
 	menun = -1
-	if (language != 1) {if (draw_checkbox(x1 + 12, y1 + 374, sch_exp_remember, "Remember changes", "Whether to use these settings the\nnext time you export a Schematic.", false, true) && wmenu = 0) sch_exp_remember=!sch_exp_remember}
-	else {if (draw_checkbox(x1 + 12, y1 + 374, sch_exp_remember, "记住我的更改", "下次导出结构时是否使用同样的设定。", false, true) && wmenu = 0) sch_exp_remember=!sch_exp_remember}
+	if (language != 1) {if (draw_checkbox(x1 + 12, y1 + 374 + navigation_space, sch_exp_remember, "Remember changes", "Whether to use these settings the\nnext time you export a Schematic.", false, true) && wmenu = 0) sch_exp_remember=!sch_exp_remember}
+	else {if (draw_checkbox(x1 + 12, y1 + 374 + navigation_space, sch_exp_remember, "记住我的更改", "下次导出结构时是否使用同样的设定。", false, true) && wmenu = 0) sch_exp_remember=!sch_exp_remember}
 
-	if (theme = 1) draw_window(x1 + 4, y1 + 45, x1 + 496 + 50, y1 + 364)
-	for (a = 0; a < 3; a += 1) {
-		strw = string_width_dynamic(str[a])
-	    c = mouse_rectangle(x1 + b, y1 + 28, strw + 12, 18)
-	    if (selected_tab_sch = a) {
-	        stabx = b - 2
-	        stabw = strw + 15
-	    } else {
-	        draw_sprite(spr_tabbuttons, 0 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b, y1 + 28)
-	        draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + 2, y1 + 28, strw / 2 + 4, 1, 0, -1, draw_get_alpha())
-	        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, y1 + 28)
-	        draw_text_dynamic(x1 + b + 6, y1 + 30, str[a])
-	    }
-	    if (nbs_mouse_check_button_pressed(mb_left) && c && wmenu = 0) nsel = a
-	    b += strw + 12
-	}
-	if (theme = 0 || theme = 3) {
-	    draw_set_color(c_white)
-	    if (theme != 3) draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 362, 0) 
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    if (theme != 3) draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 362, 1)
-	    draw_set_color(c_white)
-		if (theme = 3) draw_set_color(15987699)
-		if (theme = 3 && fdark) draw_set_color(2105376)
-		if (theme != 3) {
-	    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 0)
-		} else {
-		draw_rectircle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 25, 0)
+	if (theme == 3) {
+		nsel = draw_navigationview(x1, y1 + 30, str, selected_tab_sch)
+	} else {
+		if (theme = 1) draw_window(x1 + 4, y1 + 45, x1 + 496 + 50, y1 + 364)
+		for (a = 0; a < 3; a += 1) {
+			strw = string_width_dynamic(str[a])
+		    c = mouse_rectangle(x1 + b, y1 + 28, strw + 12, 18)
+		    if (selected_tab_sch = a) {
+		        stabx = b - 2
+		        stabw = strw + 15
+		    } else {
+		        draw_sprite(spr_tabbuttons, 0 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b, y1 + 28)
+		        draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + 2, y1 + 28, strw / 2 + 4, 1, 0, -1, draw_get_alpha())
+		        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, y1 + 28)
+		        draw_text_dynamic(x1 + b + 6, y1 + 30, str[a])
+		    }
+		    if (nbs_mouse_check_button_pressed(mb_left) && c && wmenu = 0) nsel = a
+		    b += strw + 12
 		}
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    if (theme != 3) draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 1)
-	    draw_set_color(c_white)
-		if (theme = 3) draw_set_color(15987699)
-		if (theme = 3 && fdark) draw_set_color(2105376)
-	    draw_rectangle(x1 + stabx + 1, y1 + 46, x1 + stabx + stabw - 1, y1 + 47, 0)
-	    draw_theme_color()
-	    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab_sch])
-	} else if(theme = 1){
-	    draw_sprite(spr_tabbuttons, 24, x1 + stabx - 1, y1 + 26)
-	    draw_sprite_ext(spr_tabbuttons, 25, x1 + stabx + 1, y1 + 26, stabw / 2 - 1, 1, 0, -1, 1)
-	    draw_sprite(spr_tabbuttons, 26, x1 + stabx + stabw - 1, y1 + 26)
-	    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab_sch])
-	}else{
-		draw_set_color(c_dark)
-	    draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 362, 0) 
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 362, 1)
-	    draw_set_color(c_dark)
-	    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 0)
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 1)
-	    draw_set_color(c_dark)
-	    draw_rectangle(x1 + stabx + 1, y1 + 46, x1 + stabx + stabw - 1, y1 + 47, 0)
-	    draw_theme_color()
-	    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab_sch])
+		if (theme = 0 || theme = 3) {
+		    draw_set_color(c_white)
+		    if (theme != 3) draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 362, 0)
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    if (theme != 3) draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 362, 1)
+		    draw_set_color(c_white)
+			if (theme = 3) draw_set_color(15987699)
+			if (theme = 3 && fdark) draw_set_color(2105376)
+			if (theme != 3) {
+		    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 0)
+			} else {
+			draw_rectircle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 25, 0)
+			}
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    if (theme != 3) draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 1)
+		    draw_set_color(c_white)
+			if (theme = 3) draw_set_color(15987699)
+			if (theme = 3 && fdark) draw_set_color(2105376)
+		    draw_rectangle(x1 + stabx + 1, y1 + 46, x1 + stabx + stabw - 1, y1 + 47, 0)
+		    draw_theme_color()
+		    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab_sch])
+		} else if(theme = 1){
+		    draw_sprite(spr_tabbuttons, 24, x1 + stabx - 1, y1 + 26)
+		    draw_sprite_ext(spr_tabbuttons, 25, x1 + stabx + 1, y1 + 26, stabw / 2 - 1, 1, 0, -1, 1)
+		    draw_sprite(spr_tabbuttons, 26, x1 + stabx + stabw - 1, y1 + 26)
+		    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab_sch])
+		}else{
+			draw_set_color(c_dark)
+		    draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 362, 0)
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    draw_rectangle(x1 + 6, y1 + 46, x1 + 494 + 50, y1 + 362, 1)
+		    draw_set_color(c_dark)
+		    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 0)
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 1)
+		    draw_set_color(c_dark)
+		    draw_rectangle(x1 + stabx + 1, y1 + 46, x1 + stabx + stabw - 1, y1 + 47, 0)
+		    draw_theme_color()
+		    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab_sch])
+		}
 	}
 	if (nsel > -1) selected_tab_sch = nsel
 	selected_tab_sch += keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left)
 	if (selected_tab_sch < 0) selected_tab_sch = 2
 	if (selected_tab_sch > 2) selected_tab_sch = 0
+	y1 += navigation_space
 	if (selected_tab_sch = 0) {
 		if (language != 1) {
 	    draw_sprite(spr_schematic_exp, sch_exp_layout, x1 + 15, y1 + 56)

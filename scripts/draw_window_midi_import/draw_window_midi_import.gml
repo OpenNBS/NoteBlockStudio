@@ -4,107 +4,109 @@ function draw_window_midi_import() {
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
+	var navigation_space = (theme == 3) * 32
 	menun = -1
 	nsel = -1
 	x1 = floor(rw / 2 - 300)
-	y1 = floor(rh / 2 - 200) + windowoffset
-	draw_window(x1, y1, x1 + 600, y1 + 400)
+	y1 = floor(rh / 2 - 200 - navigation_space / 2) + windowoffset
+	draw_window(x1, y1, x1 + 600, y1 + 400 + navigation_space)
 	if (theme = 3){
 	draw_set_color(13421772)
 	if (fdark) draw_set_color(3355443)
-	draw_rectircle(x1+1,y1+1,x1+598,y1+148,0)
+	draw_rectircle(x1 + 8, y1 + 74, x1 + 592, y1 + 176, false)
 	draw_theme_color()
 	}
+	var settings_y = y1 + (theme == 3) * 48
 	if (language != 1) {
-	draw_theme_font(font_main_bold)
+	draw_theme_font(theme == 3 ? font_main : font_main_bold)
 	draw_text_dynamic(x1 + 8, y1 + 8, "MIDI Import")
 	draw_theme_font(font_main)
-	if (draw_checkbox(x1 + 32, y1 + 32, w_midi_removesilent, "Remove silent parts at beginning", "Whether to remove any silent parts\nat the beginning of the song.") && wmenu = 0) {w_midi_removesilent=!w_midi_removesilent midi_songlength = (midi_micsecqn * ((midi_maxpos - midi_minpos * w_midi_removesilent) / (midi_tempo & $7FFF))) / 1000000}
-	if (draw_checkbox(x1 + 32, y1 + 32 + 20, w_midi_name, "Name layers...", "If the layers should be given names\ndepending on the data in the MIDI file.") && wmenu = 0) w_midi_name=!w_midi_name
-	if (draw_radiobox(x1 + 52, y1 + 32 + 40, w_midi_name_patch, "...after patches", "If the layers should be named\nafter the instruments in the MIDI file.", !w_midi_name) && wmenu = 0) w_midi_name_patch = 1
-	if (draw_radiobox(x1 + 52, y1 + 32 + 60, !w_midi_name_patch, "...channel numbers", "If the layers should be named\nafter the channels in the MIDI file.", !w_midi_name) && wmenu = 0) w_midi_name_patch = 0
-	if (draw_checkbox(x1 + 260, y1 + 32, w_midi_tempo, "Same tempo as in file", "Set the song's tempo to match\nthe one of the MIDI file.") && wmenu = 0) w_midi_tempo=!w_midi_tempo
-	if (draw_checkbox(x1 + 410, y1 + 32, w_midi_tempo_changer, "Tempo changes", "Whether to add tempo changes found in the MIDI file.\nTempo changes are not supported in-game and in most NBS-compatible tools.") && wmenu = 0) {w_midi_tempo_changer=!w_midi_tempo_changer}
-	if (draw_checkbox(x1 + 260, y1 + 52, w_midi_note_duration, "Note Duration", "Whether to include the note duration as a stereo trail of notes.\nChoose individual parts in the Note Duration tab.") && wmenu = 0) {
+	if (draw_checkbox(x1 + 32, settings_y + 32, w_midi_removesilent, "Remove silent parts at beginning", "Whether to remove any silent parts\nat the beginning of the song.") && wmenu = 0) {w_midi_removesilent=!w_midi_removesilent midi_songlength = (midi_micsecqn * ((midi_maxpos - midi_minpos * w_midi_removesilent) / (midi_tempo & $7FFF))) / 1000000}
+	if (draw_checkbox(x1 + 32, settings_y + 32 + 20, w_midi_name, "Name layers...", "If the layers should be given names\ndepending on the data in the MIDI file.") && wmenu = 0) w_midi_name=!w_midi_name
+	if (draw_radiobox(x1 + 52, settings_y + 32 + 40, w_midi_name_patch, "...after patches", "If the layers should be named\nafter the instruments in the MIDI file.", !w_midi_name) && wmenu = 0) w_midi_name_patch = 1
+	if (draw_radiobox(x1 + 52, settings_y + 32 + 60, !w_midi_name_patch, "...channel numbers", "If the layers should be named\nafter the channels in the MIDI file.", !w_midi_name) && wmenu = 0) w_midi_name_patch = 0
+	if (draw_checkbox(x1 + 260, settings_y + 32, w_midi_tempo, "Same tempo as in file", "Set the song's tempo to match\nthe one of the MIDI file.") && wmenu = 0) w_midi_tempo=!w_midi_tempo
+	if (draw_checkbox(x1 + 410, settings_y + 32, w_midi_tempo_changer, "Tempo changes", "Whether to add tempo changes found in the MIDI file.\nTempo changes are not supported in-game and in most NBS-compatible tools.") && wmenu = 0) {w_midi_tempo_changer=!w_midi_tempo_changer}
+	if (draw_checkbox(x1 + 260, settings_y + 52, w_midi_note_duration, "Note Duration", "Whether to include the note duration as a stereo trail of notes.\nChoose individual parts in the Note Duration tab.") && wmenu = 0) {
 		w_midi_note_duration = !w_midi_note_duration
 		if (w_midi_note_duration) w_midi_tab = 3
 	}
-	draw_text_dynamic(x1 + 260, y1 + 72, "Max. channel height:")
-	popup_set_window(x1 + 260, y1 + 72, 140, 16, "The maximum allowed layers per channel.\nClick and drag to adjust.")
-	w_midi_maxheight = median(1, draw_dragvalue(1, x1 + 380, y1 + 72, w_midi_maxheight, 1), 20)
-	if (draw_checkbox(x1 + 260, y1 + 92, w_midi_octave, "Keep within octave range", "Whether to automatically transpose the notes\nto keep them within the 2 octave range.") && wmenu = 0) w_midi_octave=!w_midi_octave
-	if (draw_checkbox(x1 + 32, y1 + 112, w_midi_vel, "Read note velocity", "Whether to copy the volume data found\nin each MIDI note.") && wmenu = 0) w_midi_vel=!w_midi_vel
-	if (draw_checkbox(x1 + 260, y1 + 112, w_midi_note_duration_fade, "Fade tail velocity", "Linearly change the generated tail notes from the start percentage to the end percentage.\nThe original note head keeps its imported velocity.", !w_midi_note_duration) && wmenu = 0) w_midi_note_duration_fade = !w_midi_note_duration_fade
+	draw_text_dynamic(x1 + 260, settings_y + 72, "Max. channel height:")
+	popup_set_window(x1 + 260, settings_y + 72, 140, 16, "The maximum allowed layers per channel.\nClick and drag to adjust.")
+	w_midi_maxheight = median(1, draw_dragvalue(1, x1 + 380, settings_y + 72, w_midi_maxheight, 1), 20)
+	if (draw_checkbox(x1 + 260, settings_y + 92, w_midi_octave, "Keep within octave range", "Whether to automatically transpose the notes\nto keep them within the 2 octave range.") && wmenu = 0) w_midi_octave=!w_midi_octave
+	if (draw_checkbox(x1 + 32, settings_y + 112, w_midi_vel, "Read note velocity", "Whether to copy the volume data found\nin each MIDI note.") && wmenu = 0) w_midi_vel=!w_midi_vel
+	if (draw_checkbox(x1 + 260, settings_y + 112, w_midi_note_duration_fade, "Fade tail velocity", "Linearly change the generated tail notes from the start percentage to the end percentage.\nThe original note head keeps its imported velocity.", !w_midi_note_duration) && wmenu = 0) w_midi_note_duration_fade = !w_midi_note_duration_fade
 	fade_locked = !w_midi_note_duration || !w_midi_note_duration_fade
 	if (fade_locked) draw_set_color(c_gray)
-	draw_text_dynamic(x1 + 410, y1 + 111, "Start:")
-	if (fade_locked) draw_text_dynamic(x1 + 445, y1 + 111, string(w_midi_note_duration_fade_start))
-	else w_midi_note_duration_fade_start = median(0, draw_dragvalue(23, x1 + 445, y1 + 112, w_midi_note_duration_fade_start, 1), 100)
-	draw_text_dynamic(x1 + 466, y1 + 111, "%")
-	draw_text_dynamic(x1 + 485, y1 + 111, "End:")
-	if (fade_locked) draw_text_dynamic(x1 + 513, y1 + 111, string(w_midi_note_duration_fade_end))
-	else w_midi_note_duration_fade_end = median(0, draw_dragvalue(24, x1 + 513, y1 + 112, w_midi_note_duration_fade_end, 1), 100)
-	draw_text_dynamic(x1 + 534, y1 + 111, "%")
+	draw_text_dynamic(x1 + 410, settings_y + 111, "Start:")
+	if (fade_locked) draw_text_dynamic(x1 + 445, settings_y + 111, string(w_midi_note_duration_fade_start))
+	else w_midi_note_duration_fade_start = median(0, draw_dragvalue(23, x1 + 445, settings_y + 112, w_midi_note_duration_fade_start, 1), 100)
+	draw_text_dynamic(x1 + 466, settings_y + 111, "%")
+	draw_text_dynamic(x1 + 485, settings_y + 111, "End:")
+	if (fade_locked) draw_text_dynamic(x1 + 513, settings_y + 111, string(w_midi_note_duration_fade_end))
+	else w_midi_note_duration_fade_end = median(0, draw_dragvalue(24, x1 + 513, settings_y + 112, w_midi_note_duration_fade_end, 1), 100)
+	draw_text_dynamic(x1 + 534, settings_y + 111, "%")
 	draw_theme_color()
-	popup_set_window(x1 + 408, y1 + 108, 67, 20, "Velocity of the first generated tail note,\nas a percentage of the MIDI note velocity.\nClick and drag to adjust.")
-	popup_set_window(x1 + 483, y1 + 108, 60, 20, "Velocity of the last generated tail note,\nas a percentage of the MIDI note velocity.\nClick and drag to adjust.")
+	popup_set_window(x1 + 408, settings_y + 108, 67, 20, "Velocity of the first generated tail note,\nas a percentage of the MIDI note velocity.\nClick and drag to adjust.")
+	popup_set_window(x1 + 483, settings_y + 108, 60, 20, "Velocity of the last generated tail note,\nas a percentage of the MIDI note velocity.\nClick and drag to adjust.")
 	
-	draw_text_dynamic(x1 + 470, y1 + 32 + 20, "Time precision")
-	popup_set_window(x1 + 470, y1 + 32 + 20, 100, 20, "How much to increase the spacing between each note,\nso that more notes can be placed in between.")
-	if (draw_radiobox(x1 + 470, y1 + 32 + 40, w_midi_precision == 0, "1x", "Keep the same spacing found in the MIDI file.") && wmenu = 0) w_midi_precision = 0
-	if (draw_radiobox(x1 + 470, y1 + 32 + 60, w_midi_precision == 1, "2x", "Add twice as much space between each note.") && wmenu = 0) w_midi_precision = 1
-	if (draw_radiobox(x1 + 520, y1 + 32 + 40, w_midi_precision == 3, "4x", "Add four times as much space between each note.") && wmenu = 0) w_midi_precision = 3
-	if (draw_radiobox(x1 + 520, y1 + 32 + 60, w_midi_precision == 7, "8x", "Add eight times as much space between each note.\n(This will create a very long song!)") && wmenu = 0) w_midi_precision = 7
+	draw_text_dynamic(x1 + 470, settings_y + 32 + 20, "Time precision")
+	popup_set_window(x1 + 470, settings_y + 32 + 20, 100, 20, "How much to increase the spacing between each note,\nso that more notes can be placed in between.")
+	if (draw_radiobox(x1 + 470, settings_y + 32 + 40, w_midi_precision == 0, "1x", "Keep the same spacing found in the MIDI file.") && wmenu = 0) w_midi_precision = 0
+	if (draw_radiobox(x1 + 470, settings_y + 32 + 60, w_midi_precision == 1, "2x", "Add twice as much space between each note.") && wmenu = 0) w_midi_precision = 1
+	if (draw_radiobox(x1 + 520, settings_y + 32 + 40, w_midi_precision == 3, "4x", "Add four times as much space between each note.") && wmenu = 0) w_midi_precision = 3
+	if (draw_radiobox(x1 + 520, settings_y + 32 + 60, w_midi_precision == 7, "8x", "Add eight times as much space between each note.\n(This will create a very long song!)") && wmenu = 0) w_midi_precision = 7
 	
-	if (draw_checkbox(x1 + 12, y1 + 374, w_midi_remember, "Remember changes", "Whether to use these settings the\nnext time you import a MIDI file.", false, true) && wmenu = 0) w_midi_remember=!w_midi_remember
-	if (draw_button2(x1 + 520, y1 + 368, 72, "Import") && wmenu = 0) {w_midi_tab = 0 window = -1 import_midi() windowalpha = 0 windowclose = 0 windowopen = 0}
-	if (draw_button2(x1 + 520 - 80, y1 + 368, 72, "Cancel", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) {songs[song].midifile = "" w_midi_tab = 0 windowclose = 1}
+	if (draw_checkbox(x1 + 12, y1 + 374 + navigation_space, w_midi_remember, "Remember changes", "Whether to use these settings the\nnext time you import a MIDI file.", false, true) && wmenu = 0) w_midi_remember=!w_midi_remember
+	if (draw_button2(x1 + 520, y1 + 368 + navigation_space, 72, "Import") && wmenu = 0) {w_midi_tab = 0 window = -1 import_midi() windowalpha = 0 windowclose = 0 windowopen = 0}
+	if (draw_button2(x1 + 520 - 80, y1 + 368 + navigation_space, 72, "Cancel", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) {songs[song].midifile = "" w_midi_tab = 0 windowclose = 1}
 	} else {
-	draw_theme_font(font_main_bold)
+	draw_theme_font(theme == 3 ? font_main : font_main_bold)
 	draw_text_dynamic(x1 + 8, y1 + 8, "导入MIDI")
 	draw_theme_font(font_main)
-	if (draw_checkbox(x1 + 32, y1 + 32, w_midi_removesilent, "去除开始时空部分", "是否移除歌曲开始时无音符的部分。") && wmenu = 0) {w_midi_removesilent=!w_midi_removesilent midi_songlength = (midi_micsecqn * ((midi_maxpos - midi_minpos * w_midi_removesilent) / (midi_tempo & $7FFF))) / 1000000}
-	if (draw_checkbox(x1 + 32, y1 + 32 + 20, w_midi_name, "给每层命名......", "是否根据 MIDI 内数据为每层命名。") && wmenu = 0) w_midi_name=!w_midi_name
-	if (draw_radiobox(x1 + 52, y1 + 32 + 40, w_midi_name_patch, "......根据乐器", "是否根据 MIDI 中的乐器为每层命名。", !w_midi_name) && wmenu = 0) w_midi_name_patch = 1
-	if (draw_radiobox(x1 + 52, y1 + 32 + 60, !w_midi_name_patch, "......根据层号", "是否根据 MIDI 中的层序号为每层命名。", !w_midi_name) && wmenu = 0) w_midi_name_patch = 0
-	if (draw_checkbox(x1 + 300, y1 + 32, w_midi_tempo, "导入速度", "是否将速度设定为与 MIDI 文件中一样。") && wmenu = 0) w_midi_tempo=!w_midi_tempo
-	if (draw_checkbox(x1 + 410, y1 + 32, w_midi_tempo_changer, "速度变化", "是否添加 MIDI 文件中的速度变化。\n速度调节器（Tempo Changer）在游戏中及大多数NBS兼容软件中不被支持。") && wmenu = 0) {w_midi_tempo_changer=!w_midi_tempo_changer}
-	if (draw_checkbox(x1 + 300, y1 + 52, w_midi_note_duration, "音符长度", "是否将长音以震荡式的排列方式表示。\n可在“音符长度”页面为各声部分别设置。") && wmenu = 0) {
+	if (draw_checkbox(x1 + 32, settings_y + 32, w_midi_removesilent, "去除开始时空部分", "是否移除歌曲开始时无音符的部分。") && wmenu = 0) {w_midi_removesilent=!w_midi_removesilent midi_songlength = (midi_micsecqn * ((midi_maxpos - midi_minpos * w_midi_removesilent) / (midi_tempo & $7FFF))) / 1000000}
+	if (draw_checkbox(x1 + 32, settings_y + 32 + 20, w_midi_name, "给每层命名......", "是否根据 MIDI 内数据为每层命名。") && wmenu = 0) w_midi_name=!w_midi_name
+	if (draw_radiobox(x1 + 52, settings_y + 32 + 40, w_midi_name_patch, "......根据乐器", "是否根据 MIDI 中的乐器为每层命名。", !w_midi_name) && wmenu = 0) w_midi_name_patch = 1
+	if (draw_radiobox(x1 + 52, settings_y + 32 + 60, !w_midi_name_patch, "......根据层号", "是否根据 MIDI 中的层序号为每层命名。", !w_midi_name) && wmenu = 0) w_midi_name_patch = 0
+	if (draw_checkbox(x1 + 300, settings_y + 32, w_midi_tempo, "导入速度", "是否将速度设定为与 MIDI 文件中一样。") && wmenu = 0) w_midi_tempo=!w_midi_tempo
+	if (draw_checkbox(x1 + 410, settings_y + 32, w_midi_tempo_changer, "速度变化", "是否添加 MIDI 文件中的速度变化。\n速度调节器（Tempo Changer）在游戏中及大多数NBS兼容软件中不被支持。") && wmenu = 0) {w_midi_tempo_changer=!w_midi_tempo_changer}
+	if (draw_checkbox(x1 + 300, settings_y + 52, w_midi_note_duration, "音符长度", "是否将长音以震荡式的排列方式表示。\n可在“音符长度”页面为各声部分别设置。") && wmenu = 0) {
 		w_midi_note_duration = !w_midi_note_duration
 		if (w_midi_note_duration) w_midi_tab = 3
 	}
-	draw_text_dynamic(x1 + 300, y1 + 72, "通道最高层数:")
-	popup_set_window(x1 + 300, y1 + 72, 140, 16, "每个通道所允许使用的最多层数。拖拽来更改。")
-	w_midi_maxheight = median(1, draw_dragvalue(1, x1 + 420, y1 + 72, w_midi_maxheight, 1), 20)
-	if (draw_checkbox(x1 + 300, y1 + 92, w_midi_octave, "保持八度范围", "是否自动将音符转换到 2 八度限制内。") && wmenu = 0) w_midi_octave=!w_midi_octave
-	if (draw_checkbox(x1 + 32, y1 + 112, w_midi_vel, "导入音符音量", "是否将 MIDI 文件中音符音量应用到音符上。") && wmenu = 0) w_midi_vel=!w_midi_vel
-	if (draw_checkbox(x1 + 300, y1 + 112, w_midi_note_duration_fade, "尾音渐变", "将生成的尾音从起始百分比线性变化到结束百分比。\n原音符起始音的音量保持不变。", !w_midi_note_duration) && wmenu = 0) w_midi_note_duration_fade = !w_midi_note_duration_fade
+	draw_text_dynamic(x1 + 300, settings_y + 72, "通道最高层数:")
+	popup_set_window(x1 + 300, settings_y + 72, 140, 16, "每个通道所允许使用的最多层数。拖拽来更改。")
+	w_midi_maxheight = median(1, draw_dragvalue(1, x1 + 420, settings_y + 72, w_midi_maxheight, 1), 20)
+	if (draw_checkbox(x1 + 300, settings_y + 92, w_midi_octave, "保持八度范围", "是否自动将音符转换到 2 八度限制内。") && wmenu = 0) w_midi_octave=!w_midi_octave
+	if (draw_checkbox(x1 + 32, settings_y + 112, w_midi_vel, "导入音符音量", "是否将 MIDI 文件中音符音量应用到音符上。") && wmenu = 0) w_midi_vel=!w_midi_vel
+	if (draw_checkbox(x1 + 300, settings_y + 112, w_midi_note_duration_fade, "尾音渐变", "将生成的尾音从起始百分比线性变化到结束百分比。\n原音符起始音的音量保持不变。", !w_midi_note_duration) && wmenu = 0) w_midi_note_duration_fade = !w_midi_note_duration_fade
 	fade_locked = !w_midi_note_duration || !w_midi_note_duration_fade
 	if (fade_locked) draw_set_color(c_gray)
-	draw_text_dynamic(x1 + 405, y1 + 111, "起始:")
-	if (fade_locked) draw_text_dynamic(x1 + 445, y1 + 111, string(w_midi_note_duration_fade_start))
-	else w_midi_note_duration_fade_start = median(0, draw_dragvalue(23, x1 + 445, y1 + 112, w_midi_note_duration_fade_start, 1), 100)
-	draw_text_dynamic(x1 + 466, y1 + 111, "%")
-	draw_text_dynamic(x1 + 485, y1 + 111, "结束:")
-	if (fade_locked) draw_text_dynamic(x1 + 525, y1 + 111, string(w_midi_note_duration_fade_end))
-	else w_midi_note_duration_fade_end = median(0, draw_dragvalue(24, x1 + 525, y1 + 112, w_midi_note_duration_fade_end, 1), 100)
-	draw_text_dynamic(x1 + 546, y1 + 111, "%")
+	draw_text_dynamic(x1 + 405, settings_y + 111, "起始:")
+	if (fade_locked) draw_text_dynamic(x1 + 445, settings_y + 111, string(w_midi_note_duration_fade_start))
+	else w_midi_note_duration_fade_start = median(0, draw_dragvalue(23, x1 + 445, settings_y + 112, w_midi_note_duration_fade_start, 1), 100)
+	draw_text_dynamic(x1 + 466, settings_y + 111, "%")
+	draw_text_dynamic(x1 + 485, settings_y + 111, "结束:")
+	if (fade_locked) draw_text_dynamic(x1 + 525, settings_y + 111, string(w_midi_note_duration_fade_end))
+	else w_midi_note_duration_fade_end = median(0, draw_dragvalue(24, x1 + 525, settings_y + 112, w_midi_note_duration_fade_end, 1), 100)
+	draw_text_dynamic(x1 + 546, settings_y + 111, "%")
 	draw_theme_color()
-	popup_set_window(x1 + 403, y1 + 108, 72, 20, "第一个尾音相对于 MIDI 音符音量的百分比。\n拖拽来更改。")
-	popup_set_window(x1 + 483, y1 + 108, 72, 20, "最后一个尾音相对于 MIDI 音符音量的百分比。\n拖拽来更改。")
+	popup_set_window(x1 + 403, settings_y + 108, 72, 20, "第一个尾音相对于 MIDI 音符音量的百分比。\n拖拽来更改。")
+	popup_set_window(x1 + 483, settings_y + 108, 72, 20, "最后一个尾音相对于 MIDI 音符音量的百分比。\n拖拽来更改。")
 	
-	draw_text_dynamic(x1 + 470, y1 + 32 + 20, "精准度")
-	popup_set_window(x1 + 470, y1 + 32 + 20, 100, 20, "调整音符间的距离，以在中间放下更多音符。")
-	if (draw_radiobox(x1 + 470, y1 + 32 + 40, w_midi_precision == 0, "1 倍", "与 MIDI 文件中音符间距一致。") && wmenu = 0) w_midi_precision = 0
-	if (draw_radiobox(x1 + 470, y1 + 32 + 60, w_midi_precision == 1, "2 倍", "在音符间使用两倍间距。") && wmenu = 0) w_midi_precision = 1
-	if (draw_radiobox(x1 + 520, y1 + 32 + 40, w_midi_precision == 3, "4 倍", "在音符间使用四倍间距。") && wmenu = 0) w_midi_precision = 3
-	if (draw_radiobox(x1 + 520, y1 + 32 + 60, w_midi_precision == 7, "8 倍", "在音符间使用八倍间距。\n（歌曲将会很长！）") && wmenu = 0) w_midi_precision = 7
+	draw_text_dynamic(x1 + 470, settings_y + 32 + 20, "精准度")
+	popup_set_window(x1 + 470, settings_y + 32 + 20, 100, 20, "调整音符间的距离，以在中间放下更多音符。")
+	if (draw_radiobox(x1 + 470, settings_y + 32 + 40, w_midi_precision == 0, "1 倍", "与 MIDI 文件中音符间距一致。") && wmenu = 0) w_midi_precision = 0
+	if (draw_radiobox(x1 + 470, settings_y + 32 + 60, w_midi_precision == 1, "2 倍", "在音符间使用两倍间距。") && wmenu = 0) w_midi_precision = 1
+	if (draw_radiobox(x1 + 520, settings_y + 32 + 40, w_midi_precision == 3, "4 倍", "在音符间使用四倍间距。") && wmenu = 0) w_midi_precision = 3
+	if (draw_radiobox(x1 + 520, settings_y + 32 + 60, w_midi_precision == 7, "8 倍", "在音符间使用八倍间距。\n（歌曲将会很长！）") && wmenu = 0) w_midi_precision = 7
 	
-	if (draw_checkbox(x1 + 12, y1 + 374, w_midi_remember, "记住我的更改", "下次导入 MIDI 文件时是否使用同样的设定。", false, true) && wmenu = 0) w_midi_remember=!w_midi_remember
-	if (draw_button2(x1 + 520, y1 + 368, 72, "导入") && wmenu = 0) {w_midi_tab = 0 window = -1 import_midi() windowalpha = 0 windowclose = 0 windowopen = 0}
-	if (draw_button2(x1 + 520 - 80, y1 + 368, 72, "取消", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) {songs[song].midifile = "" w_midi_tab = 0 windowclose = 1}
+	if (draw_checkbox(x1 + 12, y1 + 374 + navigation_space, w_midi_remember, "记住我的更改", "下次导入 MIDI 文件时是否使用同样的设定。", false, true) && wmenu = 0) w_midi_remember=!w_midi_remember
+	if (draw_button2(x1 + 520, y1 + 368 + navigation_space, 72, "导入") && wmenu = 0) {w_midi_tab = 0 window = -1 import_midi() windowalpha = 0 windowclose = 0 windowopen = 0}
+	if (draw_button2(x1 + 520 - 80, y1 + 368 + navigation_space, 72, "取消", false, true) && wmenu = 0 && (windowopen = 1 || theme != 3)) {songs[song].midifile = "" w_midi_tab = 0 windowclose = 1}
 	}
-	if (draw_button2(x1 + 520 - 160, y1 + 368, 72, condstr(language != 1, "Use default", "使用默认值"), false, true) && wmenu = 0) {
+	if (draw_button2(x1 + 520 - 160, y1 + 368 + navigation_space, 72, condstr(language != 1, "Use default", "使用默认值"), false, true) && wmenu = 0) {
 	    if (question(condstr(language != 1, "Are you sure?", "你确定吗？"), condstr(language != 1, "Confirm", "确定"))) { 
 	        midi_instruments()
 	        for (a = 0; a < array_length(midi_parts); a += 1) {
@@ -147,66 +149,70 @@ function draw_window_midi_import() {
 	str[2] = "轨道"
 	str[3] = "音符长度"
 	}
-	if (theme = 1) {
-	    draw_window(x1 + 4, y1 + 145, x1 + 596, y1 + 364)
-	}
-	for (a = 0; a < tab_count; a += 1) {
-		strw = string_width_dynamic(str[a])
-	    c = mouse_rectangle(x1 + b, y1 + 128, strw + 12, 18)
-	    if (w_midi_tab = a) {
-	        stabx = b - 2
-	        stabw = strw + 15
-	    } else {
-	        draw_sprite(spr_tabbuttons, 0 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b, y1 + 128)
-	        draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + 2, y1 + 128, strw / 2 + 4, 1, 0, -1, draw_get_alpha())
-	        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, y1 + 128)
-	        draw_text_dynamic(x1 + b + 6, y1 + 130, str[a])
-	    }
-	    if (nbs_mouse_check_button_pressed(mb_left) && c) nsel = a
-	    b += strw + 12
-	}
-	if (theme = 0 || theme = 3) {
-	    draw_set_color(c_white)
-	    if (theme != 3) draw_rectangle(x1 + 6, y1 + 146, x1 + 594, y1 + 362, 0)
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    if (theme != 3) draw_rectangle(x1 + 6, y1 + 146, x1 + 594, y1 + 362, 1)
-	    draw_set_color(c_white)
-		if (theme = 3) draw_set_color(15987699)
-		if (theme = 3 && fdark) draw_set_color(2105376)
-		if (theme != 3) {
-	    draw_rectangle(x1 + stabx + 1, y1 + 127, x1 + stabx + stabw, y1 + 126 + 20, 0)
-		} else {
-		draw_rectircle(x1 + stabx + 1, y1 + 127, x1 + stabx + stabw, y1 + 126 + 25, 0)
+	if (theme == 3) {
+		nsel = draw_navigationview(x1, y1 + 30, str, w_midi_tab, tab_count)
+	} else {
+		if (theme = 1) {
+		    draw_window(x1 + 4, y1 + 145, x1 + 596, y1 + 364)
 		}
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    if (theme != 3) draw_rectangle(x1 + stabx, y1 + 126, x1 + stabx + stabw, y1 + 126 + 20, 1)
-	    draw_set_color(c_white)
-		if (theme = 3) draw_set_color(15987699)
-		if (theme = 3 && fdark) draw_set_color(2105376)
-	    draw_rectangle(x1 + stabx + 1, y1 + 146, x1 + stabx + stabw - 1, y1 + 147, 0)
-	    draw_theme_color()
-	    draw_text_dynamic(x1 + stabx + 8, y1 + 128, str[w_midi_tab])
-	} else if (theme = 1){
-	    draw_sprite(spr_tabbuttons, 24, x1 + stabx - 1, y1 + 126)
-	    draw_sprite_ext(spr_tabbuttons, 25, x1 + stabx + 1, y1 + 126, stabw / 2 - 1, 1, 0, -1, 1)
-	    draw_sprite(spr_tabbuttons, 26, x1 + stabx + stabw - 1, y1 + 126)
-	    draw_text_dynamic(x1 + stabx + 8, y1 + 128, str[w_midi_tab])
-	    draw_set_color(c_white)
-	    draw_rectangle(x1 + 9, y1 + 149, x1 + 589, y1 + 358, 0)
-	    draw_area(x1 + 9, y1 + 149, x1 + 589 + 1, y1 + 358 + 2)
-	}else{
-		draw_set_color(c_dark)
-	    draw_rectangle(x1 + 6, y1 + 146, x1 + 594, y1 + 362, 0)
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    draw_rectangle(x1 + 6, y1 + 146, x1 + 594, y1 + 362, 1)
-	    draw_set_color(c_dark)
-	    draw_rectangle(x1 + stabx + 1, y1 + 127, x1 + stabx + stabw, y1 + 126 + 20, 0)
-	    draw_set_color(make_color_rgb(137, 140, 149))
-	    draw_rectangle(x1 + stabx, y1 + 126, x1 + stabx + stabw, y1 + 126 + 20, 1)
-	    draw_set_color(c_dark)
-	    draw_rectangle(x1 + stabx + 1, y1 + 146, x1 + stabx + stabw - 1, y1 + 147, 0)
-	    draw_theme_color()
-	    draw_text_dynamic(x1 + stabx + 8, y1 + 128, str[w_midi_tab])	
+		for (a = 0; a < tab_count; a += 1) {
+			strw = string_width_dynamic(str[a])
+		    c = mouse_rectangle(x1 + b, y1 + 128, strw + 12, 18)
+		    if (w_midi_tab = a) {
+		        stabx = b - 2
+		        stabw = strw + 15
+		    } else {
+		        draw_sprite(spr_tabbuttons, 0 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b, y1 + 128)
+		        draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + 2, y1 + 128, strw / 2 + 4, 1, 0, -1, draw_get_alpha())
+		        draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme + 9 * (fdark && theme = 3), x1 + b + strw + 10, y1 + 128)
+		        draw_text_dynamic(x1 + b + 6, y1 + 130, str[a])
+		    }
+		    if (nbs_mouse_check_button_pressed(mb_left) && c) nsel = a
+		    b += strw + 12
+		}
+		if (theme = 0 || theme = 3) {
+		    draw_set_color(c_white)
+		    if (theme != 3) draw_rectangle(x1 + 6, y1 + 146, x1 + 594, y1 + 362, 0)
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    if (theme != 3) draw_rectangle(x1 + 6, y1 + 146, x1 + 594, y1 + 362, 1)
+		    draw_set_color(c_white)
+			if (theme = 3) draw_set_color(15987699)
+			if (theme = 3 && fdark) draw_set_color(2105376)
+			if (theme != 3) {
+		    draw_rectangle(x1 + stabx + 1, y1 + 127, x1 + stabx + stabw, y1 + 126 + 20, 0)
+			} else {
+			draw_rectircle(x1 + stabx + 1, y1 + 127, x1 + stabx + stabw, y1 + 126 + 25, 0)
+			}
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    if (theme != 3) draw_rectangle(x1 + stabx, y1 + 126, x1 + stabx + stabw, y1 + 126 + 20, 1)
+		    draw_set_color(c_white)
+			if (theme = 3) draw_set_color(15987699)
+			if (theme = 3 && fdark) draw_set_color(2105376)
+		    draw_rectangle(x1 + stabx + 1, y1 + 146, x1 + stabx + stabw - 1, y1 + 147, 0)
+		    draw_theme_color()
+		    draw_text_dynamic(x1 + stabx + 8, y1 + 128, str[w_midi_tab])
+		} else if (theme = 1){
+		    draw_sprite(spr_tabbuttons, 24, x1 + stabx - 1, y1 + 126)
+		    draw_sprite_ext(spr_tabbuttons, 25, x1 + stabx + 1, y1 + 126, stabw / 2 - 1, 1, 0, -1, 1)
+		    draw_sprite(spr_tabbuttons, 26, x1 + stabx + stabw - 1, y1 + 126)
+		    draw_text_dynamic(x1 + stabx + 8, y1 + 128, str[w_midi_tab])
+		    draw_set_color(c_white)
+		    draw_rectangle(x1 + 9, y1 + 149, x1 + 589, y1 + 358, 0)
+		    draw_area(x1 + 9, y1 + 149, x1 + 589 + 1, y1 + 358 + 2)
+		}else{
+			draw_set_color(c_dark)
+		    draw_rectangle(x1 + 6, y1 + 146, x1 + 594, y1 + 362, 0)
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    draw_rectangle(x1 + 6, y1 + 146, x1 + 594, y1 + 362, 1)
+		    draw_set_color(c_dark)
+		    draw_rectangle(x1 + stabx + 1, y1 + 127, x1 + stabx + stabw, y1 + 126 + 20, 0)
+		    draw_set_color(make_color_rgb(137, 140, 149))
+		    draw_rectangle(x1 + stabx, y1 + 126, x1 + stabx + stabw, y1 + 126 + 20, 1)
+		    draw_set_color(c_dark)
+		    draw_rectangle(x1 + stabx + 1, y1 + 146, x1 + stabx + stabw - 1, y1 + 147, 0)
+		    draw_theme_color()
+		    draw_text_dynamic(x1 + stabx + 8, y1 + 128, str[w_midi_tab])
+		}
 	}
 	draw_theme_color()
 	draw_set_halign(fa_right)
@@ -220,6 +226,11 @@ function draw_window_midi_import() {
 	}
 	draw_theme_font(font_main)
 	draw_set_halign(fa_left)
+	if (nsel > -1) w_midi_tab = nsel
+	w_midi_tab += keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left)
+	if (w_midi_tab < 0) w_midi_tab = tab_count - 1
+	if (w_midi_tab >= tab_count) w_midi_tab = 0
+	y1 += navigation_space
 	if (w_midi_tab = 0) {
 		if (language != 1) {
 	    tabs = 5
@@ -512,10 +523,6 @@ function draw_window_midi_import() {
 	    draw_text_dynamic(xx - tabw[a] + 4, y1 + 154, tabstr[a])
 	    xx -= tabw[a] - 1
 	}
-	if (nsel > -1) w_midi_tab = nsel
-	w_midi_tab += keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left)
-	if (w_midi_tab < 0) w_midi_tab = tab_count - 1
-	if (w_midi_tab >= tab_count) w_midi_tab = 0
 	draw_theme_color()
 	if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) {
