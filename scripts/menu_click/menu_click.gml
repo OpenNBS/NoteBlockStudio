@@ -43,7 +43,10 @@ function menu_click(argument0) {
 	        }
 	        if (sel = b + 4) save_song(songs[song].filename)
 	        if (sel = b + 5) save_song("")
-			if (sel = b + 6) window = w_saveoptions
+			if (sel = b + 6) {
+				save_options_version = songs[song].save_version
+				window = w_saveoptions
+			}
 			if (sel = b + 7) open_url(backup_directory)
 	        if (sel = b + 9) pattern_import("")
 	        if (sel = b + 10) open_midi("")
