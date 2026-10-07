@@ -87,6 +87,10 @@ layerstereo[0] = 100
 solostr = ""
 
 // Interface
+tab_draw_x = -1
+tab_from_x = 0
+tab_target_x = -1
+tab_progress = 1
 loop_session = 0
 loop = 0
 loopmax = 0

@@ -226,6 +226,13 @@ function control_create() {
 	tabdrag = 0
 	draggingtab = -1
 	tabdest = -1
+	tab_press_song = noone
+	tab_close_song = noone
+	tab_front_song = noone
+	tab_press_x = 0
+	tab_grab_offset = 0
+	tab_layout_count = 0
+	tab_layout_span = 0
 	if (directory_exists(temp_directory_included)) directory_destroy(temp_directory_included)
 	sound_import_download_toggle = 0
 	sound_import_download_status = pointer_null

@@ -12,6 +12,8 @@
     {"id":{"name":"wallpaper_prepare","path":"scripts/wallpaper_prepare/wallpaper_prepare.yy",},"order":1006,},
     {"id":{"name":"draw_rectircle","path":"scripts/draw_rectircle/draw_rectircle.yy",},"order":1007,},
     {"id":{"name":"draw_navigationview","path":"scripts/draw_navigationview/draw_navigationview.yy",},"order":1008,},
+    {"id":{"name":"draw_song_tab","path":"scripts/draw_song_tab/draw_song_tab.yy",},"order":1009,},
+    {"id":{"name":"draw_song_tabs","path":"scripts/draw_song_tabs/draw_song_tabs.yy",},"order":1010,},
     {"id":{"name":"sh_surface_blur","path":"shaders/sh_surface_blur/sh_surface_blur.yy",},"order":0,},
     {"id":{"name":"sh_liquid_glass","path":"shaders/sh_liquid_glass/sh_liquid_glass.yy",},"order":1,},
     {"id":{"name":"sh_rectircle","path":"shaders/sh_rectircle/sh_rectircle.yy",},"order":2,},

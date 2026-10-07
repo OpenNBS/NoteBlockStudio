@@ -21,6 +21,8 @@ function nbs_mouse_forget_press() {
         obj_controller.aa = 0
         obj_controller.draggingtab = -1
         obj_controller.tabdrag = 0
+        obj_controller.tab_press_song = noone
+        obj_controller.tab_close_song = noone
     }
 }
 
