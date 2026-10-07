@@ -53,10 +53,12 @@ function check_updates() {
 								var download_url = release.assets[0].browser_download_url;
 								update_download = http_get_file(download_url, update_file);
 								update = 4;
-							} else if (os_type = os_macosx) {
+							} else if (os_type == os_macosx && macos_install_channel == "testflight") {
 								open_url("https://testflight.apple.com/join/hg58hwbM")
+								update = 1;
 							} else {
 								open_url("https://github.com/OpenNBS/NoteBlockStudio/releases")
+								update = 1;
 							}
 						} else {
 							update = 1;

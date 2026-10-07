@@ -17,6 +17,7 @@ function save_settings() {
 	ini_write_string(    "preferences", "last_version",       version)
 	ini_write_string(    "preferences", "last_version_date",  version_date)
 	ini_write_real_clean("preferences", "check_update",       check_update)
+	if (os_type == os_macosx && macos_install_channel == "direct") ini_write_real_clean("preferences", "check_update_direct_macos", check_update)
 	ini_write_real_clean("preferences", "check_prerelease",   check_prerelease)
 	ini_write_real_clean("preferences", "show_welcome",       show_welcome)
 	ini_write_real_clean("preferences", "autosave",           autosave)

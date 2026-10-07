@@ -46,21 +46,24 @@ function draw_window_greeting() {
 	if (NOT_RUN_FROM_IDE != 1) {
 		if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Running from the GameMaker IDE.")
 		else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "在 IDE 中运行")
+	} else if (os_type == os_macosx && macos_install_channel != "direct") {
+		if (macos_install_channel == "testflight") {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Updates managed by TestFlight app.")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "由 TestFlight 应用管理更新")
+		} else if (macos_install_channel == "app_store") {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "App Store Version")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "App Store 版本")
+		} else {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking unavailable.")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "检查更新不可用")
+		}
 	} else if (is_development) {
-		if (os_type = os_windows || os_type = os_linux) {
+		if (os_type = os_windows || os_type = os_linux || (os_type == os_macosx && macos_install_channel == "direct")) {
 			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking disabled.")
 			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "检查更新不可用")
 		} else {
 			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Updates managed by TestFlight app.")
 			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "由 TestFlight 应用管理更新")
-		}
-	} else if (os_type = os_macosx) {
-		if (is_prerelease) {
-			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Updates managed by TestFlight app.")
-			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "由 TestFlight 应用管理更新")
-		} else {
-			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "App Store Version")
-			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "App Store 版本")
 		}
 	} else if (check_update) {
 		if (update_success) {

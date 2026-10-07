@@ -42,3 +42,18 @@ project's distribution identity.
 
 The added exports are `gm_mouse_start`, `gm_mouse_poll`, `gm_mouse_clear`, and
 `gm_mouse_stop`, registered as `macos_mouse_*` in the extension metadata.
+
+## Distribution channel
+
+`macos_distribution_channel()` returns `"testflight"`, `"direct"`,
+`"app_store"`, or `"unknown"`. It checks the running app's verified code
+signature once and caches the result. TestFlight is identified by Apple's
+`TestFlight Beta Distribution` signing identity; direct distribution uses a
+Developer ID Application identity; App Store installs use Apple's Mac App Store
+identity. Development and ad hoc signed builds return `"unknown"`.
+
+The extension source is `GMmacOSTools/GMmacOSTools.mm` in the sibling repository.
+Its build script and Xcode project link `Security.framework`. The macOS
+TestFlight app currently installed for this project has a receipt named
+`receipt`, the same filename used by App Store installs, so receipt filename
+checks cannot distinguish these channels.

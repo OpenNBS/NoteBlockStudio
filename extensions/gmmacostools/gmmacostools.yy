@@ -93,9 +93,12 @@
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_scroll_is_trackpad","externalName":"gm_scroll_is_trackpad","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_scroll_dy","externalName":"gm_scroll_dy","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_music_dir","externalName":"gm_music_dir","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_distribution_channel","externalName":"gm_distribution_channel","kind":1,"help":"Return testflight, direct, app_store, or unknown for the running macOS app.","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_mouse_start","externalName":"gm_mouse_start","kind":1,"help":"Start the window-local mouse event queue.","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_mouse_poll","externalName":"gm_mouse_poll","kind":1,"help":"Return the next mouse frame as JSON; call once per Begin Step.","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_mouse_clear","externalName":"gm_mouse_clear","kind":1,"help":"Discard held and queued buttons in the supplied bit mask.","hidden":false,"returnType":2,"argCount":1,"args":[2],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_mouse_clear","externalName":"gm_mouse_clear","kind":1,"help":"Discard held and queued buttons in the supplied bit mask.","hidden":false,"returnType":2,"argCount":1,"args":[
+            2,
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_mouse_stop","externalName":"gm_mouse_stop","kind":1,"help":"Remove the local mouse observer.","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
       ],"constants":[],"ProxyFiles":[],"copyToTargets":2,"usesRunnerInterface":false,"order":[
         {"name":"macos_menu_create","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
@@ -123,6 +126,7 @@
         {"name":"macos_scroll_started","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_scroll_ended","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_scroll_is_trackpad","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
+        {"name":"macos_distribution_channel","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_mouse_start","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_mouse_poll","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_mouse_clear","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
