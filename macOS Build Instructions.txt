@@ -1,5 +1,5 @@
-macOS TestFlight and App Store Build Instructions
-================================================
+macOS Distribution Build Instructions
+=====================================
 
 Prerequisites
 -------------
@@ -19,16 +19,27 @@ Prerequisites
 Recommended: one-click Xcode project fixer
 -------------------------------------------
 
-1. Use Create Executable in GameMaker and wait for GameMaker to finish generating the
+1. In GameMaker's macOS Game Options > Packaging, leave "Build for Mac App Store"
+   unchecked for Direct Distribution. This is the repository default. Check it
+   only when creating a TestFlight or App Store build. Regenerate the Xcode
+   project when switching between these channels.
+
+2. Use Create Executable in GameMaker and wait for GameMaker to finish generating the
    Xcode project.
 
-2. Double-click "Prepare macOS Build.command" in the repository root.
+3. Double-click "Prepare macOS Build.command" in the repository root.
 
    The fixer reads the GameMaker output directory from options/mac/options_mac.yy,
    selects the final Xcode project, ignores GameMaker's "FromPC" staging project,
    validates the bundle ID, applies all required settings, and opens the project in Xcode.
    This includes setting the macOS deployment target to 12.0 for every project and app
    target configuration; lower deployment targets fail to build.
+   It keeps YYMacStoreReceipt at 0 for both channels because this app does not
+   require purchase validation at launch. The GameMaker packaging option still
+   controls the distribution build: direct builds use Developer ID Application;
+   TestFlight and App Store builds use 3rd Party Mac Developer Application.
+   A direct build with YYMacStoreReceipt=1 exits with status 173 and asks for
+   an App Store login at first launch.
    It also adds a final build phase that signs GameMaker's copied Python and
    other embedded native files with the archive's identity. The four Python
    executables need their own Hardened Runtime signatures for direct distribution;
@@ -45,18 +56,21 @@ Recommended: one-click Xcode project fixer
    If automatic project detection cannot choose safely, drag the generated .xcodeproj
    package onto "Prepare macOS Build.command". Do not select a path containing "FromPC".
 
-3. In Xcode, choose Product -> Archive.
+4. In Xcode, choose Product -> Archive.
 
-4. In Organizer, select the archive and click Distribute App.
+5. In Organizer, select the archive and click Distribute App.
 
-5. For TestFlight or the App Store, choose App Store Connect. For a notarized file,
+6. For TestFlight or the App Store, choose App Store Connect. For a notarized file,
    choose Direct Distribution.
 
-The fixer defaults to the known working signing configuration:
+For direct distribution, the fixer defaults to the known working signing configuration:
 
     Signing style: Manual
     Team ID:       2WJ25NL8J5
-    Profile:       onbs
+    Direct profile: onbs
+
+For TestFlight and the App Store, it defaults to automatic signing. Xcode must
+have access to an Apple Developer account with the correct distribution profile.
 
 Contributors using another team or profile can run the command from Terminal with local
 overrides, for example:
@@ -84,14 +98,15 @@ Use these steps if the fixer cannot run on a particular Mac.
 
    - Add "NBS Icon macOS.icon" and "Icon.xcassets" from the repository root.
    - Replace the generated "Minecraft_Note_Block_Studio-Info.plist" with the repository
-     copy.
+     copy. Keep YYMacStoreReceipt at 0 for both channels.
    - Replace the generated "Minecraft_Note_Block_Studio.entitlements" with the repository
      copy.
 
 4. Under Signing & Capabilities:
 
    - Turn off Automatically manage signing.
-   - Select a working provisioning profile.
+   - Select Developer ID Application and a matching profile for Direct Distribution,
+     or an App Store signing identity and a matching profile for TestFlight/App Store.
    - Add the Hardened Runtime capability.
 
 5. Under General -> App Icons and Launch Screen:
@@ -132,3 +147,13 @@ then create a new archive. Changing the app target's Hardened Runtime switch
 does not repair Python executables already copied into an existing archive.
 The new archive must show "flags=0x10000(runtime)", a Developer ID Application
 authority, and a Timestamp for each Python executable when distributing directly.
+
+
+If a direct build asks for an App Store login or exits with status 173
+--------------------------------------------------------------------
+
+Uncheck "Build for Mac App Store" in GameMaker's macOS Game Options, regenerate
+the Xcode project, rerun Prepare macOS Build.command, and create a new archive.
+Confirm that YYMacStoreReceipt is 0 in the exported app's Contents/Info.plist.
+An existing archive or exported app with YYMacStoreReceipt=1 cannot be fixed by
+changing the GameMaker option alone.

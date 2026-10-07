@@ -23,7 +23,7 @@
   "option_mac_enable_retina": true,
   "option_mac_scale": 1,
   "option_mac_texture_page": "4096x4096",
-  "option_mac_build_app_store": true,
+  "option_mac_build_app_store": false,
   "option_mac_allow_incoming_network": true,
   "option_mac_allow_outgoing_network": true,
   "option_mac_app_category": "Music",

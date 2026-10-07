@@ -49,6 +49,8 @@ module NoteBlockStudio
     MACOS_DEPLOYMENT_TARGET = "12.0"
     DEFAULT_TEAM_ID = "2WJ25NL8J5"
     DEFAULT_PROFILE = "onbs"
+    DEFAULT_DIRECT_SIGNING_IDENTITY = "Developer ID Application"
+    DEFAULT_APP_STORE_SIGNING_IDENTITY = "3rd Party Mac Developer Application"
 
     def initialize(argv)
       @repo_root = Pathname.new(__dir__).join("../..").expand_path
@@ -60,6 +62,7 @@ module NoteBlockStudio
       @mac_options = read_game_maker_options
       @expected_bundle_id = @mac_options.fetch("option_mac_app_id")
       @product_name = @mac_options.fetch("option_mac_display_name")
+      @build_for_app_store = @mac_options.fetch("option_mac_build_app_store")
     end
 
     def run
@@ -128,12 +131,16 @@ module NoteBlockStudio
       raise FixerError, "GameMaker macOS options were not found at #{path}." unless path.file?
 
       text = path.read
-      %w[option_mac_app_id option_mac_display_name option_mac_output_dir].to_h do |key|
+      options = %w[option_mac_app_id option_mac_display_name option_mac_output_dir].to_h do |key|
         encoded_value = text[/"#{Regexp.escape(key)}"\s*:\s*("(?:\\.|[^"])*")/, 1]
         raise FixerError, "Could not read #{key} from #{path}." unless encoded_value
 
         [key, JSON.parse(encoded_value)]
       end
+      app_store = text[/"option_mac_build_app_store"\s*:\s*(true|false)/, 1]
+      raise FixerError, "Could not read option_mac_build_app_store from #{path}." unless app_store
+
+      options.merge("option_mac_build_app_store" => app_store == "true")
     end
 
     def discover_project
@@ -328,6 +335,10 @@ module NoteBlockStudio
         generated[key] = overlay.fetch(key)
       end
 
+      # This free app does not gate any content on an App Store purchase.
+      # Keep GameMaker's startup receipt check off for both Store and direct builds.
+      generated["YYMacStoreReceipt"] = "0"
+
       generated.delete("CFBundleIconFile")
       generated.delete("CFBundleIconName")
       write_plist(generated_path, generated)
@@ -437,7 +448,8 @@ module NoteBlockStudio
       add_embedded_code_sign_phase(target)
 
       team_id = signing_team_id(target)
-      signing_style = ENV.fetch("NBS_MAC_SIGNING_STYLE", "Manual").capitalize
+      default_signing_style = @build_for_app_store ? "Automatic" : "Manual"
+      signing_style = ENV.fetch("NBS_MAC_SIGNING_STYLE", default_signing_style).capitalize
       unless %w[Automatic Manual].include?(signing_style)
         raise FixerError, "NBS_MAC_SIGNING_STYLE must be Automatic or Manual."
       end
@@ -446,6 +458,7 @@ module NoteBlockStudio
       if signing_style == "Manual" && profile.empty?
         raise FixerError, "Manual signing requires NBS_MAC_PROVISIONING_PROFILE."
       end
+      signing_identity = configured_signing_identity
 
       (project.build_configurations + target.build_configurations).each do |configuration|
         configuration.build_settings["MACOSX_DEPLOYMENT_TARGET"] = MACOS_DEPLOYMENT_TARGET
@@ -455,6 +468,7 @@ module NoteBlockStudio
         settings = configuration.build_settings
         settings["ASSETCATALOG_COMPILER_APPICON_NAME"] = APP_ICON_NAME
         settings["CODE_SIGN_STYLE"] = signing_style
+        settings["CODE_SIGN_IDENTITY[sdk=macosx*]"] = signing_identity
         settings["DEVELOPMENT_TEAM"] = ""
         settings["DEVELOPMENT_TEAM[sdk=macosx*]"] = team_id
         settings["ENABLE_HARDENED_RUNTIME"] = "YES"
@@ -541,10 +555,22 @@ module NoteBlockStudio
       end
     end
 
+    def configured_signing_identity
+      override = ENV["NBS_MAC_CODE_SIGN_IDENTITY"]
+      return override unless override.nil? || override.empty?
+
+      @build_for_app_store ? DEFAULT_APP_STORE_SIGNING_IDENTITY : DEFAULT_DIRECT_SIGNING_IDENTITY
+    end
+
     def verify_result(project_path, paths)
       [paths.fetch(:info_plist), paths.fetch(:entitlements)].each do |plist|
         output, status = Open3.capture2e("/usr/bin/plutil", "-lint", plist.to_s)
         raise FixerError, "Plist validation failed for #{plist}:\n#{output}" unless status.success?
+      end
+
+      receipt_mode = read_plist(paths.fetch(:info_plist)).fetch("YYMacStoreReceipt", nil)
+      unless receipt_mode == "0"
+        raise FixerError, "YYMacStoreReceipt is #{receipt_mode.inspect}; expected \"0\"."
       end
 
       project = Xcodeproj::Project.open(project_path.to_s)
@@ -570,6 +596,9 @@ module NoteBlockStudio
       target.build_configurations.each do |configuration|
         settings = configuration.build_settings
         raise FixerError, "Product name was not set in #{configuration.name}." unless settings["PRODUCT_NAME"] == @product_name
+        unless settings["CODE_SIGN_IDENTITY[sdk=macosx*]"] == configured_signing_identity
+          raise FixerError, "Code signing identity was not set in #{configuration.name}."
+        end
         unless settings["ENABLE_HARDENED_RUNTIME"] == "YES"
           raise FixerError, "Hardened Runtime was not enabled in #{configuration.name}."
         end
