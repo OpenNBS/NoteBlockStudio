@@ -65,8 +65,12 @@ function confirm_quit() {
 }
 
 function request_quit() {
-	if (!confirm_quit()) return false
+	if (!confirm_quit()) {
+		if (os_type == os_macosx) macos_quit_reply(false)
+		return false
+	}
 	quit_confirmed = true
+	if (os_type == os_macosx) macos_quit_reply(true)
 	game_end()
 	return true
 }

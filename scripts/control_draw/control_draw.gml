@@ -644,7 +644,7 @@ function control_draw() {
 	            if ((editmode != m_key) && (keyboard_check_pressed(ord("T"))) && !isplayer) mode_action(5)
 	            if ((editmode != m_key) && (keyboard_check_pressed(ord("G"))) && !isplayer) mode_action(6)
 	            if (keyboard_check_pressed(ord("P")) || (keyboard_check_pressed(188) && os_type = os_macosx)) window = w_preferences
-	            if (keyboard_check_pressed(ord("W"))) {close_song(song); current_song = songs[song]}
+	            if (os_type != os_macosx && keyboard_check_pressed(ord("W"))) {close_song(song); current_song = songs[song]}
 				if keyboard_check_pressed(ord("0")) {
 					window_scale = get_default_window_scale()
 					set_msg(condstr(language = 1, "窗口缩放", "Window scale") + " => " + string(window_scale * 100) + "%")

@@ -43,6 +43,26 @@ project's distribution identity.
 The added exports are `gm_mouse_start`, `gm_mouse_poll`, `gm_mouse_clear`, and
 `gm_mouse_stop`, registered as `macos_mouse_*` in the extension metadata.
 
+## Saving and native quit
+
+`macos_replace_file(staged_path, destination, previous_path)` replaces a file
+selected through a native Save panel. GML first verifies a staged copy in the app
+container. The extension uses `NSFileCoordinator` and an item replacement
+directory on the destination volume, verifies the replacement, and keeps the
+previous bytes in the container until success or verified rollback. This works
+with a file-only sandbox grant; sibling `.tmp` and `.bak` paths are not required.
+Successful saves store a security-scoped bookmark for subsequent saves.
+
+Starting the mouse bridge also installs application/window delegate proxies.
+Native Quit and window close send the `GM_MENU` event `app_quit` and cancel the
+native shutdown until GML calls `macos_quit_reply(true)` after confirming every
+song. A cancelled/failed save replies `false` and keeps the app open. Other
+delegate messages continue to the runner. Command-W uses the native `song_close`
+menu action so it is consumed before the piano's keyboard handling.
+
+These implementations are in the sibling repository's
+`GMmacOSTools/GMmacOSTools.mm`, with hook installation in `MouseInput.mm`.
+
 ## Distribution channel
 
 `macos_distribution_channel()` returns `"testflight"`, `"direct"`,

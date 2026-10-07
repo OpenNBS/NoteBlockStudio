@@ -6,6 +6,14 @@ function control_social(){
 		log ("uid: "  + uid)
 		if (uid == "app_settings") {
 			if (window = 0) window = w_preferences
+		} else if (uid == "app_quit") {
+			request_quit()
+		} else if (uid == "song_close") {
+			if (window == 0) {
+				playing = 0
+				close_song(song)
+				macos_menu_last_refresh = current_time
+			}
 		} else {
 			var menu_index = -1
 			var menu_index_str = ""

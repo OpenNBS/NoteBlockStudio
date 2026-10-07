@@ -13,9 +13,10 @@ function buffer_export(argument0, argument1) {
 		var expected_hash = buffer_sha1(argument0, 0, expected_size)
 		if (expected_hash == "") return false
 
-		// Stage beside the destination so every rename stays on the same volume.
+		// macOS Save panels grant access to the selected file, not sibling paths.
+		// Its native replacement API stages on the destination volume for us.
 		// Leave files from an interrupted save alone, including its previous copy.
-		var stem = filename_path(argument1) + string_copy(filename_name(argument1), 1, 48)
+		var stem = os_type == os_macosx ? temp_file : filename_path(argument1) + string_copy(filename_name(argument1), 1, 48)
 		var suffix = 1
 		do {
 			staged_path = stem + " (saving " + string(suffix) + ").tmp"
@@ -28,14 +29,18 @@ function buffer_export(argument0, argument1) {
 		write_started = true
 		buffer_save_ext(argument0, staged_path, 0, expected_size)
 		if (buffer_export_matches(staged_path, expected_size, expected_hash)) {
-			var ready = true
-			if (file_exists_lib(argument1)) {
-				previous_moved = file_rename_lib(argument1, previous_path)
-				ready = previous_moved
-			}
-			if (ready) {
-				replacement_installed = file_rename_lib(staged_path, argument1)
-				if (replacement_installed) succeeded = buffer_export_matches(argument1, expected_size, expected_hash)
+			if (os_type == os_macosx) {
+				succeeded = macos_replace_file(staged_path, argument1, previous_path)
+			} else {
+				var ready = true
+				if (file_exists_lib(argument1)) {
+					previous_moved = file_rename_lib(argument1, previous_path)
+					ready = previous_moved
+				}
+				if (ready) {
+					replacement_installed = file_rename_lib(staged_path, argument1)
+					if (replacement_installed) succeeded = buffer_export_matches(argument1, expected_size, expected_hash)
+				}
 			}
 		}
 	} catch (e) {

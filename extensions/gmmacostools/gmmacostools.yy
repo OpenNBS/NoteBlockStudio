@@ -94,6 +94,8 @@
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_scroll_dy","externalName":"gm_scroll_dy","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_music_dir","externalName":"gm_music_dir","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_distribution_channel","externalName":"gm_distribution_channel","kind":1,"help":"Return testflight, direct, app_store, or unknown for the running macOS app.","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_replace_file","externalName":"gm_replace_file","kind":1,"help":"Replace a user-selected file from a verified staged file, retaining rollback data in the app container.","hidden":false,"returnType":2,"argCount":3,"args":[1,1,1],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_quit_reply","externalName":"gm_quit_reply","kind":1,"help":"Allow native shutdown only after GML confirms all songs.","hidden":false,"returnType":2,"argCount":1,"args":[2],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_mouse_start","externalName":"gm_mouse_start","kind":1,"help":"Start the window-local mouse event queue.","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_mouse_poll","externalName":"gm_mouse_poll","kind":1,"help":"Return the next mouse frame as JSON; call once per Begin Step.","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"macos_mouse_clear","externalName":"gm_mouse_clear","kind":1,"help":"Discard held and queued buttons in the supplied bit mask.","hidden":false,"returnType":2,"argCount":1,"args":[
@@ -127,6 +129,8 @@
         {"name":"macos_scroll_ended","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_scroll_is_trackpad","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_distribution_channel","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
+        {"name":"macos_replace_file","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
+        {"name":"macos_quit_reply","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_mouse_start","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_mouse_poll","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},
         {"name":"macos_mouse_clear","path":"extensions/GMmacOSTools/GMmacOSTools.yy",},

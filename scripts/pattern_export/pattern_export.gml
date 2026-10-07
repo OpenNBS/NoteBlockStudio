@@ -5,7 +5,9 @@ function pattern_export() {
 	if (songs[song].selected == 0) return 0
 	if (fn == "") {
 		playing = 0
-		fsave = filename_change_ext(filename_name(songs[song].filename), ".nbp")
+		fsave = filename_name(songs[song].filename)
+		if (fsave == "") fsave = condstr(language != 1, "Untitled pattern", "未命名片段")
+		fsave = filename_change_ext(fsave, ".nbp")
 		if (!directory_exists_lib(patternfolder)) patternfolder = pattern_directory
 		fn = string(get_save_filename_ext("Note Block Pattern (*.nbp)|*.nbp", fsave, patternfolder, condstr(language !=1, "Save pattern", "保存分段")))
 	    if (fn == "") return 0
