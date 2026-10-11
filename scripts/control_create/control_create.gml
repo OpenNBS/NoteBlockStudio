@@ -260,6 +260,12 @@ function control_create() {
 	minecraft_export_catalog_source = ""
 	minecraft_export_catalog_path = ""
 	minecraft_export_catalog_access_root = ""
+	minecraft_export_catalog_mode = "mojang"
+	minecraft_export_default_catalog = undefined
+	minecraft_export_catalog_request = -1
+	minecraft_export_catalog_download_stage = 0
+	minecraft_export_catalog_download_version = ""
+	minecraft_export_catalog_download_hash = ""
 	minecraft_export_catalog_filter_cache_key = ""
 	minecraft_export_catalog_filter_cache_result = undefined
 	minecraft_export_catalog_filter = ""
@@ -709,10 +715,11 @@ function control_create() {
 	if ((theme = 3 && fdark) || theme = 2) window_set_darkmode()
 	if (keynames_flat) keynames = ["A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"]
 	
+	minecraft_export_restore_sound_catalog()
 	if (current_resource != "Vanilla") {
 		set_resourcepack(current_resource)
 	}
-	minecraft_export_restore_sound_catalog()
+	minecraft_export_load_default_sound_catalog()
 
 	if (date_compare_date(date_current_datetime(), donate_banner_time) > 0) {
 		donate_banner = 1
