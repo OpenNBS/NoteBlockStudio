@@ -28,10 +28,12 @@ function draw_window() {
 		}
 		draw_set_color(15987699)
 		if (fdark) draw_set_color(2105376)
-		draw_roundrect(x1, y1, x2 - 1, y2 - 1, 0)
+		var rectircle_shader = __rectircle_begin()
+		draw_rectircle(x1, y1, x2 - 1, y2 - 1, 0)
 		//draw_set_color(7368816)
 		draw_set_color(4144959)
-		draw_roundrect(x1, y1, x2 - 1, y2 - 1, 1)
+		draw_rectircle(x1, y1, x2 - 1, y2 - 1, 1)
+		__rectircle_end(rectircle_shader)
 	} else {
 		draw_rectangle(x1, y1, x2 - 1, y2 - 1, 0)
 		if (hires && theme = 3) gpu_set_texfilter(false)

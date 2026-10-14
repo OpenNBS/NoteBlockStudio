@@ -2,7 +2,7 @@ function import_midi() {
 	// import_midi()
 	var a, b, deltapertick, t, e, channel, note, pos, noteuntil, yy, channelheight, framesps, smpte, ins, stop, vel, forvalue, tempvel, temppan, length, at, fadepercent;
 	var patch, include_duration, channel_events, eventlayer, slot, events, entry, layer_ends, fade_mode;
-	io_clear()
+	nbs_io_clear()
 	reset_add()
 	
 	if (w_midi_tempo_changer) ds_list_add(songs[song].instrument_list, new_instrument("Tempo Changer", "", true))

@@ -12,7 +12,7 @@ function draw_text_url(argument0, argument1, argument2, argument3) {
 
 	if (mouse_rectangle(xx - width/2, yy, width, 12)) {
 	    curs = cr_handpoint
-	    if (mouse_check_button_pressed(mb_left)) {
+	    if (nbs_mouse_check_button_pressed(mb_left)) {
 			if (theme = 3) draw_set_color(make_color_rgb(181, 181, 181))
 			if (windowsound && theme = 3) play_sound(soundinvoke, 45, 100, 50, 0)
 	        open_url(url)

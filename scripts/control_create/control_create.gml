@@ -11,6 +11,7 @@ function control_create() {
 	log_init()
 
 	// Initialize DLLs
+	nbs_mouse_init()
 	if (os_type = os_windows) lib_init()
 	rtmidi_init()
 	macos_scroll_init()
@@ -34,6 +35,8 @@ function control_create() {
 	if (!NOT_RUN_FROM_IDE) copy_bundled_files()
 	//if (NOT_RUN_FROM_IDE != 1) isplayer = 1
 	destroy_self = 0
+	quit_confirmed = false
+	quit_prompting = false
 	port_taken = 0
 	server_socket = -1
 	if (!isplayer) server_socket = network_create_server(network_socket_tcp, 30010, 1)
@@ -85,6 +88,9 @@ function control_create() {
 	msgstart = 0
 	currentfont = 0
 	acrylic = 1
+	liquid_glass = false
+	menu_glass_material = {} // Glass overrides for menus, tooltips, and messages.
+	menu_blur_radius = 24
 	can_draw_mica = 1
 	acrylic_successful = 1
 	mouseover = 0
@@ -137,7 +143,9 @@ function control_create() {
 	wpaperexist = 0
 	wpaperside = 0
 	wpaperwidth = 0
-	wpaperblur = 0
+	wpaperblur = -1
+	wallpaper_prepare_pending = false
+	wallpaper_blur_radius = 300
 	
 	wpaperanchor = 0
 	wpapernoblur = 0
@@ -159,7 +167,9 @@ function control_create() {
 
 	// Application
 	update = 0
-	check_update = (os_type != os_macosx)
+	macos_install_channel = "unknown"
+	if (os_type == os_macosx) macos_install_channel = macos_distribution_channel()
+	check_update = (os_type != os_macosx || macos_install_channel == "direct")
 	check_prerelease = is_prerelease
 	update_success = 0
 	show_welcome = 1
@@ -220,6 +230,13 @@ function control_create() {
 	tabdrag = 0
 	draggingtab = -1
 	tabdest = -1
+	tab_press_song = noone
+	tab_close_song = noone
+	tab_front_song = noone
+	tab_press_x = 0
+	tab_grab_offset = 0
+	tab_layout_count = 0
+	tab_layout_span = 0
 	if (directory_exists(temp_directory_included)) directory_destroy(temp_directory_included)
 	sound_import_download_toggle = 0
 	sound_import_download_status = pointer_null
@@ -243,6 +260,12 @@ function control_create() {
 	minecraft_export_catalog_source = ""
 	minecraft_export_catalog_path = ""
 	minecraft_export_catalog_access_root = ""
+	minecraft_export_catalog_mode = "mojang"
+	minecraft_export_default_catalog = undefined
+	minecraft_export_catalog_request = -1
+	minecraft_export_catalog_download_stage = 0
+	minecraft_export_catalog_download_version = ""
+	minecraft_export_catalog_download_hash = ""
 	minecraft_export_catalog_filter_cache_key = ""
 	minecraft_export_catalog_filter_cache_result = undefined
 	minecraft_export_catalog_filter = ""
@@ -518,8 +541,8 @@ function control_create() {
 	delay = 0
 	insedit = -1
 	insselect = -1
-	mouse_xprev = mouse_x
-	mouse_yprev = mouse_y
+	mouse_xprev = nbs_mouse_x()
+	mouse_yprev = nbs_mouse_y()
 	mousepress_x = -1
 	mousepress_y = -1
 	mousepress_window = -1
@@ -641,6 +664,8 @@ function control_create() {
 	var vers_tmp = vers
 	var vers_date_tmp = vers_date
 	if (vers_tmp != version || vers_date_tmp != version_date) copy_bundled_files()
+	// Pass the real runtime library location to Quick Look after startup file setup.
+	if (os_type == os_macosx) macos_quick_look_register_sounds(sounds_directory)
 	if (os_type = os_macosx) macos_enable_system_settings_menu()
 	tonextsave = autosave ? autosavemins : 0; // Defining autosavemins here to avoid the autosave when the first song is loaded after open the game.
 	font_src_dynamic_init()
@@ -692,10 +717,11 @@ function control_create() {
 	if ((theme = 3 && fdark) || theme = 2) window_set_darkmode()
 	if (keynames_flat) keynames = ["A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"]
 	
+	minecraft_export_restore_sound_catalog()
 	if (current_resource != "Vanilla") {
 		set_resourcepack(current_resource)
 	}
-	minecraft_export_restore_sound_catalog()
+	minecraft_export_load_default_sound_catalog()
 
 	if (date_compare_date(date_current_datetime(), donate_banner_time) > 0) {
 		donate_banner = 1
@@ -704,7 +730,7 @@ function control_create() {
 	}
 
 	// Updates
-	if (check_update && os_type != os_macosx)
+	if (check_update && (os_type != os_macosx || macos_install_channel == "direct"))
 		if (check_prerelease) {
 			update_http = http_get(link_releases)
 		} else {
@@ -778,38 +804,14 @@ function control_create() {
 		}
 	}
 	
-	if (file_find_first(backup_directory + "*.nbs", 0) != "" && !port_taken && !isplayer) {
+	var recovery_files = []
+	if (!port_taken && !isplayer) recovery_files = backup_restore_candidates()
+	if (array_length(recovery_files) > 0) {
 		var isrecover = 0
 		if (language != 1) isrecover = question("Note Block Studio quit unexpectedly while you were working on a song. Do you want to recover your work?\n\n(If you click 'No', you'll be prompted to recover it again the next time you open the program.)", "Auto-recovery")
 		else isrecover = question("Note Block Studio在您工作时意外关闭了。要恢复您的文档吗？\n\n（如果点击“No”，下次打开软件时将会再次提示恢复。）", "自动恢复")
 		if (isrecover) {
-			// Create restore folder
-			if (!directory_exists_lib(restore_directory)) {
-				directory_create_lib(restore_directory);
-			}
-			
-			// Copy files to a new, safe location
-			var file_to_restore = file_find_first(backup_directory + "*.nbs", 0);
-			var restored_count = 0;
-			while (file_to_restore != "") {
-				files_copy_lib(backup_directory + file_to_restore, restore_directory + file_to_restore);
-				restored_count += 1;
-				file_to_restore = file_find_next();
-			}
-			file_find_close();
-			
-			// Delete original songs (only after everything has been copied!)
-			var file_to_delete = file_find_first(backup_directory + "*.nbs", 0);
-			while (file_to_delete != "") {
-				files_delete_lib(backup_directory + file_to_delete)
-				file_to_delete = file_find_next();
-			}
-			file_find_close();
-			
-			// Open restore folder
-			if (language != 1) message(string(restored_count) + " " + condstr(restored_count > 1, "files have been restored.", "file has been restored."), "Auto-recovery");
-			else message(string(restored_count) + "个文件已恢复。", "自动恢复");
-			open_url(restore_directory);
+			backup_restore_report(backup_restore_files(recovery_files))
 		}
 	}
 

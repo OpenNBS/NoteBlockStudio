@@ -36,9 +36,11 @@ function instrument_change(ins) {
 			if (file_exists_lib(newfn)) files_delete_lib(newfn)
 			files_copy_lib(fn, newfn)
 		}
-		if (string_copy(ins.name, 0, 19) == "Custom instrument #") {
+		var instrument_index = ds_list_find_index(songs[song].instrument_list, ins)
+		var previous_sound_name = filename_change_ext(filename_name(ins.filename), "")
+		if (string_pos("Custom instrument #", ins.name) == 1 || (ins.filename != "" && ins.name == previous_sound_name)) {
 			ins.name = filename_change_ext(filename_name(newfn), "")
-			text_exists[70 + ds_list_find_index(songs[song].instrument_list, ins)] = 0
+			text_exists[70 + instrument_index] = 0
 		}
 	    songs[song].changed = true
 	    with (ins) {
@@ -47,5 +49,14 @@ function instrument_change(ins) {
 	            instrument_free()
 	        instrument_load()
 	    }
+		// Replace generated mappings when their source changes, preserving
+		// explicit event IDs. Prefer an exact match from an already loaded catalog.
+		if (!ins.minecraft_sound_manual) {
+			ins.minecraft_sound = ""
+			minecraft_export_ensure_mapping(ins, instrument_index)
+			if (is_struct(minecraft_export_sounds_json)) resourcepack_auto_map_custom_sounds(minecraft_export_pack_root, minecraft_export_sounds_json)
+		}
+		if (minecraft_export_mapping_edit_instrument == instrument_index) text_exists[66] = false
+		sch_command_plan = undefined
 	}
 }

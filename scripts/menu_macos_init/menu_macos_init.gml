@@ -221,5 +221,9 @@ function menu_macos_init(){
 			else macos_create_menu_ext("文件", "filep", icon_menubar(icons.OPEN)+get_hotkey_menubar("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|从 Schematic 文件导入......|导入背景图片......|-|" + get_hotkey_menubar("exit") + "$退出")
 				
 		}
+		// AppKit handles Command-W before the runner's keyboard polling.
+		macos_menu_add_separator(condstr(language != 1, "File", "文件"), -1)
+		macos_menu_add_item(condstr(language != 1, "File", "文件"), condstr(language != 1, "Close song", "关闭歌曲"), "cmd+w", "song_close")
+		macos_menu_set_enabled("song_close", window == 0)
 	}
 }

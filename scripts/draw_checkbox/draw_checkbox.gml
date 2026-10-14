@@ -40,7 +40,7 @@ function draw_checkbox() {
 		
 			m = mouse_rectangle(xx, yy, 26 + string_width_dynamic(str) + 8, 13)
 			if (w_isdragging > 0) m = 0
-			if (m) m += (mouse_check_button(mb_left) && pressed_in) * (!instance_exists(obj_menu))
+			if (m) m += (nbs_mouse_check_button(mb_left) && pressed_in) * (!instance_exists(obj_menu))
 			if (is_switch) {
 				if (!expression) draw_sprite(spr_switch, m + 8 * (fdark), xx, yy)
 				if (expression) draw_sprite_ext(spr_switch, m + 3, xx, yy, 1, 1, 0, accent[5 + 2 * (m = 1) + 3 * (m = 2)], draw_get_alpha())
@@ -49,8 +49,8 @@ function draw_checkbox() {
 				if (expression) draw_sprite_ext(spr_checkbox, 3 + 6 * theme, xx, yy, 1, 1, 0, accent[5 + 2 * (m = 1) + 3 * (m = 2)] * (theme = 3) - !(theme = 3), draw_get_alpha())
 			}
 			draw_text_dynamic(xx + x_offset, yy - 1, str)
-			if (m && pressed_in && mouse_check_button_released(mb_left) && windowsound && theme = 3 && !instance_exists(obj_menu)) play_sound(soundinvoke, 45, 100, 50, 0)
-			return (m && pressed_in && mouse_check_button_released(mb_left)) * (!instance_exists(obj_menu))
+			if (m && pressed_in && nbs_mouse_check_button_released(mb_left) && windowsound && theme = 3 && !instance_exists(obj_menu)) play_sound(soundinvoke, 45, 100, 50, 0)
+			return (m && pressed_in && nbs_mouse_check_button_released(mb_left)) * (!instance_exists(obj_menu))
 		}
 	} else {
 		if (lock = 1) {
@@ -83,10 +83,12 @@ function draw_checkbox() {
 					if (expression) draw_set_color(8947848)
 					else draw_set_color(15987699)
 				}
-				draw_roundrect_ext(xx - 1, yy - 1, xx + 12, yy + 12, 4, 4, 0)
+				var rectircle_shader = __rectircle_begin()
+				draw_rectircle(xx - 1, yy - 1, xx + 12, yy + 12, 0, 4)
 				if (fdark) draw_set_color(3684408)
 				else draw_set_color(13421772)
-				if (!expression) draw_roundrect_ext(xx - 1, yy - 1, xx + 12, yy + 12, 2, 2, 1)
+				if (!expression) draw_rectircle(xx - 1, yy - 1, xx + 12, yy + 12, 1, 2)
+				__rectircle_end(rectircle_shader)
 				if (expression) {
 					if (fdark) {
 						draw_set_color(0)
@@ -105,7 +107,7 @@ function draw_checkbox() {
 		} else {
 			m = mouse_rectangle(xx, yy, 26 + string_width_dynamic(str) + 8, 13)
 			if (w_isdragging > 0) m = 0
-			if (m) m += (mouse_check_button(mb_left) && pressed_in) * (!instance_exists(obj_menu))
+			if (m) m += (nbs_mouse_check_button(mb_left) && pressed_in) * (!instance_exists(obj_menu))
 			if (is_switch) {
 				//if (!expression) draw_sprite(spr_switch, m + 8 * (fdark), xx, yy)
 				//if (expression) draw_sprite_ext(spr_switch, m + 3, xx, yy, 1, 1, 0, accent[5 + 2 * (m = 1) + 3 * (m = 2)], draw_get_alpha())
@@ -159,14 +161,16 @@ function draw_checkbox() {
 						if (m == 2) draw_set_color(14474460)
 					}
 				}
-				draw_roundrect_ext(xx - 1, yy - 1, xx + 12, yy + 12, 4, 4, 0)
+				var rectircle_shader = __rectircle_begin()
+				draw_rectircle(xx - 1, yy - 1, xx + 12, yy + 12, 0, 4)
 				if (fdark) draw_set_color(10066329)
 				else draw_set_color(8947848)
 				if (m == 2) {
 					if (fdark) draw_set_color(5000268)
 					else draw_set_color(11711154)
 				}
-				if (!expression) draw_roundrect_ext(xx - 1, yy - 1, xx + 12, yy + 12, 2, 2, 1)
+				if (!expression) draw_rectircle(xx - 1, yy - 1, xx + 12, yy + 12, 1, 2)
+				__rectircle_end(rectircle_shader)
 				if (expression) {
 					if (fdark) {
 						draw_set_color(2105376)
@@ -181,8 +185,8 @@ function draw_checkbox() {
 			}
 			draw_theme_color()
 			draw_text_dynamic(xx + x_offset, yy - 1, str)
-			if (m && pressed_in && mouse_check_button_released(mb_left) && windowsound && theme = 3 && !instance_exists(obj_menu)) play_sound(soundinvoke, 45, 100, 50, 0)
-			return (m && pressed_in && mouse_check_button_released(mb_left)) * (!instance_exists(obj_menu))
+			if (m && pressed_in && nbs_mouse_check_button_released(mb_left) && windowsound && theme = 3 && !instance_exists(obj_menu)) play_sound(soundinvoke, 45, 100, 50, 0)
+			return (m && pressed_in && nbs_mouse_check_button_released(mb_left)) * (!instance_exists(obj_menu))
 		}
 	}
 }

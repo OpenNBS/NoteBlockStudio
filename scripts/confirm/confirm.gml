@@ -1,5 +1,5 @@
 function confirm() {
-	// confirm(gameend)
+	// confirm(gameend, songid, allow_cancel)
 
 	var a, gameend, songid;
 	playing = 0
@@ -11,44 +11,55 @@ function confirm() {
 	    songid = argument[1]
 	else
 	    songid = song
+	// Game End cannot be canceled. App-controlled exits can ask before it starts.
+	var allow_cancel = !gameend
+	if (argument_count > 2) allow_cancel = argument[2]
 	a = 0
 
 	if (language != 1) {
 	if (songs[songid].changed && !isplayer) {
-	    if (songs[songid].filename = "") {
+	    if (songs[songid].filename == "") {
 	        if (!gameend)
 	            a = message_yesnocancel("Do you want to save the song (tab " + string(songid + 1) +")?", "Confirm")
+	        else if (allow_cancel)
+	            a = message_yesnocancel("Do you want to save the song (tab " + string(songid + 1) +") before quitting?", "Confirm")
 	        else
 	            a = question("Do you want to save the song (tab " + string(songid + 1) +") before quitting?", "Confirm")
-	        if (a = 1)
+	        if (a == 1)
 	            if (!save_song(""))
 	                return -1
 	    } else {
 	        if (!gameend)
 	            a = message_yesnocancel("Do you want to save the changes made in " + filename_name(songs[songid].filename) + " (tab " + string(songid + 1) +")?", "Confirm")
+	        else if (allow_cancel)
+	            a = message_yesnocancel("Do you want to save the changes made in " + filename_name(songs[songid].filename) + " (tab " + string(songid + 1) +") before quitting?", "Confirm")
 	        else
 	            a = question("Do you want to save the changes made in " + filename_name(songs[songid].filename) + " (tab " + string(songid + 1) +") before quitting?", "Confirm")
-	        if (a = 1)
+	        if (a == 1)
 	            if (!save_song(songs[songid].filename))
 	                return -1
 	    }
 	}
 	} else {
 	if (songs[songid].changed && !isplayer) {
-	    if (songs[songid].filename = "") {
+	    if (songs[songid].filename == "") {
 	        if (!gameend)
 	            a = message_yesnocancel("你想保存未保存的歌曲（第 " + string(songid + 1) +" 个）吗？", "确定")
+	        else if (allow_cancel)
+	            a = message_yesnocancel("你想在退出前保存未保存的歌曲（第 " + string(songid + 1) +" 个）吗？", "确定")
 	        else
 	            a = question("你想在退出前保存未保存的歌曲（第 " + string(songid + 1) +" 个）吗？", "确定")
-	        if (a = 1)
+	        if (a == 1)
 	            if (!save_song(""))
 	                return -1
 	    } else {
 	        if (!gameend)
 	            a = message_yesnocancel("你想保存未保存的歌曲" + filename_name(songs[songid].filename) + "（第 " + string(songid + 1) +" 个）吗？", "确定")
+	        else if (allow_cancel)
+	            a = message_yesnocancel("你想在退出前保存未保存的歌曲" + filename_name(songs[songid].filename) + "（第 " + string(songid + 1) +" 个）吗？", "确定")
 	        else
 	            a = question("你想在退出前保存未保存的歌曲" + filename_name(songs[songid].filename) + "（第 " + string(songid + 1) +" 个）吗？", "确定")
-	        if (a = 1)
+	        if (a == 1)
 	            if (!save_song(songs[songid].filename))
 	                return -1
 	    }

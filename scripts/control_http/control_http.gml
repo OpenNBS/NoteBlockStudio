@@ -3,6 +3,8 @@ function control_http() {
 	// Handles the check for updates, then attempts to download it if one is available
 	
 	log ("http callback")
+	// Catalog requests have their own IDs and can run alongside sound imports.
+	if (minecraft_export_sound_catalog_http()) return;
 	
 	if (sound_import_download_status != pointer_null) {
 		sound_import_download()

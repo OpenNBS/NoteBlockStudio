@@ -38,7 +38,7 @@ function mp3_export() {
 	}
 	
 	try {
-		python_initialize_for_audio_export()
+		python_initialize_for_exports()
 		var result = python_call_function("audio_export", "main", args, kwargs);
 	} catch (e) {
 		if (language != 1) message("An error occurred while exporting the song:\n\n" + e, "Note Block Studio")
@@ -53,7 +53,7 @@ function mp3_export() {
 
 }
 
-function python_initialize_for_audio_export() {
+function python_initialize_for_exports() {
 	if (obj_controller.python_initialized) return
 
 	if (os_type == os_macosx) {

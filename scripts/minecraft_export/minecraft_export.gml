@@ -143,9 +143,16 @@ function minecraft_export_ensure_mapping(instrument, instrument_index) {
 		return ""
 	}
 	if (instrument_index < obj_controller.first_custom_index) return dat_instrument(instrument_index)
+	// A newly added instrument has no sound to map yet. Do not turn its
+	// numbered UI placeholder into an event such as custom_instrument_1.
+	if (!instrument.minecraft_sound_manual && instrument.filename == "" && string_pos("Custom instrument #", instrument.name) == 1) {
+		instrument.minecraft_sound = ""
+		return ""
+	}
 	if (instrument.minecraft_sound == "" && !instrument.minecraft_sound_manual) {
 		instrument.minecraft_sound = minecraft_export_resource_location(instrument.name)
 	}
+	if (instrument.minecraft_sound == "") return ""
 	return minecraft_export_resource_location(instrument.minecraft_sound)
 }
 

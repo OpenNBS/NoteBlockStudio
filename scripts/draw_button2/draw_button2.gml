@@ -37,8 +37,8 @@ function draw_button2() {
 			}
 		} else {
 		    m = mouse_rectangle(xx, yy, w, 23) && w_isdragging = 0
-		    if (m) m += (mouse_check_button(mb_left) && pressed_in) * (!instance_exists(obj_menu))
-			if (m && pressed_in && mouse_check_button_released(mb_left) && windowsound && theme = 3 && !instance_exists(obj_menu)) play_sound(soundinvoke, 45, 100, 50, 0)
+		    if (m) m += (nbs_mouse_check_button(mb_left) && pressed_in) * (!instance_exists(obj_menu))
+			if (m && pressed_in && nbs_mouse_check_button_released(mb_left) && windowsound && theme = 3 && !instance_exists(obj_menu)) play_sound(soundinvoke, 45, 100, 50, 0)
 			if (theme != 3){
 		    draw_sprite_ext(spr_button, 1 + m * 3 + 12 * theme, xx, yy, w / 3, 1, 0, -1, 1)
 			} else {
@@ -55,23 +55,24 @@ function draw_button2() {
 		    draw_theme_color()
 		}
 	} else {
+		var rectircle_shader = __rectircle_begin()
 		if (lock = 1) {
 			if (fdark) {
 				draw_set_color(4737096)
-				draw_roundrect_ext(xx, yy, xx + w - 2, yy + 21, 4, 4, 0)
+				draw_rectircle(xx, yy, xx + w - 2, yy + 21, 0, 4)
 				draw_set_color(5263440)
-				draw_roundrect_ext(xx, yy, xx + w - 2, yy + 21, 4, 4, 1)
+				draw_rectircle(xx, yy, xx + w - 2, yy + 21, 1, 4)
 			} else {
 				draw_set_color(16316664)
-				draw_roundrect_ext(xx, yy, xx + w - 2, yy + 21, 4, 4, 0)
+				draw_rectircle(xx, yy, xx + w - 2, yy + 21, 0, 4)
 				draw_set_color(15592941)
-				draw_roundrect_ext(xx, yy, xx + w - 2, yy + 21, 4, 4, 1)
+				draw_rectircle(xx, yy, xx + w - 2, yy + 21, 1, 4)
 			}
 			draw_set_color(8355711)
 		} else {
 			m = mouse_rectangle(xx, yy, w, 23) && w_isdragging = 0
-		    if (m) m += (mouse_check_button(mb_left) && pressed_in) * (!instance_exists(obj_menu))
-			if (m && pressed_in && mouse_check_button_released(mb_left) && windowsound && theme = 3 && !instance_exists(obj_menu)) play_sound(soundinvoke, 45, 100, 50, 0)
+		    if (m) m += (nbs_mouse_check_button(mb_left) && pressed_in) * (!instance_exists(obj_menu))
+			if (m && pressed_in && nbs_mouse_check_button_released(mb_left) && windowsound && theme = 3 && !instance_exists(obj_menu)) play_sound(soundinvoke, 45, 100, 50, 0)
 			if (fdark) {
 				if (a) {
 					if (m == 0) draw_set_color(2960685)
@@ -80,7 +81,7 @@ function draw_button2() {
 				} else {
 					draw_set_color(accent[5 - m])
 				}
-				draw_roundrect_ext(xx, yy, xx + w - 2, yy + 21, 4, 4, 0)
+				draw_rectircle(xx, yy, xx + w - 2, yy + 21, 0, 4)
 				if (a) {
 					if (m == 0) draw_set_color(3552822)
 					if (m == 1) draw_set_color(5658198)
@@ -90,7 +91,7 @@ function draw_button2() {
 					if (m == 1) draw_set_color(accent[5])
 					if (m == 2) draw_set_color(accent[3])
 				}
-				draw_roundrect_ext(xx, yy, xx + w - 2, yy + 21, 4, 4, 1)
+				draw_rectircle(xx, yy, xx + w - 2, yy + 21, 1, 4)
 			} else {
 				if (a) {
 					if (m == 0) draw_set_color(16579836)
@@ -99,7 +100,7 @@ function draw_button2() {
 				} else {
 					draw_set_color(accent[5 - m])
 				}
-				draw_roundrect_ext(xx, yy, xx + w - 2, yy + 21, 4, 4, 0)
+				draw_rectircle(xx, yy, xx + w - 2, yy + 21, 0, 4)
 				if (a) {
 					if (m == 0) draw_set_color(15592941)
 					if (m == 1) draw_set_color(15066597)
@@ -109,10 +110,11 @@ function draw_button2() {
 					if (m == 1) draw_set_color(accent[5])
 					if (m == 2) draw_set_color(accent[3])
 				}
-				draw_roundrect_ext(xx, yy, xx + w - 2, yy + 21, 4, 4, 1)
+				draw_rectircle(xx, yy, xx + w - 2, yy + 21, 1, 4)
 			}
 		    draw_theme_color()
 		}
+		__rectircle_end(rectircle_shader)
 	}
 	draw_set_halign(fa_center)
 	if (lock && (theme = 2 || theme = 1)) {
@@ -125,7 +127,7 @@ function draw_button2() {
 	if (theme = 3) draw_set_color(clr)
 	draw_set_halign(fa_left)
 	if (keyboard_invoke && windowsound && theme = 3) play_sound(soundinvoke, 45, 100, 50, 0)
-	return ((m && pressed_in && mouse_check_button_released(mb_left)) * (!instance_exists(obj_menu))) || keyboard_invoke
+	return ((m && pressed_in && nbs_mouse_check_button_released(mb_left)) * (!instance_exists(obj_menu))) || keyboard_invoke
 
 
 }

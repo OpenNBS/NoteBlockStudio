@@ -90,7 +90,7 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	    deletetext = 0
 	    inserttext = ""
 	    lh = string_height_dynamic(" ")
-	    mouseover = (mouse_x >= xx && mouse_x < xx + w && mouse_y >= yy && mouse_y < yy + h)
+	    mouseover = (nbs_mouse_x() >= xx && nbs_mouse_x() < xx + w && nbs_mouse_y() >= yy && nbs_mouse_y() < yy + h)
 	    if (instance_exists(obj_controller) && obj_controller.window != 0 && text_focus = i) {
 	        obj_controller.window_text_input_active = true
 	    }
@@ -123,7 +123,7 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	        }
         
 	        if (!readonly) deletetext = key_press[vk_backspace] - key_press[vk_delete] // 0 = Do nothing, 1 = Erase to left, -1 = Erase to right, 2 = Delete selected
-	        if (mouse_check_button_pressed(mb_left) && !keyboard_check(vk_shift)) text_focus = -1
+	        if (nbs_mouse_check_button_pressed(mb_left) && !keyboard_check(vk_shift)) text_focus = -1
 	        if (keyboard_check(vk_anykey) && !readonly && ord(keyboard_string) != 127 && ord(keyboard_string) != 8 && ord(keyboard_string) != 9 && !check_ctrl()) inserttext = keyboard_string
 	        keyboard_string = ""
         
@@ -347,15 +347,15 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	        }
         
 	        // Handle selecting
-	        if (!mouse_check_button(mb_left)) text_select = -1
+	        if (!nbs_mouse_check_button(mb_left)) text_select = -1
 	        if (text_select = i) {  // Move up/down if dragging outside of box
 	            text_marker = current_time
 	            if (singleline) {
-	                if (mouse_x < xx) text_start[i] -= 1
-	                if (mouse_x > xx + w && text_start[i] < string_length(text_line[i, 0]) - text_chars[i]) text_start[i] += 1
+	                if (nbs_mouse_x() < xx) text_start[i] -= 1
+	                if (nbs_mouse_x() > xx + w && text_start[i] < string_length(text_line[i, 0]) - text_chars[i]) text_start[i] += 1
 	            } else {
-	                if (mouse_y < yy) text_start[i] -= 1
-	                if (mouse_y > yy + h) text_start[i] += 1
+	                if (nbs_mouse_y() < yy) text_start[i] -= 1
+	                if (nbs_mouse_y() > yy + h) text_start[i] += 1
 	            }
 	        }
 	        if (text_click > 0) {
@@ -529,21 +529,21 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	        if (window = 0 || i < 400) && ((mouseover && text_select = -1) || text_select = i) {
 	            if (l = text_lines[i] - 1) hh = h - ly * lh
 	            else hh = lh
-	            if ((mouse_x >= xx || text_select = i) &&
-	                (mouse_x < xx + w || text_select = i) &&
-	                (mouse_y >= yy + ly * lh || (text_select = i && ly = 0)) &&
-	                (mouse_y < yy + ly * lh + hh || (text_select = i && ((ly + 1) * lh > h || l = text_lines[i] - 1)))) {  // Cursor is inside line
-	                if (mouse_check_button(mb_left)) {
+	            if ((nbs_mouse_x() >= xx || text_select = i) &&
+	                (nbs_mouse_x() < xx + w || text_select = i) &&
+	                (nbs_mouse_y() >= yy + ly * lh || (text_select = i && ly = 0)) &&
+	                (nbs_mouse_y() < yy + ly * lh + hh || (text_select = i && ((ly + 1) * lh > h || l = text_lines[i] - 1)))) {  // Cursor is inside line
+	                if (nbs_mouse_check_button(mb_left)) {
 	                    text_select = i
 	                    ww = 0
 	                    for (a = text_start[i] * singleline; a < string_length(text_line[i, l]); a += 1) {  // Find character over mouse
 	                        b = string_width_dynamic(string_char_at(text_line[i, l], a + 1))
 	                        ww += b
-	                        if (mouse_x < xx + ww - b / 2) break
+	                        if (nbs_mouse_x() < xx + ww - b / 2) break
 	                    }
 	                    text_mline = l
 	                    text_mpos = a
-	                    if (mouse_check_button_pressed(mb_left)) {
+	                    if (nbs_mouse_check_button_pressed(mb_left)) {
 	                        if (text_cline = text_mline && text_cpos = text_mpos) {  // Double click, word select
 	                            if (current_time - text_click < 500) {
 	                                text_sline = text_mline text_spos = max(1, text_mpos - 1)
@@ -575,7 +575,7 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	                                text_mline = text_eline
 	                                text_mpos = text_epos
 	                                text_click = 0
-	                                mouse_clear(mb_left)
+	                                nbs_mouse_clear(mb_left)
 	                            } else {  // Remove selection if clicking after word select
 	                                text_click = current_time
 	                                text_sline = text_mline text_spos = text_mpos

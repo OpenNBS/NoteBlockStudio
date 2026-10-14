@@ -1,5 +1,5 @@
-function dat_makefolders(path, namespace, function_registry) {
-	//dat_makefolders(path, namespace)
+function dat_makefolders(tempdir, path, namespace, function_registry) {
+	//dat_makefolders(tempdir, path, namespace, function_registry)
 	//create folder structure prior to creating the datapack files
 	//returns: functiondir
 
@@ -22,23 +22,20 @@ function dat_makefolders(path, namespace, function_registry) {
 		}
 	}
 
-	var tempdir = game_save_id + "TempDatapack\\"
-	if (directory_exists_lib(tempdir)) directory_delete_lib(tempdir)
-
 	directory_create_lib(tempdir)
-	directory_create_lib(tempdir + "data\\")
-	directory_create_lib(tempdir + "data\\minecraft\\")
-	directory_create_lib(tempdir + "data\\minecraft\\tags\\")
-	directory_create_lib(tempdir + "data\\minecraft\\tags\\" + function_registry + "\\")
-	directory_create_lib(tempdir + "data\\" + namespace +"\\")
+	directory_create_lib(tempdir + "data/")
+	directory_create_lib(tempdir + "data/minecraft/")
+	directory_create_lib(tempdir + "data/minecraft/tags/")
+	directory_create_lib(tempdir + "data/minecraft/tags/" + function_registry + "/")
+	directory_create_lib(tempdir + "data/" + namespace +"/")
 
-	var functiondir = tempdir + "data\\" + namespace + "\\" + function_registry + "\\"
+	var functiondir = tempdir + "data/" + namespace + "/" + function_registry + "/"
 	directory_create_lib(functiondir)
 
 	// Dinamically create function folder
 	if (array_length_1d(folders) > 0) {
 		for (i = 0; i <= foldercount; i++) {
-			functiondir += folders[i] + "\\"
+			functiondir += folders[i] + "/"
 			directory_create_lib(functiondir)
 		}
 	}

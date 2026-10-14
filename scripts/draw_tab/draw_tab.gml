@@ -4,11 +4,12 @@ function draw_tab(argument0) {
 	str = argument0
 	xx = tab_x
 	yy = 1
+	draw_theme_font(font_small)
 	w = string_width_dynamic(str) + 12
 	tab_x += w
 	pressed_in = mouse_press_in_rectangle(xx, yy, w, 18)
 	a = ((mouse_rectangle(xx, yy, w, 18)) && window = 0 && sb_drag = -1)
-	a += (a && mouse_check_button(mb_left) && pressed_in)
+	a += (a && nbs_mouse_check_button(mb_left) && pressed_in)
 	ismenu = (menu_shown = string_lower(str))
 	if (theme = 3 && acrylic && wpaperexist) draw_set_alpha(0.5 * dropalpha)
 	if (a > 0 || ismenu) {
@@ -24,7 +25,7 @@ function draw_tab(argument0) {
 	}
 	if (theme = 3 && acrylic && wpaperexist) draw_set_alpha(1 * dropalpha)
 	draw_text_dynamic(xx + 6 + (a = 2 || ismenu), yy + 2 + (a = 2 || ismenu), str)
-	return (a && mouse_check_button(mb_left) && pressed_in)
+	return (a && nbs_mouse_check_button(mb_left) && pressed_in)
 
 
 

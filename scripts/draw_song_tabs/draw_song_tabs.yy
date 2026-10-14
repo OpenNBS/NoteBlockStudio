@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "blur_scripts_alt",
+  "name": "draw_song_tabs",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {

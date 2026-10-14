@@ -14,7 +14,7 @@ function draw_icon_insbox() {
 	pressed_in = mouse_press_in_rectangle(xx, yy, 25, 25)
 	if (window = 0 || window = w_insbox) popup_set_window(xx, yy, 25, 25, str)
 	a = (mouse_rectangle(xx, yy, 25, 25) && (clickable) && sb_drag = -1)
-	a += ((mouse_check_button(mb_left) || mouse_check_button_released(mb_left)) && a && pressed_in)
+	a += ((nbs_mouse_check_button(mb_left) || nbs_mouse_check_button_released(mb_left)) && a && pressed_in)
 	if (pressed = 1) {
 	    if (hires && theme = 3) draw_sprite_ext(spr_frame1_hires, 2 + (fdark && theme = 3) * 3 - (a = 1) * (theme = 3), xx, yy, 0.25, 0.25, 0, -1, draw_get_alpha())
 	    else draw_sprite(spr_frame1, 2 + 3 * theme + (fdark && theme = 3) * 3 - (a = 1) * (theme = 3), xx, yy)
@@ -47,7 +47,7 @@ function draw_icon_insbox() {
 	if (!isaction && i >= first_custom_index) {
 		draw_icon_customins(xx + push, yy + push, i - first_custom_index, 1, false, 1 - 0.2 * (a = 2) * (theme = 3))
 	}
-	return (a && pressed_in && mouse_check_button_released(mb_left))
+	return (a && pressed_in && nbs_mouse_check_button_released(mb_left))
 
 
 

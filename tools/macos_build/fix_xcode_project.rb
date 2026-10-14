@@ -5,6 +5,7 @@ require "json"
 require "open3"
 require "optparse"
 require "pathname"
+require "shellwords"
 require "tempfile"
 require "xcodeproj"
 
@@ -36,6 +37,7 @@ module NoteBlockStudio
 
     DYLIBS = [
       ["extensions/gmmacostools/libGMmacOSTools.dylib", "libGMmacOSTools.dylib"],
+      ["extensions/NBSQuickLook/libNBSQuickLookBridge.dylib", "libNBSQuickLookBridge.dylib"],
       ["extensions/GMaudioTools/libGMaudioTools.dylib", "libGMaudioTools.dylib"],
       ["extensions/pygml/libpygml.dylib", "libPygml.dylib"],
       ["extensions/pygml/libPython3.8.dylib", "libPython3.8.dylib"]
@@ -43,9 +45,17 @@ module NoteBlockStudio
 
     ICON_ASSETS = ["Icon.xcassets", "NBS Icon macOS.icon"].freeze
     OPTIONAL_EXECUTABLES = %w[ffmpeg ffprobe].freeze
+    EMBEDDED_CODE_SIGN_SCRIPT = "tools/macos_build/sign_embedded_resource_code.rb"
+    EMBEDDED_CODE_SIGN_PHASE = "Sign Embedded Resource Code"
+    QUICK_LOOK_BUNDLE = "extensions/NBSQuickLook/NBSQuickLook.appex"
+    QUICK_LOOK_EMBED_SCRIPT = "tools/macos_build/embed_quick_look.rb"
+    QUICK_LOOK_EMBED_PHASE = "Embed NBS Quick Look Preview"
     APP_ICON_NAME = "NBS Icon macOS"
+    MACOS_DEPLOYMENT_TARGET = "12.0"
     DEFAULT_TEAM_ID = "2WJ25NL8J5"
     DEFAULT_PROFILE = "onbs"
+    DEFAULT_DIRECT_SIGNING_IDENTITY = "Developer ID Application"
+    DEFAULT_APP_STORE_SIGNING_IDENTITY = "3rd Party Mac Developer Application"
 
     def initialize(argv)
       @repo_root = Pathname.new(__dir__).join("../..").expand_path
@@ -57,6 +67,7 @@ module NoteBlockStudio
       @mac_options = read_game_maker_options
       @expected_bundle_id = @mac_options.fetch("option_mac_app_id")
       @product_name = @mac_options.fetch("option_mac_display_name")
+      @build_for_app_store = @mac_options.fetch("option_mac_build_app_store")
     end
 
     def run
@@ -80,6 +91,7 @@ module NoteBlockStudio
       copy_icon_assets(paths.fetch(:source_dir))
       copy_dylibs(paths.fetch(:supporting_dir))
       make_optional_tools_executable(paths.fetch(:supporting_dir))
+      copy_quick_look(paths.fetch(:source_dir))
       update_project(project, target, paths)
       project.save
       verify_result(project_path, paths)
@@ -125,12 +137,16 @@ module NoteBlockStudio
       raise FixerError, "GameMaker macOS options were not found at #{path}." unless path.file?
 
       text = path.read
-      %w[option_mac_app_id option_mac_display_name option_mac_output_dir].to_h do |key|
+      options = %w[option_mac_app_id option_mac_display_name option_mac_output_dir].to_h do |key|
         encoded_value = text[/"#{Regexp.escape(key)}"\s*:\s*("(?:\\.|[^"])*")/, 1]
         raise FixerError, "Could not read #{key} from #{path}." unless encoded_value
 
         [key, JSON.parse(encoded_value)]
       end
+      app_store = text[/"option_mac_build_app_store"\s*:\s*(true|false)/, 1]
+      raise FixerError, "Could not read option_mac_build_app_store from #{path}." unless app_store
+
+      options.merge("option_mac_build_app_store" => app_store == "true")
     end
 
     def discover_project
@@ -307,6 +323,14 @@ module NoteBlockStudio
       ]
       required.concat(ICON_ASSETS.map { |name| @repo_root.join(name) })
       required.concat(DYLIBS.map { |source, _destination| @repo_root.join(source) })
+      required << @repo_root.join(EMBEDDED_CODE_SIGN_SCRIPT)
+      required << @repo_root.join(QUICK_LOOK_EMBED_SCRIPT)
+      %w[Contents/Info.plist Contents/MacOS/NBSQuickLook Contents/Resources/QuickLook.entitlements].each do |file|
+        required << @repo_root.join(QUICK_LOOK_BUNDLE, file)
+      end
+      %w[Contents/Info.plist Contents/MacOS/NBSSoundLibrary Contents/Resources/LibraryService.entitlements].each do |file|
+        required << @repo_root.join(QUICK_LOOK_BUNDLE, "Contents/XPCServices/NBSSoundLibrary.xpc", file)
+      end
 
       missing = required.reject(&:exist?)
       return if missing.empty?
@@ -323,6 +347,10 @@ module NoteBlockStudio
 
         generated[key] = overlay.fetch(key)
       end
+
+      # This free app does not gate any content on an App Store purchase.
+      # Keep GameMaker's startup receipt check off for both Store and direct builds.
+      generated["YYMacStoreReceipt"] = "0"
 
       generated.delete("CFBundleIconFile")
       generated.delete("CFBundleIconName")
@@ -400,6 +428,13 @@ module NoteBlockStudio
       puts "Restored executable permissions for: #{found.join(", ")}" unless found.empty?
     end
 
+    def copy_quick_look(destination_dir)
+      destination = destination_dir.join("NBSQuickLook.appex")
+      # Replace only the prebuilt extension copied by this fixer.
+      FileUtils.rm_r(destination.to_s) if destination.exist?
+      FileUtils.cp_r(@repo_root.join(QUICK_LOOK_BUNDLE).to_s, destination.to_s, preserve: true)
+    end
+
     def remove_exact_destination(destination, allowed_parent)
       expanded = destination.expand_path
       expected_parent = allowed_parent.expand_path.to_s + File::SEPARATOR
@@ -430,8 +465,14 @@ module NoteBlockStudio
         build_file.settings["ATTRIBUTES"] = attributes | ["CodeSignOnCopy"]
       end
 
+      preview_reference = find_or_create_reference(project, resources_group, paths.fetch(:source_dir).join("NBSQuickLook.appex"))
+      preview_reference.last_known_file_type = "wrapper.app-extension"
+      add_quick_look_embed_phase(target, paths)
+      add_embedded_code_sign_phase(target)
+
       team_id = signing_team_id(target)
-      signing_style = ENV.fetch("NBS_MAC_SIGNING_STYLE", "Manual").capitalize
+      default_signing_style = @build_for_app_store ? "Automatic" : "Manual"
+      signing_style = ENV.fetch("NBS_MAC_SIGNING_STYLE", default_signing_style).capitalize
       unless %w[Automatic Manual].include?(signing_style)
         raise FixerError, "NBS_MAC_SIGNING_STYLE must be Automatic or Manual."
       end
@@ -440,11 +481,18 @@ module NoteBlockStudio
       if signing_style == "Manual" && profile.empty?
         raise FixerError, "Manual signing requires NBS_MAC_PROVISIONING_PROFILE."
       end
+      signing_identity = configured_signing_identity
+
+      (project.build_configurations + target.build_configurations).each do |configuration|
+        configuration.build_settings["MACOSX_DEPLOYMENT_TARGET"] = MACOS_DEPLOYMENT_TARGET
+        remove_recursive_code_signing(configuration)
+      end
 
       target.build_configurations.each do |configuration|
         settings = configuration.build_settings
         settings["ASSETCATALOG_COMPILER_APPICON_NAME"] = APP_ICON_NAME
         settings["CODE_SIGN_STYLE"] = signing_style
+        settings["CODE_SIGN_IDENTITY[sdk=macosx*]"] = signing_identity
         settings["DEVELOPMENT_TEAM"] = ""
         settings["DEVELOPMENT_TEAM[sdk=macosx*]"] = team_id
         settings["ENABLE_HARDENED_RUNTIME"] = "YES"
@@ -466,6 +514,37 @@ module NoteBlockStudio
       attributes["ProvisioningStyle"] = signing_style
     end
 
+    def remove_recursive_code_signing(configuration)
+      configuration.build_settings.keys.grep(/\AOTHER_CODE_SIGN_FLAGS(?:\[.*\])?\z/).each do |key|
+        value = configuration.build_settings[key]
+        # GameMaker emits --deep, which re-signs the .appex using the containing
+        # app's identifier and entitlements. Embedded code is signed separately.
+        cleaned = Array(value).map do |flags|
+          flags.gsub(/(?<!\S)(?:--deep|"--deep"|'--deep')(?=\s|\z)/, "").strip
+        end.reject(&:empty?)
+        configuration.build_settings[key] = value.is_a?(Array) ? cleaned : cleaned.join(" ")
+      end
+    end
+
+    def add_quick_look_embed_phase(target, paths)
+      phase = target.shell_script_build_phases.find { |candidate| candidate.name == QUICK_LOOK_EMBED_PHASE }
+      phase ||= target.new_shell_script_build_phase(QUICK_LOOK_EMBED_PHASE)
+      phase.shell_path = "/usr/bin/ruby"
+      phase.shell_script = @repo_root.join(QUICK_LOOK_EMBED_SCRIPT).read
+      phase.input_paths = [
+        "$(SRCROOT)/" + paths.fetch(:source_dir).join("NBSQuickLook.appex").relative_path_from(paths.fetch(:project_dir)).to_s,
+        "$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)"
+      ]
+      phase.output_paths = [
+        "$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/PlugIns/NBSQuickLook.appex",
+        "$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/XPCServices/NBSSoundLibrary.xpc"
+      ]
+      phase.always_out_of_date = "1"
+      # The main application's final CodeSign task seals the embedded extension.
+      target.build_phases.delete(phase)
+      target.build_phases << phase
+    end
+
     def resources_group(project, info_plist)
       reference = project.files.find do |file|
         file.path && file.real_path.expand_path == info_plist.expand_path
@@ -478,6 +557,17 @@ module NoteBlockStudio
       return groups.first if groups.length == 1
 
       raise FixerError, "Could not identify the Xcode Resources group."
+    end
+
+    def add_embedded_code_sign_phase(target)
+      phase = target.shell_script_build_phases.find { |candidate| candidate.name == EMBEDDED_CODE_SIGN_PHASE }
+      phase ||= target.new_shell_script_build_phase(EMBEDDED_CODE_SIGN_PHASE)
+      phase.shell_path = "/usr/bin/ruby"
+      phase.shell_script = @repo_root.join(EMBEDDED_CODE_SIGN_SCRIPT).read
+      phase.always_out_of_date = "1"
+      # GameMaker's many Copy Game Files phases and the dylib embed phase must run first.
+      target.build_phases.delete(phase)
+      target.build_phases << phase
     end
 
     def find_or_create_reference(project, group, path)
@@ -520,23 +610,65 @@ module NoteBlockStudio
       end
     end
 
+    def configured_signing_identity
+      override = ENV["NBS_MAC_CODE_SIGN_IDENTITY"]
+      return override unless override.nil? || override.empty?
+
+      @build_for_app_store ? DEFAULT_APP_STORE_SIGNING_IDENTITY : DEFAULT_DIRECT_SIGNING_IDENTITY
+    end
+
     def verify_result(project_path, paths)
       [paths.fetch(:info_plist), paths.fetch(:entitlements)].each do |plist|
         output, status = Open3.capture2e("/usr/bin/plutil", "-lint", plist.to_s)
         raise FixerError, "Plist validation failed for #{plist}:\n#{output}" unless status.success?
       end
 
+      receipt_mode = read_plist(paths.fetch(:info_plist)).fetch("YYMacStoreReceipt", nil)
+      unless receipt_mode == "0"
+        raise FixerError, "YYMacStoreReceipt is #{receipt_mode.inspect}; expected \"0\"."
+      end
+
       project = Xcodeproj::Project.open(project_path.to_s)
       target = application_target(project)
-      expected_files = ICON_ASSETS + DYLIBS.map(&:last)
+      expected_files = ICON_ASSETS + DYLIBS.map(&:last) + ["NBSQuickLook.appex"]
       missing = expected_files.reject do |name|
         project.files.any? { |file| file.path && File.basename(file.path.to_s) == name }
       end
       raise FixerError, "Xcode project verification failed; missing references: #{missing.join(", ")}" unless missing.empty?
 
+      preview_phase = target.shell_script_build_phases.find { |phase| phase.name == QUICK_LOOK_EMBED_PHASE }
+      unless preview_phase && preview_phase.shell_script == @repo_root.join(QUICK_LOOK_EMBED_SCRIPT).read &&
+             preview_phase.input_paths.length == 2 &&
+             preview_phase.input_paths.last == "$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)" &&
+             paths.fetch(:source_dir).join("NBSQuickLook.appex/Contents/MacOS/NBSQuickLook").file?
+        raise FixerError, "Quick Look preview embedding phase is missing or out of date."
+      end
+
+      signing_phase = target.shell_script_build_phases.find { |phase| phase.name == EMBEDDED_CODE_SIGN_PHASE }
+      unless signing_phase && target.build_phases.last == signing_phase &&
+             signing_phase.shell_script == @repo_root.join(EMBEDDED_CODE_SIGN_SCRIPT).read
+        raise FixerError, "Embedded resource code signing phase is missing or out of date."
+      end
+
+      (project.build_configurations + target.build_configurations).each do |configuration|
+        unless configuration.build_settings["MACOSX_DEPLOYMENT_TARGET"] == MACOS_DEPLOYMENT_TARGET
+          raise FixerError, "macOS deployment target was not set to #{MACOS_DEPLOYMENT_TARGET} in #{configuration.name}."
+        end
+        configuration.build_settings.each do |key, value|
+          next unless key.match?(/\AOTHER_CODE_SIGN_FLAGS(?:\[.*\])?\z/)
+          flags = Array(value).flat_map { |entry| Shellwords.split(entry) }
+          if flags.include?("--deep")
+            raise FixerError, "Recursive code signing is still enabled in #{configuration.name}: #{key}."
+          end
+        end
+      end
+
       target.build_configurations.each do |configuration|
         settings = configuration.build_settings
         raise FixerError, "Product name was not set in #{configuration.name}." unless settings["PRODUCT_NAME"] == @product_name
+        unless settings["CODE_SIGN_IDENTITY[sdk=macosx*]"] == configured_signing_identity
+          raise FixerError, "Code signing identity was not set in #{configuration.name}."
+        end
         unless settings["ENABLE_HARDENED_RUNTIME"] == "YES"
           raise FixerError, "Hardened Runtime was not enabled in #{configuration.name}."
         end

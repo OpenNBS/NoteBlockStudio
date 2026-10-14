@@ -33,9 +33,17 @@ function set_resourcepack(pack_name){
 		catalog_sounds_json = resourcepack_load_sounds_json(pack_root, "minecraft")
 		if (resourcepack_sounds_json) sounds_json = catalog_sounds_json
 	}
-	obj_controller.minecraft_export_pack_root = pack_root
-	obj_controller.minecraft_export_sounds_json = catalog_sounds_json
-	if (is_struct(catalog_sounds_json)) minecraft_export_set_sound_catalog(catalog_sounds_json, "minecraft", "Resource pack: " + pack_name)
+	if (obj_controller.minecraft_export_catalog_mode != "file") {
+		obj_controller.minecraft_export_pack_root = pack_root
+		obj_controller.minecraft_export_sounds_json = catalog_sounds_json
+		if (is_struct(catalog_sounds_json)) {
+			obj_controller.minecraft_export_catalog_mode = "resourcepack"
+			minecraft_export_set_sound_catalog(catalog_sounds_json, "minecraft", "Resource pack: " + pack_name)
+		} else {
+			obj_controller.minecraft_export_catalog_mode = "mojang"
+			minecraft_export_set_sound_catalog({}, "minecraft", "")
+		}
+	}
 	swap_instrument(0, "Harp", "harp2", "harp", dir_no_path, using_directory, sounds_json)
 	swap_instrument(1, "Double Bass", "bassattack", "dbass", dir_no_path, using_directory, sounds_json)
 	swap_instrument(2, "Bass Drum", "bd", "bdrum", dir_no_path, using_directory, sounds_json)
@@ -56,7 +64,8 @@ function set_resourcepack(pack_name){
 	swap_instrument(17, "Exposed Trumpet", "trumpet_exposed", "trumpet_exposed", dir_no_path, using_directory, sounds_json)
 	swap_instrument(18, "Weathered Trumpet", "trumpet_weathered", "trumpet_weathered", dir_no_path, using_directory, sounds_json)
 	swap_instrument(19, "Oxidized Trumpet", "trumpet_oxidized", "trumpet_oxidized", dir_no_path, using_directory, sounds_json)
-	if (!is_undefined(catalog_sounds_json)) resourcepack_auto_map_custom_sounds(pack_root, catalog_sounds_json)
+	if (obj_controller.minecraft_export_catalog_mode == "mojang") minecraft_export_load_default_sound_catalog()
+	else if (is_struct(obj_controller.minecraft_export_sounds_json)) resourcepack_auto_map_custom_sounds(obj_controller.minecraft_export_pack_root, obj_controller.minecraft_export_sounds_json)
 	//for (var i = 0; i < array_length(songs); i++) {
 	//	for (var j = 0; j < 16; j++) {
 	//		ds_list_replace(songs[i].instrument_list, j, original_instruments[j])
@@ -84,6 +93,123 @@ function minecraft_export_set_sound_catalog(sounds_json, sound_namespace, source
 	obj_controller.minecraft_export_catalog_menu_events = []
 	obj_controller.minecraft_export_catalog_filter_cache_key = ""
 	obj_controller.minecraft_export_catalog_filter_cache_result = undefined
+	return true;
+}
+
+function minecraft_export_use_default_sound_catalog(catalog) {
+	if (!is_struct(catalog)) return false;
+	if (!variable_struct_exists(catalog, "release_id") || !is_string(catalog.release_id) || catalog.release_id == "") return false;
+	if (!variable_struct_exists(catalog, "hash") || !is_string(catalog.hash) || string_length(catalog.hash) != 40) return false;
+	if (!variable_struct_exists(catalog, "sounds") || !is_struct(catalog.sounds) || array_length(variable_struct_get_names(catalog.sounds)) == 0) return false;
+	obj_controller.minecraft_export_default_catalog = catalog
+	// A user-selected file or resource pack always wins over a late HTTP reply.
+	if (obj_controller.minecraft_export_catalog_mode == "mojang") {
+		minecraft_export_set_sound_catalog(catalog.sounds, "minecraft", "Minecraft " + catalog.release_id)
+		obj_controller.minecraft_export_sounds_json = catalog.sounds
+		obj_controller.minecraft_export_pack_root = ""
+		resourcepack_auto_map_custom_sounds("", catalog.sounds)
+	}
+	return true;
+}
+
+function minecraft_export_cache_default_sound_catalog(catalog) {
+	if (!minecraft_export_use_default_sound_catalog(catalog)) return false;
+	var cache_file = -1
+	try {
+		var cache_text = json_stringify(catalog)
+		cache_file = file_text_open_write(game_save_id + "minecraft_sound_catalog.json")
+		if (cache_file < 0) return true;
+		file_text_write_string(cache_file, cache_text)
+		file_text_close(cache_file)
+	} catch (error) {
+		if (cache_file >= 0) {
+			try { file_text_close(cache_file) } catch (close_error) {}
+		}
+		log("Could not cache the Minecraft sound catalog", error)
+	}
+	return true;
+}
+
+function minecraft_export_load_default_sound_catalog() {
+	var controller = obj_controller
+	if (controller.minecraft_export_catalog_mode != "mojang") return;
+	if (is_struct(controller.minecraft_export_default_catalog)) {
+		minecraft_export_use_default_sound_catalog(controller.minecraft_export_default_catalog)
+	} else if (controller.minecraft_export_catalog_download_stage == 0) {
+		try {
+			var cached_text = load_text(game_save_id + "minecraft_sound_catalog.json")
+			if (is_string(cached_text)) minecraft_export_use_default_sound_catalog(json_parse(cached_text))
+		} catch (error) {
+			log("Could not restore the Minecraft sound catalog cache", error)
+		}
+	}
+	// Check once per launch without blocking startup or discarding an offline cache.
+	if (controller.minecraft_export_catalog_download_stage != 0) return;
+	controller.minecraft_export_catalog_download_stage = 1
+	controller.minecraft_export_catalog_request = http_get("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json")
+}
+
+function minecraft_export_sound_catalog_http() {
+	var controller = obj_controller
+	if (controller.minecraft_export_catalog_request < 0 || async_load[? "id"] != controller.minecraft_export_catalog_request) return false;
+	var status = async_load[? "status"]
+	if (status == 1) return true;
+	var stage = controller.minecraft_export_catalog_download_stage
+	controller.minecraft_export_catalog_request = -1
+	controller.minecraft_export_catalog_download_stage = -1
+	if (status != 0 || async_load[? "http_status"] != 200) return true;
+	try {
+		var response_text = async_load[? "result"]
+		if (!is_string(response_text)) return true;
+		var response = json_parse(response_text)
+		if (!is_struct(response)) return true;
+		var next_url = ""
+		var cached_catalog = controller.minecraft_export_default_catalog
+		switch (stage) {
+			case 1:
+				if (!variable_struct_exists(response, "latest") || !is_struct(response.latest) || !variable_struct_exists(response.latest, "release") || !is_string(response.latest.release)) return true;
+				if (!variable_struct_exists(response, "versions") || !is_array(response.versions)) return true;
+				controller.minecraft_export_catalog_download_version = response.latest.release
+				if (is_struct(cached_catalog) && cached_catalog.release_id == response.latest.release) return true;
+				for (var i = 0; i < array_length(response.versions); i++) {
+					var version_entry = response.versions[i]
+					if (is_struct(version_entry) && variable_struct_exists(version_entry, "id") && version_entry.id == response.latest.release && variable_struct_exists(version_entry, "url")) {
+						next_url = version_entry.url
+						break
+					}
+				}
+				break;
+			case 2:
+				if (!variable_struct_exists(response, "assetIndex") || !is_struct(response.assetIndex) || !variable_struct_exists(response.assetIndex, "url")) return true;
+				next_url = response.assetIndex.url
+				break;
+			case 3:
+				if (!variable_struct_exists(response, "objects") || !is_struct(response.objects) || !variable_struct_exists(response.objects, "minecraft/sounds.json")) return true;
+				var record = response.objects[$ "minecraft/sounds.json"]
+				if (!is_struct(record) || !variable_struct_exists(record, "hash") || !is_string(record.hash)) return true;
+				var asset_hash = string_lower(record.hash)
+				if (string_length(asset_hash) != 40) return true;
+				for (var i = 1; i <= 40; i++) if (string_pos(string_char_at(asset_hash, i), "0123456789abcdef") == 0) return true;
+				controller.minecraft_export_catalog_download_hash = asset_hash
+				if (is_struct(cached_catalog) && cached_catalog.hash == asset_hash) {
+					minecraft_export_cache_default_sound_catalog({ release_id: controller.minecraft_export_catalog_download_version, hash: asset_hash, sounds: cached_catalog.sounds })
+					return true;
+				}
+				next_url = "https://resources.download.minecraft.net/" + string_copy(asset_hash, 1, 2) + "/" + asset_hash
+				break;
+			case 4:
+				// Verify the asset before replacing a working catalog or writing the cache.
+				if (sha1_string_utf8(response_text) != controller.minecraft_export_catalog_download_hash) return true;
+				minecraft_export_cache_default_sound_catalog({ release_id: controller.minecraft_export_catalog_download_version, hash: controller.minecraft_export_catalog_download_hash, sounds: response })
+				return true;
+			default: return true;
+		}
+		if (!is_string(next_url) || string_pos("https://", next_url) != 1) return true;
+		controller.minecraft_export_catalog_download_stage = stage + 1
+		controller.minecraft_export_catalog_request = http_get(next_url)
+	} catch (error) {
+		log("Could not refresh the Minecraft sound catalog", error)
+	}
 	return true;
 }
 
@@ -116,10 +242,9 @@ function minecraft_export_asset_root_from_index(path) {
 
 function minecraft_export_request_asset_root_access(suggested_root) {
 	if (os_type != os_macosx) return "";
-	widget_set_caption(condstr(obj_controller.language != 1, "Select the Minecraft assets folder", "选择 Minecraft assets 文件夹"))
-	var selected_root = string(get_directory(suggested_root))
-	selected_root = string_replace_all(selected_root, "Select the Minecraft assets folder", "")
-	selected_root = string_replace_all(selected_root, "选择 Minecraft assets 文件夹", "")
+	// Keep the picker in this process so its grant covers the hashed objects.
+	var folder_title = condstr(obj_controller.language != 1, "Select the Minecraft assets folder", "选择 Minecraft assets 文件夹")
+	var selected_root = string(macos_choose_directory(folder_title + "\n" + suggested_root))
 	if (selected_root == "") return "";
 	if (string_char_at(selected_root, string_length(selected_root)) != "/") selected_root += "/"
 	macos_bookmark_store(selected_root, selected_root, 0)
@@ -160,9 +285,10 @@ function minecraft_export_load_sound_catalog(catalog_path = "", display_load_err
 			macos_bookmark_begin(obj_controller.minecraft_export_catalog_access_root)
 		}
 	}
-	if (!file_exists_lib(catalog_path)) return false;
 	try {
-		var parsed_json = json_parse(load_text(catalog_path))
+		var catalog_text = load_text(catalog_path)
+		if (!is_string(catalog_text)) throw(condstr(obj_controller.language != 1, "Could not read the selected JSON file:\n", "无法读取所选 JSON 文件：\n") + catalog_path)
+		var parsed_json = json_parse(catalog_text)
 		if (!is_struct(parsed_json)) throw("The selected JSON is not an object.")
 		var sounds_json = parsed_json
 		var sound_namespace = minecraft_export_catalog_namespace_from_path(catalog_path)
@@ -178,18 +304,22 @@ function minecraft_export_load_sound_catalog(catalog_path = "", display_load_err
 			var assets_directory = minecraft_export_asset_root_from_index(catalog_path)
 			if (obj_controller.minecraft_export_catalog_path == catalog_path && obj_controller.minecraft_export_catalog_access_root != "") {
 				catalog_access_root = obj_controller.minecraft_export_catalog_access_root
+				assets_directory = catalog_access_root
 			}
 			var object_path = assets_directory + "objects" + condstr(os_type = os_windows, "\\", "/") + string_copy(object_hash, 1, 2) + condstr(os_type = os_windows, "\\", "/") + object_hash
-			if (!file_exists_lib(object_path) && os_type = os_macosx) {
+			// Existence does not imply read access: selecting an index grants
+			// that file, but its sibling objects folder may still be inaccessible.
+			var object_text = load_text(object_path)
+			if (!is_string(object_text) && os_type = os_macosx && selected_interactively) {
 				var granted_assets_directory = minecraft_export_request_asset_root_access(assets_directory)
-				if (granted_assets_directory != "") {
-					assets_directory = granted_assets_directory
-					catalog_access_root = granted_assets_directory
-					object_path = assets_directory + "objects/" + string_copy(object_hash, 1, 2) + "/" + object_hash
-				}
+				if (granted_assets_directory == "") return false;
+				assets_directory = granted_assets_directory
+				catalog_access_root = granted_assets_directory
+				object_path = assets_directory + "objects/" + string_copy(object_hash, 1, 2) + "/" + object_hash
+				object_text = load_text(object_path)
 			}
-			if (!file_exists_lib(object_path)) throw("The hashed sounds.json object could not be found at " + object_path)
-			sounds_json = json_parse(load_text(object_path))
+			if (!is_string(object_text)) throw(condstr(obj_controller.language != 1, "Could not read the sounds.json asset. Check the selected assets folder:\n", "无法读取 sounds.json 资源。请检查所选 assets 文件夹：\n") + object_path)
+			sounds_json = json_parse(object_text)
 			sound_namespace = "minecraft"
 			source_label = filename_name(catalog_path) + " asset index"
 		}
@@ -198,11 +328,13 @@ function minecraft_export_load_sound_catalog(catalog_path = "", display_load_err
 		obj_controller.minecraft_export_pack_root = ""
 		obj_controller.minecraft_export_catalog_path = catalog_path
 		obj_controller.minecraft_export_catalog_access_root = catalog_access_root
+		obj_controller.minecraft_export_catalog_mode = "file"
 		resourcepack_auto_map_custom_sounds("", sounds_json)
 		if (selected_interactively) save_settings()
 		return true;
 	} catch (error) {
-		if (display_load_error) message(condstr(obj_controller.language != 1, "Could not load the sound catalog:\n", "无法加载声音目录：\n") + string(error), condstr(obj_controller.language != 1, "Minecraft sound catalog", "Minecraft 声音目录"))
+		var error_message = (is_struct(error) && variable_struct_exists(error, "message")) ? string(error.message) : string(error)
+		if (display_load_error) message(condstr(obj_controller.language != 1, "Could not load the sound catalog:\n", "无法加载声音目录：\n") + error_message, condstr(obj_controller.language != 1, "Minecraft sound catalog", "Minecraft 声音目录"))
 	}
 	return false;
 }
@@ -325,6 +457,8 @@ function resourcepack_auto_map_custom_sounds(pack_root, sounds_json) {
 		target.instrument_ref.minecraft_sound = matched_event
 		target.instrument_ref.minecraft_sound_manual = false
 	}
+	// The event input caches its own text; refresh it after automatic mapping.
+	text_exists[66] = false
 	obj_controller.sch_command_plan = undefined
 }
 

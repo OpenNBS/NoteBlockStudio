@@ -43,7 +43,10 @@ function menu_click(argument0) {
 	        }
 	        if (sel = b + 4) save_song(songs[song].filename)
 	        if (sel = b + 5) save_song("")
-			if (sel = b + 6) window = w_saveoptions
+			if (sel = b + 6) {
+				save_options_version = songs[song].save_version
+				window = w_saveoptions
+			}
 			if (sel = b + 7) open_url(backup_directory)
 	        if (sel = b + 9) pattern_import("")
 	        if (sel = b + 10) open_midi("")
@@ -64,7 +67,7 @@ function menu_click(argument0) {
 	            if (calculate_size()) window = w_track_export
 	        }
 			if(sel = b + 19) window = w_datapack_export
-	        if (sel = b + 20) game_end()
+	        if (sel = b + 20) request_quit()
 	        break
 	    }
 	    case "edit": {
@@ -89,8 +92,8 @@ function menu_click(argument0) {
 					} else {
 						y1a = 52 + get_tab_offset()
 					}
-					var selbxa = songs[song].starta + floor((mouse_x - (x1a + 2)) / 32)
-					var selbya = songs[song].startb + floor((mouse_y - (y1a + 34)) / 32)
+					var selbxa = songs[song].starta + floor((nbs_mouse_x() - (x1a + 2)) / 32)
+					var selbya = songs[song].startb + floor((nbs_mouse_y() - (y1a + 34)) / 32)
 					if (selbxa > -1 && selbya > -1) action_paste(selbxa, selbya)
 					else action_paste(songs[song].starta, songs[song].startb)
 			}
@@ -364,7 +367,7 @@ function menu_click(argument0) {
 				var temppath = string(get_open_filename_ext("Image Files (*.png, *.jpg, *.jpeg)|*.png;*.jpg;*.jpeg", "", "", condstr(language != 1, "Open background image", "打开背景图片")))
 				wallpaper_init(temppath)
 			}
-	        if (sel = b + 6) game_end()
+	        if (sel = b + 6) request_quit()
 	        break
 	    }
 		case "settingsp": {
@@ -447,7 +450,7 @@ function menu_click(argument0) {
 					var menutabvar = menutab
 					for (var i = array_length(songs) - 1; i >= 0; i--) {
 						if (i != menutabvar) {
-							close_song(i)
+							if (!close_song(i)) break
 							if (i < menutab) menutabvar--
 						}
 						set_song(menutabvar)
@@ -456,7 +459,7 @@ function menu_click(argument0) {
 				}
 				case 3: {
 					for (var i = array_length(songs) - 1; i > menutab; i--) {
-						close_song(i)
+						if (!close_song(i)) break
 					}
 					break;
 				}
@@ -500,8 +503,8 @@ function menu_click(argument0) {
 			if (songs[song].save_version < 5 && songs[song].user_instruments > 18) songs[song].save_version = nbs_version
 		}
 	}
-	mouse_clear(mb_left)
-	io_clear()
+	nbs_mouse_clear(mb_left)
+	nbs_io_clear()
 
 
 

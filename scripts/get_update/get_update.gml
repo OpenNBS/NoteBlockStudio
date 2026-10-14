@@ -17,8 +17,16 @@ function get_update() {
 				if (language != 1) message("Download complete! Click OK to begin installing the update.", "Note Block Studio")
 				else message("下载完成！点击“OK”来安装更新。", "Note Block Studio")
 				// At this point, the game is paused until the user dismisses the message
+				// Resolve unsaved work before starting an installer that may close NBS.
+				if (!confirm_quit()) {
+					window = w_greeting
+					update_download = -1
+					update = 1
+					return
+				}
 				var launch_error = windows_update_launch(update_file)
 				if (launch_error == 0) {
+					quit_confirmed = true
 					game_end()
 				} else {
 					log("Failed to start update installer", "Windows error " + string(launch_error))

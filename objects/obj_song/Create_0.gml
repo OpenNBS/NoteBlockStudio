@@ -7,6 +7,8 @@ song_midi = ""
 timesignature = 4
 song_backupid = string(floor(random(800000)))
 song_backupname = "Unsaved song " + string(song_backupid) + ".nbs"
+song_backup_path = ""
+song_backup_generation = 0
 song_download_display_name = ""
 save_version = nbs_version
 
@@ -87,6 +89,10 @@ layerstereo[0] = 100
 solostr = ""
 
 // Interface
+tab_draw_x = -1
+tab_from_x = 0
+tab_target_x = -1
+tab_progress = 1
 loop_session = 0
 loop = 0
 loopmax = 0

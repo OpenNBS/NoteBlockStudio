@@ -1,5 +1,5 @@
-macOS TestFlight and App Store Build Instructions
-================================================
+macOS Distribution Build Instructions
+=====================================
 
 Prerequisites
 -------------
@@ -19,14 +19,42 @@ Prerequisites
 Recommended: one-click Xcode project fixer
 -------------------------------------------
 
-1. Use Create Executable in GameMaker and wait for GameMaker to finish generating the
+1. In GameMaker's macOS Game Options > Packaging, leave "Build for Mac App Store"
+   unchecked for Direct Distribution. This is the repository default. Check it
+   only when creating a TestFlight or App Store build. Regenerate the Xcode
+   project when switching between these channels.
+
+2. Use Create Executable in GameMaker and wait for GameMaker to finish generating the
    Xcode project.
 
-2. Double-click "Prepare macOS Build.command" in the repository root.
+3. Double-click "Prepare macOS Build.command" in the repository root.
 
    The fixer reads the GameMaker output directory from options/mac/options_mac.yy,
    selects the final Xcode project, ignores GameMaker's "FromPC" staging project,
    validates the bundle ID, applies all required settings, and opens the project in Xcode.
+   This includes setting the macOS deployment target to 12.0 for every project and app
+   target configuration; lower deployment targets fail to build.
+   It keeps YYMacStoreReceipt at 0 for both channels because this app does not
+   require purchase validation at launch. The GameMaker packaging option still
+   controls the distribution build: direct builds use Developer ID Application;
+   TestFlight and App Store builds use 3rd Party Mac Developer Application.
+   A direct build with YYMacStoreReceipt=1 exits with status 173 and asks for
+   an App Store login at first launch.
+   It also adds a final build phase that signs GameMaker's copied Python and
+   other embedded native files with the archive's identity. The four Python
+   executables need their own Hardened Runtime signatures for direct distribution;
+   enabling the capability on the app target alone does not sign those copies.
+   It also embeds the prebuilt NBS Quick Look preview from
+   extensions/NBSQuickLook/NBSQuickLook.appex into Contents/PlugIns. The preview
+   supports Apple Silicon and Intel on macOS 12 or later. Its version is matched
+   to the containing app, and it is signed with the archive's identity before
+   Xcode signs the app. The sound-library XPC helper is embedded both inside the
+   preview and in the app's Contents/XPCServices directory. The startup bridge is
+   embedded and signed with the other native libraries. No separate extension
+   compilation is needed.
+   The fixer removes GameMaker's --deep code-signing flag at both the project
+   and app target levels. Recursive signing would overwrite the preview's
+   entitlements with the main app's identifier and permissions.
 
    On its first run, the command downloads the pinned "xcodeproj" Ruby dependency into:
 
@@ -39,18 +67,21 @@ Recommended: one-click Xcode project fixer
    If automatic project detection cannot choose safely, drag the generated .xcodeproj
    package onto "Prepare macOS Build.command". Do not select a path containing "FromPC".
 
-3. In Xcode, choose Product -> Archive.
+4. In Xcode, choose Product -> Archive.
 
-4. In Organizer, select the archive and click Distribute App.
+5. In Organizer, select the archive and click Distribute App.
 
-5. For TestFlight or the App Store, choose App Store Connect. For a notarized file,
+6. For TestFlight or the App Store, choose App Store Connect. For a notarized file,
    choose Direct Distribution.
 
-The fixer defaults to the known working signing configuration:
+For direct distribution, the fixer defaults to the known working signing configuration:
 
     Signing style: Manual
     Team ID:       2WJ25NL8J5
-    Profile:       onbs
+    Direct profile: onbs
+
+For TestFlight and the App Store, it defaults to automatic signing. Xcode must
+have access to an Apple Developer account with the correct distribution profile.
 
 Contributors using another team or profile can run the command from Terminal with local
 overrides, for example:
@@ -78,14 +109,15 @@ Use these steps if the fixer cannot run on a particular Mac.
 
    - Add "NBS Icon macOS.icon" and "Icon.xcassets" from the repository root.
    - Replace the generated "Minecraft_Note_Block_Studio-Info.plist" with the repository
-     copy.
+     copy. Keep YYMacStoreReceipt at 0 for both channels.
    - Replace the generated "Minecraft_Note_Block_Studio.entitlements" with the repository
      copy.
 
 4. Under Signing & Capabilities:
 
    - Turn off Automatically manage signing.
-   - Select a working provisioning profile.
+   - Select Developer ID Application and a matching profile for Direct Distribution,
+     or an App Store signing identity and a matching profile for TestFlight/App Store.
    - Add the Hardened Runtime capability.
 
 5. Under General -> App Icons and Launch Screen:
@@ -95,6 +127,7 @@ Use these steps if the fixer cannot run on a particular Mac.
 6. Add these libraries to Frameworks, Libraries, and Embedded Content using Embed & Sign:
 
    - extensions/gmmacostools/libGMmacOSTools.dylib
+   - extensions/NBSQuickLook/libNBSQuickLookBridge.dylib
    - extensions/GMaudioTools/libGMaudioTools.dylib
    - extensions/pygml/libpygml.dylib, copied or renamed as libPygml.dylib
    - extensions/pygml/libPython3.8.dylib
@@ -106,6 +139,112 @@ Use these steps if the fixer cannot run on a particular Mac.
    on each existing file so it can be launched by the app.
 
 7. Under Build Settings -> Packaging, set Product Name to "Note Block Studio".
+   Also set macOS Deployment Target to 12.0 for every configuration at both the project
+   and app target levels.
+   Remove --deep from Other Code Signing Flags at both levels, including any
+   SDK-specific overrides. Keep the embedded-code signing phases enabled.
 
 8. Choose Product -> Archive, then distribute the archive through Organizer as described
    above.
+
+   If following these manual steps instead of running the fixer, add a final Run
+   Script phase to the app target after every Copy Game Files and Embed Frameworks
+   phase. Set its shell to /usr/bin/ruby and paste in the contents of
+   tools/macos_build/sign_embedded_resource_code.rb from this repository.
+
+   To include Quick Look when preparing a project manually, also copy
+   extensions/NBSQuickLook/NBSQuickLook.appex into the generated source directory.
+   Add a Run Script phase before the final signing phase, with shell /usr/bin/ruby,
+   and paste tools/macos_build/embed_quick_look.rb into it. Add the copied .appex
+   as the first Input File, using its $(SRCROOT)-relative path. Add
+   $(TARGET_BUILD_DIR)/$(INFOPLIST_PATH) as the second Input File so Xcode
+   processes the containing app's Info.plist before this phase. Mark the phase
+   to run on every build so the preview and both helper copies follow the app's
+   version. The script signs the helper before the enclosing preview; it also
+   copies that same helper to the app's Contents/XPCServices directory.
+
+
+Quick Look song preview
+-----------------------
+
+The prebuilt extension displays the song title (when present), author, original
+author, duration, and note count. Empty text fields are hidden and metadata is
+not selectable. Playback controls are play/pause, scrubbing, volume, and mute;
+there is no artwork, skip interval, or playback-speed control. The filename
+remains in Quick Look's system title bar.
+
+The audio engine is adapted from NBS-Player and supports custom instruments,
+tempo changes, note/layer volume and panning, pitch, and sound-stopper events.
+Each note keeps NBS-Player's independent random 0-1 ms timing delay. The preview
+autoplays once when visible and allows the final samples to ring out.
+
+At startup, after creating/updating its user files, NBS passes the actual runtime
+sounds_directory to macos_quick_look_register_sounds(). A small native bridge
+asynchronously transfers a bookmark to the bundled NBSSoundLibrary.xpc service.
+The helper saves a read-only persistent bookmark in its own sandbox container.
+The preview's identical helper copy restores that bookmark and supplies a fresh
+temporary grant whenever Quick Look needs the library. The parent app may then
+be closed; macOS starts the helper on demand. Both XPC endpoints check the peer's
+identifier using the current app's OS-generated signing requirements. This
+handles Developer ID, development, and Apple's TestFlight/App Store re-signing.
+The startup bridge waits for an authenticated reply before sending the bookmark.
+
+This uses public APIs without an App Group, a folder picker, an authorization
+preview, distributed notifications, or filesystem sandbox exceptions. The
+extension has no hardcoded user-library path, and no sounds are moved or copied.
+New files added below the registered folder are automatically covered. Library
+sharing requires macOS 13 or later for authenticated XPC connections; macOS 12
+retains metadata and playback using the app's bundled sounds.
+
+Sound lookup uses the registered user library first, including relative
+subdirectories and user overrides, then the enclosing app's bundled data/sounds
+directory. Missing sounds are reported rather than replaced with a different
+instrument. If the library is not available yet, open NBS once and reopen the
+preview. Development/ad hoc builds without a signing team use bundled sounds.
+
+The interface uses public AppKit controls styled to match the system audio
+preview, with NSGlassEffectView on macOS 26 and later and NSVisualEffectView on
+older releases. AVFoundation handles playback and seeking. No private AVKit
+selectors or runtime lookups are used. Quick Look supplies the window glass,
+filename, Share button, and Open With button. App Store acceptance of the finished
+integration has not been verified.
+
+When upgrading from the earlier preview build, use Create Executable in GameMaker
+again before running Prepare macOS Build.command. An older generated project
+does not contain the new startup call or native-extension declaration.
+
+To check a release build, install the signed app, select an .nbs song in Finder,
+and press Space. Verify playback of a song using a user-added instrument as well
+as a song using bundled sounds. The preview stops when it is closed or replaced.
+If macOS has disabled the extension, enable Note Block Studio Preview in System
+Settings > General > Login Items & Extensions > Quick Look.
+
+
+If the preview profile does not match com.apple.application-identifier
+---------------------------------------------------------------------
+
+GameMaker's --deep signing can overwrite NBSQuickLook.appex with the main app's
+entitlements, making it claim org.opennbs.onbs rather than org.opennbs.onbs.preview.
+The extension's provisioning profile may already be correct. Run the updated
+Prepare macOS Build.command on the generated project and create a new archive.
+Retrying distribution of the old archive retains its incorrect signature.
+
+
+If Xcode reports "Hardened Runtime is Not Enabled" for python3 or python3.8
+-------------------------------------------------------------------------
+
+Run the updated Prepare macOS Build.command on the generated Xcode project,
+then create a new archive. Changing the app target's Hardened Runtime switch
+does not repair Python executables already copied into an existing archive.
+The new archive must show "flags=0x10000(runtime)", a Developer ID Application
+authority, and a Timestamp for each Python executable when distributing directly.
+
+
+If a direct build asks for an App Store login or exits with status 173
+--------------------------------------------------------------------
+
+Uncheck "Build for Mac App Store" in GameMaker's macOS Game Options, regenerate
+the Xcode project, rerun Prepare macOS Build.command, and create a new archive.
+Confirm that YYMacStoreReceipt is 0 in the exported app's Contents/Info.plist.
+An existing archive or exported app with YYMacStoreReceipt=1 cannot be fixed by
+changing the GameMaker option alone.

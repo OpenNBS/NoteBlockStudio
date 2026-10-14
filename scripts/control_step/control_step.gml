@@ -44,9 +44,9 @@ function control_step() {
 	audio_channel_num(channels)
 	update_window_icon()
 	
-	if (mouse_check_button_pressed(mb_left)) {
-		mousepress_x = mouse_x
-		mousepress_y = mouse_y
+	if (nbs_mouse_check_button_pressed(mb_left)) {
+		mousepress_x = nbs_mouse_x()
+		mousepress_y = nbs_mouse_y()
 		mousepress_window = window
 		mousepress_layericon = -1
 	}
@@ -142,11 +142,11 @@ function control_step() {
 	selbx = -1
 	selby = -1
 	if (window = 0) {
-	    if (mouse_check_button_pressed(mb_left)) {
+	    if (nbs_mouse_check_button_pressed(mb_left)) {
 	        if (!isplayer) current_song.work_left += 1
 	        key_edit = -1
 	    }
-	    if (mouse_check_button_pressed(mb_right)) {
+	    if (nbs_mouse_check_button_pressed(mb_right)) {
 			if (!isplayer) current_song.work_right += 1
 		}
 	}
@@ -176,20 +176,7 @@ function control_step() {
 	}
 
 	// Auto-recovery
-	if (current_song.totalblocks > 0) {
-		tonextbackup -= 1 / room_speed / 60 * (1 / currspeed)
-		if (tonextbackup <= 0 && playing == 0) {
-		    for (var sss = 0; sss < array_length(songs); sss++) {
-                if (filename_name(songs[sss].filename) != "") {
-                    songs[sss].song_backupname = filename_name(filename_change_ext(songs[sss].filename, ".nbs"));
-                } else {
-                    songs[sss].song_backupname = "Unsaved song " + string(songs[sss].song_backupid) + ".nbs"
-                }
-                save_song(backup_directory + songs[sss].song_backupname, true)
-			}
-			tonextbackup = backupmins
-		}
-	}
+	backup_step(1 / room_speed / 60 * (1 / currspeed))
 
 	// Toggle fullscreen
 	if (keyboard_check_pressed(vk_f11)) {
