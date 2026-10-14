@@ -664,6 +664,8 @@ function control_create() {
 	var vers_tmp = vers
 	var vers_date_tmp = vers_date
 	if (vers_tmp != version || vers_date_tmp != version_date) copy_bundled_files()
+	// Pass the real runtime library location to Quick Look after startup file setup.
+	if (os_type == os_macosx) macos_quick_look_register_sounds(sounds_directory)
 	if (os_type = os_macosx) macos_enable_system_settings_menu()
 	tonextsave = autosave ? autosavemins : 0; // Defining autosavemins here to avoid the autosave when the first song is loaded after open the game.
 	font_src_dynamic_init()

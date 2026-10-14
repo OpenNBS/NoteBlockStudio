@@ -5,6 +5,7 @@ require "json"
 require "open3"
 require "optparse"
 require "pathname"
+require "shellwords"
 require "tempfile"
 require "xcodeproj"
 
@@ -36,6 +37,7 @@ module NoteBlockStudio
 
     DYLIBS = [
       ["extensions/gmmacostools/libGMmacOSTools.dylib", "libGMmacOSTools.dylib"],
+      ["extensions/NBSQuickLook/libNBSQuickLookBridge.dylib", "libNBSQuickLookBridge.dylib"],
       ["extensions/GMaudioTools/libGMaudioTools.dylib", "libGMaudioTools.dylib"],
       ["extensions/pygml/libpygml.dylib", "libPygml.dylib"],
       ["extensions/pygml/libPython3.8.dylib", "libPython3.8.dylib"]
@@ -45,6 +47,9 @@ module NoteBlockStudio
     OPTIONAL_EXECUTABLES = %w[ffmpeg ffprobe].freeze
     EMBEDDED_CODE_SIGN_SCRIPT = "tools/macos_build/sign_embedded_resource_code.rb"
     EMBEDDED_CODE_SIGN_PHASE = "Sign Embedded Resource Code"
+    QUICK_LOOK_BUNDLE = "extensions/NBSQuickLook/NBSQuickLook.appex"
+    QUICK_LOOK_EMBED_SCRIPT = "tools/macos_build/embed_quick_look.rb"
+    QUICK_LOOK_EMBED_PHASE = "Embed NBS Quick Look Preview"
     APP_ICON_NAME = "NBS Icon macOS"
     MACOS_DEPLOYMENT_TARGET = "12.0"
     DEFAULT_TEAM_ID = "2WJ25NL8J5"
@@ -86,6 +91,7 @@ module NoteBlockStudio
       copy_icon_assets(paths.fetch(:source_dir))
       copy_dylibs(paths.fetch(:supporting_dir))
       make_optional_tools_executable(paths.fetch(:supporting_dir))
+      copy_quick_look(paths.fetch(:source_dir))
       update_project(project, target, paths)
       project.save
       verify_result(project_path, paths)
@@ -318,6 +324,13 @@ module NoteBlockStudio
       required.concat(ICON_ASSETS.map { |name| @repo_root.join(name) })
       required.concat(DYLIBS.map { |source, _destination| @repo_root.join(source) })
       required << @repo_root.join(EMBEDDED_CODE_SIGN_SCRIPT)
+      required << @repo_root.join(QUICK_LOOK_EMBED_SCRIPT)
+      %w[Contents/Info.plist Contents/MacOS/NBSQuickLook Contents/Resources/QuickLook.entitlements].each do |file|
+        required << @repo_root.join(QUICK_LOOK_BUNDLE, file)
+      end
+      %w[Contents/Info.plist Contents/MacOS/NBSSoundLibrary Contents/Resources/LibraryService.entitlements].each do |file|
+        required << @repo_root.join(QUICK_LOOK_BUNDLE, "Contents/XPCServices/NBSSoundLibrary.xpc", file)
+      end
 
       missing = required.reject(&:exist?)
       return if missing.empty?
@@ -415,6 +428,13 @@ module NoteBlockStudio
       puts "Restored executable permissions for: #{found.join(", ")}" unless found.empty?
     end
 
+    def copy_quick_look(destination_dir)
+      destination = destination_dir.join("NBSQuickLook.appex")
+      # Replace only the prebuilt extension copied by this fixer.
+      FileUtils.rm_r(destination.to_s) if destination.exist?
+      FileUtils.cp_r(@repo_root.join(QUICK_LOOK_BUNDLE).to_s, destination.to_s, preserve: true)
+    end
+
     def remove_exact_destination(destination, allowed_parent)
       expanded = destination.expand_path
       expected_parent = allowed_parent.expand_path.to_s + File::SEPARATOR
@@ -445,6 +465,9 @@ module NoteBlockStudio
         build_file.settings["ATTRIBUTES"] = attributes | ["CodeSignOnCopy"]
       end
 
+      preview_reference = find_or_create_reference(project, resources_group, paths.fetch(:source_dir).join("NBSQuickLook.appex"))
+      preview_reference.last_known_file_type = "wrapper.app-extension"
+      add_quick_look_embed_phase(target, paths)
       add_embedded_code_sign_phase(target)
 
       team_id = signing_team_id(target)
@@ -462,6 +485,7 @@ module NoteBlockStudio
 
       (project.build_configurations + target.build_configurations).each do |configuration|
         configuration.build_settings["MACOSX_DEPLOYMENT_TARGET"] = MACOS_DEPLOYMENT_TARGET
+        remove_recursive_code_signing(configuration)
       end
 
       target.build_configurations.each do |configuration|
@@ -488,6 +512,37 @@ module NoteBlockStudio
       attributes = target_attributes[target.uuid] ||= {}
       attributes["DevelopmentTeam"] = team_id
       attributes["ProvisioningStyle"] = signing_style
+    end
+
+    def remove_recursive_code_signing(configuration)
+      configuration.build_settings.keys.grep(/\AOTHER_CODE_SIGN_FLAGS(?:\[.*\])?\z/).each do |key|
+        value = configuration.build_settings[key]
+        # GameMaker emits --deep, which re-signs the .appex using the containing
+        # app's identifier and entitlements. Embedded code is signed separately.
+        cleaned = Array(value).map do |flags|
+          flags.gsub(/(?<!\S)(?:--deep|"--deep"|'--deep')(?=\s|\z)/, "").strip
+        end.reject(&:empty?)
+        configuration.build_settings[key] = value.is_a?(Array) ? cleaned : cleaned.join(" ")
+      end
+    end
+
+    def add_quick_look_embed_phase(target, paths)
+      phase = target.shell_script_build_phases.find { |candidate| candidate.name == QUICK_LOOK_EMBED_PHASE }
+      phase ||= target.new_shell_script_build_phase(QUICK_LOOK_EMBED_PHASE)
+      phase.shell_path = "/usr/bin/ruby"
+      phase.shell_script = @repo_root.join(QUICK_LOOK_EMBED_SCRIPT).read
+      phase.input_paths = [
+        "$(SRCROOT)/" + paths.fetch(:source_dir).join("NBSQuickLook.appex").relative_path_from(paths.fetch(:project_dir)).to_s,
+        "$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)"
+      ]
+      phase.output_paths = [
+        "$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/PlugIns/NBSQuickLook.appex",
+        "$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/XPCServices/NBSSoundLibrary.xpc"
+      ]
+      phase.always_out_of_date = "1"
+      # The main application's final CodeSign task seals the embedded extension.
+      target.build_phases.delete(phase)
+      target.build_phases << phase
     end
 
     def resources_group(project, info_plist)
@@ -575,11 +630,19 @@ module NoteBlockStudio
 
       project = Xcodeproj::Project.open(project_path.to_s)
       target = application_target(project)
-      expected_files = ICON_ASSETS + DYLIBS.map(&:last)
+      expected_files = ICON_ASSETS + DYLIBS.map(&:last) + ["NBSQuickLook.appex"]
       missing = expected_files.reject do |name|
         project.files.any? { |file| file.path && File.basename(file.path.to_s) == name }
       end
       raise FixerError, "Xcode project verification failed; missing references: #{missing.join(", ")}" unless missing.empty?
+
+      preview_phase = target.shell_script_build_phases.find { |phase| phase.name == QUICK_LOOK_EMBED_PHASE }
+      unless preview_phase && preview_phase.shell_script == @repo_root.join(QUICK_LOOK_EMBED_SCRIPT).read &&
+             preview_phase.input_paths.length == 2 &&
+             preview_phase.input_paths.last == "$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)" &&
+             paths.fetch(:source_dir).join("NBSQuickLook.appex/Contents/MacOS/NBSQuickLook").file?
+        raise FixerError, "Quick Look preview embedding phase is missing or out of date."
+      end
 
       signing_phase = target.shell_script_build_phases.find { |phase| phase.name == EMBEDDED_CODE_SIGN_PHASE }
       unless signing_phase && target.build_phases.last == signing_phase &&
@@ -590,6 +653,13 @@ module NoteBlockStudio
       (project.build_configurations + target.build_configurations).each do |configuration|
         unless configuration.build_settings["MACOSX_DEPLOYMENT_TARGET"] == MACOS_DEPLOYMENT_TARGET
           raise FixerError, "macOS deployment target was not set to #{MACOS_DEPLOYMENT_TARGET} in #{configuration.name}."
+        end
+        configuration.build_settings.each do |key, value|
+          next unless key.match?(/\AOTHER_CODE_SIGN_FLAGS(?:\[.*\])?\z/)
+          flags = Array(value).flat_map { |entry| Shellwords.split(entry) }
+          if flags.include?("--deep")
+            raise FixerError, "Recursive code signing is still enabled in #{configuration.name}: #{key}."
+          end
         end
       end
 
