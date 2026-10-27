@@ -29,13 +29,14 @@ function load_song() {
 	if (!backup) {
 		//backup_clear()
 	}
-	reset_add()
 	file_ext = string_lower(filename_ext(fn));
 	if (file_ext = ".mid" || file_ext = ".midi") {
+		reset_add()
 	    open_midi(fn)
 	    return 1
 	}
 	else if (file_ext = ".schematic") {
+		reset_add()
 	    open_schematic(fn)
 	    return 1
 	}
