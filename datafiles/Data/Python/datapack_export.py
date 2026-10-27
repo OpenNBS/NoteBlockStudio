@@ -1,8 +1,8 @@
-"""Package generated data-pack files; filesystem errors propagate to GML."""
+"""Package data packs and selected sound files; errors propagate to GML."""
 
 import filecmp
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 import shutil
 import tempfile
 import zipfile
@@ -18,9 +18,28 @@ def clear_staging_directory(source):
     return True
 
 
-def create_zip(source, destination):
+def create_zip(source, destination, filenames=None):
     source = Path(source)
-    files = sorted(path for path in source.rglob("*") if path.is_file())
+    if filenames is None:
+        files = sorted(path for path in source.rglob("*") if path.is_file())
+    else:
+        # Sound exports provide an explicit list; never walk a shared folder.
+        files = set()
+        for filename in filenames:
+            relative = PurePosixPath(filename.replace("\\", "/"))
+            if (
+                not relative.parts
+                or relative.is_absolute()
+                or PureWindowsPath(filename).drive
+                or ".." in relative.parts
+                or "\0" in filename
+            ):
+                raise ValueError("Invalid sound archive path: " + filename)
+            path = source.joinpath(*relative.parts)
+            if not path.is_file():
+                raise FileNotFoundError("Sound file is unavailable: " + str(path))
+            files.add(path)
+        files = sorted(files)
     with zipfile.ZipFile(destination, "x", zipfile.ZIP_DEFLATED) as archive:
         for path in files:
             archive.write(path, path.relative_to(source).as_posix())
@@ -34,6 +53,12 @@ def create_zip(source, destination):
             if archive.read(path.relative_to(source).as_posix()) != path.read_bytes():
                 raise OSError("The archived file does not match: " + str(path))
     return True
+
+
+def create_sound_zip(source, destination, filenames):
+    create_zip(source, destination, filenames)
+    with zipfile.ZipFile(destination) as archive:
+        return len(archive.infolist())
 
 
 def copy_folder(source, destination):
