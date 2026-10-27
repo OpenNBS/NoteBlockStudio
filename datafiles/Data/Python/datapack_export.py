@@ -8,6 +8,16 @@ import tempfile
 import zipfile
 
 
+def clear_staging_directory(source):
+    """Remove the private staging tree; leave symlink targets untouched."""
+    source = Path(source)
+    if source.is_symlink():
+        source.unlink()
+    elif source.exists():
+        shutil.rmtree(source)
+    return True
+
+
 def create_zip(source, destination):
     source = Path(source)
     files = sorted(path for path in source.rglob("*") if path.is_file())

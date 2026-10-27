@@ -42,6 +42,7 @@ function datapack_export() {
 	var functionpath = ""
 	var export_succeeded = false
 	var export_error = ""
+	var python_ready = false
 
 	window = -1
 	calculate_locked_layers()
@@ -85,11 +86,12 @@ function datapack_export() {
 		objective = datapack_runtime_objective(o.dat_name, functionpath)
 		tag = objective
 	
-		// Create folder structure
-		if (directory_exists_lib(tempdir)) {
-			directory_delete_lib(tempdir)
-		}
-		if (directory_exists_lib(tempdir)) throw "Could not clear the temporary data pack folder"
+		// Remove the whole staging tree. directory_destroy does not reliably
+		// remove nonempty directories on every desktop runtime.
+		python_initialize_for_exports()
+		python_ready = true
+		if (python_call_function("datapack_export", "clear_staging_directory", [tempdir], {}) != true)
+			throw "Could not clear the temporary data pack folder"
 		functiondir = dat_makefolders(tempdir, path, namespace, function_registry)
 	
 		//pack.mcmeta
@@ -231,7 +233,6 @@ function datapack_export() {
 		minecraft_export_log_report(sound_plan, o.dat_source, "Data pack")
 	
 		// Package in-process so errors reach GML and paths need no shell quoting.
-		python_initialize_for_exports()
 		if (o.dat_usezip) {
 			if (file_exists_lib(archive_path)) files_delete_lib(archive_path)
 			if (python_call_function("datapack_export", "create_zip", [tempdir, archive_path], {}) != true)
@@ -260,7 +261,8 @@ function datapack_export() {
 	// Cleanup is limited to our staging files. A cleanup error does not invalidate
 	// an export that has already been verified at the chosen destination.
 	try {
-		if (directory_exists_lib(tempdir)) directory_delete_lib(tempdir)
+		if (python_ready && python_call_function("datapack_export", "clear_staging_directory", [tempdir], {}) != true)
+			throw "Could not clear the temporary data pack folder"
 		if (file_exists_lib(archive_path)) files_delete_lib(archive_path)
 	} catch (e) {
 		show_debug_message("Could not remove data-pack staging files: " + string(e))
