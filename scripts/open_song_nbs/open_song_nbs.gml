@@ -1,19 +1,30 @@
-function open_song_nbs(fn, sounds_path = "", safeopen = false, replace = false) {
+function open_song_nbs(fn, sounds_path = "", safeopen = false, replace = false, metadata_path = "") {
 	// Parse into temporary data before creating/replacing a tab or resetting the UI.
 	// Keep the buffer local: confirming a replacement may save another song.
 	var source = -1
 	var parsed = undefined
 	var error_text = ""
+	var reading_metadata = false
 	try {
 		source = buffer_import(fn)
 		if (source < 0) throw("nbs_access_failed")
 		parsed = nbs_parse_buffer(source, fn, safeopen)
+		if (metadata_path != "") {
+			reading_metadata = true
+			var metadata_text = load_text(metadata_path)
+			if (!is_string(metadata_text)) throw("Could not read song ZIP metadata")
+			song_zip_restore_metadata(parsed, source, json_parse(metadata_text))
+		}
 	} catch (error) {
 		show_debug_message("Failed to open NBS song: " + string(error))
 		if (source < 0) {
 			error_text = condstr(language != 1,
 				"Error: Failed to access file. Note Block Studio may not have permission to access the directory.\nPlease try again using the file browser.",
 				"错误：访问文件失败。Note Block Studio 可能没有权限访问该目录。\n请通过文件浏览器重试。")
+		} else if (reading_metadata) {
+			error_text = condstr(language != 1,
+				"The song ZIP contains unreadable, unsupported, or mismatched Minecraft sound mappings.\n\nYour existing songs have not been changed.",
+				"歌曲 ZIP 中的 Minecraft 声音事件映射无法读取、版本不受支持或与歌曲不匹配。\n\n现有歌曲未被更改。")
 		} else if (is_string(error) && error == "nbs_unsupported_version") {
 			error_text = condstr(language != 1,
 				"This NBS file was created in a later version of Note Block Studio.\nPlease save the song as a version " + string(nbs_version) + " file or lower via the Save Options menu.",
@@ -74,6 +85,10 @@ function open_song_nbs(fn, sounds_path = "", safeopen = false, replace = false) 
 	for (var b = 0; b < array_length(parsed.instruments); b++) {
 		var custom = parsed.instruments[b]
 		var ins = new_instrument(custom.name, custom.filename, true, custom.press, custom.key)
+		if (variable_struct_exists(custom, "minecraft_sound")) {
+			ins.minecraft_sound = custom.minecraft_sound
+			ins.minecraft_sound_manual = custom.minecraft_sound_manual
+		}
 		ds_list_add(newsong.instrument_list, ins)
 		with (ins) {
 			if (!instrument_load(sounds_path) && custom.filename != "") missing_sounds += custom.filename + "\n"

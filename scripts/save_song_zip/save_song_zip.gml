@@ -32,8 +32,18 @@ function save_song_zip() {
 		}
 	}
 	
-	// Save song
-	save_song(tempdir + "song.nbs", true);
+	// Keep Minecraft mappings in ZIP metadata without changing the NBS format.
+	// Always write it, including an empty mapping list, to replace stale metadata.
+	try {
+		if (!save_song(tempdir + "song.nbs", true)) throw("Could not save song.nbs")
+		song_zip_write_metadata(songs[song], tempdir + "song.nbs", tempdir + "song.metadata.json")
+	} catch (error) {
+		show_debug_message("Could not save song ZIP metadata: " + string(error))
+		message(condstr(language != 1,
+			"The song and its Minecraft sound mappings could not be saved.",
+			"无法保存歌曲及其 Minecraft 声音事件映射。"), condstr(language != 1, "Error", "错误"))
+		return false
+	}
 	
 	if (os_type = os_macosx) execute_program("ditto", "-c -k \"" + game_save_id + "temp" + "\" \"" + fn + "\"", true);
 	else execute_program(get_7z_exc_name(), "a -tzip \"" + fn + "\" \"" + game_save_id + "temp" + condstr(os_type = os_windows, "\\", "/") + "*\"", true);
@@ -50,4 +60,33 @@ function save_song_zip() {
 	
 	// if (language != 1) message(string(count) + " instrument" + condstr(count > 1, "s were", " was") + " saved!", "Pack instruments");
 	// else message(string(count) + "个音色已保存！", "导出音色");
+}
+
+function song_zip_write_metadata(source_song, song_path, metadata_path) {
+	var mappings = []
+	// Match save_song's custom-instrument order. ZIP exports use v6, or v5
+	// when required by its larger custom-instrument limit.
+	for (var i = 0; i < ds_list_size(source_song.instrument_list); i++) {
+		var instrument = source_song.instrument_list[| i]
+		if (!instrument.user) continue
+		var sound_event = ""
+		var manual = false
+		if (!minecraft_export_is_event(instrument)) {
+			if (variable_instance_exists(instrument, "minecraft_sound")) sound_event = instrument.minecraft_sound
+			if (variable_instance_exists(instrument, "minecraft_sound_manual")) manual = instrument.minecraft_sound_manual == true
+		}
+		array_push(mappings, {minecraft_sound: sound_event, minecraft_sound_manual: manual})
+	}
+	var song_hash = sha1_file(song_path)
+	if (song_hash == "") throw("Could not read song.nbs for ZIP metadata")
+	var metadata = {schema_version: 1, nbs_sha1: song_hash, minecraft_sound_mappings: mappings}
+	var metadata_buffer = buffer_create(0, buffer_grow, 1)
+	try {
+		buffer_write(metadata_buffer, buffer_text, json_stringify(metadata))
+		if (!buffer_export(metadata_buffer, metadata_path)) throw("Could not write song ZIP metadata")
+	} catch (error) {
+		buffer_delete(metadata_buffer)
+		throw error
+	}
+	buffer_delete(metadata_buffer)
 }
