@@ -9,8 +9,8 @@ function macros() {
 
 #macro link_github "https://github.com/OpenNBS/OpenNoteBlockStudio"
 #macro link_report "https://github.com/OpenNBS/OpenNoteBlockStudio/issues/new/choose"
-#macro link_releases "https://api.github.com/repos/OpenNBS/OpenNoteBlockStudio/releases"
-#macro link_latest "https://api.github.com/repos/OpenNBS/OpenNoteBlockStudio/releases/latest"
+#macro link_releases "https://api.github.com/repos/OpenNBS/NoteBlockStudio/releases"
+#macro link_latest "https://api.github.com/repos/OpenNBS/NoteBlockStudio/releases/latest"
 #macro link_changelog "https://opennbs.org/changelog"
 #macro link_website "https://opennbs.org/"
 #macro link_discord "https://discord.gg/sKPGjyVcyy"
