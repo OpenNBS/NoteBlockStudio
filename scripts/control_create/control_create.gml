@@ -792,8 +792,6 @@ function control_create() {
 			if (file != "" && 
 				(string_lower(filename_ext(file)) == ".mid" || string_lower(filename_ext(file)) == ".midi" || string_lower(filename_ext(file)) == ".schematic" ||
 				string_lower(filename_ext(file)) == ".nbs" || string_lower(filename_ext(file)) == ".zip")) {
-				songs[song].filename = file;
-				songs[song].file_ext = file_ext;
 				load_song(file, 0, 1, 1);
 			}
 		} else {
@@ -860,17 +858,8 @@ function control_create() {
 		download_song_start(download_url)
 	}
 	// Open song
-	if (os_type != os_macosx && protocol_data == pointer_null && is_song_path_arg(filenamearg)) {
-		songs[song].filename = filenamearg;
-		if (songs[song].filename != "" &&
-			(string_lower(filename_ext(songs[song].filename)) == ".mid" || string_lower(filename_ext(songs[song].filename)) == ".midi" ||
-			string_lower(filename_ext(songs[song].filename)) == ".schematic" || string_lower(filename_ext(songs[song].filename)) == ".nbs" ||
-			string_lower(filename_ext(songs[song].filename)) == ".zip")) {
-			if (!port_taken) {
-				load_song(songs[song].filename, 0, 1, 1)
-			}
-		}
-		else songs[song].filename = ""
+	if (os_type != os_macosx && protocol_data == pointer_null && is_song_path_arg(filenamearg) && !port_taken) {
+		load_song(filenamearg, 0, 1, 1)
 	}
 
 	log("Startup OK")
