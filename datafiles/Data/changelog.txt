@@ -1,3 +1,97 @@
+Changes in v3.12.0-beta.6 (2026.10.29):
+
+* Added editable Minecraft sound-event mappings for custom instruments,
+   shared by data pack and command-block schematic and track export.
+* Added a searchable Minecraft sound-event catalog, loading from sounds.json
+   or an asset index, and automatic matching of custom sounds to resource
+   pack events.
+* Added Sound Stopper support to data pack and command-block export, with
+   configurable sound categories and diagnostics for accidental sound
+   cutoffs.
+* Added an option to follow song tempo and Tempo Changers in command-block
+   schematic and track exports, snapped to the selected redstone timing
+   grid.
+* Added 5 and 2.5 ticks per second options to track export alongside the
+   existing 10 ticks per second option.
+* Added a restart function to exported data packs and reduced scoreboard
+   conflicts between packs with similar song names.
+* Added Minecraft sound mappings to song ZIP exports so they are restored
+   when the archive is reopened.
+* Added per-part Note Duration controls to MIDI import. Duration can be
+   enabled separately for each track, channel and instrument combination;
+   percussion remains single notes.
+* Added Quick Look previews on macOS. Select an .nbs file in Finder and
+   press Space to view song information and listen with playback, seeking
+   and volume controls.
+* Added update checking for directly distributed macOS builds, with
+   downloads through the GitHub Releases page.
+* Added an experimental Liquid Glass option for context menus, tooltips and
+   messages in the Fluent theme.
+* Updated rounded interface corners, added navigation tabs to Fluent dialogs
+   and added smooth animation when rearranging song tabs.
+* Added XDG Desktop Portal support for Linux file and folder dialogs.
+* Improved song saving and buffer exports by verifying written data before
+   replacing the destination and retaining the previous copy until the
+   replacement is verified.
+* Improved quit confirmation, including native macOS window closing and
+   Windows update installation. Cancelled or failed saves keep the program
+   open.
+* Improved recovery backups for all open song tabs, including songs with
+   matching filenames, metadata-only changes and songs emptied by editing.
+* Autosaves and recovery backups now include selected or moved notes without
+   placing the selection or changing undo history.
+* Improved recovery-file validation and restoration. Previous backups are
+   kept until a new copy is verified, and restored files use unique names
+   instead of overwriting existing songs.
+* Added checks for custom instrument limits when adding, importing, pasting
+   and saving instruments, including compatibility with older NBS formats.
+* Fixed Save Options applying a format change before confirmation or
+   ignoring a cancelled downgrade warning.
+* Fixed close confirmations referring to the wrong song tab and Close Other
+   Tabs or Close Tabs to the Right continuing after cancellation.
+* Fixed empty, incomplete or invalid NBS files crashing the program or
+   disrupting the open song. Failed startup file opens no longer assign the
+   failed filename to the current tab.
+* Improved pattern export error handling and stopped pattern export from
+   marking the song as edited.
+* Improved default filenames in Save dialogs and prevented duplicate .nbs
+   extensions.
+* Fixed data pack export paths on macOS and Linux, folder selection in
+   sandboxed macOS builds, and incomplete output with non-ASCII
+   descriptions.
+* Fixed Pack Instruments including unrelated temporary files in its ZIP
+   archive on Linux, and added clearer reporting of export failures.
+* Fixed MIDI note tails collapsing onto the first layer of a channel or
+   overlapping other notes.
+* Fixed reference audio volume changes not applying during playback.
+* Added a clear error when loading unsupported Ogg reference audio, such as
+   Ogg Opus or Ogg FLAC. Ogg Vorbis and WAV remain supported.
+* Fixed Sound Stopper range guides disappearing when the stopper is outside
+   the visible layers and drawing beyond the editor boundaries.
+* Improved Enter and Escape handling in dialogs. Enter activates the default
+   action when a text field is not active; Escape dismisses an open menu
+   before the dialog.
+* Fixed missed rapid mouse clicks on macOS.
+* Fixed the macOS window jumping when moved between displays with different
+   scaling.
+* Added a native Command-W action to close the current song on macOS.
+* Improved native dialog handling on macOS.
+* Changed the Windows installer and uninstaller to preserve user-added files
+   in the installation directory.
+* Updated Linux .nbs file associations to use the vendor-specific MIME type.
+* Improved startup performance and robustness, and reduced repeated text
+   layout and drawing work.
+* Fixed the update checker offering older releases as updates and updated
+   its release-information URL.
+* Clarified the program-directory warning with instructions for changing the
+   default song folder.
+* Added the missing custom sounds for the Living Millennium demo song.
+* Raised the minimum supported macOS version to 12.0. Quick Look uses the
+   user sound library on macOS 13 or later after NBS has been opened once;
+   macOS 12 uses bundled sounds.
+
+
+
 Changes in v3.12.0-beta.5 (2026.08.05):
 
 * Fixed bundled song copying deleting non-demo songs from the user-data Songs
