@@ -8,6 +8,10 @@ import tempfile
 import zipfile
 
 
+def create_staging_directory(parent):
+    return tempfile.mkdtemp(prefix="nbs-datapack-", dir=parent)
+
+
 def clear_staging_directory(source):
     """Remove the private staging tree; leave symlink targets untouched."""
     source = Path(source)

@@ -37,12 +37,11 @@ function datapack_export() {
 			"Replace matching files in this data pack folder? Other files will be kept.\n\n" + fn,
 			"替换此数据包文件夹中的同名文件？其他文件将保留。\n\n" + fn), title)) return false
 	}
-	var tempdir = game_save_id + "tempdatapack/"
-	var archive_path = game_save_id + "tempdatapack.zip"
+	var tempdir = ""
+	var archive_path = ""
 	var functionpath = ""
 	var export_succeeded = false
 	var export_error = ""
-	var python_ready = false
 
 	window = -1
 	calculate_locked_layers()
@@ -86,12 +85,12 @@ function datapack_export() {
 		objective = datapack_runtime_objective(o.dat_name, functionpath)
 		tag = objective
 	
-		// Remove the whole staging tree. directory_destroy does not reliably
-		// remove nonempty directories on every desktop runtime.
+		// Use a fresh folder so cleanup cannot remove the chosen destination.
 		python_initialize_for_exports()
-		python_ready = true
-		if (python_call_function("datapack_export", "clear_staging_directory", [tempdir], {}) != true)
-			throw "Could not clear the temporary data pack folder"
+		var staging_path = python_call_function("datapack_export", "create_staging_directory", [game_save_id], {})
+		if (!is_string(staging_path) || staging_path == "") throw "Could not create the temporary data pack folder"
+		tempdir = staging_path + "/"
+		archive_path = tempdir + "export.zip"
 		functiondir = dat_makefolders(tempdir, path, namespace, function_registry)
 	
 		//pack.mcmeta
@@ -234,7 +233,6 @@ function datapack_export() {
 	
 		// Package in-process so errors reach GML and paths need no shell quoting.
 		if (o.dat_usezip) {
-			if (file_exists_lib(archive_path)) files_delete_lib(archive_path)
 			if (python_call_function("datapack_export", "create_zip", [tempdir, archive_path], {}) != true)
 				throw "Could not create the data-pack archive"
 			var zip_buffer = buffer_load(archive_path)
@@ -261,9 +259,8 @@ function datapack_export() {
 	// Cleanup is limited to our staging files. A cleanup error does not invalidate
 	// an export that has already been verified at the chosen destination.
 	try {
-		if (python_ready && python_call_function("datapack_export", "clear_staging_directory", [tempdir], {}) != true)
+		if (tempdir != "" && python_call_function("datapack_export", "clear_staging_directory", [tempdir], {}) != true)
 			throw "Could not clear the temporary data pack folder"
-		if (file_exists_lib(archive_path)) files_delete_lib(archive_path)
 	} catch (e) {
 		show_debug_message("Could not remove data-pack staging files: " + string(e))
 	}
