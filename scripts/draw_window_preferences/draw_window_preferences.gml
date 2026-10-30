@@ -162,7 +162,7 @@ function draw_window_preferences() {
 		    else draw_text_dynamic(x1 + 326, y1 + 110 + (theme = 3) * 22, "间隔:            分钟")
 			as = autosavemins
 			autosavemins = median(1, draw_dragvalue(2, x1 + 375, y1 + 110 + (theme = 3) * 22, autosavemins, 1), 60)
-			if (autosavemins != a) {tonextsave = autosavemins}
+			if (autosavemins != as) {tonextsave = autosavemins}
 		}
 		if (language != 1) popup_set_window(x1 + 326, y1 + 110 + (theme = 3) * 22, 180, 16, "The amount of minutes between each auto-save.")
 		else popup_set_window(x1 + 326, y1 + 110 + (theme = 3) * 22, 180, 16, "自动保存中间的间隔。")
