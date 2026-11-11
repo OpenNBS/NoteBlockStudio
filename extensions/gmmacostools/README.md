@@ -68,7 +68,12 @@ still honor the runner's original callbacks. Command-W uses the native
 The original delegate objects and their AppKit registrations stay in place.
 Replacing them with forwarding proxies corrupts the render-view frame during
 native fullscreen transitions, especially on a secondary display. Resize,
-fullscreen, and display-change callbacks must continue directly to the runner.
+fullscreen geometry, and display-change callbacks continue directly to the runner.
+
+Native window setup enables the green title-bar button and marks the window as
+fullscreen-capable. The fullscreen presentation callback preserves the runner's
+other options but replaces permanent menu-bar hiding with AppKit's menu-bar and
+toolbar auto-hide behavior, so the top edge can reveal the menu and window controls.
 
 These implementations are in the sibling repository's
 `GMmacOSTools/GMmacOSTools.mm`, with hook installation in `MouseInput.mm`.
