@@ -483,6 +483,8 @@ function control_create() {
 	keysshow = 0
 	keysmax = 30
 	select_lastpressed = 1
+	reference_hotkeys = [vk_numpad1, vk_numpad2, vk_numpad3]
+	reference_hotkey_edit = -1
 	record = 0
 	record_round = 0
 	warning_octaves = 0

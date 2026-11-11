@@ -11,6 +11,41 @@ function control_step() {
 	}
 	
 	update_window()
+
+	// Capture reference audio bindings before dialog and global keyboard shortcuts.
+	if (window != w_preferences || selected_tab != 3 || windowclose || nbs_mouse_check_button_pressed(mb_left)) reference_hotkey_edit = -1
+	if (reference_hotkey_edit >= 0 && keyboard_check_pressed(vk_anykey)) {
+		var reference_key = keyboard_lastkey
+		var reference_modified = check_ctrl() || keyboard_check(vk_control) || keyboard_check(vk_shift) || keyboard_check(vk_alt)
+		if (reference_key == vk_escape) {
+			reference_hotkey_edit = -1
+		} else if (!reference_modified && reference_key > vk_anykey) {
+			if (reference_key == vk_backspace) reference_key = vk_nokey
+			// A key can select only one reference audio mode.
+			for (var reference_mode = 0; reference_mode < 3; reference_mode++) {
+				if (reference_hotkeys[reference_mode] == reference_key) reference_hotkeys[reference_mode] = vk_nokey
+			}
+			reference_hotkeys[reference_hotkey_edit] = reference_key
+			reference_hotkey_edit = -1
+			save_settings()
+		}
+		keyboard_clear(keyboard_lastkey)
+	}
+
+	// Consume the binding before other shortcuts or piano preview can use it.
+	if (!isplayer && window == 0 && text_focus == -1 && key_edit == -1
+		&& !check_ctrl() && !keyboard_check(vk_control) && !keyboard_check(vk_shift) && !keyboard_check(vk_alt)) {
+		for (var reference_mode = 0; reference_mode < 3; reference_mode++) {
+			var reference_key = reference_hotkeys[reference_mode]
+			if (reference_key > vk_anykey && keyboard_check_pressed(reference_key)) {
+				current_song.reference_option = reference_mode
+				var reference_messages = language != 1 ? ["Reference mute", "Reference solo", "Reference mix"] : ["参考音频静音", "参考音频独奏", "参考音频混音"]
+				set_msg(reference_messages[reference_mode])
+				reference_audio_sync(current_song, true)
+				keyboard_clear(reference_key)
+			}
+		}
+	}
 	//if (os_version > 393217 && os_type = os_windows){
 	//if (songs[song].enda = 0 || !taskbar) {
 	//	window_noprogress(window_handle())

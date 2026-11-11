@@ -899,26 +899,6 @@ function control_draw() {
 	
 	if (!isplayer) {
 		
-	if (window = 0 && text_focus = -1) {
-		
-		if (keyboard_check_pressed(vk_numpad1)) {
-			current_song.reference_option = 0; 
-			set_msg("Reference mute"); 
-			reference_audio_sync(current_song, true)
-		}
-		if (keyboard_check_pressed(vk_numpad2)) {
-			current_song.reference_option = 1; 
-			set_msg("Reference solo"); 
-			reference_audio_sync(current_song, true)
-		}
-		if (keyboard_check_pressed(vk_numpad3)) {
-			current_song.reference_option = 2; 
-			set_msg("Reference mix")
-			reference_audio_sync(current_song, true)
-		}
-	
-	}
-	
 	// Selecting note blocks
 	if (select > 0) {
 	    curs = cr_handpoint

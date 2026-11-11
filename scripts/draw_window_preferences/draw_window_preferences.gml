@@ -561,6 +561,30 @@ function draw_window_preferences() {
 	        if (question("你确定吗？", "确认")) init_keys()
 	    }
 		}
+		if (theme = 3) draw_theme_font(font_info_med)
+		draw_areaheader(x1 + 22, y1 + 358 + (theme = 3) * 22, 456, 100, condstr(language != 1, "Reference audio hotkeys", "参考音频快捷键"))
+		if (theme = 3) draw_theme_font(font_main)
+		var reference_labels = language != 1 ? ["Mute", "Solo", "Mix"] : ["静音", "独奏", "混音"]
+		for (var reference_mode = 0; reference_mode < 3; reference_mode++) {
+			var reference_key = reference_hotkeys[reference_mode]
+			var reference_label = condstr(language != 1, "None", "无")
+			if (reference_key >= vk_numpad0 && reference_key <= vk_numpad9) reference_label = "Num " + string(reference_key - vk_numpad0)
+			else if (reference_key >= vk_f1 && reference_key <= vk_f12) reference_label = "F" + string(reference_key - vk_f1 + 1)
+			else if ((reference_key >= ord("A") && reference_key <= ord("Z")) || (reference_key >= ord("0") && reference_key <= ord("9"))) reference_label = chr(reference_key)
+			else if (reference_key > vk_anykey) reference_label = condstr(language != 1, "Key ", "键 ") + string(reference_key)
+			if (reference_hotkey_edit == reference_mode) reference_label = condstr(language != 1, "Press a key...", "请按键……")
+			draw_text_dynamic(x1 + 40 + reference_mode * 140, y1 + 374 + (theme = 3) * 22, reference_labels[reference_mode])
+			if (draw_button2(x1 + 40 + reference_mode * 140, y1 + 394 + (theme = 3) * 22, 130, reference_label, false, true)) {
+				reference_hotkey_edit = reference_mode
+				key_edit = -1
+			}
+		}
+		draw_text_dynamic(x1 + 40, y1 + 432 + (theme = 3) * 22, condstr(language != 1, "Esc: cancel; Backspace: clear", "Esc：取消；退格：清除"))
+		if (draw_button2(x1 + 320, y1 + 427 + (theme = 3) * 22, 130, condstr(language != 1, "Reset hotkeys", "重置快捷键"), false, true)) {
+			reference_hotkeys = [vk_numpad1, vk_numpad2, vk_numpad3]
+			reference_hotkey_edit = -1
+			save_settings()
+		}
 	} else if (selected_tab = 4) {
 		if (language != 1) {
 		if (theme = 3) draw_theme_font(font_info_med)
