@@ -112,7 +112,8 @@ function control_step() {
 		b = rtmidi_check_message()	
 	}
 	for (i = 0; i < ds_list_size(midiMessages); i++) {
-		var midi_status = midiMessages[| i][| 0]
+		// Ignore the channel nibble so note-on/off work on all 16 channels.
+		var midi_status = midiMessages[| i][| 0] & 0xF0
 		var midi_msg1 = midiMessages[| i][| 1]
 		var midi_msg2 = midiMessages[| i][| 2]
 		ds_list_destroy(midiMessages[| i])
