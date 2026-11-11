@@ -529,11 +529,11 @@ function draw_window_preferences() {
 		if (draw_checkbox(x1 + 40, y1 + 198 + (theme = 3) * 22, layerhov_vppreview , "Apply hovered layer's volume and panning to note preview sounds", "Whether the preview sound's volume and panning should be\nrelative to the layer the mouse is hovering over.")) layerhov_vppreview =!layerhov_vppreview
 		//draw_text_dynamic(x1 + 40, y1 + 178, "Tip: Hold Shift while scrolling over a note to change a whole octave,\nor fine-tune its velocity, panning or pitch.")
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 240 + (theme = 3) * 22, 456, 105, "Piano")
+	    draw_areaheader(x1 + 22, y1 + 240 + (theme = 3) * 22, 456, 105, "Piano and layers")
 		if (theme = 3) draw_theme_font(font_main)
 	    if (draw_checkbox(x1 + 40, y1 + 256 + (theme = 3) * 22, select_lastpressed, "Set selected key to pressed one", "If the selected key should be set\nto the one pressed using the keyboard.")) select_lastpressed=!select_lastpressed
-	    draw_text_dynamic(x1 + 40, y1 + 290 + (theme = 3) * 22, "Right-click on keys to change their shortcuts.")
-	    if (draw_button2(x1 + 40, y1 + 310 + (theme = 3) * 22, 160, "Reset key shortcuts", false, true)) {
+	    draw_text_dynamic(x1 + 40, y1 + 296 + (theme = 3) * 22, "Right-click on keys to change their shortcuts.")
+	    if (draw_button2(x1 + 40, y1 + 316 + (theme = 3) * 22, 160, "Reset key shortcuts", false, true)) {
 	        if (question("Are you sure?", "Confirm")) init_keys()
 	    }
 		} else {
@@ -553,14 +553,17 @@ function draw_window_preferences() {
 		if (draw_checkbox(x1 + 40, y1 + 198 + (theme = 3) * 22, layerhov_vppreview , "将悬停层的音量和声道调整应用于音符预览声音", "预览声音的音量和声道是否应与鼠标悬停的层相关。")) layerhov_vppreview =!layerhov_vppreview
 		//draw_text_dynamic(x1 + 40, y1 + 178, "Tip: Hold Shift while scrolling over a note to change a whole octave,\nor fine-tune its velocity, panning or pitch.")
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 240 + (theme = 3) * 22, 456, 105, "琴键")
+	    draw_areaheader(x1 + 22, y1 + 240 + (theme = 3) * 22, 456, 105, "琴键与层")
 		if (theme = 3) draw_theme_font(font_main)
 	    if (draw_checkbox(x1 + 40, y1 + 256 + (theme = 3) * 22, select_lastpressed, "选择按下的键", "是否选择按下的键所对应的音。")) select_lastpressed=!select_lastpressed
-	    draw_text_dynamic(x1 + 40, y1 + 290 + (theme = 3) * 22, "对琴键右键可更改键位。")
-	    if (draw_button2(x1 + 40, y1 + 310 + (theme = 3) * 22, 160, "重置键位", false, true)) {
+	    draw_text_dynamic(x1 + 40, y1 + 296 + (theme = 3) * 22, "对琴键右键可更改键位。")
+	    if (draw_button2(x1 + 40, y1 + 316 + (theme = 3) * 22, 160, "重置键位", false, true)) {
 	        if (question("你确定吗？", "确认")) init_keys()
 	    }
 		}
+		if (draw_checkbox(x1 + 40, y1 + 276 + (theme = 3) * 22, sound_stopper_follow_layers,
+			condstr(language != 1, "Automatically adjust sound stopper ranges", "自动调整声音抑制器范围"),
+			condstr(language != 1, "Move ranges with their stopper's layer; update ranges when layers are added or removed.\nGlobal stoppers are unchanged. Removing the last target disables the stopper.", "移动声音抑制器所在层时移动其范围；添加或删除层时调整范围。\n全局声音抑制器不受影响。删除最后一个目标层后将停用该抑制器。"))) sound_stopper_follow_layers = !sound_stopper_follow_layers
 		if (theme = 3) draw_theme_font(font_info_med)
 		draw_areaheader(x1 + 22, y1 + 358 + (theme = 3) * 22, 456, 100, condstr(language != 1, "Reference audio hotkeys", "参考音频快捷键"))
 		if (theme = 3) draw_theme_font(font_main)

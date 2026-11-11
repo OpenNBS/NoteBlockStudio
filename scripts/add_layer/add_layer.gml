@@ -45,6 +45,8 @@ function add_layer() {
 
 	// Shift blocks down
 	selection_place(false)
+	var stopper_changes = []
+	if (!argument[1]) stopper_changes = sound_stopper_layer_changes(h_addlayer, num)
 	selection_add(0, num, songs[song].enda, songs[song].endb2, 0, true, true)
 	songs[song].selection_y += 1
 	selection_place(true)
@@ -79,7 +81,10 @@ function add_layer() {
 	songs[song].layerstereo[num] = pan
 
 	songs[song].changed = 1
-	if (!argument[1]) history_set(h_addlayer, num, blocks, xx, name, lock, vol, pan)
+	if (!argument[1]) {
+		sound_stopper_layer_restore(stopper_changes, true)
+		history_set(h_addlayer, num, blocks, xx, name, lock, vol, pan, stopper_changes)
+	}
 
 
 }

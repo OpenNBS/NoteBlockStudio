@@ -85,10 +85,13 @@ function draw_block(argument0, argument1, argument2, argument3, argument4, argum
 				draw_text_transformed(xx + 16 - 8 * (use_icons), yy + 16, string(abs(pit)) + " BPM", 0.25, 0.25, 0)
 			}
 		} else if (insname == "Sound Stopper") {
+			var stopper_end = panning_velocity_to_short(pan, vel)
+			var stopper_label = string(abs(pit)) + "-" + string(stopper_end)
+			if (floor(pit) > 0 && stopper_end < floor(pit)) stopper_label = condstr(language != 1, "Off", "停用")
 			if (!hires || obj_controller.theme != 3) {
-				draw_text(xx + 16 - 8 * (use_icons), yy + 16, string(abs(pit)) + "-" + string(panning_velocity_to_short(pan, vel)))
+				draw_text(xx + 16 - 8 * (use_icons), yy + 16, stopper_label)
 			} else {
-				draw_text_transformed(xx + 16 - 8 * (use_icons), yy + 16, string(abs(pit)) + "-" + string(panning_velocity_to_short(pan, vel)), 0.25, 0.25, 0)
+				draw_text_transformed(xx + 16 - 8 * (use_icons), yy + 16, stopper_label, 0.25, 0.25, 0)
 			}
 		} else {
 			if (!hires || obj_controller.theme != 3) {

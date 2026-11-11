@@ -25,6 +25,8 @@ function remove_layer(argument0, argument1) {
 
 	// Remove blocks
 	selection_place(false)
+	var stopper_changes = []
+	if (!argument1) stopper_changes = sound_stopper_layer_changes(h_removelayer, num)
 	selection_add(0, num, songs[song].enda, num, 0, true, true)
 	blocks = songs[song].selection_code
 	xx = songs[song].selection_x
@@ -59,7 +61,10 @@ function remove_layer(argument0, argument1) {
 	songs[song].endb2 -= 1
 
 	songs[song].changed = 1
-	if (!argument1) history_set(h_removelayer, num, blocks, xx, name, lock, vol, pan)
+	if (!argument1) {
+		sound_stopper_layer_restore(stopper_changes, true)
+		history_set(h_removelayer, num, blocks, xx, name, lock, vol, pan, stopper_changes)
+	}
 
 
 }

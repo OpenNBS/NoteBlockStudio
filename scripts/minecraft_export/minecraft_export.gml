@@ -187,7 +187,7 @@ function minecraft_export_stopper_range(song_instance, tick, layer) {
 	var start_layer = floor(song_instance.song_pit[tick, layer])
 	var end_layer = panning_velocity_to_short(song_instance.song_pan[tick, layer], song_instance.song_vel[tick, layer])
 	start_layer = max(0, start_layer)
-	end_layer = max(start_layer, end_layer)
+	// Preserve empty ranges; they must not stop a neighboring layer.
 	return [start_layer, end_layer]
 }
 

@@ -57,6 +57,7 @@ function load_settings() {
 	changepitch =        ini_read_real(  "preferences", "change_pitch",       changepitch)
 	layerhov_vppreview = ini_read_real(  "preferences", "layerhov_vppreview", layerhov_vppreview)
 	select_lastpressed = ini_read_real(  "preferences", "select_lastpressed", select_lastpressed)
+	sound_stopper_follow_layers = ini_read_real("preferences", "sound_stopper_follow_layers", sound_stopper_follow_layers)
 	reference_hotkeys[0] = ini_read_real("preferences", "reference_hotkey_mute", reference_hotkeys[0])
 	reference_hotkeys[1] = ini_read_real("preferences", "reference_hotkey_solo", reference_hotkeys[1])
 	reference_hotkeys[2] = ini_read_real("preferences", "reference_hotkey_mix", reference_hotkeys[2])

@@ -439,6 +439,7 @@ function control_create() {
 	
 	sound_stopper_set_start = -1
 	sound_stopper_set_until = -1
+	sound_stopper_follow_layers = true
 
 	selection_alpha = 0.8
 

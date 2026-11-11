@@ -50,6 +50,7 @@ function save_settings() {
 	ini_write_real_clean("preferences", "change_pitch",       changepitch)
 	ini_write_real_clean("preferences", "layerhov_vppreview", layerhov_vppreview)
 	ini_write_real_clean("preferences", "select_lastpressed", select_lastpressed)
+	ini_write_real_clean("preferences", "sound_stopper_follow_layers", sound_stopper_follow_layers)
 	ini_write_real_clean("preferences", "reference_hotkey_mute", reference_hotkeys[0])
 	ini_write_real_clean("preferences", "reference_hotkey_solo", reference_hotkeys[1])
 	ini_write_real_clean("preferences", "reference_hotkey_mix", reference_hotkeys[2])

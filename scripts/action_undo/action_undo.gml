@@ -67,14 +67,17 @@ function action_undo() {
 		}
 		case h_addlayer: {
 			remove_layer(arg0, true)
+			sound_stopper_layer_restore(arg7, false)
 			break
 		}
 		case h_removelayer: {
 			add_layer(arg0, true, arg1, arg2, arg3, arg4, arg5, arg6)
+			sound_stopper_layer_restore(arg7, false)
 			break
 		}
 		case h_swaplayer: {
 			shift_layers(arg1, arg0, true)
+			sound_stopper_layer_restore(arg2, false)
 			break
 		}
 		case h_stereoize: {

@@ -51,6 +51,8 @@ function remove_emitters_all() {
 	if (argument_count > 0) layerid = argument[0]
 	if (argument_count > 1) layerto = argument[1]
 	if (layerid < 0) layerid = 0
+	// A stopper whose last target was deleted has an empty range.
+	if (argument_count > 1 && layerid > 0 && layerto < layerid) return
 	if (layerto < layerid) layerto = layerid
 	
 	//if (os_type != os_macosx) {
