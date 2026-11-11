@@ -57,12 +57,18 @@ previous bytes in the container until success or verified rollback. This works
 with a file-only sandbox grant; sibling `.tmp` and `.bak` paths are not required.
 Successful saves store a security-scoped bookmark for subsequent saves.
 
-Starting the mouse bridge also installs application/window delegate proxies.
-Native Quit and window close send the `GM_MENU` event `app_quit` and cancel the
-native shutdown until GML calls `macos_quit_reply(true)` after confirming every
-song. A cancelled/failed save replies `false` and keeps the app open. Other
-delegate messages continue to the runner. Command-W uses the native `song_close`
-menu action so it is consumed before the piano's keyboard handling.
+Starting the mouse bridge also intercepts `applicationShouldTerminate:` and
+`windowShouldClose:` on the runner's existing delegate classes. Native Quit and
+window close send the `GM_MENU` event `app_quit` and cancel the native shutdown
+until GML calls `macos_quit_reply(true)` after confirming every song. A
+cancelled/failed save replies `false` and keeps the app open. Approved requests
+still honor the runner's original callbacks. Command-W uses the native
+`song_close` menu action so it is consumed before the piano's keyboard handling.
+
+The original delegate objects and their AppKit registrations stay in place.
+Replacing them with forwarding proxies corrupts the render-view frame during
+native fullscreen transitions, especially on a secondary display. Resize,
+fullscreen, and display-change callbacks must continue directly to the runner.
 
 These implementations are in the sibling repository's
 `GMmacOSTools/GMmacOSTools.mm`, with hook installation in `MouseInput.mm`.
