@@ -57,7 +57,7 @@ function toggle_playing(argument0) {
 						}
 						else if (insname = "Toggle Background Accent") backgroundaccent = !backgroundaccent
 	                    else if (a) {
-	                        if (songs[song].song_ins[xx, b].loaded && songs[song].reference_option != 1) play_sound(songs[song].song_ins[xx, b], songs[song].song_key[xx, b], c , d, e)
+	                        if (songs[song].song_ins[xx, b].loaded && songs[song].reference_option != 1) play_sound(songs[song].song_ins[xx, b], songs[song].song_key[xx, b], c , d, e, b + 1)
 	                        if (songs[song].song_ins[xx, b].press) key_played[songs[song].song_key[xx, b]] = current_time
 	                        songs[song].song_played[xx, b] = current_time
 	                    }
