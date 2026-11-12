@@ -930,25 +930,44 @@ function control_draw() {
 	draw_set_halign(fa_left)
 	draw_theme_color()
 	if (blackout) draw_set_color(c_white)
-	c = 1
-	if (current_song.tempo < 3.5) c = 5
-	if (current_song.tempo < 1) c = 10
-	if (current_song.tempo < 0.5) c = 30
-	if (current_song.tempo > 11) c = 0.5
-	if (current_song.tempo > 18) c = 0.25
-	a = ceil(get_seconds_from_tick(current_song.starta) / c) * c
-	xx = (ceil(current_song.starta / (current_song.tempo * c)) - (current_song.starta / (current_song.tempo * c))) * (32 * current_song.tempo * c)
-
-	while (xx < totalcols * 32 + 16) {
-	    if (a > 0) draw_set_halign(fa_center)
-	    if (!hires || obj_controller.theme != 3) draw_text(x1 + 2 + xx - note_offset, y1 + 2, time_str(a))
-	    else draw_text_transformed(x1 + 2 + xx - note_offset, y1 + 2, time_str(a), 0.25, 0.25, 0)
-	    draw_set_alpha(0.6)
-	    draw_line(x1 + 2 + xx - note_offset, y1 + 2 + 12, x1 + 2 + xx - note_offset, y1 + 2 + 15)
-	    draw_set_alpha(1)
-	    draw_set_halign(fa_left)
-	    xx += (32 * current_song.tempo) * c
-	    a += c
+	// Locate the visible tempo section once, then walk only the visible sections.
+	var timeline_tempos = current_song.tempo_changes
+	var timeline_segment = get_tempo_change_index(current_song.starta)
+	var timeline_end_tick = current_song.starta + totalcols + 0.5
+	var timeline_last_label = -infinity
+	var timeline_label_width = string_width_dynamic("00:00:00;000")
+	while (timeline_segment < array_length(timeline_tempos) && timeline_tempos[timeline_segment][0] < timeline_end_tick) {
+		var timeline_entry = timeline_tempos[timeline_segment]
+		var timeline_tps = timeline_entry[1]
+		var timeline_end_x = (timeline_end_tick - current_song.starta) * 32
+		if (timeline_segment + 1 < array_length(timeline_tempos)) {
+			timeline_end_x = min(timeline_end_x, (timeline_tempos[timeline_segment + 1][0] - current_song.starta) * 32)
+		}
+		c = 1
+		if (timeline_tps < 3.5) c = 5
+		if (timeline_tps < 1) c = 10
+		if (timeline_tps < 0.5) c = 30
+		if (timeline_tps > 11) c = 0.5
+		if (timeline_tps > 18) c = 0.25
+		var timeline_start_seconds = timeline_entry[2] + (max(current_song.starta, timeline_entry[0]) - timeline_entry[0]) / timeline_tps
+		a = ceil(max(0, timeline_start_seconds / c - 0.000000001)) * c
+		xx = (timeline_entry[0] + (a - timeline_entry[2]) * timeline_tps - current_song.starta) * 32
+		while (xx < timeline_end_x) {
+			// Keep adjacent labels readable even at an abrupt tempo change.
+			if (xx >= -0.000001 && xx - timeline_last_label >= timeline_label_width + 8) {
+				if (a > 0) draw_set_halign(fa_center)
+				if (!hires || obj_controller.theme != 3) draw_text(x1 + 2 + xx - note_offset, y1 + 2, time_str(a))
+				else draw_text_transformed(x1 + 2 + xx - note_offset, y1 + 2, time_str(a), 0.25, 0.25, 0)
+				draw_set_alpha(0.6)
+				draw_line(x1 + 2 + xx - note_offset, y1 + 2 + 12, x1 + 2 + xx - note_offset, y1 + 2 + 15)
+				draw_set_alpha(1)
+				draw_set_halign(fa_left)
+				timeline_last_label = xx + (a == 0 ? timeline_label_width / 2 : 0)
+			}
+			xx += 32 * timeline_tps * c
+			a += c
+		}
+		timeline_segment++
 	}
 
 	for (a = 0; a <= totalcols; a += 1) {

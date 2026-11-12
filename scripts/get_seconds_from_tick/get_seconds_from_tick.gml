@@ -1,23 +1,17 @@
+// Find the last tempo change at or before a tick without scanning the song.
+function get_tempo_change_index(tick) {
+	var tc = songs[song].tempo_changes
+	var low = 0
+	var high = array_length(tc) - 1
+	while (low < high) {
+		var middle = floor((low + high + 1) / 2)
+		if (tc[middle][0] <= tick) low = middle
+		else high = middle - 1
+	}
+	return low
+}
+
 function get_seconds_from_tick(tick) {
-    var seconds = 0.0;
-    var tc      = songs[song].tempo_changes;
-    var len     = array_length(tc);
-
-    for (var i = 1; i < len; i++) {
-        var seg_start = tc[i - 1][0];
-        var seg_tps   = tc[i - 1][1];           // ticks-per-second
-
-        if (tick < tc[i][0]) {                  // inside this segment
-            seconds += (tick - seg_start) / seg_tps;
-            return seconds;
-        }
-
-        // full segment
-        seconds += (tc[i][0] - seg_start) / seg_tps;
-    }
-
-    // after last tempo change
-    var last_tps = tc[len - 1][1];
-    seconds += (tick - tc[len - 1][0]) / last_tps;
-    return seconds;
+	var entry = songs[song].tempo_changes[get_tempo_change_index(tick)]
+	return entry[2] + (tick - entry[0]) / entry[1]
 }

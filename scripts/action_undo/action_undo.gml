@@ -33,6 +33,7 @@ function action_undo() {
 		}
 		case h_changeblock: {
 		    change_block(arg0, arg1, arg7, arg8, arg9, arg10, arg11)
+			if (arg2.name == "Tempo Changer" || arg7.name == "Tempo Changer") update_tempo_changes()
 			break
 		}
 		case h_selectadd: {

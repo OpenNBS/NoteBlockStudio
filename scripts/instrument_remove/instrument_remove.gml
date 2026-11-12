@@ -1,6 +1,6 @@
 function instrument_remove(ins) {
 	selection_place(0)
-	if (songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, ins)].name == "Tempo Changer") songs[song].tempo_changes = [[0, 10]]
+	if (songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, ins)].name == "Tempo Changer") songs[song].tempo_changes = [[0, max(0.25, songs[song].real_tempo), 0]]
 	for (a = 0; a <= songs[song].enda; a += 1) {
 		if (songs[song].colamount[a] > 0) {
 			for (b = songs[song].colfirst[a]; b <= songs[song].collast[a]; b += 1) {

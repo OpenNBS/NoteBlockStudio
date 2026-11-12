@@ -132,4 +132,5 @@ reference_has_last_position = false
 reference_last_position = 0
 reference_volume = 100
 
-tempo_changes = [[0, 10]]
+// Tempo entries: [tick, ticks per second, elapsed seconds at this tick].
+tempo_changes = [[0, 10, 0]]

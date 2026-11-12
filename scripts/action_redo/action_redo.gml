@@ -34,6 +34,7 @@ function action_redo() {
 		}
 		case h_changeblock: {
 			change_block(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+			if (arg2.name == "Tempo Changer" || arg7.name == "Tempo Changer") update_tempo_changes()
 			break
 		}
 		case h_selectadd: {
