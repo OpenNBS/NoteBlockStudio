@@ -1,3 +1,34 @@
+Changes in v3.12.0-rc.1 (2026.11.13):
+
+* Added configurable shortcuts for muting, soloing and mixing reference
+   audio in Preferences > Usability. Shortcuts can be reassigned, cleared or
+   reset to Num 1, Num 2 and Num 3.
+* Added an option to automatically adjust Sound Stopper ranges when layers
+   are added or removed, or when the layer containing a stopper is moved.
+   The option is enabled by default and supports undo and redo.
+* Sound Stoppers whose last target layer is removed are now disabled and
+   display "Off". They remain inactive during playback and Minecraft export.
+* Enabled native macOS fullscreen through the green title-bar button. Moving
+   the pointer to the top edge reveals the menu bar and window controls.
+* Updated 15 bundled instrument samples to match their Minecraft
+   counterparts, including all four trumpet sounds.
+* Fixed the autosave countdown being reset unnecessarily while Preferences
+   is open.
+* Fixed MIDI device note input only responding to channel 1. Note-on and
+   note-off messages now work on all 16 channels.
+* Fixed notes played at the cursor when starting playback not being affected
+   by Sound Stoppers targeting their layers.
+* Fixed timeline time labels and tick marks in songs with tempo changes, and
+   improved label spacing around sudden tempo changes.
+* Fixed timing updates after undoing or redoing Tempo Changer edits and
+   after removing the Tempo Changer instrument.
+* Fixed the song duration shown in MIDI Import when importing tempo changes,
+   including the duration after removing leading silence.
+* Fixed incorrect macOS fullscreen scaling, especially when using a
+   secondary display.
+
+
+
 Changes in v3.12.0-beta.6 (2026.10.29):
 
 * Added editable Minecraft sound-event mappings for custom instruments,
