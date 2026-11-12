@@ -6,6 +6,8 @@ function reset_midi() {
 	midi_micsecqn = 0
 	midi_minpos = -1
 	midi_maxpos = 0
+	midi_songlength = 0
+	midi_duration_cache = [[0, 0], [0, 0]]
 	for (a = 0; a < midi_tracks; a += 1) {
 	    for (b = 0; b < midi_trackamount[a]; b += 1) {
 	        midi_eventx[a, b] = 0

@@ -13,6 +13,8 @@ function init_midi() {
 	midi_micsecqn = 0
 	midi_minpos = -1
 	midi_maxpos = 0
+	midi_songlength = 0
+	midi_duration_cache = [[0, 0], [0, 0]]
 	midi_trackname[0] = ""
 	midi_trackamount[0] = 0
 	midi_tracklength[0] = 0

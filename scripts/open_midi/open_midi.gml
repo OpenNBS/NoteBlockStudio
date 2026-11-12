@@ -257,9 +257,50 @@ function open_midi() {
 	    midi_percpitch[a - 24] = midi_drum[a, 2]
 	}
 	midi_percamount = a - 24*/
-	midi_songlength = (midi_micsecqn * ((midi_maxpos - midi_minpos * w_midi_removesilent) / (midi_tempo & $7FFF))) / 1000000
+	cache_midi_durations()
+	midi_songlength = midi_duration_cache[w_midi_tempo_changer ? 1 : 0][w_midi_removesilent ? 1 : 0]
 	return 1
 
 
 
+}
+
+// Cache both options once per file: [tempo changes off/on][leading silence kept/removed].
+function cache_midi_durations() {
+	midi_duration_cache = [[0, 0], [0, 0]]
+	var division = midi_tempo & $7FFF
+	if (division <= 0 || midi_maxpos <= 0 || midi_micsecqn <= 0) return
+	var trim_start = max(0, midi_minpos)
+	// Use the same initial tempo as the importer before the first change.
+	var seconds_per_tick = midi_micsecqn / division / 1000000
+	var full = midi_maxpos * seconds_per_tick
+	var trimmed = max(0, midi_maxpos - trim_start) * seconds_per_tick
+	midi_duration_cache = [[full, trimmed], [full, trimmed]]
+	if (midi_tempo_changers <= 0 || (midi_tempo & $8000) != 0) return
+
+	// Tracks are read separately, so their tempo events may be out of time order.
+	// Keep file order for equal positions, matching the importer's last-event-wins rule.
+	var changes = []
+	for (var i = 0; i < midi_tempo_changers; i++) {
+		if (midi_tempo_changer_tempo[i] > 0) {
+			array_push(changes, [midi_tempo_changer_x[i], 60 / midi_tempo_changer_tempo[i] / division, i])
+		}
+	}
+	array_sort(changes, function(left, right) {
+		if (left[0] != right[0]) return left[0] - right[0]
+		return left[2] - right[2]
+	})
+	full = 0
+	trimmed = 0
+	var previous_tick = 0
+	for (var i = 0; i <= array_length(changes); i++) {
+		var next_tick = midi_maxpos
+		if (i < array_length(changes)) next_tick = clamp(changes[i][0], 0, midi_maxpos)
+		full += (next_tick - previous_tick) * seconds_per_tick
+		trimmed += max(0, next_tick - max(previous_tick, trim_start)) * seconds_per_tick
+		previous_tick = next_tick
+		if (next_tick >= midi_maxpos) break
+		seconds_per_tick = changes[i][1]
+	}
+	midi_duration_cache[1] = [full, trimmed]
 }

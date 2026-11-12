@@ -2,6 +2,7 @@ function import_midi() {
 	// import_midi()
 	var a, b, deltapertick, t, e, channel, note, pos, noteuntil, yy, channelheight, framesps, smpte, ins, stop, vel, forvalue, tempvel, temppan, length, at, fadepercent;
 	var patch, include_duration, channel_events, eventlayer, slot, events, entry, layer_ends, fade_mode;
+	midi_songlength = midi_duration_cache[w_midi_tempo_changer ? 1 : 0][w_midi_removesilent ? 1 : 0]
 	nbs_io_clear()
 	reset_add()
 	
