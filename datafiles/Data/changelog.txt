@@ -14,6 +14,8 @@ Changes in v3.12.0-rc.1 (2026.11.13):
    counterparts, including all four trumpet sounds.
 * Fixed the autosave countdown being reset unnecessarily while Preferences
    is open.
+* Fixed the filename cursor jumping back to the start in Windows Save
+   dialogs.
 * Fixed MIDI device note input only responding to channel 1. Note-on and
    note-off messages now work on all 16 channels.
 * Fixed notes played at the cursor when starting playback not being affected
