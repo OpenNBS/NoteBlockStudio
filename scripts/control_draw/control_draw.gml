@@ -1549,8 +1549,7 @@ function control_draw() {
 		if (draw_layericon(4, x1 + 162 - !realvolume-realstereo * 10, y1 + 8, condstr(language != 1, "Remove reference audio\n(Click and drag to remove multiple layers)", "删除参考音频\n（拖拽可批量删除层）"), 0, 0)) {
 		    playing = 0
 			current_song.reference_option = 0; 
-			if (audio_is_playing(current_song.reference_sound)) audio_stop_sound(current_song.reference_sound)
-			audio_destroy_stream(current_song.reference_audio)
+			reference_audio_free(current_song)
 			current_song.reference_audio_file = ""
 			current_song.reference_audio = -1
 			current_song.reference_option = 2

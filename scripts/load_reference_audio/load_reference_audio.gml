@@ -7,9 +7,7 @@ function load_reference_audio(){
 		else message("此文件不是受支持的 Ogg Vorbis 音频。请将其导出为 Ogg Vorbis 或 8 位/16 位 PCM WAV 文件。", "不支持的音频格式")
 		return 0
 	}
-	audio_destroy_stream(songs[song].reference_audio)
-	audio_free_buffer_sound(songs[song].reference_audio)
-	buffer_delete(songs[song].reference_audio_buffer)
+	reference_audio_free(songs[song])
 	global.__temp_audio_buffer__ = -1
 	songs[song].reference_audio_buffer = -1
 	songs[song].reference_audio_file = ""
@@ -30,10 +28,9 @@ function load_reference_audio(){
 	}
 	songs[song].reference_audio_buffer = global.__temp_audio_buffer__
 	if (songs[song].reference_audio < 0) {
+		reference_audio_free(songs[song])
 		if (language != 1) message("Couldn't load the file", "Error")
 		else message("文件加载失败", "错误")
-		songs[song].reference_audio_file = ""
-		songs[song].reference_audio = -1
 	}
 }
 

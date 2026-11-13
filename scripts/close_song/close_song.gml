@@ -21,6 +21,7 @@ function close_song(){
 	for (var a = 0; a < 2000; a += 1) {try{songs[song].text_exists_song[a] = text_exists[a]}catch(ee){}; try{songs[song].text_str_song[a] = text_str[a]}catch(ee){}}
 	for (var i = first_custom_index; i < ds_list_size(songs[sid].instrument_list); i++)
 	with (songs[sid].instrument_list[| i]) {instrument_free(); instance_destroy()}
+	reference_audio_free(songs[sid])
 	instance_destroy(songs[sid])
 	array_delete(songs, sid, 1)
 	if (song > sid || song >= array_length(songs)) song--
