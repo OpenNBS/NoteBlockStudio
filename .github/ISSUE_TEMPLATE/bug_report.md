@@ -10,6 +10,9 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+**Platform**
+What operating system the issue happens on, Windows, macOS, Linux, etc.
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
