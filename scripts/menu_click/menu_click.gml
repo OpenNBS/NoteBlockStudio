@@ -202,6 +202,8 @@ function menu_click(argument0) {
 	        break
 	    }
 	    case "help": {
+			// Keep the existing action IDs after omitting Donate from the menu.
+			if (!donate_enabled && sel >= 10 + (language == 1)) sel += 1
 			if (language != 1) {
 	        if (sel = 1) open_url("http://www.youtube.com/watch?v=2oD9Bw_Qau4")
 	        if (sel = 2) open_url("http://www.youtube.com/watch?v=NIxNTK6nfJI")

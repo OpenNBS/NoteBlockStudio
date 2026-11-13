@@ -169,6 +169,7 @@ function control_create() {
 	update = 0
 	macos_install_channel = "unknown"
 	if (os_type == os_macosx) macos_install_channel = macos_distribution_channel()
+	donate_enabled = (os_type != os_macosx || macos_install_channel == "direct")
 	check_update = (os_type != os_macosx || macos_install_channel == "direct")
 	check_prerelease = is_prerelease
 	update_success = 0

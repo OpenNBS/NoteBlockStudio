@@ -94,8 +94,10 @@ function draw_window_about() {
 	if (draw_button2(x1 + 312, y1 + 380, 72, condstr(language != 1, "YouTube", "YouTube"), false, true)) {
 		open_url(link_youtube)
 	}
-	if (draw_button2(x1 + 388, y1 + 380, 72, condstr(language != 1, "Donate", "捐赠"), false, true)) {
-		open_url(link_donate)
+	if (donate_enabled) {
+		if (draw_button2(x1 + 388, y1 + 380, 72, condstr(language != 1, "Donate", "捐赠"), false, true)) {
+			open_url(link_donate)
+		}
 	}
 
 	if (draw_button2(x1 + 580 - 72 - 8, y1 + 380, 72, condstr(language != 1, "OK", "确定"), false, false) && (windowopen = 1 || theme != 3)) {

@@ -7,7 +7,7 @@ function draw_window_greeting() {
 	x1 = floor(rw / 2 - 350)
 	y1 = floor(rh / 2 - 210) + windowoffset
 	
-	if (donate_banner) {
+	if (donate_enabled && donate_banner) {
 		x1 += 700;
 		y1 += 210 - 100;
 		var hover_badge = mouse_rectangle(x1, y1, 150, 120)
@@ -129,11 +129,13 @@ function draw_window_greeting() {
 	draw_text_url(x1 + 180, y1 + 356 + dev_label_offset, "YouTube", link_youtube)
 
 	draw_text_url(x1 + 108 - (language == 1) * 20, y1 + 372 + dev_label_offset, "GitHub", link_github)
-	draw_text_dynamic(x1 + 131 - (language == 1) * 22 - theme_pipe_offset, y1 + 372 + dev_label_offset, "|")
+	if (donate_enabled || language == 1) draw_text_dynamic(x1 + 131 - (language == 1) * 22 - theme_pipe_offset, y1 + 372 + dev_label_offset, "|")
 	if (language == 1) draw_text_url(x1 + 133, y1 + 372 + dev_label_offset, "QQ 群", link_qq_group)
-	if (language == 1) draw_text_dynamic(x1 + 131 + 22 - theme_pipe_offset, y1 + 372 + dev_label_offset, "|")
-	if (language != 1) draw_text_url(x1 + 156, y1 + 372 + dev_label_offset, "Donate", link_donate)
-	else draw_text_url(x1 + 156 + 15, y1 + 372 + dev_label_offset, "捐赠", link_donate)
+	if (donate_enabled) {
+		if (language == 1) draw_text_dynamic(x1 + 131 + 22 - theme_pipe_offset, y1 + 372 + dev_label_offset, "|")
+		if (language != 1) draw_text_url(x1 + 156, y1 + 372 + dev_label_offset, "Donate", link_donate)
+		else draw_text_url(x1 + 156 + 15, y1 + 372 + dev_label_offset, "捐赠", link_donate)
+	}
 	draw_set_color(c_white)
 	
 	if (fdark && theme = 3) draw_set_color(0)

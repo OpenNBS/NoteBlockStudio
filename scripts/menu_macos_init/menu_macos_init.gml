@@ -12,7 +12,7 @@ function menu_macos_init(){
 		var edit_delete_inactive = ((text_editing && text_focus_readonly) || (!text_editing && current_song.selected = 0))
 		var edit_select_all_inactive = (!text_editing && current_song.totalblocks = 0)
 		if (language != 1) {
-			macos_create_menu_ext("Help", "help", icon_menubar(icons.HELP) + "Tutorial videos|\\|Part 1: Composing note block music|Part 2: Opening MIDI files|Part 3: Importing songs into Minecraft|Part 4: Editing songs made in Minecraft     |-|F1$View all|/|-|" + icon_menubar(icons.INTERNET) + "Website...|GitHub...|Discord server...|Report a bug...|Donate...|-|Changelist...|About...")
+			macos_create_menu_ext("Help", "help", icon_menubar(icons.HELP) + "Tutorial videos|\\|Part 1: Composing note block music|Part 2: Opening MIDI files|Part 3: Importing songs into Minecraft|Part 4: Editing songs made in Minecraft     |-|F1$View all|/|-|" + icon_menubar(icons.INTERNET) + "Website...|GitHub...|Discord server...|Report a bug...|" + condstr(donate_enabled, "Donate...|") + "-|Changelist...|About...")
 			str = ""
 			customstr = ""
 			insmenu = 1
@@ -117,7 +117,7 @@ function menu_macos_init(){
 			else macos_create_menu_ext("File", "filep", icon_menubar(icons.OPEN)+get_hotkey_menubar("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import from schematic...|Import background image...|-|" + get_hotkey_menubar("exit") + "$Exit")
 					
 		} else {
-			macos_create_menu_ext("帮助", "help", icon_menubar(icons.HELP) + "教程视频|\\|第 1 集：编写音符盒乐曲|第 2 集：打开 MIDI 文件|第 3 集：将乐曲导入进 Minecraft|第 4 集：编辑在 Minecraft 中创作的乐曲     |-|F1$观看所有|/|-|" + icon_menubar(icons.INTERNET) + "官方网站......|GitHub......|Discord 服务器......|反馈 bug......|QQ 群......|捐赠......|-|更新历史......|关于......")
+			macos_create_menu_ext("帮助", "help", icon_menubar(icons.HELP) + "教程视频|\\|第 1 集：编写音符盒乐曲|第 2 集：打开 MIDI 文件|第 3 集：将乐曲导入进 Minecraft|第 4 集：编辑在 Minecraft 中创作的乐曲     |-|F1$观看所有|/|-|" + icon_menubar(icons.INTERNET) + "官方网站......|GitHub......|Discord 服务器......|反馈 bug......|QQ 群......|" + condstr(donate_enabled, "捐赠......|") + "-|更新历史......|关于......")
 			str = ""
 			customstr = ""
 			insmenu = 1
