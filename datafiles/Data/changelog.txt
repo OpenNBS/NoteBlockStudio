@@ -1,359 +1,145 @@
-Changes in v3.12.0-rc.1 (2026.11.13):
+Changes in v3.12.0 (2026.11.17):
 
-* Added configurable shortcuts for muting, soloing and mixing reference
-   audio in Preferences > Usability. Shortcuts can be reassigned, cleared or
-   reset to Num 1, Num 2 and Num 3.
-* Added an option to automatically adjust Sound Stopper ranges when layers
-   are added or removed, or when the layer containing a stopper is moved.
-   The option is enabled by default and supports undo and redo.
-* Sound Stoppers whose last target layer is removed are now disabled and
-   display "Off". They remain inactive during playback and Minecraft export.
-* Enabled native macOS fullscreen through the green title-bar button. Moving
-   the pointer to the top edge reveals the menu bar and window controls.
-* Updated 15 bundled instrument samples to match their Minecraft
-   counterparts, including all four trumpet sounds.
-* Fixed the autosave countdown being reset unnecessarily while Preferences
-   is open.
-* Fixed the filename cursor jumping back to the start in Windows Save
-   dialogs.
-* Fixed MIDI device note input only responding to channel 1. Note-on and
-   note-off messages now work on all 16 channels.
-* Fixed notes played at the cursor when starting playback not being affected
-   by Sound Stoppers targeting their layers.
-* Fixed timeline time labels and tick marks in songs with tempo changes, and
-   improved label spacing around sudden tempo changes.
-* Fixed timing updates after undoing or redoing Tempo Changer edits and
-   after removing the Tempo Changer instrument.
-* Fixed the song duration shown in MIDI Import when importing tempo changes,
-   including the duration after removing leading silence.
-* Fixed incorrect macOS fullscreen scaling, especially when using a
-   secondary display.
+New features:
 
-
-
-Changes in v3.12.0-beta.6 (2026.10.29):
-
-* Added editable Minecraft sound-event mappings for custom instruments,
-   shared by data pack and command-block schematic and track export.
-* Added a searchable Minecraft sound-event catalog, loading from sounds.json
-   or an asset index, and automatic matching of custom sounds to resource
-   pack events.
+* Finally! macOS and Linux support is out! macOS requires version 12.0
+   or later.
+* Added native macOS menus, Command-key shortcuts, trackpad scrolling, file
+   and nbs:// URL handling, and fullscreen through the green title-bar
+   button.
+* Added macOS Quick Look previews. Select an .nbs file in Finder and press
+   Space to view song information and listen with playback, seeking and
+   volume controls.
+* Added Linux AppImage integration with .nbs file associations, nbs://
+   links, an "nbs" launcher search keyword and desktop portal file dialogs.
+* Added song tabs! with separate save-format settings for each song and
+   support for copying notes and custom instruments between tabs.
+* Added four instruments from Minecraft 26.1: Trumpet, Exposed Trumpet,
+   Weathered Trumpet and Oxidized Trumpet. Refreshed other bundled
+   note-block samples to match Minecraft.
+* Added Minecraft resource pack loading to replace note-block sounds,
+   including support for sound paths and pitch shifts defined in
+   sounds.json.
+* Added reference audio using Ogg Vorbis or WAV files, with an adjustable
+   offset and volume, mute, solo and mix modes, and configurable keyboard
+   shortcuts.
+* Added MIDI note-duration import as trails of notes, with per-part controls
+   and optional tail-velocity fading with adjustable start and end
+   percentages. Percussion remains single notes.
+* Added Sound Stopper to stop all sounds or a selected layer range. Its
+   range can update when layers are inserted or removed and move with the
+   layer containing the stopper, with undo and redo support.
+* Added dedicated editors for Tempo Changer and Sound Stopper, plus
+   shortcuts for adding them from Instrument Settings.
+* Added custom Minecraft sound-event mappings shared by data pack and
+   command-block schematic and track export. Mappings can be searched,
+   edited, loaded from sounds.json or an asset index, and matched
+   automatically from resource packs.
 * Added Sound Stopper support to data pack and command-block export, with
-   configurable sound categories and diagnostics for accidental sound
-   cutoffs.
+   configurable Minecraft sound categories. Export diagnostics report any
+   accidental sound cutoffs.
+* Song ZIP exports now preserve custom instruments' Minecraft sound-event
+   mappings.
+* Added Litematica-compatible .nbt export using the structure's exact
+   dimensions, alongside Structure Block output.
+* Added a unified schematic and track export format selector. Track export
+   also supports 1.11-1.12 and pre-1.11 .schematic files.
 * Added an option to follow song tempo and Tempo Changers in command-block
    schematic and track exports, snapped to the selected redstone timing
-   grid.
-* Added 5 and 2.5 ticks per second options to track export alongside the
-   existing 10 ticks per second option.
-* Added a restart function to exported data packs and reduced scoreboard
-   conflicts between packs with similar song names.
-* Added Minecraft sound mappings to song ZIP exports so they are restored
-   when the archive is reopened.
-* Added per-part Note Duration controls to MIDI import. Duration can be
-   enabled separately for each track, channel and instrument combination;
-   percussion remains single notes.
-* Added Quick Look previews on macOS. Select an .nbs file in Finder and
-   press Space to view song information and listen with playback, seeking
-   and volume controls.
-* Added update checking for directly distributed macOS builds, with
-   downloads through the GitHub Releases page.
+   grid. Track export now also offers 5 and 2.5 ticks per second.
+* Added a restart function to exported data packs, a heavy core option for
+   snare drums in schematic and track export, and an Extra Notes Pack
+   download button in schematic export.
+* Added an option to download Minecraft sounds directly from Mojang on
+   Windows and Linux, extending the existing sound import assistant.
+* Added an option to start playback automatically after downloading a song
+   from Note Block World.
+* Added custom background images and controls for background blur and
+   dimming, including in Player Mode.
+* Added adjustable selection transparency, mouse-wheel scroll speed and
+   buttons for changing the interface scale.
 * Added an experimental Liquid Glass option for context menus, tooltips and
-   messages in the Fluent theme.
-* Updated rounded interface corners, added navigation tabs to Fluent dialogs
-   and added smooth animation when rearranging song tabs.
-* Added XDG Desktop Portal support for Linux file and folder dialogs.
-* Improved song saving and buffer exports by verifying written data before
-   replacing the destination and retaining the previous copy until the
-   replacement is verified.
-* Improved quit confirmation, including native macOS window closing and
-   Windows update installation. Cancelled or failed saves keep the program
-   open.
-* Improved recovery backups for all open song tabs, including songs with
-   matching filenames, metadata-only changes and songs emptied by editing.
-* Autosaves and recovery backups now include selected or moved notes without
-   placing the selection or changing undo history.
-* Improved recovery-file validation and restoration. Previous backups are
-   kept until a new copy is verified, and restored files use unique names
-   instead of overwriting existing songs.
-* Added checks for custom instrument limits when adding, importing, pasting
-   and saving instruments, including compatibility with older NBS formats.
-* Fixed Save Options applying a format change before confirmation or
-   ignoring a cancelled downgrade warning.
-* Fixed close confirmations referring to the wrong song tab and Close Other
-   Tabs or Close Tabs to the Right continuing after cancellation.
-* Fixed empty, incomplete or invalid NBS files crashing the program or
-   disrupting the open song. Failed startup file opens no longer assign the
-   failed filename to the current tab.
-* Improved pattern export error handling and stopped pattern export from
-   marking the song as edited.
-* Improved default filenames in Save dialogs and prevented duplicate .nbs
-   extensions.
-* Fixed data pack export paths on macOS and Linux, folder selection in
-   sandboxed macOS builds, and incomplete output with non-ASCII
-   descriptions.
-* Fixed Pack Instruments including unrelated temporary files in its ZIP
-   archive on Linux, and added clearer reporting of export failures.
-* Fixed MIDI note tails collapsing onto the first layer of a channel or
-   overlapping other notes.
-* Fixed reference audio volume changes not applying during playback.
-* Added a clear error when loading unsupported Ogg reference audio, such as
-   Ogg Opus or Ogg FLAC. Ogg Vorbis and WAV remain supported.
-* Fixed Sound Stopper range guides disappearing when the stopper is outside
-   the visible layers and drawing beyond the editor boundaries.
-* Improved Enter and Escape handling in dialogs. Enter activates the default
-   action when a text field is not active; Escape dismisses an open menu
-   before the dialog.
-* Fixed missed rapid mouse clicks on macOS.
-* Fixed the macOS window jumping when moved between displays with different
-   scaling.
-* Added a native Command-W action to close the current song on macOS.
-* Improved native dialog handling on macOS.
-* Changed the Windows installer and uninstaller to preserve user-added files
-   in the installation directory.
-* Updated Linux .nbs file associations to use the vendor-specific MIME type.
-* Improved startup performance and robustness, and reduced repeated text
-   layout and drawing work.
-* Fixed the update checker offering older releases as updates and updated
-   its release-information URL.
-* Clarified the program-directory warning with instructions for changing the
-   default song folder.
-* Added the missing custom sounds for the Living Millennium demo song.
-* Raised the minimum supported macOS version to 12.0. Quick Look uses the
-   user sound library on macOS 13 or later after NBS has been opened once;
-   macOS 12 uses bundled sounds.
-
-
-
-Changes in v3.12.0-beta.5 (2026.08.05):
-
-* Fixed bundled song copying deleting non-demo songs from the user-data Songs
-   directory during updates.
-
-
-
-Changes in v3.12.0-beta.4 (2026.08.05):
-
-* Added Litematica-compatible .nbt output to schematic and track export. This
-   writes the exact dimensions of the exported structure.
-* Added a unified format selector to schematic and track export. Track export
-   now also supports 1.11-1.12 and pre-1.11 .schematic files.
-* Added .nbs file association and nbs:// URL handling to Linux AppImage builds.
-* Added "nbs" as a Linux application launcher search keyword.
-* Added dynamic Source Han Sans fallback for characters that are not included
-   in the preloaded fonts.
-* Fixed decomposed Hangul and Japanese kana with dakuten or handakuten not
-   displaying correctly.
-* Fixed dynamically loaded characters not aligning with preloaded text.
-* Replaced platform-specific fonts with open-licensed alternatives and added
-   the appropriate licenses and credits.
-* Fixed selecting a custom instrument sound from a subfolder in the program
-   directory not copying it correctly to the user Sounds folder.
-* Fixed .ogg and .wav detection when an audio file's directory name contains
-   a period.
-* Fixed file dialogs not appearing on some KDE Linux systems.
-* Added a warning when opening or saving files in the program directory, where
-   GameMaker redirects file access to the user-data directory.
-* Added validation and error handling for song saving and buffer exports. A
-   full disk or unwritable destination now displays an error instead of
-   crashing or silently producing an incomplete file.
-* Fixed log writing being able to crash when the log file cannot be written.
-* Removed additional stale bundled files from the user-data directory.
-* Changed bundled song copying to copy only .nbs files and added a notice not
-   to store personal songs in the program's bundled Songs directory.
-* Added two demo songs showcasing the trumpet instruments and Sound Stopper.
-
-
-
-Changes in v3.12.0-beta.3 (2026.07.21):
-
-* Added support for copying and pasting notes with custom instruments between
-   song tabs.
-* Updated the Note Block Pattern format to v2. Exported patterns now include
-   the custom instrument definitions they use.
-* Added an option to load sound paths and pitch shifts from a resource pack's
-   sounds.json file.
-* Added a setting to adjust mouse wheel scroll speed. This does not affect
-   macOS trackpads.
-* Added an option to fade the velocity of note tails generated by MIDI import,
-   with adjustable start and end percentages.
-* Changed the NBS save format option to be set separately for each song tab.
-* Fixed automatic update installation on Windows. Failed beta updates now
-   offer to open the GitHub Releases page for manual download.
-* Fixed audio files in paths containing UTF-8 characters not decoding on
-   Windows.
-* Fixed cut, copy, paste, delete and select all not working in text fields on
-   macOS.
-* Fixed maximizing and restoring the window on Linux.
-* Fixed the four trumpet instruments not working in data pack export.
-* Fixed WAV custom instruments and WAV reference audio only playing the first
-   quarter of the file.
-* Fixed negative reference audio offsets and improved synchronization when
-   seeking or changing its mute and solo state.
-* Fixed non-resource-pack files appearing in the resource pack dropdown.
-* Fixed layer names becoming blank or incorrect when adding, moving or
-   removing layers.
-* Fixed menus breaking when an instrument has an empty name.
-* Fixed a zero-length playback section stopping playback.
-* Fixed context menus and submenus overlapping or appearing outside the window
-   near its edges.
-* Fixed buttons activating when a mouse press began elsewhere and was released
-   over the button.
-* Fixed pitched notes appearing in the wrong piano position in Drop mode.
-* Improved system information in logs on macOS and Linux.
-* Updated the included demo songs to NBS v6.
-* Changed startup file copying to copy only user-editable bundled files and
-   prevent outdated libraries in AppData from overriding the current version
-   on Windows.
-
-
-
-Changes in v3.12.0-beta.2 (2026.06.05):
-
-* Disabled the "Expand Workspace" function on macOS due to a runtime crash.
-* Fixed the bundle files not copied over to app documents sometimes.
-* Fixed datapack export generating incomplete bundle.
-* Changed executable copyright date to 2026 on macOS.
-* Fixed undo compress selection crashing.
-* Fixed show note chart crashing on Windows.
-* Added a transparency adjust option for selection.
-* Updated asset catalog ID names.
-* Fixed invalid instrument IDs in songs cause crashing.
-* Disabled older NBS file warning in player mode.
-* Changed the default writing directory to 
-   %APPDATA%\Minecraft_Note_Block_Studio\ on Windows.
-* Fixed unable to choose .minecraft directory on Windows.
-* Disabled auto unmaximizing on Linux due to rapid flashing.
-* Added .wav files support back for custom instruments.
-* Fixed backspace and tab keys not inputting correctly on Linux.
-* Fixed files not opening when double clicking the files on Windows.
-* Fixed OS type incorrect in logs.
-* Fixed sounds in included resource packs having incorrect octaves.
-* Changed tempo adjust limit to 180t/s (2700BPM)
-* Added buttons to adjust window scale.
-* Fixed reference audio shortcut interfering text input.
-* Fixed tempo not applying when dragging on the time bar when playing
-   in player mode.
-* Added a message for clicking on the "Open in NBS" button on Note Block World
-   when not in player mode.
-* Fixed not able to load resource packs on Linux.
-* Fixed trackpad being able to scroll sideways when playing on macOS.
-
-
-
-Changes in v3.12.0-beta.1 (2026.03.20):
-
-Removals:
-
-* Removed .schematic importing due to it being outdated.
-
-* Removed branch export due to the library it uses being 32 bit.
-
-Additions:
-
-* Added macOS and Linux support! You can now enjoy using Note Block Studio on
-   your favourite platform.
-    * Features exclusive to the macOS version:
-        * Get it from TestFlight and later in the App Store!
-        * Native menu bar support!
-        * File proxy icon on the title bar!
-        * macOS flavored hotkeys!
-        * Trackpad scrolling support!
-        * Songs opened from Note Block World displays in the existing window!
-    * Features that will be missing on the macOS version:
-        * Discord rich presence, due to the app being sandboxed.
-        * Songs and Patterns folders, due to compliance with App Store rules.
-        * Sounds downloading, due to compliance with Spp Store rules.
-    * Features that will be missing on the Linux version:
-        * File association.
-        * Drag-and-drop file opening.
-        * "Open in NBS" button on Note Block World.
-
-* Added song tabs! You can now open multiple songs in the same window as tabs.
-    * You can copy and paste notes between files!
-    * Saves memory usage!
-
-* Added four new instruments from the Minecraft 26.1 update!
-    * Trumpet, Exposed Trumpet, Weathered Trumpet and Oxidized Trumpet are 
-       added.
-
-* Added resource pack loading support! You can now change the vanilla note
-   block sounds using Minecraft resource packs.
-
-* Added reference audio! You can now load audio files layered onto your song
-   for quick referencing!
-    * You can adjust the offset, change the volume, mute or solo this track.
-    * Only .ogg Vorbis and .wav formats are supported.
-
-* Added custom background image support! You can load your own image to
-   display on the background for this session.
-
-* Added advanced options for interface! You can adjust settings for background
-   for video making.
-
-* Added note length support in MIDI import! It will apply a chorus effect for
-   the note's duration.
-
-* Added an option to automatically start playing after downloading from Note
-   Block World.
-
-* Added Sound Stopper, a new functional instrument! Use it to stop all sounds
-   or from a layer range.
-
-* Added a right click menu to add Tempo Changer and Sound Stopper in instrument
-   settings.
-
-* Added a GUI for setting the values for Tempo Changer and Sound Stopper.
-
-* Added the Get Extra Notes Pack button in schematic export too.
-
-* Made a Tetoris cover as a demo song.
-
-* Added heavy core as an option for snare drum in schematic export.
-
+   messages in the Fluent theme. Refreshed rounded corners, dialog
+   navigation and song-tab animations.
+* Expanded Unicode text display with dynamic font fallback and support for
+   decomposed Hangul and Japanese kana with dakuten or handakuten. Replaced
+   platform-specific fonts with open-licensed alternatives and included
+   their licenses and credits.
+* Increased the tempo control limit from 60 to 180 ticks per second (2700
+   BPM). Updated MIDI instrument and percussion mappings, including the new
+   trumpet instruments.
+* Added three demo songs: Tetoris, Touhou 9 - Reach for the moon
+   (Remastered), and Living Millennium.
 
 
 Bugfixes and improvements:
 
-* Note Block Studio is updated to GameMaker 2022.0.3 LTS for longer support.
-* Note Block Studio is now 64 bit! You can now make bigger songs due to being
-   able to allocate more memory.
-* Fixed tempo changer in MIDI import not supporting remove silent.
-* Fixed chorus macro not supporting 3+ layers.
-* Fixed cyrillic characters not showing properly.
-* Updated the Minecraft Wiki links to the new domain.
-* Made the stop button stop all playing sounds too.
-* Updated the macOS icon to support liquid glass.
-* Only one MIDI device can be used at the same time due to backend changes.
-* Changed the audio priority of each sound to current_time, so the song will
-   still sound normal even if it's excedding the channel limit.
-* Fixed editing song properties sometimes crashing.
-* Fixed add layer when soloing some layers not carrying over some solo layers.
-* Fixed time display when having tempo changes.
-* Fixed tempo incorrect when playing in between two tempo changers.
-* Fixed unable to load capitalized file extensions (.MIDI, .NBS, etc.).
-* Made the save popup say "Song autosaved" when autosaving.
-* Fixed autosave countdown initializing improperly.
-* Fixed crashing when pasting with nothing in the clipboard.
-* Updated the MIDI import instrument mapping for percussions.
-* Updated the get sounds from Minecraft function to include downloading.
-* Fixed URL text dropping the last character.
-* Attribute LGPL programs properly in the credits.
-* Fix Tempo Changers and Sound Stoppers affected by layer pitch and panning.
-* Bumped NBS format version to v6 to support new instrument.
-* Fixed smooth scrolling not present when manually forwarding or rewinding.
-* Fixed crashing when removing custom instruments when there are notes
-   selected.
-* Updated midi mapping to incorporate trumpet instruments.
-* Fixed note preview sound not applying layer settings.
+* Moved Windows builds to 64 bit, allowing more memory for large songs, and
+   moved the project to GameMaker 2022.0.3 LTS.
+* Improved song saving and buffer exports with verified file replacement and
+   clear errors for failed writes. Previous file contents are retained until
+   the replacement is verified.
+* Improved autosave and recovery backups, including selected or moved notes,
+   separate recovery files for open song tabs, and validation before
+   replacing or restoring backups. Restored files use unique names to avoid
+   overwriting existing songs.
+* Improved unsaved-work confirmation before quitting or installing an
+   update. Cancelled or failed saves keep NBS open.
+* Changed the Windows installer and uninstaller to preserve user-added files
+   in the installation directory.
+* Fixed the autosave countdown being reset unnecessarily while viewing the
+   autosave settings.
+* Fixed Save Options applying a format change before confirmation or
+   ignoring a cancelled downgrade warning. Added checks for custom
+   instrument limits and compatibility with the selected NBS format.
+* Fixed pattern export marking the whole song as saved, even though only the
+   selection was exported. Export failures now display a clear error.
+* Added validation for empty, incomplete or invalid NBS files so failed
+   opens do not crash the program or replace the open song.
+* Fixed opening files with uppercase extensions such as .NBS and .MIDI.
+* Fixed a crash when closing Song Properties in some cases, and a crash when
+   removing a custom instrument while notes are selected.
+* Fixed a crash when inverting a selection after pasting notes beyond the
+   end of a song.
+* Fixed layer names becoming blank or incorrect when layers are added, moved
+   or removed, and solo-layer assignments changing unexpectedly when
+   inserting layers.
+* Fixed menus breaking when an instrument has an empty name, and improved
+   context menu and submenu placement near window edges.
+* Fixed buttons and checkboxes activating when a mouse press started
+   elsewhere and was released over them.
+* Improved Enter and Escape handling in dialogs. Enter activates the default
+   action when a text field is not active; Escape dismisses an open menu
+   before the dialog.
+* Fixed pitched notes appearing at the wrong piano position in Drop Mode.
+* Fixed zero-length playback sections interrupting playback.
+* Fixed time displays, timeline labels and playback tempo in songs with
+   Tempo Changers, including starting or seeking between tempo changes.
+* Fixed the song duration shown in MIDI Import when importing tempo changes,
+   including the duration after removing leading silence.
+* The Stop button now stops ringing notes as well as playback. New notes are
+   given priority when the audio channel limit is reached.
+* Improved data pack output for non-ASCII descriptions and reduced
+   scoreboard conflicts between packs with similar names.
+* Fixed the update checker offering older versions as updates, and improved
+   handling of cancelled or failed update installation.
 
 
+Compatibility notes:
 
-Hidden changes:
-
-* You can now press F3+D to turn on the GameMaker debug overlay.
-* You can now press F3+L to turn on the logs overlay.
-
-
-
-
+* The NBS format is now v6 for the new built-in instruments. Older save
+   formats remain available through Save Options, subject to their
+   instrument limits.
+* The Note Block Pattern format is now v2. Exported patterns include the
+   custom instrument definitions they use.
+* Removed legacy schematic importing and branch export from the editor's
+   File menu. Schematic and track export remain available.
+* Only one MIDI input device can be used at a time.
+* On Windows, application data now uses
+   %APPDATA%\Minecraft_Note_Block_Studio\. Keep personal songs outside the
+   program's bundled folders.
+* Custom instrument sounds and reference audio use Ogg Vorbis or WAV files.
+* Quick Look can use the user sound library on macOS 13 or later after NBS
+   has been opened once. On macOS 12, previews use bundled sounds.
+* On Linux, keep kdialog installed for KDE or zenity for other desktops;
+   some exports also require 7zip.
