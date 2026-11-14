@@ -54,5 +54,5 @@ function draw_song_tab(item, x, tabwidth, hover, close_hover, front = false) {
 		}
 		title += "..."
 	}
-	draw_text_dynamic(x + 8, get_tab_texty(), title + suffix)
+	draw_text_dynamic(x + 8, get_tab_texty(), title + suffix, true)
 }

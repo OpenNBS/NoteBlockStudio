@@ -62,9 +62,9 @@ function draw_popup(x, y, str, singleline, alpha = 1) {
 	if (obj_controller.fdark && theme = 3) draw_set_color(c_white)
 	else draw_set_color(make_color_rgb(75, 75, 75)*!obj_controller.theme)
 	if(theme != 3) {
-	draw_text_dynamic(x + 7 - 2 * theme, y + 3, str)
+	draw_text_dynamic(x + 7 - 2 * theme, y + 3, str, true)
 	} else {
-	draw_text_dynamic(text_x, text_y, str)
+	draw_text_dynamic(text_x, text_y, str, true)
 	}
 	draw_set_alpha(1)
 	draw_set_color(c_black)

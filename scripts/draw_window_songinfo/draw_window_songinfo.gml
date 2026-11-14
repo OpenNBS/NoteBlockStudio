@@ -62,10 +62,10 @@ function draw_window_songinfo() {
 	draw_theme_font(font_info_big)
 	draw_set_halign(fa_center)
 	draw_theme_color()
-	draw_text_dynamic(x1 + floor(w / 2) + 1, y1 + 16 + 1, str[0])
+	draw_text_dynamic(x1 + floor(w / 2) + 1, y1 + 16 + 1, str[0], true)
 	draw_set_color(col[0])
 	if (theme = 3) draw_set_color(accent[3])
-	draw_text_dynamic(x1 + floor(w / 2), y1 + 16, str[0])
+	draw_text_dynamic(x1 + floor(w / 2), y1 + 16, str[0], true)
 	draw_theme_font(font_info_med)
 	draw_theme_color()
 	yy = y1 + 16
@@ -74,10 +74,10 @@ function draw_window_songinfo() {
 	    if (language != 1) draw_text_dynamic(x1 + floor(w / 2 - w2 / 2), yy, "Created by ")
 	    else draw_text_dynamic(x1 + floor(w / 2 - w2 / 2), yy, "作者：")
 	    draw_theme_font(font_info_med_bold)
-	    draw_text_dynamic(x1 + floor(w / 2 + w1 / 2) + 1, yy + 1, str[1])
+	    draw_text_dynamic(x1 + floor(w / 2 + w1 / 2) + 1, yy + 1, str[1], true)
 	    draw_set_color(col[1])
 		if (theme = 3) draw_set_color(accent[3])
-	    draw_text_dynamic(x1 + floor(w / 2 + w1 / 2), yy, str[1])
+	    draw_text_dynamic(x1 + floor(w / 2 + w1 / 2), yy, str[1], true)
 	}
 	if (songs[song].song_orauthor != "") {
 	    yy += 20
@@ -87,10 +87,10 @@ function draw_window_songinfo() {
 	    if (language != 1) draw_text_dynamic(x1 + floor(w / 2 - w4 / 2), yy, "Originally created by ")
 	    else draw_text_dynamic(x1 + floor(w / 2 - w4 / 2), yy, "原作者：")
 	    draw_theme_font(font_info_med_bold)
-	    draw_text_dynamic(x1 + floor(w / 2 + w3 / 2) + 1, yy + 1, str[2])
+	    draw_text_dynamic(x1 + floor(w / 2 + w3 / 2) + 1, yy + 1, str[2], true)
 		draw_set_color(col[2])
 		if (theme = 3) draw_set_color(accent[3])
-	    draw_text_dynamic(x1 + floor(w / 2 + w3 / 2), yy, str[2])
+	    draw_text_dynamic(x1 + floor(w / 2 + w3 / 2), yy, str[2], true)
 	}
 	
 	draw_theme_color()
@@ -101,7 +101,7 @@ function draw_window_songinfo() {
 		draw_theme_font(font_main_bold)
 		b = string_width_dynamic(songs[song].song_midi)
 		draw_theme_font(font_main_bold)
-		draw_text_dynamic(x1 + floor(w / 2 + a / 2), y1 + h - 34 - 32 * (window = w_songinfoedit), string(songs[song].song_midi))
+		draw_text_dynamic(x1 + floor(w / 2 + a / 2), y1 + h - 34 - 32 * (window = w_songinfoedit), string(songs[song].song_midi), true)
 		draw_theme_font(font_main)
 		if (language != 1) draw_text_dynamic(x1 + floor(w / 2 - b / 2), y1 + h - 34 - 32 * (window = w_songinfoedit), "Imported from ")
 		else draw_text_dynamic(x1 + floor(w / 2 - b / 2), y1 + h - 34 - 32 * (window = w_songinfoedit), "导入自：")
@@ -124,7 +124,7 @@ function draw_window_songinfo() {
 	        draw_frame(x1 + floor(w / 2) - 118, yy, x1 + floor(w / 2) + 118, yy + 16 + songdeschei)
 	    }
 	    draw_theme_color()
-	    draw_text_dynamic(x1 + floor(w / 2) - 110, yy + 8, songdescwrap)
+	    draw_text_dynamic(x1 + floor(w / 2) - 110, yy + 8, songdescwrap, true)
 	}
 
 	if (window = w_songinfoedit) {

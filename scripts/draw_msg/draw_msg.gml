@@ -44,7 +44,7 @@ function draw_msg(){
 		if (theme = 3 && acrylic) draw_acrylic_texture(x1 - 10, y1 - 30, x2 - x1 + 20, 40)
 	}
 	draw_theme_color()
-	draw_text_dynamic(x1, y1 - 10 - text_height / 2, str)
+	draw_text_dynamic(x1, y1 - 10 - text_height / 2, str, true)
 	if (current_time - msgstart >= (msgtime * 1000)){
 		if (msgalpha > 0) {
 			msgalpha -= 1/7.5 * (30 / room_speed) * (1 / currspeed)
