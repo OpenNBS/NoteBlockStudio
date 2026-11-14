@@ -15,7 +15,9 @@ function save_settings() {
 	}
 	// Preferences
 	ini_write_string(    "preferences", "last_version",       version)
+	ini_write_string(    "preferences", "last_version_date",  version_date)
 	ini_write_real_clean("preferences", "check_update",       check_update)
+	if (os_type == os_macosx && macos_install_channel == "direct") ini_write_real_clean("preferences", "check_update_direct_macos", check_update)
 	ini_write_real_clean("preferences", "check_prerelease",   check_prerelease)
 	ini_write_real_clean("preferences", "show_welcome",       show_welcome)
 	ini_write_real_clean("preferences", "autosave",           autosave)
@@ -33,6 +35,7 @@ function save_settings() {
 	ini_write_real_clean("preferences", "show_numbers",       show_numbers)
 	ini_write_real_clean("preferences", "show_octaves",       show_octaves)
 	ini_write_real_clean("preferences", "show_incompatible",  show_incompatible)
+	ini_write_real_clean("preferences", "selection_alpha",    selection_alpha)
 	ini_write_real_clean("preferences", "use_fading",         fade)
 	ini_write_real_clean("preferences", "show_layers",        show_layers)
 	ini_write_real_clean("preferences", "show_piano",         show_piano)
@@ -43,8 +46,14 @@ function save_settings() {
 	ini_write_real_clean("preferences", "show_notechart",     show_notechart)
 	ini_write_real_clean("preferences", "show_outofrange",    show_outofrange)
 	ini_write_real_clean("preferences", "mousewheel",         mousewheel)
+	ini_write_real_clean("preferences", "mousewheel_scroll_speed", mousewheel_scroll_speed)
 	ini_write_real_clean("preferences", "change_pitch",       changepitch)
+	ini_write_real_clean("preferences", "layerhov_vppreview", layerhov_vppreview)
 	ini_write_real_clean("preferences", "select_lastpressed", select_lastpressed)
+	ini_write_real_clean("preferences", "sound_stopper_follow_layers", sound_stopper_follow_layers)
+	ini_write_real_clean("preferences", "reference_hotkey_mute", reference_hotkeys[0])
+	ini_write_real_clean("preferences", "reference_hotkey_solo", reference_hotkeys[1])
+	ini_write_real_clean("preferences", "reference_hotkey_mix", reference_hotkeys[2])
 	ini_write_real_clean("preferences", "marker_follow",      marker_follow)
 	ini_write_real_clean("preferences", "marker_pagebypage",  marker_pagebypage)
 	ini_write_real_clean("preferences", "marker_start",       marker_start)
@@ -52,9 +61,9 @@ function save_settings() {
 	ini_write_real_clean("preferences", "show_layer_volumes", realvolume)
 	ini_write_real_clean("preferences", "use_stereo",         realstereo)
 	//ini_write_real_clean("preferences", "loop_to_bar_end",    looptobarend)
+	ini_write_real_clean("preferences", "autoplay",           autoplay)
 	ini_write_real_clean("preferences", "show_soundcount",    show_soundcount)
 	ini_write_real_clean("preferences", "use_bpm",            use_bpm)
-	ini_write_real_clean("preferences", "save_version",       save_version)
 	ini_write_real_clean("preferences", "channelstoggle",     channelstoggle)
 	ini_write_real_clean("preferences", "presence",           presence)
 	ini_write_real_clean("preferences", "windowsound",        windowsound)
@@ -68,12 +77,22 @@ function save_settings() {
 	ini_write_real_clean("preferences", "addpitch",           addpitch)
 	ini_write_real_clean("preferences", "language",           language)
 	ini_write_real_clean("preferences", "acrylic",            acrylic)
+	ini_write_real_clean("preferences", "liquid_glass",       liquid_glass)
 	ini_write_real_clean("preferences", "taskbar",            taskbar)
 	ini_write_real_clean("preferences", "remove_effect",      remove_effect)
 	ini_write_real_clean("preferences", "window_icon",        window_icon)
 	ini_write_real_clean("preferences", "keynames_flat",      keynames_flat)
 	ini_write_real_clean("preferences", "hires",              hires)
+	ini_write_string(    "preferences", "current_resource",   current_resource)
+	ini_write_real_clean("preferences", "resourcepack_sounds_json", resourcepack_sounds_json)
+	ini_write_string(    "minecraft_export", "catalog_path",        minecraft_export_catalog_path)
+	ini_write_string(    "minecraft_export", "catalog_access_root", minecraft_export_catalog_access_root)
 	ini_write_real_clean("preferences", "acrylic_successful", acrylic_successful)
+	ini_write_real_clean("preferences", "advancedinterface",  advancedinterface)
+	ini_write_real_clean("preferences", "wpapernoblur",       wpapernoblur)
+	ini_write_real_clean("preferences", "wpapernodim",        wpapernodim)
+	ini_write_real_clean("preferences", "noeditingbackground",noeditingbackground)
+	ini_write_real_clean("preferences", "backgroundrainbow",  backgroundrainbow)
 
 	// Midi import settings
 	ini_write_real_clean("midi_import", "remember",        w_midi_remember)
@@ -86,18 +105,23 @@ function save_settings() {
 	ini_write_real_clean("midi_import", "octave",          w_midi_octave)
 	ini_write_real_clean("midi_import", "precision",       w_midi_precision)
 	ini_write_real_clean("midi_import", "tempo_changer",   w_midi_tempo_changer)
+	ini_write_real_clean("midi_import", "note_duration",   w_midi_note_duration)
+	ini_write_real_clean("midi_import", "note_duration_fade",       w_midi_note_duration_fade)
+	ini_write_real_clean("midi_import", "note_duration_fade_start", w_midi_note_duration_fade_start)
+	ini_write_real_clean("midi_import", "note_duration_fade_end",   w_midi_note_duration_fade_end)
 	// instruments
 	for (a = 0; a < 128; a += 1) {
 	    ini_write_real_clean("midi_import", "ins_" + string(a),          midi_ins[a, 1]) // Instrument
 	    ini_write_real_clean("midi_import", "ins_" + string(a) + "_oct", midi_ins[a, 2]) // Octave
 	}
 	// drums
-	for (a = 24; a < 88; a += 1) {
+	for (a = 0; a < 128; a += 1) {
 	    ini_write_real_clean("midi_import", "drum_" + string(a),          midi_drum[a, 1]) // Instrument
 	    ini_write_real_clean("midi_import", "drum_" + string(a) + "_key", midi_drum[a, 2]) // Key
 	}
 
 	// Schematic export settings
+	ini_write_real_clean("schematic_export", "format",         sch_exp_format)
 	ini_write_real_clean("schematic_export", "use_old_format", sch_exp_minecraft_old)
 	ini_write_real_clean("schematic_export", "walkway_block",  sch_exp_walkway_block)
 	ini_write_real_clean("schematic_export", "walkway_data",   sch_exp_walkway_data)
@@ -123,6 +147,11 @@ function save_settings() {
 		}
 	}
 	ini_write_real_clean("schematic_export", "command_block",  command_block)
+	ini_write_string(    "schematic_export", "command_source", sch_command_source)
+	ini_write_real_clean("schematic_export", "tempo_grid",     sch_command_tempo_grid)
+	for (a = 0; a < array_length(sch_command_allowed_sources); a++) {
+		ini_write_real_clean("schematic_export", "source_" + minecraft_export_sources()[a], sch_command_allowed_sources[a])
+	}
 
 	// Branch export settings
 	ini_write_real_clean("branch_export", "stereo",      sch_exp_stereo)
@@ -141,6 +170,9 @@ function save_settings() {
 	ini_write_string(    "datapack_export", "namespace",     dat_namespace)
 	ini_write_string(    "datapack_export", "path",          dat_path)
 	ini_write_string(    "datapack_export", "source",        dat_source)
+	for (a = 0; a < array_length(dat_allowed_sources); a++) {
+		ini_write_real_clean("datapack_export", "source_" + minecraft_export_sources()[a], dat_allowed_sources[a])
+	}
 	ini_write_real_clean("datapack_export", "mcversion",     dat_mcversion)
 	ini_write_real_clean("datapack_export", "use_zip",       dat_usezip)
 	ini_write_real_clean("datapack_export", "locked",        dat_includelocked)
@@ -160,7 +192,7 @@ function save_settings() {
 
 	// Default instrument presses
 	for (a = 0; a < first_custom_index; a += 1) {
-		var ins = ds_list_find_value(instrument_list, a)
+		var ins = ds_list_find_value(songs[song].instrument_list, a)
 		ini_write_real_clean("instruments", "ins_" + string(a) + "_press", ins.press)
 	}
 

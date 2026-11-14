@@ -1,15 +1,15 @@
 function selection_extend_length(new_length = undefined){
 	if (is_undefined(new_length)) {
-		new_length = enda
+		new_length = songs[song].enda
 	}
-	if (new_length > selection_arraylength) { // New length
-	    for (a = new_length; a >= selection_arraylength + 1; --a) {
-	        selection_colfirst[@ a] = -1
-	        selection_collast[@ a] = -1
-	        for (b = selection_arrayheight; b >= 0; --b) {
-	            selection_exists[@ a, b] = 0
+	if (new_length > songs[song].selection_arraylength) { // New length
+	    for (a = new_length; a >= songs[song].selection_arraylength + 1; --a) {
+	        songs[song].selection_colfirst[@ a] = -1
+	        songs[song].selection_collast[@ a] = -1
+	        for (b = songs[song].selection_arrayheight; b >= 0; --b) {
+	            songs[song].selection_exists[@ a, b] = 0
 	        }
 	    }
-	    selection_arraylength = new_length
+	    songs[song].selection_arraylength = new_length
 	}
 }

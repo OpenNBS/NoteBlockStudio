@@ -3,21 +3,21 @@ function selection_code_update() {
 	// Updates the selection code
 	var a, b, ca, cb;
 	
-	if (selected = 0) {
-		ds_list_clear(selected_layers)
+	if (songs[song].selected = 0) {
+		ds_list_clear(songs[song].selected_layers)
 		return 0
 	}
 	ca = 0
 	
-	var _selection_l = selection_l
-	var _selection_h = selection_h
-	var _selection_colfirst = selection_colfirst
-	var _selection_exists = selection_exists
-	var _selection_ins = selection_ins
-	var _selection_key = selection_key
-	var _selection_vel = selection_vel
-	var _selection_pan = selection_pan
-	var _selection_pit = selection_pit
+	var _selection_l = songs[song].selection_l
+	var _selection_h = songs[song].selection_h
+	var _selection_colfirst = songs[song].selection_colfirst
+	var _selection_exists = songs[song].selection_exists
+	var _selection_ins = songs[song].selection_ins
+	var _selection_key = songs[song].selection_key
+	var _selection_vel = songs[song].selection_vel
+	var _selection_pan = songs[song].selection_pan
+	var _selection_pit = songs[song].selection_pit
 
 	
 	var str_buffer = buffer_create(16, buffer_grow, 1);
@@ -32,7 +32,7 @@ function selection_code_update() {
 					buffer_write(str_buffer, buffer_text, string(cb))
 					buffer_write(str_buffer, buffer_text, "|")
 	                cb = 0
-					buffer_write(str_buffer, buffer_text, string(ds_list_find_index(instrument_list, _selection_ins[a, b])))
+					buffer_write(str_buffer, buffer_text, string(ds_list_find_index(songs[song].instrument_list, _selection_ins[a, b])))
 					buffer_write(str_buffer, buffer_text, "|")
 					buffer_write(str_buffer, buffer_text, string(_selection_key[a, b]))
 					buffer_write(str_buffer, buffer_text, "|")
@@ -51,6 +51,6 @@ function selection_code_update() {
 	}
 
 	buffer_seek(str_buffer, buffer_seek_start, 0)
-	selection_code = try_compress_selection(buffer_read(str_buffer, buffer_string))
+	songs[song].selection_code = try_compress_selection(buffer_read(str_buffer, buffer_string))
 	buffer_delete(str_buffer)
 }

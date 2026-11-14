@@ -1,7 +1,7 @@
 function draw_window_macro_setvelocity() {
 	// draw_window_setvelocity()
 	var x1, y1, a, b, str, total_vals, val, decr, inc;
-	if (selected == 0) {
+	if (songs[song].selected == 0) {
 		window = 0
 		return 0
 	}
@@ -37,23 +37,24 @@ function draw_window_macro_setvelocity() {
 		if (!percentvel) {
 			selection_change(m_vel, setvel, false)
 		} else {
-			str = selection_code
-			if (selected = 0) return 0
-			for (a = 0; a < selection_l; a += 1) {
-			    if (selection_colfirst[a] > -1) {
-			        for (b = selection_colfirst[a]; b <= selection_collast[a]; b += 1) {
-			            if (selection_exists[a, b]) {
-							selection_vel[a, b] = selection_vel[a, b] * setvel / 100
+			str = songs[song].selection_code
+			if (songs[song].selected = 0) return 0
+			for (a = 0; a < songs[song].selection_l; a += 1) {
+			    if (songs[song].selection_colfirst[a] > -1) {
+			        for (b = songs[song].selection_colfirst[a]; b <= songs[song].selection_collast[a]; b += 1) {
+			            if (songs[song].selection_exists[a, b]) {
+							songs[song].selection_vel[a, b] = songs[song].selection_vel[a, b] * setvel / 100
 			            }
 			        }
 			    }
 			}
 			selection_code_update()
-			history_set(h_selectchange, selection_x, selection_y, selection_code, selection_x, selection_y, str)
+			history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
+			songs[song].changed = 1
 		}
 		if(!keyboard_check(vk_alt)) selection_place(false)
 	}
-	if (draw_button2(x1 + 70, y1 + 98, 60, condstr(language != 1, "Cancel", "取消")) && (windowopen = 1 || theme != 3)) {windowclose = 1}
+	if (draw_button2(x1 + 70, y1 + 98, 60, condstr(language != 1, "Cancel", "取消"), false, true) && (windowopen = 1 || theme != 3)) {windowclose = 1}
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) {
 		window_set_cursor(curs)
 		if (array_length(text_mouseover) = 0) window_set_cursor(cr_default)

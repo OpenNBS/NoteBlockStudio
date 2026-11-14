@@ -5,7 +5,7 @@ function dat_instrument(argument0) {
 	var instrumentnumber = argument0
 	var str = "minecraft:block.note_block."
 	var ins
-	if instrumentnumber < 16 {
+	if instrumentnumber < 20 {
 		switch (instrumentnumber) {
 		    case 0:
 		        return str + "harp"
@@ -39,10 +39,18 @@ function dat_instrument(argument0) {
 				return str + "banjo"	
 			case 15:
 				return str + "pling"
+			case 16:
+				return str + "trumpet"
+			case 17:
+				return str + "trumpet_exposed"
+			case 18:
+				return str + "trumpet_weathered"
+			case 19:
+				return str + "trumpet_oxidized"
 		}
 	}
-	if instrumentnumber >= 16 {
-		ins = ds_list_find_value(other.instrument_list,instrumentnumber)
+	if instrumentnumber >= 20 {
+		ins = ds_list_find_value(other.songs[other.song].instrument_list,instrumentnumber)
 		return string("minecraft:"+ins.name)
 	}
 

@@ -4,58 +4,58 @@ function remove_block(argument0, argument1) {
 	xx = argument0
 	yy = argument1
 
-	if (song_exists[xx, yy] = 0) return 0
-	song_exists[xx, yy] = 0
-	song_ins[xx, yy].num_blocks--
-	if (song_key[xx, yy] < 33 || song_key[xx, yy] > 57) block_outside -= 1
-	if (song_ins[xx, yy].user) block_custom -= 1
-	if (song_pit[xx, yy] != 0) block_pitched -= 1
-	song_ins[xx, yy] = 0
-	song_key[xx, yy] = 0
-	song_vel[xx, yy] = 0
-	song_pan[xx, yy] = 0
-	song_pit[xx, yy] = 0
-	song_played[xx, yy] = 0
-	song_added[xx, yy] = 0
-	colamount[xx] -= 1
-	rowamount[yy] -= 1
-	totalblocks -= 1
-	if (colamount[xx] = 0) {
-	    if (enda = xx) {
+	if (songs[song].song_exists[xx, yy] = 0) return 0
+	songs[song].song_exists[xx, yy] = 0
+	songs[song].song_ins[xx, yy].num_blocks--
+	if (songs[song].song_key[xx, yy] < 33 || songs[song].song_key[xx, yy] > 57) songs[song].block_outside -= 1
+	if (songs[song].song_ins[xx, yy].user) songs[song].block_custom -= 1
+	if (songs[song].song_pit[xx, yy] != 0) songs[song].block_pitched -= 1
+	songs[song].song_ins[xx, yy] = 0
+	songs[song].song_key[xx, yy] = 0
+	songs[song].song_vel[xx, yy] = 0
+	songs[song].song_pan[xx, yy] = 0
+	songs[song].song_pit[xx, yy] = 0
+	songs[song].song_played[xx, yy] = 0
+	songs[song].song_added[xx, yy] = 0
+	songs[song].colamount[xx] -= 1
+	songs[song].rowamount[yy] -= 1
+	songs[song].totalblocks -= 1
+	if (songs[song].colamount[xx] = 0) {
+	    if (songs[song].enda = xx) {
 	        for (a = xx; a >= 0; a -= 1) {
-	            enda = a
-	            if (colamount[a] > 0) break
+	            songs[song].enda = a
+	            if (songs[song].colamount[a] > 0) break
 	        }
 	    }
 	}
-	if (rowamount[yy] = 0) {
-	    if (endb = yy) {
+	if (songs[song].rowamount[yy] = 0) {
+	    if (songs[song].endb = yy) {
 	        for (b = yy; b >= 0; b -= 1) {
-	            endb = b
-	            if (rowamount[b] > 0) break
+	            songs[song].endb = b
+	            if (songs[song].rowamount[b] > 0) break
 	        }
 	    }
 	}
-	if (colfirst[xx] = yy) {
-	    colfirst[xx] = -1
-	    for (a = 0; a <= collast[xx]; a += 1) {
-	        if (song_exists[xx, a]) {
-	            colfirst[xx] = a
+	if (songs[song].colfirst[xx] = yy) {
+	    songs[song].colfirst[xx] = -1
+	    for (a = 0; a <= songs[song].collast[xx]; a += 1) {
+	        if (songs[song].song_exists[xx, a]) {
+	            songs[song].colfirst[xx] = a
 	            break
 	        }
 	    }
 	}
-	if (collast[xx] = yy) {
-	    collast[xx] = -1
+	if (songs[song].collast[xx] = yy) {
+	    songs[song].collast[xx] = -1
 	    for (a = yy; a >= 0; a -= 1) {
-	        if (song_exists[xx, a]) {
-	            collast[xx] = a
+	        if (songs[song].song_exists[xx, a]) {
+	            songs[song].collast[xx] = a
 	            break
 	        }
 	    }
 	}
 
-	changed = 1
+	songs[song].changed = 1
 
 
 

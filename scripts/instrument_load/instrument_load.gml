@@ -9,40 +9,72 @@ function instrument_load(custom_sounds_path = "") {
 
 	// If a custom Sounds folder is provided, try loading the sound from it.
 	// If not provided or the sound doesn't exist there, fall back to the default Sounds folder
+	
+	var sounds_dir = bundled_sounds_directory
+	if (user) sounds_dir = sounds_directory
+	
 	if (custom_sounds_path == "") {
-		fn = sounds_directory + filename;
+		fn = sounds_dir + filename;
+		log ("load bundle")
 	} else {
 		var custom_fn = custom_sounds_path + filename;
 		
 		if (file_exists_lib(custom_fn)) {
 			fn = custom_fn;
+		log ("load custom")
 		} else {
-			fn = sounds_directory + filename;
+			fn = sounds_dir + filename;
+			log ("load fallback bundle")
 		}
 	}
 
-	fn = string_replace_all(fn, "/", "\\");
+	if (os_type = os_windows) fn = string_replace_all(fn, "/", "\\");
 
 	log("Load instrument", fn)
 
-	if (!file_exists_lib(fn)) {
+	if (!file_exists(fn)) {
 		return false
 	}
 
-	log("audio_file_decode")
-	var ret = audio_file_decode(fn, temp_file);
-	if (ret < 0) {
-	    if (language != 1) message("Couldn't load the file " + fn + "! Error: " + string(ret), "Error")
-	    else message("找不到文件" + fn + "！错误代码：" + string(ret), "错误")
-	    return 0
-	}
+	//if (os_type = os_windows) {
+		log("audio_file_decode")
+		if (file_exists(temp_file)) file_delete(temp_file)
+		if (string_lower(filename_ext(filename_name(fn))) == ".ogg" || string_lower(filename_ext(filename_name(fn))) == "") {
+			var ret = audio_file_decode_ogg(fn, temp_file);
+			if (ret < 0) ret = audio_file_decode_ogg(string_replace_all(game_save_id + "data/sounds/" + filename, "/", "\\"), temp_file);
+			log ("wrote to: " + temp_file)
+			if (ret < 0) {
+			    if (obj_controller.language != 1) message("Couldn't load the file " + fn + "! Error: " + string(ret), "Error")
+			    else message("找不到文件" + fn + "！错误代码：" + string(ret), "错误")
+			    return 0
+			}
 
-	log("buffer_load")
-	sound_buffer_temp = buffer_load(temp_file)
-	sound_buffer = buffer_create(buffer_get_size(sound_buffer_temp), buffer_fixed, 2)
-	buffer_copy(sound_buffer_temp, 0, buffer_get_size(sound_buffer_temp), sound_buffer, 0)
-	sound = audio_create_buffer_sound(sound_buffer, buffer_s16, 44100, 0, buffer_get_size(sound_buffer), audio_stereo)
-	buffer_delete(sound_buffer_temp)
+			log("buffer_load")
+			sound_buffer_temp = buffer_load(temp_file)
+			sound_buffer = buffer_create(buffer_get_size(sound_buffer_temp), buffer_fixed, 2)
+			buffer_copy(sound_buffer_temp, 0, buffer_get_size(sound_buffer_temp), sound_buffer, 0)
+			sound = audio_create_buffer_sound(sound_buffer, buffer_s16, 44100, 0, buffer_get_size(sound_buffer), audio_stereo)
+			sound_duration = real(buffer_get_size(sound_buffer)) / (44100 * 4)
+			buffer_delete(sound_buffer_temp)
+		} else if (string_lower(filename_ext(filename_name(fn))) == ".wav") {
+			sound = wav_load_buffer(fn)
+			if (sound = -1) {
+				if (obj_controller.language != 1) message("Couldn't load the file " + fn, "Error")
+			    else message("找不到文件" + fn, "错误")
+			    return 0
+			}
+			sound_buffer = global.__temp_audio_buffer__
+			sound_duration = global.__temp_audio_duration__
+		}
+	//} else {
+	//	ret = audio_create_stream(fn)
+	//	if (ret < 0) {
+	//	    if (language != 1) message("Couldn't load the file " + fn + "! Error: " + string(ret), "Error")
+	//	    else message("找不到文件" + fn + "！错误代码：" + string(ret), "错误")
+	//	    return 0
+	//	}
+	//	sound = ret
+	//}
 
 	loaded = true
 

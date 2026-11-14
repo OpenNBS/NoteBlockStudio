@@ -9,11 +9,11 @@ function change_block(argument0, argument1, argument2, argument3, argument4, arg
 	pan = argument5
 	pit = argument6
 
-	song_ins[xx, yy] = ins
-	song_key[xx, yy] = key
-	song_vel[xx, yy] = vel
-	song_pan[xx, yy] = pan
-	song_pit[xx, yy] = pit
+	songs[song].song_ins[xx, yy] = ins
+	songs[song].song_key[xx, yy] = key
+	songs[song].song_vel[xx, yy] = vel
+	songs[song].song_pan[xx, yy] = pan
+	songs[song].song_pit[xx, yy] = pit
 
 
 }

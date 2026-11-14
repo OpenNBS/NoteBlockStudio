@@ -25,11 +25,9 @@ An open-source continuation of Minecraft Note Block Studio with exciting new fea
 </p>
 
 ## ⬇ Download
-You can download Open Note Block Studio [here](https://github.com/OpenNBS/OpenNoteBlockStudio/releases/latest)!
+You can download Note Block Studio [here](https://github.com/OpenNBS/OpenNoteBlockStudio/releases/latest)!
 
-> _Support for macOS and Linux is in beta right now!_
-
-> _We're having a TestFlight on macOS! Join [here](https://testflight.apple.com/join/hg58hwbM)!_
+> _On linux: KDE desktops require `kdialog`. Other desktop environments require `zenity` to be installed. You'll also need `7zip` for some of the export functions to work._
 
 ## 📄 Project Status
 
@@ -56,7 +54,7 @@ If OpenNBS is meaningful to you and you'd like to support its development, you c
 
 This project is written in the GameMaker Language (GML). You must have [GameMaker](https://gamemaker.io/) in order to open the project and make changes.
 
-> **Note**: Active development takes place in the `development` branch. The `main` branch uses an older GameMaker runtime. If you're contributing, please use the `development` branch.
+> **Note**: Active development takes place in the `development` branch. If you're contributing, please use the `development` branch.
 
 OpenNBS uses GameMaker runtime version 2022.0.3 LTS. Click on **Older Versions** at [this page](https://gms.yoyogames.com/ReleaseNotes-LTS.html) to see downloads.
 

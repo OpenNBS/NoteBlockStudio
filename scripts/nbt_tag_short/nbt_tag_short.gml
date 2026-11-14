@@ -14,9 +14,9 @@ function nbt_tag_short(argument0, argument1, argument2) {
 	name = argument1;
 	val = argument2;
 
-	external_call(global.dll_WriteByte, file, 2);
+	buffer_write(file, buffer_s8, 2);
 	nbt_string_write(file, name);
-	external_call(global.dll_WriteShort, file, val);
+	buffer_write_short_be_ext(file, val);
 
 
 }

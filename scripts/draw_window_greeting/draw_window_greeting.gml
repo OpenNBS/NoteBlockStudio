@@ -7,7 +7,7 @@ function draw_window_greeting() {
 	x1 = floor(rw / 2 - 350)
 	y1 = floor(rh / 2 - 210) + windowoffset
 	
-	if (donate_banner) {
+	if (donate_enabled && donate_banner) {
 		x1 += 700;
 		y1 += 210 - 100;
 		var hover_badge = mouse_rectangle(x1, y1, 150, 120)
@@ -19,14 +19,14 @@ function draw_window_greeting() {
 		//popup_set_window(x1, y1, 150, 20, "Click to open our Open Collective\n page in your browser!");
 		if (hover_badge) {
 			curs = cr_handpoint;
-			if (mouse_check_button_released(mb_left)) {
-				if (hover_x) { // X button
-					if (language != 1) show_message("Developing Note Block Studio takes a lot of unpaid volunteering time. If you can, please consider supporting us in the future! =)\n\n(You can find that option at any time in Help > Donate.)");
-					else show_message("开发Note Block Studio完全基于我们用爱发电。如果情况允许，请考虑在以后小小的支持我们一下！(～￣▽￣)～\n\n（您可以随时在帮助 > 捐赠中找到该选项。）")
+			if (nbs_mouse_check_button_released(mb_left)) {
+				if (mouse_rectangle_click(x1 + 120, y1 + 3, 16, 16)) { // X button
+					if (language != 1) message("Developing Note Block Studio takes a lot of unpaid volunteering time. If you can, please consider supporting us in the future! =)\n\n(You can find that option at any time in Help > Donate.)", "Note Block Studio");
+					else message("开发Note Block Studio完全基于我们用爱发电。如果情况允许，请考虑在以后小小的支持我们一下！(～￣▽￣)～\n\n（您可以随时在帮助 > 捐赠中找到该选项。）", "Note Block Studio")
 					donate_banner_time = date_inc_month(date_current_datetime(), 1);
 					donate_banner = 0;
 					save_settings();
-				} else {
+				} else if (!hover_x && mouse_rectangle_click(x1, y1, 150, 120) && !mouse_press_in_rectangle(x1 + 120, y1 + 3, 16, 16)) {
 					open_url(link_donate);
 				}
 			}
@@ -36,14 +36,35 @@ function draw_window_greeting() {
 	}
 	
 	draw_window(x1, y1, x1 + 700, y1 + 430)
-	draw_sprite_ext(spr_logo, window_icon, x1 + 64, y1 + 50, 1, 1, 0, c_white, draw_get_alpha())
+	var icon_index = window_icon
+	if (window_icon && fdark) icon_index++
+	draw_sprite_ext(spr_logo, icon_index, x1 + 64, y1 + 50, 0.5, 0.5, 0, c_white, draw_get_alpha())
 	draw_theme_font(font_info_med_bold)
 	draw_text_center(x1 + 132, y1 + 213, "Note Block Studio")
 	draw_theme_font(font_main_bold)
 	var dev_label_offset = (is_prerelease) ? 15 : 0
-	if (RUN_FROM_IDE != 1) {
+	if (NOT_RUN_FROM_IDE != 1) {
 		if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Running from the GameMaker IDE.")
-		else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "在 IDE 中运行")	
+		else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "在 IDE 中运行")
+	} else if (os_type == os_macosx && macos_install_channel != "direct") {
+		if (macos_install_channel == "testflight") {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Updates managed by TestFlight app.")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "由 TestFlight 应用管理更新")
+		} else if (macos_install_channel == "app_store") {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "App Store Version")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "App Store 版本")
+		} else {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking unavailable.")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "检查更新不可用")
+		}
+	} else if (is_development) {
+		if (os_type = os_windows || os_type = os_linux || (os_type == os_macosx && macos_install_channel == "direct")) {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking disabled.")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "检查更新不可用")
+		} else {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Updates managed by TestFlight app.")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "由 TestFlight 应用管理更新")
+		}
 	} else if (check_update) {
 		if (update_success) {
 	        draw_set_color(c_lime)
@@ -74,12 +95,12 @@ function draw_window_greeting() {
 		}
 	} else {
 	    draw_set_color(c_red)
-		if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking disabled by user")
+		if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking disabled by user.")
 	    else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "检查更新未开启")
 	}
 	draw_theme_font(font_main)
 	draw_theme_color()
-	if (RUN_FROM_IDE != 1) {
+	if (NOT_RUN_FROM_IDE != 1) {
 		if (language != 1) draw_text_center(x1 + 132, y1 + 233, "Version Local Release")
 		else draw_text_center(x1 + 132, y1 + 233, "本地版本")
 	} else {
@@ -108,11 +129,13 @@ function draw_window_greeting() {
 	draw_text_url(x1 + 180, y1 + 356 + dev_label_offset, "YouTube", link_youtube)
 
 	draw_text_url(x1 + 108 - (language == 1) * 20, y1 + 372 + dev_label_offset, "GitHub", link_github)
-	draw_text_dynamic(x1 + 131 - (language == 1) * 22 - theme_pipe_offset, y1 + 372 + dev_label_offset, "|")
+	if (donate_enabled || language == 1) draw_text_dynamic(x1 + 131 - (language == 1) * 22 - theme_pipe_offset, y1 + 372 + dev_label_offset, "|")
 	if (language == 1) draw_text_url(x1 + 133, y1 + 372 + dev_label_offset, "QQ 群", link_qq_group)
-	if (language == 1) draw_text_dynamic(x1 + 131 + 22 - theme_pipe_offset, y1 + 372 + dev_label_offset, "|")
-	if (language != 1) draw_text_url(x1 + 156, y1 + 372 + dev_label_offset, "Donate", link_donate)
-	else draw_text_url(x1 + 156 + 15, y1 + 372 + dev_label_offset, "捐赠", link_donate)
+	if (donate_enabled) {
+		if (language == 1) draw_text_dynamic(x1 + 131 + 22 - theme_pipe_offset, y1 + 372 + dev_label_offset, "|")
+		if (language != 1) draw_text_url(x1 + 156, y1 + 372 + dev_label_offset, "Donate", link_donate)
+		else draw_text_url(x1 + 156 + 15, y1 + 372 + dev_label_offset, "捐赠", link_donate)
+	}
 	draw_set_color(c_white)
 	
 	if (fdark && theme = 3) draw_set_color(0)
@@ -131,7 +154,7 @@ function draw_window_greeting() {
 	c = y1 + 48
 	if (!isplayer) {
 	a = mouse_rectangle(b, c, 224, 32)
-	a += (a && (mouse_check_button(mb_left) || mouse_check_button_released(mb_left)))
+	a += (a && (nbs_mouse_check_button(mb_left) || nbs_mouse_check_button_released(mb_left)) && mouse_press_in_rectangle(b, c, 224, 32))
 	if (!hires || theme != 3) draw_sprite(spr_frame2, a + 3 * theme + 3 * (fdark && theme = 3), b, c)
 	else draw_sprite_ext(spr_frame2_hires, a + 3 * fdark, b, c, 0.25, 0.25, 0, -1, draw_get_alpha())
 	if (theme != 3) {
@@ -147,7 +170,7 @@ function draw_window_greeting() {
 	}
 	if (language != 1) draw_text_dynamic(b + 48 + (a > 1), c + 9 + (a > 1), "Create a new song")
 	else draw_text_dynamic(b + 48 + (a > 1), c + 9 + (a > 1), "创建歌曲")
-	if (a = 2 && mouse_check_button_released(mb_left) && (windowopen = 1 || theme != 3)) {
+	if (a = 2 && nbs_mouse_check_button_released(mb_left) && (windowopen = 1 || theme != 3)) {
 		if (windowsound && theme = 3) play_sound(soundgoback, 45, 100, 100, 0)
 		windowclose = 1
 	}
@@ -156,7 +179,7 @@ function draw_window_greeting() {
 	}
 	b = x1 + 300
 	a = mouse_rectangle(b, c, 224, 32)
-	a += (a && (mouse_check_button(mb_left) || mouse_check_button_released(mb_left)))
+	a += (a && (nbs_mouse_check_button(mb_left) || nbs_mouse_check_button_released(mb_left)) && mouse_press_in_rectangle(b, c, 224, 32))
 	if (!hires || theme != 3) draw_sprite(spr_frame2, a + 3 * theme + 3 * (fdark && theme = 3), b, c)
 	else draw_sprite_ext(spr_frame2_hires, a + 3 * fdark, b, c, 0.25, 0.25, 0, -1, draw_get_alpha())
 	if (theme != 3) {
@@ -172,12 +195,12 @@ function draw_window_greeting() {
 	}
 	if (language != 1) draw_text_dynamic(b + 48 + (a > 1), c + 9 + (a > 1), "Load a song")
 	else draw_text_dynamic(b + 48 + (a > 1), c + 9 + (a > 1), "打开歌曲")
-	if (a = 2 && mouse_check_button_released(mb_left)) {
+	if (a = 2 && nbs_mouse_check_button_released(mb_left)) {
 		if (windowsound && theme = 3) play_sound(soundinvoke, 45, 100, 50, 0)
 		windowalpha = 0
 		windowclose = 0
 		windowopen = 0
-	    load_song("")
+	    load_song("", 0, 1)
 	    return 1
 	}
 	b = x1 + 320
@@ -192,8 +215,8 @@ function draw_window_greeting() {
 
 	    popup_set_window(b, c, 320, 16, recent_song[a])
 	    m = mouse_rectangle(b, c, 320, 16)
-	    m += m && mouse_check_button(mb_left)
-	    if (m > 0 && mouse_check_button_released(mb_left)) {
+	    m += m && nbs_mouse_check_button(mb_left) && mouse_press_in_rectangle(b, c, 320, 16)
+	    if (m > 0 && mouse_rectangle_click(b, c, 320, 16)) {
 			if (windowsound && theme = 3) play_sound(soundinvoke, 45, 100, 50, 0)
 	        if (!file_exists_lib(recent_song[a])) {
 	            if (language != 1) message("Could not find file:\n" + recent_song[a], "Error")
@@ -212,7 +235,7 @@ function draw_window_greeting() {
 				windowalpha = 0
 				windowclose = 0
 				windowopen = 0
-	            load_song(recent_song[a])
+	            load_song(recent_song[a], 0, 1)
 	        }
 	    }
 	    if (!hires || theme != 3) draw_sprite(spr_frame5, theme * 3 + m + 3 * (fdark && theme = 3), b, c)
@@ -230,7 +253,7 @@ function draw_window_greeting() {
 	
 	// Note Block World button
 	a = mouse_rectangle(b, c, 224 * 1.5, 32)
-	a += (a && (mouse_check_button(mb_left) || mouse_check_button_released(mb_left)))
+	a += (a && (nbs_mouse_check_button(mb_left) || nbs_mouse_check_button_released(mb_left)) && mouse_press_in_rectangle(b, c, 224 * 1.5, 32))
 	if (!hires || theme != 3) draw_sprite_ext(spr_frame2, a + 3 * theme + 3 * (fdark && theme = 3), b, c, 1.5, 1, 0, -1, 1)
 	else draw_sprite_ext(spr_frame2_hires, a + 3 * fdark, b, c, 0.25 * 1.5, 0.25, 0, -1, draw_get_alpha())
 	if (theme != 3) {
@@ -251,9 +274,7 @@ function draw_window_greeting() {
 	draw_set_color(accent[4]);
 	b += (-16);
 	c += 8;
-	draw_circle(b + 300 - 10, c, 8, false);
-	draw_rectangle(b + 300 - 8, c - 7, b + 300 + 8, c + 8, false);
-	draw_circle(b + 300 + 10, c, 8, false);
+	draw_roundrect_ext(b + 300 - 18, c - 7, b + 300 + 20, c + 8, 15, 15, false);
 	draw_set_color(c_white);
 	draw_theme_font(font_main_bold);
 	draw_text_dynamic(b + 300 - 14, c - 6, "NEW!");
@@ -265,7 +286,7 @@ function draw_window_greeting() {
 	if (language != 1) draw_text_dynamic(b + 48 + (a > 1), c + 9 + (a > 1) + 7, "Go to noteblock.world");
 	else draw_text_dynamic(b + 48 + (a > 1), c + 9 + (a > 1) + 7, "前往 noteblock.world");
 	draw_theme_color();
-	if (a = 2 && mouse_check_button_released(mb_left)) {
+	if (a = 2 && nbs_mouse_check_button_released(mb_left)) {
 		if (windowsound && theme = 3) play_sound(soundinvoke, 45, 100, 50, 0)
 		open_url("https://noteblock.world/");
 	    return 1;
@@ -273,7 +294,7 @@ function draw_window_greeting() {
 	c += 44;
 	
 	a = mouse_rectangle(b, c, 224, 32)
-	a += (a && (mouse_check_button(mb_left) || mouse_check_button_released(mb_left)))
+	a += (a && (nbs_mouse_check_button(mb_left) || nbs_mouse_check_button_released(mb_left)) && mouse_press_in_rectangle(b, c, 224, 32))
 	if (!hires || theme != 3) draw_sprite(spr_frame2, a + 3 * theme + 3 * (fdark && theme = 3), b, c)
 	else draw_sprite_ext(spr_frame2_hires, a + 3 * fdark, b, c, 0.25, 0.25, 0, -1, draw_get_alpha())
 	if (theme != 3) {
@@ -289,12 +310,12 @@ function draw_window_greeting() {
 	}
 	if (language != 1) draw_text_dynamic(b + 48 + (a > 1), c + 9 + (a > 1), "Generate song out of MIDI file")
 	else draw_text_dynamic(b + 48 + (a > 1), c + 9 + (a > 1), "从 MIDI 文件生成")
-	if (a = 2 && mouse_check_button_released(mb_left)) {
+	if (a = 2 && nbs_mouse_check_button_released(mb_left)) {
 		if (windowsound && theme = 3) play_sound(soundinvoke, 45, 100, 50, 0)
 		windowalpha = 0
 		windowclose = 0
 		windowopen = 0
-		open_midi("")
+		open_midi("", 1)
 	}
 
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) {

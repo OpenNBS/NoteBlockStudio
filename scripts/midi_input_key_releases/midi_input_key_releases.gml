@@ -7,7 +7,7 @@ function midi_input_key_releases(argument0) {
 
 	//  By David "Davve" Norgren for MIDI input - www.stuffbydavid.com
 
-	return external_call(lib_midi_input_key_releases, argument0);
+	return ds_list_size(midi_keyreleases)
 
 
 

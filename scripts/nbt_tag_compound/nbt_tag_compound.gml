@@ -12,7 +12,7 @@ function nbt_tag_compound(argument0, argument1) {
 	file = argument0;
 	name = argument1;
 
-	external_call(global.dll_WriteByte, file, 10);
+	buffer_write(file, buffer_s8, 10);
 	nbt_string_write(file, name);
 
 

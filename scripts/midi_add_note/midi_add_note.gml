@@ -9,7 +9,6 @@ function midi_add_note(argument0, argument1, argument2, argument3, argument4) {
 
 	n = midi_trackamount[track]
 	if (n = 31999) return 0
-	if (channel = 9 && (note < 24 || note > 84)) return 0
 
 	if (pos < midi_minpos || midi_minpos = -1) midi_minpos = pos
 	midi_maxpos = max(midi_maxpos, pos)
@@ -17,6 +16,17 @@ function midi_add_note(argument0, argument1, argument2, argument3, argument4) {
 	midi_eventnote[track, n] = note
 	midi_eventvel[track, n ] = vel
 	midi_eventchannel[track, n] = channel
+	// Keep the instrument at note-on, even if this channel changes patches later.
+	var patch = midi_channelpatch[channel]
+	midi_eventpatch[track, n] = patch
+	// A part is independent of other tracks/channels using the same instrument.
+	var part_key = string(track) + "_" + string(channel) + "_" + string(patch)
+	if (!variable_struct_exists(midi_part_lookup, part_key)) {
+		variable_struct_set(midi_part_lookup, part_key, array_length(midi_parts))
+		array_push(midi_parts, {track: track, channel: channel, patch: patch, note_duration: channel != 9})
+	}
+	midi_eventpart[track, n] = variable_struct_get(midi_part_lookup, part_key)
+	midi_eventuntil[track, n] = -1
 	midi_trackamount[track] += 1
 	midi_tracklength[track] = max(midi_tracklength[track], pos)
 	midi_channels = max(midi_channels, channel)

@@ -17,7 +17,14 @@ function load_settings() {
 	}
 	// Preferences
 	vers =               ini_read_string("preferences", "last_version",       version)
-	check_update =       ini_read_real(  "preferences", "check_update",       check_update)
+	vers_date =          ini_read_string("preferences", "last_version_date",  version_date)
+	if (os_type == os_macosx) {
+		// A TestFlight install may have saved check_update=0 before direct builds supported updates.
+		if (macos_install_channel == "direct") check_update = ini_read_real("preferences", "check_update_direct_macos", 1)
+		else check_update = 0
+	} else {
+		check_update = ini_read_real("preferences", "check_update", check_update)
+	}
 	check_prerelease =   ini_read_real(  "preferences", "check_prerelease",   check_prerelease)
 	show_welcome =       ini_read_real(  "preferences", "show_welcome",       show_welcome)
 	autosave =           ini_read_real(  "preferences", "autosave",           autosave)
@@ -36,6 +43,7 @@ function load_settings() {
 	show_octaves =       ini_read_real(  "preferences", "show_octaves",       show_octaves)
 	show_incompatible =  ini_read_real(  "preferences", "show_incompatible",  show_incompatible)
 	fade =               ini_read_real(  "preferences", "use_fading",         fade)
+	selection_alpha =	 ini_read_real(	 "preferences", "selection_alpha",    selection_alpha)
 	show_layers =        ini_read_real(  "preferences", "show_layers",        show_layers)
 	show_piano =         ini_read_real(  "preferences", "show_piano",         show_piano)
 	keysmax =            ini_read_real(  "preferences", "keys_to_show",       keysmax)
@@ -45,8 +53,14 @@ function load_settings() {
 	show_notechart =     ini_read_real(  "preferences", "show_notechart",     show_notechart)
 	show_outofrange =    ini_read_real(  "preferences", "show_outofrange",    show_outofrange)
 	mousewheel =         ini_read_real(  "preferences", "mousewheel",         mousewheel)
+	mousewheel_scroll_speed = median(1, ini_read_real("preferences", "mousewheel_scroll_speed", mousewheel_scroll_speed), 10)
 	changepitch =        ini_read_real(  "preferences", "change_pitch",       changepitch)
+	layerhov_vppreview = ini_read_real(  "preferences", "layerhov_vppreview", layerhov_vppreview)
 	select_lastpressed = ini_read_real(  "preferences", "select_lastpressed", select_lastpressed)
+	sound_stopper_follow_layers = ini_read_real("preferences", "sound_stopper_follow_layers", sound_stopper_follow_layers)
+	reference_hotkeys[0] = ini_read_real("preferences", "reference_hotkey_mute", reference_hotkeys[0])
+	reference_hotkeys[1] = ini_read_real("preferences", "reference_hotkey_solo", reference_hotkeys[1])
+	reference_hotkeys[2] = ini_read_real("preferences", "reference_hotkey_mix", reference_hotkeys[2])
 	marker_follow =      ini_read_real(  "preferences", "marker_follow",      marker_follow)
 	marker_pagebypage =  ini_read_real(  "preferences", "marker_pagebypage",  marker_pagebypage)
 	marker_start =       ini_read_real(  "preferences", "marker_start",       marker_start)
@@ -54,9 +68,9 @@ function load_settings() {
 	realvolume =         ini_read_real(  "preferences", "show_layer_volumes", realvolume)
 	realstereo =         ini_read_real(  "preferences", "use_stereo",         realstereo)
 	//looptobarend =       ini_read_real(  "preferences", "loop_to_bar_end",    looptobarend)
+	autoplay =           ini_read_real(  "preferences", "autoplay",           autoplay)
 	show_soundcount =    ini_read_real(  "preferences", "show_soundcount",    show_soundcount)
 	use_bpm =            ini_read_real(  "preferences", "use_bpm",            use_bpm)
-	save_version =       ini_read_real(  "preferences", "save_version",       save_version)
 	channelstoggle =     ini_read_real(  "preferences", "channelstoggle",     channelstoggle)
 	presence =           ini_read_real(  "preferences", "presence",           presence)
 	windowsound =        ini_read_real(  "preferences", "windowsound",        windowsound)
@@ -70,12 +84,22 @@ function load_settings() {
 	addpitch =           ini_read_real(  "preferences", "addpitch",           addpitch)
 	language =           ini_read_real(  "preferences", "language",           language)
 	acrylic =            ini_read_real(  "preferences", "acrylic",            acrylic)
+	liquid_glass =       ini_read_real(  "preferences", "liquid_glass",       liquid_glass)
 	taskbar =            ini_read_real(  "preferences", "taskbar",            taskbar)
 	remove_effect =      ini_read_real(  "preferences", "remove_effect",      remove_effect)
 	window_icon =        ini_read_real(  "preferences", "window_icon",        window_icon)
 	keynames_flat =      ini_read_real(  "preferences", "keynames_flat",      keynames_flat)
 	hires =              ini_read_real(  "preferences", "hires",              hires)
+	current_resource =   ini_read_string("preferences", "current_resource",   current_resource)
+	resourcepack_sounds_json = ini_read_real("preferences", "resourcepack_sounds_json", resourcepack_sounds_json)
+	minecraft_export_catalog_path = ini_read_string("minecraft_export", "catalog_path", minecraft_export_catalog_path)
+	minecraft_export_catalog_access_root = ini_read_string("minecraft_export", "catalog_access_root", minecraft_export_catalog_access_root)
 	acrylic_successful = ini_read_real(  "preferences", "acrylic_successful", acrylic_successful)
+	advancedinterface  = ini_read_real(  "preferences", "advancedinterface",  advancedinterface)
+	wpapernoblur       = ini_read_real(  "preferences", "wpapernoblur",       wpapernoblur)
+	wpapernodim        = ini_read_real(  "preferences", "wpapernodim",        wpapernodim)
+	noeditingbackground= ini_read_real(  "preferences", "noeditingbackground",noeditingbackground)
+	backgroundrainbow  = ini_read_real(  "preferences", "backgroundrainbow",  backgroundrainbow)
 
 	// Midi import settings
 	w_midi_remember =     ini_read_real(  "midi_import", "remember",        w_midi_remember)
@@ -88,6 +112,10 @@ function load_settings() {
 	w_midi_octave =       ini_read_real(  "midi_import", "octave",          w_midi_octave)
 	w_midi_precision =    ini_read_real(  "midi_import", "precision",       w_midi_precision)
 	w_midi_tempo_changer =ini_read_real(  "midi_import", "tempo_changer",   w_midi_tempo_changer)
+	w_midi_note_duration =ini_read_real(  "midi_import", "note_duration",   w_midi_note_duration)
+	w_midi_note_duration_fade = ini_read_real("midi_import", "note_duration_fade", w_midi_note_duration_fade)
+	w_midi_note_duration_fade_start = median(0, ini_read_real("midi_import", "note_duration_fade_start", w_midi_note_duration_fade_start), 100)
+	w_midi_note_duration_fade_end = median(0, ini_read_real("midi_import", "note_duration_fade_end", w_midi_note_duration_fade_end), 100)
 	// instruments
 	for (a = 0; a < 128; a += 1) {
 	    midi_ins[a, 1] =  ini_read_real(  "midi_import", "ins_" + string(a),          midi_ins[a, 1]) // Instrument
@@ -98,7 +126,7 @@ function load_settings() {
 	      midi_ins[a, 2] = -1
 	}
 	// drums
-	for (a = 24; a < 88; a += 1) {
+	for (a = 0; a < 128; a += 1) {
 	    midi_drum[a, 1] = ini_read_real(  "midi_import", "drum_" + string(a),          midi_drum[a, 1]) // Instrument
 	   if (midi_drum[a, 1] = 255) // -1
 	      midi_drum[a, 1] = -1
@@ -123,11 +151,19 @@ function load_settings() {
 	sch_exp_glass =            ini_read_real("schematic_export", "glass",          sch_exp_glass)
 	sch_exp_minecart =         ini_read_real("schematic_export", "minecart",       sch_exp_minecart)
 	sch_exp_chest =            ini_read_real("schematic_export", "chest",          sch_exp_chest)
+	sch_exp_format =           ini_read_real("schematic_export", "format",         structure ? 0 : (sch_exp_minecraft_old ? 3 : 2))
+	structure = (sch_exp_format <= 1)
+	sch_exp_minecraft_old = (sch_exp_format = 3)
 	for (a = 0; a < 256; a += 1) {
 	   sch_exp_ins_block[a] = ini_read_real("schematic_export", "ins_block_" + string(a), sch_exp_ins_block[a])
 	   sch_exp_ins_data[a] =  ini_read_real("schematic_export", "ins_data_"  + string(a), sch_exp_ins_data[a])
 	}
 	command_block =            ini_read_real("schematic_export", "command_block",  command_block)
+	sch_command_source =       ini_read_string("schematic_export", "command_source", sch_command_source)
+	sch_command_tempo_grid =   ini_read_real("schematic_export", "tempo_grid", sch_command_tempo_grid)
+	for (a = 0; a < array_length(sch_command_allowed_sources); a++) {
+		sch_command_allowed_sources[a] = ini_read_real("schematic_export", "source_" + minecraft_export_sources()[a], sch_command_allowed_sources[a])
+	}
 
 	// Branch export settings
 	sch_exp_stereo =      ini_read_real("branch_export", "stereo",      sch_exp_stereo)
@@ -146,6 +182,9 @@ function load_settings() {
 	dat_namespace =         ini_read_string("datapack_export", "namespace",     dat_namespace)
 	dat_path =              ini_read_string("datapack_export", "path",          dat_path)
 	dat_source =            ini_read_string("datapack_export", "source",        dat_source)
+	for (a = 0; a < array_length(dat_allowed_sources); a++) {
+		dat_allowed_sources[a] = ini_read_real("datapack_export", "source_" + minecraft_export_sources()[a], dat_allowed_sources[a])
+	}
 	dat_usezip =            ini_read_real(  "datapack_export", "use_zip",       dat_usezip)
 	dat_mcversion =         ini_read_real(  "datapack_export", "mcversion",     dat_mcversion)
 	dat_includelocked =     ini_read_real(  "datapack_export", "locked",        dat_includelocked)
@@ -165,7 +204,7 @@ function load_settings() {
 
 	// Default instrument presses
 	for (a = 0; a < first_custom_index; a += 1) {
-		var ins = ds_list_find_value(instrument_list, a)
+		var ins = ds_list_find_value(songs[song].instrument_list, a)
 		ins.press = ini_read_real("instruments", "ins_" + string(a) + "_press", ins.press)
 	}
 

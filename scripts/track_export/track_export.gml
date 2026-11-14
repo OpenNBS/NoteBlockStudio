@@ -1,10 +1,32 @@
 function track_export() {
 	// track_export()
-	var fn, a, b, c, d, p, xx, yy, zz, len, wid, hei, o, chestx, chesty, chestz, signx, signy, signz, nblocks, layers, cyy, y1, x1, insnum, ins, repeats, remain, replen, blockamount, nbamount, cpan, cpanvol, cvol, blocktagpos;
-	var REPEATER, TORCHON, TORCHOFF, WIRE, LADDER, RAIL, POWEREDRAIL, SLAB, noteblocks, noteblockx, noteblocky, noteblockz, noteblocknote, noteblockins, noteblockpit;
-	fn = string(get_save_filename_ext("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(filename), " ", "_"), "") + ".nbt", "", "Export Track"))
+	var fn, a, b, c, d, p, xx, yy, zz, len, wid, hei, o, chestx, chesty, chestz, signx, signy, signz, nblocks, layers, cyy, y1, x1, insnum, ins, repeats, remain, replen, blockamount, nbamount, cpan, cpanvol, cvol, blocktagpos, sizepos, channels, row_index, row, track_tick_delay;
+	var REPEATER, TORCHON, TORCHOFF, WIRE, LADDER, RAIL, POWEREDRAIL, SLAB, noteblocks, noteblockx, noteblocky, noteblockz, noteblocknote, noteblockins, noteblockpit, command_plan, export_end;
+	structure = (sch_exp_format <= 1)
+	sch_exp_minecraft_old = (sch_exp_format = 3)
+	if (structure) fn = string(get_save_filename_ext("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(songs[song].filename), " ", "_"), "") + ".nbt", "", "Export Track"))
+	else fn = string(get_save_filename_ext("Minecraft Schematics (*.schematic)|*.schematic", filename_new_ext(songs[song].filename, "") + ".schematic", "", "Export Track"))
 	if (fn = "") return 0
+	if (structure) fn = enforce_extension(fn, ".nbt")
+	else fn = enforce_extension(fn, ".schematic")
 	o = obj_controller
+	command_plan = undefined
+	if (structure && command_block) {
+		command_plan = minecraft_export_prepare_track_plan(minecraft_export_get_schematic_plan(true))
+		if (array_length(command_plan.rows) <= 0) {
+			message(condstr(language != 1, "There are no sound commands to export!", "没有声音命令可以导出！"), condstr(language != 1, "Schematic export", "导出结构"))
+			return 0
+		}
+		// Modern structure NBT uses signed 32-bit dimensions and this exporter writes
+		// its block list sparsely. Do not apply the legacy dense-array 2000x2000x256
+		// guard here; GameMaker's grow-buffer capacity is the effective limit.
+		var planned_track_height = max(20, ceil(command_plan.track_maximum_slots / 4) * 4 + 4)
+		var planned_track_length = 40 + command_plan.last_command_grid * 2
+		if (planned_track_length > 2147483647 || planned_track_height > 2147483647) {
+			message(condstr(language != 1, "The Track dimensions exceed the signed 32-bit Structure NBT limit.", "直轨尺寸超过了结构 NBT 的 32 位有符号整数限制。"), condstr(language != 1, "Error", "错误"))
+			return 0
+		}
+	}
 	window = -1
 	with (create(obj_dummy2)) {
 	    // Initialize variables
@@ -36,11 +58,17 @@ function track_export() {
 		ins[13] = "bit"
 		ins[14] = "banjo"
 		ins[15] = "pling"
+		ins[16] = "trumpet"
+		ins[17] = "trumpet_exposed"
+		ins[18] = "trumpet_weathered"
+		ins[19] = "trumpet_oxidized"
 		for (var a = 0; a < 240; a++) {
-			ins[16 + a] = "harp"
+			ins[20 + a] = "harp"
 		}
-		instrument_list = o.instrument_list
-	    layers = 4
+			instrument_list = o.songs[o.song].instrument_list
+			command_plan = undefined
+			if (o.structure && o.command_block) command_plan = o.sch_command_plan
+	    layers = is_struct(command_plan) ? max(1, ceil(command_plan.track_maximum_slots / 4)) : 4
 	    block_walkway_block = o.sch_exp_walkway_block
 	    block_walkway_data = o.sch_exp_walkway_data
 	    block_circuit_block = o.sch_exp_circuit_block
@@ -52,12 +80,14 @@ function track_export() {
 	    sch_loop = (o.sch_exp_loop && layout = 0)                       // Whether to loop
 	    minecart = (o.sch_exp_minecart && layout < 2)               // Whether to add minecart tracks
 	    chest = (o.sch_exp_chest && minecart)                     // Whether to add a minecart chest
-	    blocksam = o.sch_exp_totalblocks[o.sch_exp_includelocked] // Amount of blocks
+		blocksam = is_struct(command_plan) ? array_length(command_plan.rows) : o.sch_exp_totalblocks[o.sch_exp_includelocked] // Amount of blocks
 		totalblocksc = 0
+		export_end = is_struct(command_plan) ? command_plan.last_command_grid : o.songs[o.song].enda
+		track_tick_delay = (o.sch_exp_tempo == 0) ? 0 : ((o.sch_exp_tempo == 1) ? 1 : 3)
 	    with (o) {
-	        len = 40 + enda * 2
+	        len = 40 + export_end * 2
 	        wid = 99
-	        hei = 20
+	        hei = max(20, layers * 4 + 4)
 	    }
 	    noteblocks = 0
 		//repeats = (len div 100) + 1
@@ -67,16 +97,38 @@ function track_export() {
 		signx = 2
 		signy = yy
 		signz = hei - 1
+		if (o.structure) {
+			structure_max_x = 99 - signy
+			structure_max_y = signz
+			structure_max_z = signx
+		} else {
+			structure_max_x = signx
+			structure_max_y = signy
+			structure_max_z = signz
+		}
 		
 	    // Write to file
 	    buffer = buffer_create(8, buffer_grow, 1)
-		
+
+		if (!o.structure) {
+			for (a = 0; a < len + 2; a += 1) {
+				for (b = 0; b < 100; b += 1) {
+					for (c = 0; c < hei; c += 1) {
+						sch_block_write(a, b, c, 0)
+						sch_data_write(a, b, c, 0)
+					}
+				}
+			}
+		}
+
+		if (o.structure) {
 		TAG_Compound("")
 		TAG_Int("DataVersion", 1519)
 		TAG_List("size", 3, 3)
-			buffer_write_int_be(32)
+			sizepos = buffer_tell(buffer)
+			buffer_write_int_be(wid)
 			buffer_write_int_be(hei)
-			buffer_write_int_be(32)
+			buffer_write_int_be(len)
 		insnum = ds_list_size(instrument_list)
 		TAG_List("palette", 30 + insnum * 26, 10)
 			TAG_String("Name", "minecraft:" + block_get_namespaced_id(block_walkway_block, block_walkway_data))
@@ -247,14 +299,14 @@ function track_export() {
 		TAG_List("entities", 0, 10)
 		blocktagpos = buffer_tell(buffer)
 		TAG_List("blocks", 114514, 10)
-		show_debug_message(blocktagpos)
+		log("blocktagpos: " + string(blocktagpos))
 			TAG_Compound("nbt")
 				TAG_String("Color", "black")
 				TAG_String("id", "minecraft:sign")
 	            TAG_String("Text1", "{\"text\": \"Song generated\"}")
 	            TAG_String("Text2", "{\"text\": \"by the\"}")
-	            TAG_String("Text3", "{\"text\": \"Minecraft Note\"}")
-	            TAG_String("Text4", "{\"text\": \"Block Studio\"}")
+	            TAG_String("Text3", "{\"text\": \"Note Block\"}")
+	            TAG_String("Text4", "{\"text\": \"Studio\"}")
 				TAG_End()
 			TAG_List("pos", 3, 3)
 				buffer_write_int_be(99 - signy)
@@ -263,7 +315,11 @@ function track_export() {
 			TAG_Int("state", insnum * 26 + 19)
 	        TAG_End()
 			totalblocksc++
-    
+		} else {
+			sch_block_write(signx, signy, signz, 68)
+			sch_data_write(signx, signy, signz, 3)
+		}
+
 	    // Create walkway
 	    for (a = 0; a < 3; a += 1) {
 	        for (b = 2; b < len + 2; b += 1) {
@@ -275,7 +331,6 @@ function track_export() {
 		block_circuit_track(1, yy + 1, hei - 2)
 		block_other_track(1, yy, hei - 1, 35, 11) // wool
 		block_other_track(1, yy + 1, hei - 1, 35, 11)
-		block_other_track(2, yy, hei - 1, 68, 3) // Button
 		block_other_track(2, yy + 1, hei - 1, 77, 3)
 		// Back
 		block_circuit_track(0, yy + 1, hei - 2)
@@ -437,7 +492,7 @@ function track_export() {
 		noteblocknote = 0
 		noteblockins = 0
 		noteblockpit = 0
-		for (a = 0; a <= o.enda; a += 1) {
+		for (a = 0; a <= export_end; a += 1) {
 		    nblocks = 0
 			nblockins = 0
 			nblockkey = 0
@@ -475,49 +530,87 @@ function track_export() {
 			nblockkeyr4 = 0
 			nblockpitr4 = 0
 		    rep += 1
-		    if (o.colamount[a] > 0) { // Calculate note blocks for this tick
-		        for (b = 0; b <= o.collast[a]; b += 1) {
-		            if (o.song_exists[a, b] && (o.lockedlayer[b] = 0 || o.sch_exp_includelocked)) {
-		                if ((o.song_key[a, b] > 32 && o.song_key[a, b] < 58) || (o.structure && o.command_block && o.song_key[a, b] >= 9 && o.song_key[a, b] <= 81)) {
-							if (o.layerstereo[b] = 100) cpan = o.song_pan[a, b]
-							else cpan = (o.layerstereo[b] + o.song_pan[a, b]) / 2
-							cvol = (o.layervol[b] / 100) * o.song_vel[a, b]
+			if (is_struct(command_plan)) {
+				channels = command_plan.track_rows_by_grid[a]
+				for (row_index = 0; row_index < array_length(channels[0]); row_index++) {
+					row = channels[0][row_index]
+					nblockinsl4[nblocksl4] = row.instrument; nblockkeyl4[nblocksl4] = 33; nblockpitl4[nblocksl4] = row.index; nblocksl4++
+				}
+				for (row_index = 0; row_index < array_length(channels[1]); row_index++) {
+					row = channels[1][row_index]
+					nblockinsl3[nblocksl3] = row.instrument; nblockkeyl3[nblocksl3] = 33; nblockpitl3[nblocksl3] = row.index; nblocksl3++
+				}
+				for (row_index = 0; row_index < array_length(channels[2]); row_index++) {
+					row = channels[2][row_index]
+					nblockinsl2[nblocksl2] = row.instrument; nblockkeyl2[nblocksl2] = 33; nblockpitl2[nblocksl2] = row.index; nblocksl2++
+				}
+				for (row_index = 0; row_index < array_length(channels[3]); row_index++) {
+					row = channels[3][row_index]
+					nblockinsl1[nblocksl1] = row.instrument; nblockkeyl1[nblocksl1] = 33; nblockpitl1[nblocksl1] = row.index; nblocksl1++
+				}
+				for (row_index = 0; row_index < array_length(channels[4]); row_index++) {
+					row = channels[4][row_index]
+					nblockins[nblocks] = row.instrument; nblockkey[nblocks] = 33; nblockpit[nblocks] = row.index; nblocks++
+				}
+				for (row_index = 0; row_index < array_length(channels[5]); row_index++) {
+					row = channels[5][row_index]
+					nblockinsr1[nblocksr1] = row.instrument; nblockkeyr1[nblocksr1] = 33; nblockpitr1[nblocksr1] = row.index; nblocksr1++
+				}
+				for (row_index = 0; row_index < array_length(channels[6]); row_index++) {
+					row = channels[6][row_index]
+					nblockinsr2[nblocksr2] = row.instrument; nblockkeyr2[nblocksr2] = 33; nblockpitr2[nblocksr2] = row.index; nblocksr2++
+				}
+				for (row_index = 0; row_index < array_length(channels[7]); row_index++) {
+					row = channels[7][row_index]
+					nblockinsr3[nblocksr3] = row.instrument; nblockkeyr3[nblocksr3] = 33; nblockpitr3[nblocksr3] = row.index; nblocksr3++
+				}
+				for (row_index = 0; row_index < array_length(channels[8]); row_index++) {
+					row = channels[8][row_index]
+					nblockinsr4[nblocksr4] = row.instrument; nblockkeyr4[nblocksr4] = 33; nblockpitr4[nblocksr4] = row.index; nblocksr4++
+				}
+		    } else if (o.songs[o.song].colamount[a] > 0) { // Calculate note blocks for this tick
+		        for (b = 0; b <= o.songs[o.song].collast[a]; b += 1) {
+		            if (o.songs[o.song].song_exists[a, b] && (o.lockedlayer[b] = 0 || o.sch_exp_includelocked)) {
+		                if ((o.songs[o.song].song_key[a, b] > 32 && o.songs[o.song].song_key[a, b] < 58) || (o.structure && o.command_block && o.songs[o.song].song_key[a, b] >= 9 && o.songs[o.song].song_key[a, b] <= 81)) {
+							if (o.songs[o.song].layerstereo[b] = 100) cpan = o.songs[o.song].song_pan[a, b]
+							else cpan = (o.songs[o.song].layerstereo[b] + o.songs[o.song].song_pan[a, b]) / 2
+							cvol = (o.songs[o.song].layervol[b] / 100) * o.songs[o.song].song_vel[a, b]
 							cpanvol = (cpan - 100) * cvol + 100
-		                    nblockinsl4[nblocksl4] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180)) - !((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180))
-		                    nblockkeyl4[nblocksl4] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180))
-		                    nblockpitl4[nblocksl4] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180))
+		                    nblockinsl4[nblocksl4] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180)) - !((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180))
+		                    nblockkeyl4[nblocksl4] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180))
+		                    nblockpitl4[nblocksl4] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol >= 180))
 		                    nblocksl4 += 1
-		                    nblockinsl3[nblocksl3] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180)) - !((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180))
-		                    nblockkeyl3[nblocksl3] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180))
-		                    nblockpitl3[nblocksl3] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180))
+		                    nblockinsl3[nblocksl3] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180)) - !((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180))
+		                    nblockkeyl3[nblocksl3] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180))
+		                    nblockpitl3[nblocksl3] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol >= 160 && cpanvol < 180))
 		                    nblocksl3 += 1
-		                    nblockinsl2[nblocksl2] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160)) - !((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160))
-		                    nblockkeyl2[nblocksl2] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160))
-		                    nblockpitl2[nblocksl2] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160))
+		                    nblockinsl2[nblocksl2] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160)) - !((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160))
+		                    nblockkeyl2[nblocksl2] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160))
+		                    nblockpitl2[nblocksl2] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 0 && cpan <= 80)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol >= 140 && cpanvol < 160))
 		                    nblocksl2 += 1
-		                    nblockinsl1[nblocksl1] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140)) - !((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140))
-		                    nblockkeyl1[nblocksl1] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140))
-		                    nblockpitl1[nblocksl1] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140))
+		                    nblockinsl1[nblocksl1] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140)) - !((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140))
+		                    nblockkeyl1[nblocksl1] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140))
+		                    nblockpitl1[nblocksl1] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 0 && cpan <= 80)) && cvol > 0.6) || (cpanvol >= 120 && cpanvol < 140))
 		                    nblocksl1 += 1
-			                nblockins[nblocks] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * (cpan > 80 && cpan < 120 && cvol > 0.8) - !(cpan > 80 && cpan < 120 && cvol > 0.8)
-			                nblockkey[nblocks] = o.song_key[a, b] * (cpan > 80 && cpan < 120 && cvol > 0.8)
-			                nblockpit[nblocks] = o.song_pit[a, b] * (cpan > 80 && cpan < 120 && cvol > 0.8)
+			                nblockins[nblocks] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * (cpan > 80 && cpan < 120 && cvol > 0.8) - !(cpan > 80 && cpan < 120 && cvol > 0.8)
+			                nblockkey[nblocks] = o.songs[o.song].song_key[a, b] * (cpan > 80 && cpan < 120 && cvol > 0.8)
+			                nblockpit[nblocks] = o.songs[o.song].song_pit[a, b] * (cpan > 80 && cpan < 120 && cvol > 0.8)
 			                nblocks += 1
-		                    nblockinsr1[nblocksr1] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80)) - !((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80))
-		                    nblockkeyr1[nblocksr1] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80))
-		                    nblockpitr1[nblocksr1] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80))
+		                    nblockinsr1[nblocksr1] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80)) - !((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80))
+		                    nblockkeyr1[nblocksr1] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80))
+		                    nblockpitr1[nblocksr1] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120 && cvol <= 0.8) || (cpan > 120 && cpan <= 200)) && cvol > 0.6) || (cpanvol > 60 && cpanvol <= 80))
 		                    nblocksr1 += 1
-		                    nblockinsr2[nblocksr2] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60)) - !((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60))
-		                    nblockkeyr2[nblocksr2] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60))
-		                    nblockpitr2[nblocksr2] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60))
+		                    nblockinsr2[nblocksr2] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60)) - !((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60))
+		                    nblockkeyr2[nblocksr2] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60))
+		                    nblockpitr2[nblocksr2] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.4 && cvol <= 0.6) || (cpanvol > 40 && cpanvol <= 60))
 		                    nblocksr2 += 1
-		                    nblockinsr3[nblocksr3] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40)) - !((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40))
-		                    nblockkeyr3[nblocksr3] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40))
-		                    nblockpitr3[nblocksr3] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40))
+		                    nblockinsr3[nblocksr3] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40)) - !((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40))
+		                    nblockkeyr3[nblocksr3] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40))
+		                    nblockpitr3[nblocksr3] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.2 && cvol <= 0.4) || (cpanvol > 20 && cpanvol <= 40))
 		                    nblocksr3 += 1
-		                    nblockinsr4[nblocksr4] = ds_list_find_index(other.instrument_list, o.song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol <= 20)) - !((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpan <= 20))
-		                    nblockkeyr4[nblocksr4] = o.song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol <= 20))
-		                    nblockpitr4[nblocksr4] = o.song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol <= 20))
+		                    nblockinsr4[nblocksr4] = ds_list_find_index(other.songs[other.song].instrument_list, o.songs[o.song].song_ins[a, b]) * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol <= 20)) - !((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpan <= 20))
+		                    nblockkeyr4[nblocksr4] = o.songs[o.song].song_key[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol <= 20))
+		                    nblockpitr4[nblocksr4] = o.songs[o.song].song_pit[a, b] * ((((cpan > 80 && cpan < 120) || (cpan > 120 && cpan <= 200)) && cvol > 0.0 && cvol <= 0.2) || (cpanvol <= 20))
 		                    nblocksr4 += 1
 						}
 					}
@@ -536,7 +629,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -607,7 +700,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir - 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -678,7 +771,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir - 12 - 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -749,7 +842,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir - 12 - 12 - 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -820,7 +913,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir - 12 - 12 - 12 - 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -891,7 +984,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir + 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -962,7 +1055,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir + 12 + 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -1033,7 +1126,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir + 12 + 12 + 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -1104,7 +1197,7 @@ function track_export() {
 		    for (b = 0; b < layers + 0; b += 1) { // add blocks
 		        y1 = yy + dir + 12 + 12 + 12 + 12
 				x1 = xx
-		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, 0, 2, 0)
+		        block_repeater_track(x1 + 2, y1, b * 4 + 2 + adds, track_tick_delay, 2, 0)
 		        block_circuit_track(x1 + dir, y1, b * 4 + 2 + adds)
 		        block_circuit_track(x1 + 2, y1, b * 4 + adds)
 		        block_circuit_track(x1 + dir, y1, b * 4 + adds)
@@ -1176,14 +1269,12 @@ function track_export() {
 		    turn = 0
 		}
     
-			var soundname, soundpitch, soundnote;
+		if (o.structure) {
 			for (a = 0; a < noteblocks; a += 1) {
 				TAG_Compound("nbt") // the non-command-block setting still needs this part because of magic
-					soundname = dat_instrument(noteblockins[a])
-					soundpitch = dat_pitch(noteblocknote[a] + 33 + noteblockpit[a] / 100)
-					if (noteblocknote[a] + noteblockpit[a] / 100 < 0) soundname += "_-1"
-					else if (noteblocknote[a] + noteblockpit[a] / 100 > 24) soundname += "_1"
-					TAG_String("Command", "playsound "+ soundname +" block @a ~ ~ ~ 3 " + string(soundpitch))
+					if (o.command_block) TAG_String("id", "minecraft:command_block")
+					if (o.command_block) TAG_String("Command", command_plan.rows[noteblockpit[a]].command)
+					else TAG_String("Command", "")
 					TAG_Byte("TrackOutput", 0)
 					TAG_Byte("powered", 0)
 					TAG_Byte("auto", 0)
@@ -1191,27 +1282,106 @@ function track_export() {
 					TAG_Byte("UpdateLastExecution", 1)
 					TAG_End()
 				TAG_List("pos", 3, 3)
+					structure_max_x = max(structure_max_x, 99 - noteblocky[a])
+					structure_max_y = max(structure_max_y, noteblockz[a])
+					structure_max_z = max(structure_max_z, noteblockx[a])
 					buffer_write_int_be(99 - noteblocky[a])
 					buffer_write_int_be(noteblockz[a])
 					buffer_write_int_be(noteblockx[a])
-	            TAG_Int("state", 3 + insnum + (noteblockins[a] * 25 + noteblocknote[a]) * !o.command_block)
-	            TAG_End()
+		            TAG_Int("state", 3 + insnum + (noteblockins[a] * 25 + noteblocknote[a]) * !o.command_block)
+		            TAG_End()
 				totalblocksc++
-	        }
-			
-		TAG_End()
-		blockamount = totalblocksc
-		buffer_seek(buffer, buffer_seek_start, blocktagpos)
-		TAG_List("blocks", blockamount, 10)
+		        }
+			TAG_End()
+			blockamount = totalblocksc
+			buffer_seek(buffer, buffer_seek_start, sizepos)
+			if (o.sch_exp_format = 1) {
+				buffer_write_int_be(structure_max_x + 1)
+				buffer_write_int_be(structure_max_y + 1)
+				buffer_write_int_be(structure_max_z + 1)
+			} else {
+				buffer_write_int_be(min(structure_max_x + 1, 32))
+				buffer_write_int_be(min(structure_max_y + 1, 32))
+				buffer_write_int_be(min(structure_max_z + 1, 32))
+			}
+			buffer_seek(buffer, buffer_seek_start, blocktagpos)
+			TAG_List("blocks", blockamount, 10)
+		} else {
+			len = max(len, structure_max_x + 1)
+			wid = max(100, structure_max_y + 1)
+			hei = max(hei, structure_max_z + 1)
+
+			TAG_Compound("Schematic")
+			TAG_Short("Height", hei)
+			TAG_Short("Length", len)
+			TAG_Short("Width", wid)
+			TAG_List("Entities", 0, 10)
+			TAG_List("TileEntities", 1 + noteblocks, 10)
+				if (o.sch_exp_minecraft_old) TAG_String("id", "Sign")
+				else TAG_String("id", "minecraft:sign")
+				TAG_Int("x", wid - 1 - signy)
+				TAG_Int("y", signz)
+				TAG_Int("z", signx)
+				if (o.sch_exp_minecraft_old) {
+					TAG_String("Text1", "Song generated")
+					TAG_String("Text2", "by the")
+					TAG_String("Text3", "Note Block")
+					TAG_String("Text4", "Studio")
+				} else {
+					TAG_String("Text1", "{\"text\": \"Song generated\"}")
+					TAG_String("Text2", "{\"text\": \"by the\"}")
+					TAG_String("Text3", "{\"text\": \"Note Block\"}")
+					TAG_String("Text4", "{\"text\": \"Studio\"}")
+				}
+				TAG_End()
+				for (a = 0; a < noteblocks; a += 1) {
+					if (o.sch_exp_minecraft_old) TAG_String("id", "Music")
+					else TAG_String("id", "minecraft:noteblock")
+					TAG_Int("x", wid - 1 - noteblocky[a])
+					TAG_Int("y", noteblockz[a])
+					TAG_Int("z", noteblockx[a])
+					TAG_Byte("note", noteblocknote[a])
+					TAG_End()
+				}
+			TAG_String("Materials", "Alpha")
+			TAG_Byte_Array("Blocks", len * wid * hei)
+			for (c = 0; c < hei; c += 1) {
+				for (a = 0; a < len; a += 1) {
+					for (b = wid - 1; b >= 0; b -= 1) {
+						buffer_write_byte(sch_block_read(a, b, c))
+					}
+				}
+			}
+			TAG_Byte_Array("Data", len * wid * hei)
+			for (c = 0; c < hei; c += 1) {
+				for (a = 0; a < len; a += 1) {
+					for (b = wid - 1; b >= 0; b -= 1) {
+						buffer_write_byte(sch_data_read(a, b, c))
+					}
+				}
+			}
+			TAG_Compound("Version")
+				if (o.sch_exp_minecraft_old) {
+					TAG_String("Name", "1.8")
+					TAG_Byte("Snapshot", 0)
+				} else {
+					TAG_Int("Id", 922)
+					TAG_String("Name", "1.11.2")
+					TAG_Byte("Snapshot", 0)
+				}
+				TAG_End()
+			TAG_End()
+		}
 	    buffer_save(buffer, temp_file)
 	    buffer_delete(buffer)
-		show_debug_message("totalblocksc: " + string(totalblocksc))
+		log("totalblocksc: " + string(totalblocksc))
 		totalblocksc = 0
 	    gzzip(temp_file, fn)
+		if (is_struct(command_plan)) minecraft_export_log_report(command_plan, o.sch_command_source, "Track command-block structure")
 	    instance_destroy()
 	}
-	if (o.language != 1) message("Structure saved!", "Track Export")
-	else message("结构已保存！", "导出直轨")
+	if (o.language != 1) message(condstr(structure, "Structure saved!", "Schematic saved!"), "Track Export")
+	else message(condstr(structure, "结构已保存！", "Schematic 已保存！"), "导出直轨")
 	window = w_track_export
 
 

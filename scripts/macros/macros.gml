@@ -1,15 +1,16 @@
 function macros() {
-#macro gm_runtime_version "2022.6.1.40"
-#macro version_date "2024.12.14"
-#macro version "3.11.0"
+#macro gm_runtime_version "2022.0.3 LTS"
+#macro version_date "2026.11.17"
+#macro version "3.12.0"
 #macro is_prerelease 0 // remember to change to 0 in the release!
-#macro nbs_version 5
-#macro pat_version 1
+#macro is_development 0 // the more frequent versions that are not on github (no auto update)
+#macro nbs_version 6
+#macro pat_version 2
 
 #macro link_github "https://github.com/OpenNBS/OpenNoteBlockStudio"
 #macro link_report "https://github.com/OpenNBS/OpenNoteBlockStudio/issues/new/choose"
-#macro link_releases "https://api.github.com/repos/OpenNBS/OpenNoteBlockStudio/releases"
-#macro link_latest "https://api.github.com/repos/OpenNBS/OpenNoteBlockStudio/releases/latest"
+#macro link_releases "https://api.github.com/repos/OpenNBS/NoteBlockStudio/releases"
+#macro link_latest "https://api.github.com/repos/OpenNBS/NoteBlockStudio/releases/latest"
 #macro link_changelog "https://opennbs.org/changelog"
 #macro link_website "https://opennbs.org/"
 #macro link_discord "https://discord.gg/sKPGjyVcyy"
@@ -19,19 +20,30 @@ function macros() {
 #macro link_donate "https://opencollective.com/OpenNBS/donate"
 #macro link_qq_group "http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=9iT2JIMOPWcrhzVpOROtlv7PJ1jSGEu0&authKey=VmmwRR7507A9fEVxraPmXn224vhbHXc4xs4QmwkveFZBriU%2Fq2NCj9fbYE5QCaLJ&noverify=0&group_code=218993157"
 
-#macro file_directory		game_save_id
-#macro data_directory		working_directory + "Data\\"
-#macro sounds_directory		data_directory + "Sounds\\"
-#macro songs_directory		working_directory + "Songs\\"
-#macro pattern_directory	working_directory + "Patterns\\"
-#macro log_file				file_directory + "log.txt"
-#macro temp_file			file_directory + "tmp.file"
-#macro update_file			file_directory + "Note Block Studio Installer.exe"
-#macro settings_file		file_directory + "settings.ini"
-#macro settings_dev_file	file_directory + "settings_dev.ini"
-#macro backup_directory		file_directory + "Backups\\"
-#macro restore_directory    backup_directory + "Restored\\"
-#macro downloaded_song_file temp_directory + "song.nbs"
+#macro current_directory working_directory
+#macro file_directory    game_save_id
+#macro music_directory   (os_type = os_macosx ? macos_music_dir() : "") + condstr(os_type = os_windows, "\\", "/")
+
+#macro bundled_data_directory    current_directory + "data" + condstr(os_type = os_windows, "\\", "/")
+#macro bundled_sounds_directory  current_directory + "data" + condstr(os_type = os_windows, "\\", "/") + "sounds" + condstr(os_type = os_windows, "\\", "/")
+#macro bundled_songs_directory   current_directory + "songs" + condstr(os_type = os_windows, "\\", "/")
+#macro bundled_pattern_directory current_directory + "patterns" + condstr(os_type = os_windows, "\\", "/")
+
+#macro data_directory    file_directory + "data" + condstr(os_type = os_windows, "\\", "/")
+#macro sounds_directory  file_directory + "data" + condstr(os_type = os_windows, "\\", "/") + "sounds" + condstr(os_type = os_windows, "\\", "/")
+#macro resource_directory	sounds_directory + "resourcepacks" + condstr(os_type = os_windows, "\\", "/")
+#macro songs_directory   (os_type = os_macosx ? music_directory : file_directory + "songs" + (os_type = os_windows ? "\\" : "/"))
+#macro pattern_directory (os_type = os_macosx ? music_directory : file_directory + "patterns" + (os_type = os_windows ? "\\" : "/"))
+#macro log_file          file_directory + "log.txt"
+#macro acrylic_startup_guard_file file_directory + "acrylic_startup.pending"
+#macro temp_file         file_directory + "tmp.file"
+#macro update_file       file_directory + "note block studio installer.exe"
+#macro settings_file     file_directory + "settings.ini"
+#macro settings_dev_file file_directory + "settings_dev.ini"
+#macro backup_directory  file_directory + "data" + condstr(os_type = os_windows, "\\", "/")
+#macro restore_directory backup_directory + "restored" + condstr(os_type = os_windows, "\\", "/")
+#macro temp_directory_included file_directory + "temp" + condstr(os_type = os_windows, "\\", "/")
+#macro downloaded_song_file temp_directory_included + "song.nbs"
 
 #macro h_stereoize 12
 #macro h_swaplayer 11
@@ -51,6 +63,13 @@ function macros() {
 #macro m_vel 1
 #macro m_pan 2
 #macro m_pit 3
+
+#macro text_cmd_none -1
+#macro text_cmd_cut 0
+#macro text_cmd_copy 1
+#macro text_cmd_paste 2
+#macro text_cmd_delete 3
+#macro text_cmd_select_all 4
 
 #macro w_menu 100
 #macro w_releasemouse 29
@@ -98,7 +117,10 @@ function macros() {
 #macro w_tempotapper 44
 #macro w_setaccent 45
 #macro w_track_export 46
-#macro w_sound_import 47
+#macro w_dragtab 47
+#macro w_sound_import 48
+#macro w_edit_tempo_changer 49
+#macro w_edit_sound_stopper 50
 
 #macro br "\r\n"
 

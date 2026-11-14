@@ -5,8 +5,8 @@ function mp3_export() {
 	
 	// Report missing instruments
 	var missing_str = ""
-	for (var i = 0; i < ds_list_size(instrument_list); i++) {
-		var ins = instrument_list[| i]
+	for (var i = 0; i < ds_list_size(songs[song].instrument_list); i++) {
+		var ins = songs[song].instrument_list[| i]
 		if (!ins.loaded && ins.filename != "" && ins.num_blocks > 0) {
 			missing_str += ins.filename + "\n"
 		}
@@ -20,11 +20,11 @@ function mp3_export() {
 	
 	var output_format = audio_exp_format
 	var output_ext = "." + string_lower(output_format)
-	
-	fn = string(get_save_filename_ext(output_format + " files (*" + output_ext + ")|*" + output_ext, filename_new_ext(filename, "") + output_ext, filename_path(filename), condstr(language != 1, "Export audio track", "导出音频文件")))
+
+	fn = string(get_save_filename_ext(output_format + " files (*" + output_ext + ")|*" + output_ext, filename_new_ext(songs[song].filename, "") + output_ext, filename_path(songs[song].filename), condstr(language != 1, "Export audio track", "导出音频文件")))
 	if (fn = "") return 0
 
-	save_song(temp_file, true);
+	save_song(temp_file, true, false, 5);
 	
 	var args = [temp_file, fn]
 	var kwargs = {
@@ -38,10 +38,11 @@ function mp3_export() {
 	}
 	
 	try {
+		python_initialize_for_exports()
 		var result = python_call_function("audio_export", "main", args, kwargs);
 	} catch (e) {
-		if (language != 1) show_message("An error occurred while exporting the song:\n\n" + e)
-		else show_message("导出歌曲时发生错误：\n\n" + e)
+		if (language != 1) message("An error occurred while exporting the song:\n\n" + e, "Note Block Studio")
+		else message("导出歌曲时发生错误：\n\n" + e, "Note Block Studio")
 		return -1;
 	}
 
@@ -50,4 +51,38 @@ function mp3_export() {
 
 
 
+}
+
+function python_initialize_for_exports() {
+	if (obj_controller.python_initialized) return
+
+	if (os_type == os_macosx) {
+		EnvironmentSetVariable("PYTHONHOME", current_directory + "data/python/python38_darwin_universal/")
+		EnvironmentSetVariable("PYTHONPATH", current_directory + "data/python/" + ":" +
+											 current_directory + "data/python/lib/site-packages/" + ":" +
+											 current_directory + "data/python/lib/site-packages.zip/")
+		EnvironmentSetVariable("PYTHONDONTWRITEBYTECODE", "1")
+		EnvironmentSetVariable("PYTHONNOUSERSITE", "1")
+		var temp_env_path = EnvironmentGetVariable("PATH")
+		EnvironmentSetVariable("PATH", temp_env_path + ":" + current_directory)
+	}
+
+	if (os_type == os_linux) {
+		EnvironmentSetVariable("PYTHONHOME", current_directory + "data/python/python38/")
+		EnvironmentSetVariable("PYTHONPATH", current_directory + "data/python/" + ":" +
+											 current_directory + "data/python/python38/lib/python3.8/lib-dynload/" + ":" +
+											 current_directory + "data/python/python38/lib/python3.8/" + ":" +
+											 current_directory + "data/python/lib/site-packages/" + ":" +
+											 current_directory + "data/python/lib/site-packages.zip/")
+		EnvironmentSetVariable("PYTHONDONTWRITEBYTECODE", "1")
+		EnvironmentSetVariable("PYTHONNOUSERSITE", "1")
+		EnvironmentSetVariable("LD_LIBRARY_PATH",
+			current_directory + "data/python/python38/lib:" + EnvironmentGetVariable("LD_LIBRARY_PATH")
+		)
+		var temp_env_path = EnvironmentGetVariable("PATH")
+		EnvironmentSetVariable("PATH", temp_env_path + ":" + current_directory)
+	}
+
+	_python_initialize()
+	obj_controller.python_initialized = true
 }

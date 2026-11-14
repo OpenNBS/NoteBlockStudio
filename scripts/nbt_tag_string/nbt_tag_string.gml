@@ -14,7 +14,7 @@ function nbt_tag_string(argument0, argument1, argument2) {
 	name = argument1;
 	val = argument2;
 
-	external_call(global.dll_WriteByte, file, 8);
+	buffer_write(file, buffer_s8, 8);
 	nbt_string_write(file, name);
 	nbt_string_write(file, val);
 

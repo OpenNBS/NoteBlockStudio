@@ -92,7 +92,7 @@ function draw_window_mp3_export() {
 	y1 = y2 - 8 - 24
 	if (draw_button2(x1, y1, 72, condstr(language != 1, "Export", "导出"), false)) mp3_export()
 	x1 -= 77
-	if (draw_button2(x1, y1, 72, condstr(language != 1, "Cancel", "取消"), false) && (windowopen = 1 || theme != 3)) {
+	if (draw_button2(x1, y1, 72, condstr(language != 1, "Cancel", "取消"), false, true) && (windowopen = 1 || theme != 3)) {
 		windowclose = 1
 	}
 	

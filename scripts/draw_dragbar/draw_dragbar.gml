@@ -28,35 +28,35 @@ function draw_dragbar(value, max, x, y, length, id, str, kstr, window){
 		draw_circle(floor(x + progress * length + 0.5), y + 1, 11, 0)
 		draw_set_alpha(1 * dropalpha)
 		draw_circle(floor(x + progress * length + 0.5), y + 1, 10, 0)
-		draw_set_color(accent[5 + (mouse_rectangle(x + progress * length - 6, y + 1 - 6, 13, 13) * (!mouse_check_button(mb_left)) - ((mouse_rectangle(x + (value / max) * length - 6, y + 1 - 6, 13, 13) || aa = id) && mouse_check_button(mb_left))) * (window = obj_controller.window)])
+		draw_set_color(accent[5 + (mouse_rectangle(x + progress * length - 6, y + 1 - 6, 13, 13) * (!nbs_mouse_check_button(mb_left)) - ((mouse_rectangle(x + (value / max) * length - 6, y + 1 - 6, 13, 13) || aa = id) && nbs_mouse_check_button(mb_left))) * (window = obj_controller.window)])
 		draw_set_alpha(0.5 * dropalpha)
-		draw_circle(floor(x + progress * length + 0.5), y + 1, 6 + (mouse_rectangle(x + progress * length - 6, y + 1 - 6, 13, 13) * (!mouse_check_button(mb_left)) - ((mouse_rectangle(x + progress * length - 6, y + 1 - 6, 13, 13) || aa = id) && mouse_check_button(mb_left))) * (window = obj_controller.window), 0)
+		draw_circle(floor(x + progress * length + 0.5), y + 1, 6 + (mouse_rectangle(x + progress * length - 6, y + 1 - 6, 13, 13) * (!nbs_mouse_check_button(mb_left)) - ((mouse_rectangle(x + progress * length - 6, y + 1 - 6, 13, 13) || aa = id) && nbs_mouse_check_button(mb_left))) * (window = obj_controller.window), 0)
 		draw_set_alpha(1 * dropalpha)
-		draw_circle(floor(x + progress * length + 0.5), y + 1, 5 + (mouse_rectangle(x + progress * length - 6, y + 1 - 6, 13, 13) * (!mouse_check_button(mb_left)) - ((mouse_rectangle(x + progress * length - 6, y + 1 - 6, 13, 13) || aa = id) && mouse_check_button(mb_left))) * (window = obj_controller.window), 0)
+		draw_circle(floor(x + progress * length + 0.5), y + 1, 5 + (mouse_rectangle(x + progress * length - 6, y + 1 - 6, 13, 13) * (!nbs_mouse_check_button(mb_left)) - ((mouse_rectangle(x + progress * length - 6, y + 1 - 6, 13, 13) || aa = id) && nbs_mouse_check_button(mb_left))) * (window = obj_controller.window), 0)
 	}
 	draw_theme_color()
 	if (a || aa = id) {
 		curs = cr_handpoint
-		if (mouse_check_button(mb_left) && (aa = id || aa = 0)) {
+		if (nbs_mouse_check_button(mb_left) && (aa = id || aa = 0)) {
 			curs = cr_drag
 			aa = id
-			if (mouse_x >= x && mouse_x <= x + length) {
-				value = ((mouse_x - x) / length) * max
-			} else if (mouse_x <= x) {
+			if (nbs_mouse_x() >= x && nbs_mouse_x() <= x + length) {
+				value = ((nbs_mouse_x() - x) / length) * max
+			} else if (nbs_mouse_x() <= x) {
 				value = 0
-			} else if (mouse_x >= x + length) {
+			} else if (nbs_mouse_x() >= x + length) {
 				value = max
 			}
 		}
-		if (mouse_check_button_released(mb_left)) aa = 0
+		if (nbs_mouse_check_button_released(mb_left)) aa = 0
 	}
 	draw_set_color(last_color)
 	
 	if (window = 0) {
 		if (mouse_rectangle(x + (value / max) * length - 6, y + 1 - 6, 13, 13) && window = obj_controller.window) {
-			draw_popup(mouse_x, y + 20, kstr, true)
+			draw_popup(nbs_mouse_x(), y + 20, kstr, true)
 		} else if (a || aa = id) {
-			draw_popup(clamp(mouse_x, x, x + length), y + 20, str, true)
+			draw_popup(clamp(nbs_mouse_x(), x, x + length), y + 20, str, true)
 		}
 	}
 	

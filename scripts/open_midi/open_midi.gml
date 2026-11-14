@@ -1,17 +1,21 @@
-function open_midi(argument0) {
+function open_midi() {
 	// open_midi(filename)
 	// http://faydoc.tripod.com / formats / mid.htm
 	// http://dogsbodynet.com / fileformats / midi.html
 	var fn, r, t, p, x1, y1;
-	var trackend, delta, event, eventtype, channel, lasteventtype, lastchannel;
-	fn = argument0
-	if (confirm() < 0) return 0
+	var trackend, delta, event, eventtype, channel, lasteventtype, lastchannel, newsong, replace;
+	fn = argument[0]
+	replace = isplayer
+	if (argument_count > 1) {
+		replace = argument[1]
+	}
+	//if (confirm() < 0) return 0
 	if (fn = "") {
 		if (language != 1) fn = string(get_open_filename_ext("MIDI Sequences (*.mid)|*.midi;*.mid", "", "", "Import from MIDI"))
 		else fn = string(get_open_filename_ext("MIDI Sequences (*.mid)|*.midi;*.mid", "", "", "从 MIDI 导入"))
 	}
 	if (fn = "" || !file_exists_lib(fn)) return 0
-	reset()
+	reset_add()
 	buffer = buffer_import(fn)
 
 	r = buffer_read_string_byte(4)
@@ -26,10 +30,16 @@ function open_midi(argument0) {
 
 	r = buffer_read_short_be()
 	if (r != 0 && r != 1 && r != 2) {message("Error loading MIDI file:\n\nFormat not supported.", "Error") reset_midi() buffer_delete(buffer) return 0}
+	for (var a = 0; a < 2000; a += 1) {try{songs[song].text_exists_song[a] = text_exists[a]}catch(ee){}; try{songs[song].text_str_song[a] = text_str[a]}catch(ee){}}
+	if (replace) close_song(0, 1)
+	newsong = create(obj_song)
+	array_push(songs, newsong)
+	song = array_length(songs) - 1
+	for (var a = 0; a < 2000; a += 1) {try{text_exists[a] = songs[song].text_exists_song[a]}catch(ee){}; try{text_str[a] = songs[song].text_str_song[a]}catch(ee){}}
 
 	midi_tracks = buffer_read_short_be()
-	midifile = filename_name(fn)
-	midiname = filename_name(fn)
+	newsong.midifile = filename_name(fn)
+	newsong.midiname = filename_name(fn)
 	midi_trackamount[midi_tracks] = 0
 	reset_midi()
 	midi_tempo = buffer_read_short_be()
@@ -149,9 +159,12 @@ function open_midi(argument0) {
 	                lastchannel = channel
 	            }
 	            switch (eventtype) {
-	                case $8: { // Note off, useless
-	                    repeat (2) buffer_read_byte()
-	                    break
+	                case $8: { // Note off, (NOT) useless
+	                    var note, vel
+						note = buffer_read_byte()
+						vel = buffer_read_byte()
+						midi_set_until(channel, t, p, note, vel)
+						break
 	                }
 	                case $9: { // Note on
 	                    var note, vel;
@@ -160,6 +173,8 @@ function open_midi(argument0) {
                     
 	                    if (vel > 0)
 	                        midi_add_note(channel, t, p, note, vel) //-21
+						else
+							midi_set_until(channel, t, p, note, vel)
 	                    break
 	                }
 	                case $A: { // Note aftertouch (useless)
@@ -206,6 +221,7 @@ function open_midi(argument0) {
 	sb_val[midi_sb1] = 0
 	sb_val[midi_sb2] = 0
 	sb_val[midi_sb3] = 0
+	sb_val[midi_sb4] = 0
 	for (a = 0; a < 16; a += 1) { // Load channel settings from database
 		try {
 			midi_channelins[a] = midi_ins[midi_channelpatch[a], 1]
@@ -241,9 +257,50 @@ function open_midi(argument0) {
 	    midi_percpitch[a - 24] = midi_drum[a, 2]
 	}
 	midi_percamount = a - 24*/
-	midi_songlength = (midi_micsecqn * ((midi_maxpos - midi_minpos * w_midi_removesilent) / (midi_tempo & $7FFF))) / 1000000
+	cache_midi_durations()
+	midi_songlength = midi_duration_cache[w_midi_tempo_changer ? 1 : 0][w_midi_removesilent ? 1 : 0]
 	return 1
 
 
 
+}
+
+// Cache both options once per file: [tempo changes off/on][leading silence kept/removed].
+function cache_midi_durations() {
+	midi_duration_cache = [[0, 0], [0, 0]]
+	var division = midi_tempo & $7FFF
+	if (division <= 0 || midi_maxpos <= 0 || midi_micsecqn <= 0) return
+	var trim_start = max(0, midi_minpos)
+	// Use the same initial tempo as the importer before the first change.
+	var seconds_per_tick = midi_micsecqn / division / 1000000
+	var full = midi_maxpos * seconds_per_tick
+	var trimmed = max(0, midi_maxpos - trim_start) * seconds_per_tick
+	midi_duration_cache = [[full, trimmed], [full, trimmed]]
+	if (midi_tempo_changers <= 0 || (midi_tempo & $8000) != 0) return
+
+	// Tracks are read separately, so their tempo events may be out of time order.
+	// Keep file order for equal positions, matching the importer's last-event-wins rule.
+	var changes = []
+	for (var i = 0; i < midi_tempo_changers; i++) {
+		if (midi_tempo_changer_tempo[i] > 0) {
+			array_push(changes, [midi_tempo_changer_x[i], 60 / midi_tempo_changer_tempo[i] / division, i])
+		}
+	}
+	array_sort(changes, function(left, right) {
+		if (left[0] != right[0]) return left[0] - right[0]
+		return left[2] - right[2]
+	})
+	full = 0
+	trimmed = 0
+	var previous_tick = 0
+	for (var i = 0; i <= array_length(changes); i++) {
+		var next_tick = midi_maxpos
+		if (i < array_length(changes)) next_tick = clamp(changes[i][0], 0, midi_maxpos)
+		full += (next_tick - previous_tick) * seconds_per_tick
+		trimmed += max(0, next_tick - max(previous_tick, trim_start)) * seconds_per_tick
+		previous_tick = next_tick
+		if (next_tick >= midi_maxpos) break
+		seconds_per_tick = changes[i][1]
+	}
+	midi_duration_cache[1] = [full, trimmed]
 }

@@ -1,7 +1,7 @@
 function draw_window_macro_arpeggio() {
 	// draw_window_macro_arpeggio()
 	var x1, y1, a, i, pattern, str, total_vals, val, arplen
-	if (selected == 0) {
+	if (songs[song].selected == 0) {
 		window = 0
 		return 0
 	}
@@ -30,23 +30,23 @@ function draw_window_macro_arpeggio() {
 
 	draw_theme_color()
 	if (draw_button2(x1 + 10, y1 + 98, 60, condstr(language !=1, "OK", "确定"))) {
-	if string_count("|", pattern) = 0 {
-		if (language != 1) message("Please add pipes ( | ) to separate values!", "Error")
-		else message("请使用“|”分隔值！", "错误")
-		return 1
-	}
-	windowalpha = 0
-	windowclose = 0
-	windowopen = 0
-	window = 0
-	str = selection_code
-	var arr_data = selection_to_array_ext()
-	total_vals = array_length(arr_data)
-	val = 0
-	pattern = string_digits_symbol(pattern, "|")
-	pattern = string(pattern + "|")
-	var arp = selection_to_array(pattern)
-	arplen = string_count("|", pattern)
+		if string_count("|", pattern) = 0 {
+			if (language != 1) message("Please add pipes ( | ) to separate values!", "Error")
+			else message("请使用“|”分隔值！", "错误")
+			return 1
+		}
+		windowalpha = 0
+		windowclose = 0
+		windowopen = 0
+		window = 0
+		str = songs[song].selection_code
+		var arr_data = selection_to_array_ext()
+		total_vals = array_length(arr_data)
+		val = 0
+		pattern = string_digits_symbol(pattern, "|")
+		pattern = string(pattern + "|")
+		var arp = selection_to_array(pattern)
+		arplen = string_count("|", pattern)
 		while (val < total_vals) {
 			for (i = 0; i < arplen; i++;) {
 				val += 3
@@ -66,11 +66,12 @@ function draw_window_macro_arpeggio() {
 			}
 		if val >= total_vals break
 		}
-		selection_load_from_array(selection_x, selection_y, arr_data)
-		history_set(h_selectchange, selection_x, selection_y, selection_code, selection_x, selection_y, str)
+		selection_load_from_array(songs[song].selection_x, songs[song].selection_y, arr_data)
+		history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
+		songs[song].changed = 1
 		if(!keyboard_check(vk_alt)) selection_place(false)
 	}
-	if (draw_button2(x1 + 70, y1 + 98, 60, condstr(language !=1, "Cancel", "取消")) && (windowopen = 1 || theme != 3)) {windowclose = 1}
+	if (draw_button2(x1 + 70, y1 + 98, 60, condstr(language !=1, "Cancel", "取消"), false, true) && (windowopen = 1 || theme != 3)) {windowclose = 1}
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) {
 		window_set_cursor(curs)
 		if (array_length(text_mouseover) = 0) window_set_cursor(cr_default)

@@ -7,10 +7,19 @@ function dat_writefile(argument0, argument1) {
 	str = argument0
 	path = argument1
 
-	file = buffer_create(string_length(str), buffer_fixed, 1)
-	buffer_write(file, buffer_text, str)
-	buffer_export(file, path)
+	// Text is UTF-8: byte length can exceed string_length for song descriptions.
+	file = buffer_create(0, buffer_grow, 1)
+	var succeeded = false
+	try {
+		buffer_write(file, buffer_text, str)
+		succeeded = buffer_export(file, path)
+	} catch (e) {
+		buffer_delete(file)
+		throw e
+	}
 	buffer_delete(file)
+	if (!succeeded) throw "Could not write data pack file: " + path
+	return true
 
 
 }

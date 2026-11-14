@@ -86,6 +86,18 @@ function load_instruments(argument0) {
 	    message("This file does not contain any custom instruments.", "Error")
 	    return 0
 	}
+	var limit_version = songs[song].save_version
+	if (limit_version < 5) limit_version = nbs_version
+	var instrument_limit = nbs_custom_instrument_limit(limit_version, song_uses_v6_instruments(songs[song]))
+	var available_instruments = max(0, instrument_limit - songs[song].user_instruments)
+	if (a > available_instruments) {
+		buffer_delete(buffer)
+		message(condstr(language != 1,
+			"This file contains " + string(a) + " custom instruments, but this song only has room for " + string(available_instruments) + ".\n\nNo instruments were imported.",
+			"此文件包含 " + string(a) + " 个自定义音色，但当前歌曲只能再添加 " + string(available_instruments) + " 个。\n\n未导入任何音色。"),
+			condstr(language != 1, "Import Instruments", "导入音色"))
+		return -1
+	}
 	for (b = 0; b < a; b++) {
 	    var name = buffer_read_string_int()
 	    var filename = buffer_read_string_int()
@@ -94,9 +106,10 @@ function load_instruments(argument0) {
 	    var ins = new_instrument(name, filename, true, press, key)
 	    with (ins)
 	        instrument_load()
-	    ds_list_add(instrument_list, ins)
+	    ds_list_add(songs[song].instrument_list, ins)
 	}
-	changed = true
+	songs[song].changed = true
+	if (songs[song].save_version < 5 && songs[song].user_instruments > 18) songs[song].save_version = nbs_version
 
 
 

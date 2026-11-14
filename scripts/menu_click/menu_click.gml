@@ -41,82 +41,103 @@ function menu_click(argument0) {
 	            }
 				save_settings()
 	        }
-	        if (sel = b + 4) save_song(filename)
+	        if (sel = b + 4) save_song(songs[song].filename)
 	        if (sel = b + 5) save_song("")
-			if (sel = b + 6) save_song_zip("")
-			if (sel = b + 7) window = w_saveoptions
-			if (sel = b + 8) open_url(backup_directory)
+			if (sel = b + 6) {
+				save_options_version = songs[song].save_version
+				window = w_saveoptions
+			}
+			if (sel = b + 7) open_url(backup_directory)
 	        if (sel = b + 9) pattern_import("")
-	        if (sel = b + 10) pattern_export("")
-	        if (sel = b + 11) open_midi("")
-	        if (sel = b + 12) open_schematic("")
-	        if (sel = b + 13) window = w_mp3_export
-	        if (sel = b + 14) {
+	        if (sel = b + 10) open_midi("")
+	        if (sel = b + 11) {
+				load_reference_audio()
+			}
+			if (sel = b + 12) {
+				var temppath = string(get_open_filename_ext("Image Files (*.png, *.jpg, *.jpeg)|*.png;*.jpg;*.jpeg", "", "", condstr(language != 1, "Open background image", "打开背景图片")))
+				wallpaper_init(temppath)
+			}
+			if (sel = b + 14) save_song_zip("")
+	        if (sel = b + 15) pattern_export("")
+	        if (sel = b + 16) window = w_mp3_export
+	        if (sel = b + 17) {
 	            if (calculate_size()) window = w_schematic_export
 	        }
-	        if (sel = b + 15) {
+	        if (sel = b + 18) {
 	            if (calculate_size()) window = w_track_export
 	        }
-	        if (sel = b + 16) {
-	            if (calculate_size()) window = w_branch_export
-	        }
-			if(sel = b + 17) window = w_datapack_export
-	        if (sel = b + 18) game_end()
+			if(sel = b + 19) window = w_datapack_export
+	        if (sel = b + 20) request_quit()
 	        break
 	    }
 	    case "edit": {
 			if ((editmode = m_key) && (sel >= 15)) {
 				sel += 2
 			}
-			var insoffset = ds_list_size(instrument_list) + insmenu - 1
+			var insoffset = ds_list_size(songs[song].instrument_list) + insmenu - 1
 			var ins = sel - 18
 			ins -= floor(ins / 26) // subtract the "More..." entries to get the instrument number
-	        if (sel = 0) action_undo()
-	        if (sel = 1) action_redo()
-	        if (sel = 2) action_copy()
-	        if (sel = 3) action_cut()
-	        if (sel = 4) action_paste(starta, startb)
-	        if (sel = 5) action_delete()
-	        if (sel = 6) select_all(-1, 0)
-	        if (sel = 7) selection_place(0)
-	        if (sel = 8) selection_invert()
-	        if (sel = 9) select_all(instrument, 0)
-	        if (sel = 10) select_all(instrument, 1)
-	        if (sel = 11) mode_action(1)
-	        if (sel = 12) mode_action(2)
-	        if (sel = 13) mode_action(3)
-	        if (sel = 14) mode_action(4)
-	        if (sel = 15 && editmode != m_key) mode_action(5)
-	        if (sel = 16 && editmode != m_key) mode_action(6)
-	        if (sel > 17 && sel < 18 + insoffset) selection_changeins(instrument_list[| ins])
-	        if (sel = 18 + insoffset) selection_expand()
-	        if (sel = 19 + insoffset) selection_compress()
-	        if (sel = 21 + insoffset) window = w_tremolo
-	        if (sel = 22 + insoffset) window = w_stereo
+		    if (sel = 0) action_undo()
+		    if (sel = 1) action_redo()
+		    if (sel = 2) action_copy()
+		    if (sel = 3) action_cut()
+		    if (sel = 4) {
+					var x1a = -2
+					var y1a = -2
+					if (!fullscreen && show_layers) {
+						x1a = 264
+					}
+					if (fullscreen) {
+						y1a = -2
+					} else {
+						y1a = 52 + get_tab_offset()
+					}
+					var selbxa = songs[song].starta + floor((nbs_mouse_x() - (x1a + 2)) / 32)
+					var selbya = songs[song].startb + floor((nbs_mouse_y() - (y1a + 34)) / 32)
+					if (selbxa > -1 && selbya > -1) action_paste(selbxa, selbya)
+					else action_paste(songs[song].starta, songs[song].startb)
+			}
+		    if (sel = 5) action_delete()
+		    if (sel = 6) select_all(-1, 0)
+		    if (sel = 7) selection_place(0)
+		    if (sel = 8) selection_invert()
+		    if (sel = 9) select_all(songs[song].instrument, 0)
+		    if (sel = 10) select_all(songs[song].instrument, 1)
+		    if (sel = 11) mode_action(1)
+		    if (sel = 12) mode_action(2)
+		    if (sel = 13) mode_action(3)
+		    if (sel = 14) mode_action(4)
+		    if (sel = 15 && editmode != m_key) mode_action(5)
+		    if (sel = 16 && editmode != m_key) mode_action(6)
+		    if (sel > 17 && sel < 18 + insoffset) selection_changeins(songs[song].instrument_list[| ins])
+		    if (sel = 18 + insoffset) selection_expand()
+		    if (sel = 19 + insoffset) selection_compress()
+		    if (sel = 21 + insoffset) window = w_tremolo
+		    if (sel = 22 + insoffset) window = w_stereo
 			if (sel = 23 + insoffset) window = w_arpeggio
-	        if (sel = 24 + insoffset) window = w_portamento
-	        if (sel = 25 + insoffset) macro_vibrato()
+		    if (sel = 24 + insoffset) window = w_portamento
+		    if (sel = 25 + insoffset) macro_vibrato()
 			if (sel = 26 + insoffset) window = w_stagger
-	        if (sel = 27 + insoffset) macro_chorus()
-	        if (sel = 28 + insoffset) macro_velocitylfo()
-	        if (sel = 29 + insoffset) macro_fadein()
-	        if (sel = 30 + insoffset) macro_fadeout()
-	        if (sel = 31 + insoffset) macro_replacekey()
-	        if (sel = 32 + insoffset) window = w_setvelocity
-	        if (sel = 33 + insoffset) window = w_setpanning
-	        if (sel = 34 + insoffset) window = w_setpitch
-	        if (sel = 35 + insoffset) macro_reset()
-	        if (sel = 36 + insoffset) {
-	            if (language != 1) {if (question("Transpose selected notes so that they fall within Minecraft's 2 octaves?", "Transpose notes")) selection_transpose()}
-	            else {if (question("转换音符使其在 Minecraft 的 2 八度以内吗？", "转换音符")) selection_transpose()}
-	        }
+		    if (sel = 27 + insoffset) macro_chorus()
+		    if (sel = 28 + insoffset) macro_velocitylfo()
+		    if (sel = 29 + insoffset) macro_fadein()
+		    if (sel = 30 + insoffset) macro_fadeout()
+		    if (sel = 31 + insoffset) macro_replacekey()
+		    if (sel = 32 + insoffset) window = w_setvelocity
+		    if (sel = 33 + insoffset) window = w_setpanning
+		    if (sel = 34 + insoffset) window = w_setpitch
+		    if (sel = 35 + insoffset) macro_reset()
+		    if (sel = 36 + insoffset) {
+		        if (language != 1) {if (question("Transpose selected notes so that they fall within Minecraft's 2 octaves?", "Transpose notes")) selection_transpose()}
+		        else {if (question("转换音符使其在 Minecraft 的 2 八度以内吗？", "转换音符")) selection_transpose()}
+		    }
 	        break
 	    }
 	    case "editext": {
 			if ((editmode = m_key) && (sel >= 15)) {
 				sel += 2
 			}
-			var insoffset = ds_list_size(instrument_list) + insmenu - 1
+			var insoffset = ds_list_size(songs[song].instrument_list) + insmenu - 1
 			var ins = sel - 18
 			ins -= floor((ins) / 26) // subtract the "More..." entries to get the instrument number
 	        if (sel = 0) action_copy()
@@ -128,21 +149,21 @@ function menu_click(argument0) {
 	        if (sel = 6) selection_invert()
 	        if (sel = 7) {
 	            selection_place(0)
-	            selection_add(obj_menu.menuc + 1, 0, enda, endb, 0, 0)
+	            selection_add(obj_menu.menuc + 1, 0, songs[song].enda, songs[song].endb, 0, 0)
 	        }
 	        if (sel = 8) {
 	            selection_place(0)
-	            selection_add(0, 0, obj_menu.menuc, endb, 0, 0)
+	            selection_add(0, 0, obj_menu.menuc, songs[song].endb, 0, 0)
 	        }
-	        if (sel = 9) select_all(instrument, 0)
-	        if (sel = 10) select_all(instrument, 1)
+	        if (sel = 9) select_all(songs[song].instrument, 0)
+	        if (sel = 10) select_all(songs[song].instrument, 1)
 	        if (sel = 11) mode_action(1)
 	        if (sel = 12) mode_action(2)
 	        if (sel = 13) mode_action(3)
 	        if (sel = 14) mode_action(4)
 	        if (sel = 15 && editmode != m_key) mode_action(5)
 	        if (sel = 16 && editmode != m_key) mode_action(6)
-	        if (sel > 17 && sel < 18 + insoffset) selection_changeins(instrument_list[| ins])
+	        if (sel > 17 && sel < 18 + insoffset) selection_changeins(songs[song].instrument_list[| ins])
 	        if (sel = 18 + insoffset) selection_expand()
 	        if (sel = 19 + insoffset) selection_compress()
 	        if (sel = 21 + insoffset) window = w_tremolo
@@ -167,12 +188,12 @@ function menu_click(argument0) {
 	        break
 	    }
 	    case "settings": {
-			var insoffset = ds_list_size(instrument_list) + insmenu - 1
+			var insoffset = ds_list_size(songs[song].instrument_list) + insmenu - 1
 			var ins = sel - 1
 			ins -= floor((ins) / 26) // subtract the "More..." entries to get the instrument number
-	        if (sel < insoffset + 1) {instrument = instrument_list[| ins]; selected_vel = 100; selected_pan = 100; selected_pit = 0}
+	        if (sel < insoffset + 1) {songs[song].instrument = songs[song].instrument_list[| ins]; selected_vel = 100; selected_pan = 100; selected_pit = 0}
 	        if (sel = insoffset + 1) window = w_instruments
-			if (sel = insoffset + 2) { window = w_sound_import update_asset_index_menu() }
+			if (sel = insoffset + 2) { window = w_sound_import update_asset_index_menu(0) }
 	        if (sel = insoffset + 3) window = w_songinfoedit
 	        if (sel = insoffset + 4) window = w_properties
 	        if (sel = insoffset + 5) {selection_place(0) window = w_stats}
@@ -181,6 +202,8 @@ function menu_click(argument0) {
 	        break
 	    }
 	    case "help": {
+			// Keep the existing action IDs after omitting Donate from the menu.
+			if (!donate_enabled && sel >= 10 + (language == 1)) sel += 1
 			if (language != 1) {
 	        if (sel = 1) open_url("http://www.youtube.com/watch?v=2oD9Bw_Qau4")
 	        if (sel = 2) open_url("http://www.youtube.com/watch?v=NIxNTK6nfJI")
@@ -212,21 +235,27 @@ function menu_click(argument0) {
 	    }
 	    case "section": {
 	        if (sel = 0) {
-	            section_exists = 0
-	            section_start = 0
-	            section_end = 0
+	            songs[song].section_exists = 0
+	            songs[song].section_start = 0
+	            songs[song].section_end = 0
 	        }
 	        if (sel = 1) {
-	            starta = section_start
-	            sb_val[0] = starta
+	            songs[song].starta = songs[song].section_start
+	            sb_val[0] = songs[song].starta
 	        }
 	        if (sel = 2) {
-	            starta = section_end - 1
-	            sb_val[0] = starta
+	            songs[song].starta = songs[song].section_end - 1
+	            sb_val[0] = songs[song].starta
 	        }
-	        if (sel = 3) selection_add(section_start, 0, section_end - 1, endb, 0, 0)
+	        if (sel = 3) selection_add(songs[song].section_start, 0, songs[song].section_end - 1, songs[song].endb, 0, 0)
 	        if (sel = 4) marker_start=!marker_start
 	        if (sel = 5) marker_end=!marker_end
+	        break
+	    }
+	    case "schexport_format": {
+	        sch_exp_format = sel
+	        structure = (sch_exp_format <= 1)
+	        sch_exp_minecraft_old = (sch_exp_format = 3)
 	        break
 	    }
 	    case "schexport_insblock": {
@@ -272,18 +301,19 @@ function menu_click(argument0) {
 	        break
 	    }
 	    case "instruments_press": {
-	        instrument_list[| obj_menu.menub].press = !sel
+	        songs[song].instrument_list[| obj_menu.menub].press = !sel
 	        break
 	    }
 	    case "instruments_pitch": {
-	        instrument_list[| obj_menu.menub].key = sel - floor((sel + 9) / 13) - 1
+	        songs[song].instrument_list[| obj_menu.menub].key = sel - floor((sel + 9) / 13) - 1
 	        break
 	    }
 	    case "mididevices_ins": {
+			if (midi_set_device(obj_menu.mididevice) < 0) {midi_refresh_device() set_msg(condstr(language != 1, "That device no longer exists, refreshing...", "所指定的设备不存在，刷新中……"))}
 	        if (sel - 3 < 0)
 	            mididevice_instrument[obj_menu.mididevice] = sel - 3
 	        else
-	            mididevice_instrument[obj_menu.mididevice] = instrument_list[| sel - 3]
+	            mididevice_instrument[obj_menu.mididevice] = songs[song].instrument_list[| sel - 3]
 	        break
 	    }
 		case "refreshrate": {
@@ -335,7 +365,11 @@ function menu_click(argument0) {
 	        }
 	        if (sel = b + 3) open_midi("")
 	        if (sel = b + 4) open_schematic("")
-	        if (sel = b + 5) game_end()
+			if (sel = b + 5) {
+				var temppath = string(get_open_filename_ext("Image Files (*.png, *.jpg, *.jpeg)|*.png;*.jpg;*.jpeg", "", "", condstr(language != 1, "Open background image", "打开背景图片")))
+				wallpaper_init(temppath)
+			}
+	        if (sel = b + 6) request_quit()
 	        break
 	    }
 		case "settingsp": {
@@ -347,19 +381,21 @@ function menu_click(argument0) {
 		case "tempo": {
 			if (sel = 0) use_bpm = false
 			else if (sel = 1) use_bpm = true
-			else if (sel = 2) { tempo = 10 changed = 1 }
-			else if (sel = 3) { tempo = 12 changed = 1 }
-			else if (sel = 4) { tempo = 14 changed = 1 }
-			else if (sel = 5) { tempo = 16 changed = 1 }
-			else if (sel = 6) { tempo = 18 changed = 1 }
-			else if (sel = 7) { tempo = 20 changed = 1 }
-			else if (sel = 8) { tempo = 30 changed = 1 }
-			else if (sel = 9) { tempo = 60 changed = 1 }
+			else if (sel = 2) { songs[song].real_tempo = 10 songs[song].changed = 1 }
+			else if (sel = 3) { songs[song].real_tempo = 12 songs[song].changed = 1 }
+			else if (sel = 4) { songs[song].real_tempo = 14 songs[song].changed = 1 }
+			else if (sel = 5) { songs[song].real_tempo = 16 songs[song].changed = 1 }
+			else if (sel = 6) { songs[song].real_tempo = 18 songs[song].changed = 1 }
+			else if (sel = 7) { songs[song].real_tempo = 20 songs[song].changed = 1 }
+			else if (sel = 8) { songs[song].real_tempo = 30 songs[song].changed = 1 }
+			else if (sel = 9) { songs[song].real_tempo = 60 songs[song].changed = 1 }
 			else if (sel = 10) window = w_tempotapper
+			update_tempo_changes()
 			break
 		}
 		case "language": {
 			language = sel
+			menu_macos_init()
 			break
 		}
 		case "audio_exp_format": {
@@ -399,14 +435,78 @@ function menu_click(argument0) {
 			}
 			break;
 		}
+		case "resourcepack": {
+			set_resourcepack(resourcepacks[sel].filename)
+			break;
+		}
+		case "songtab": {
+			switch (sel) {
+				case 0: {
+					array_insert(songs, menutab + 1, create(obj_song))
+					set_song(menutab + 1)
+					reset_add()
+					break;
+				}
+				case 1: close_song(menutab); break;
+				case 2: {
+					var menutabvar = menutab
+					for (var i = array_length(songs) - 1; i >= 0; i--) {
+						if (i != menutabvar) {
+							if (!close_song(i)) break
+							if (i < menutab) menutabvar--
+						}
+						set_song(menutabvar)
+					}
+					break;
+				}
+				case 3: {
+					for (var i = array_length(songs) - 1; i > menutab; i--) {
+						if (!close_song(i)) break
+					}
+					break;
+				}
+			}
+			menutab = -1
+			break;
+		}
 		case "sound_import_asset_index": {
 			sound_import_asset_index_select = sel;
 			update_asset_index_menu();
 			break;
 		}
+		case "minecraft_sound_event": {
+			var instrument_index = obj_menu.menub
+			if (instrument_index >= first_custom_index && instrument_index < ds_list_size(songs[song].instrument_list) && sel >= 0 && sel < array_length(minecraft_export_catalog_menu_events)) {
+				var instrument = songs[song].instrument_list[| instrument_index]
+				if (!minecraft_export_is_event(instrument)) {
+					instrument.minecraft_sound = minecraft_export_catalog_menu_events[sel]
+					instrument.minecraft_sound_manual = true
+					insselect = instrument_index
+					text_exists[66] = false
+					sch_command_plan = undefined
+				}
+			}
+			break;
+		}
+		case "add_event_ins": {
+			var limit_version = songs[song].save_version
+			if (limit_version < 5) limit_version = nbs_version
+			var instrument_limit = nbs_custom_instrument_limit(limit_version, song_uses_v6_instruments(songs[song]))
+			if (songs[song].user_instruments >= instrument_limit) break
+			songs[song].changed = true
+			switch (sel) {
+				case 0:
+					ds_list_add(songs[song].instrument_list, new_instrument("Tempo Changer", "", true))
+					break;
+				case 1:
+					ds_list_add(songs[song].instrument_list, new_instrument("Sound Stopper", "", true))
+					break;
+			}
+			if (songs[song].save_version < 5 && songs[song].user_instruments > 18) songs[song].save_version = nbs_version
+		}
 	}
-	mouse_clear(mb_left)
-	io_clear()
+	nbs_mouse_clear(mb_left)
+	nbs_io_clear()
 
 
 

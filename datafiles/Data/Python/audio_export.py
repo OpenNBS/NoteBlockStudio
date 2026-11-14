@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, platform
 from typing import Dict, Sequence, Union
 
 
@@ -19,9 +19,10 @@ def convert_to_int(kwargs: Dict[str, Union[float, int]], fields: Sequence[str]):
 def main(*args, **kwargs):
 
     # Monkey-patch to avoid ffmpeg/ffprobe calls opening console window
-    subprocess.Popen = patch_arguments(
-        subprocess.Popen, creationflags=subprocess.CREATE_NO_WINDOW
-    )
+    if (platform.system() == "Windows"):
+        subprocess.Popen = patch_arguments(
+            subprocess.Popen, creationflags=subprocess.CREATE_NO_WINDOW
+        )
 
     # Convert float arguments to int
     kwargs = convert_to_int(kwargs, ["sample_rate", "channels"])

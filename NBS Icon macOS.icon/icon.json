@@ -1,0 +1,105 @@
+{
+  "fill" : {
+    "linear-gradient" : [
+      "display-p3:0.39785,0.38858,0.31805,1.00000",
+      "display-p3:0.16008,0.15699,0.12869,1.00000"
+    ]
+  },
+  "groups" : [
+    {
+      "blur-material" : 0.08,
+      "layers" : [
+        {
+          "image-name" : "图层 6.png",
+          "name" : "图层 6",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -14,
+              -71.75
+            ]
+          }
+        }
+      ],
+      "opacity" : 0.8,
+      "position" : {
+        "scale" : 1.22,
+        "translation-in-points" : [
+          17.5,
+          86.625
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "blur-material" : null,
+      "layers" : [
+        {
+          "fill" : {
+            "linear-gradient" : [
+              "display-p3:0.18125,0.12090,0.07827,1.00000",
+              "display-p3:0.18125,0.12090,0.07827,1.00000"
+            ]
+          },
+          "glass" : false,
+          "image-name" : "图层 3.png",
+          "name" : "图层 3"
+        },
+        {
+          "glass" : false,
+          "image-name" : "图层 3 拷贝.png",
+          "name" : "图层 3 拷贝"
+        },
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "linear-gradient" : [
+              "display-p3:0.54258,0.37040,0.27347,1.00000",
+              "display-p3:0.34295,0.24446,0.17662,1.00000"
+            ]
+          },
+          "glass" : true,
+          "image-name" : "图层 2.png",
+          "name" : "图层 2",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "lighting" : "individual",
+      "position" : {
+        "scale" : 1.22,
+        "translation-in-points" : [
+          0,
+          0
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.2
+      },
+      "specular" : true,
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}

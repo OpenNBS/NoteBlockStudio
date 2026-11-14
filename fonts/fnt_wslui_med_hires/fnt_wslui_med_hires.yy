@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "fnt_wslui_med_hires",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
@@ -22,6 +25,7 @@
   },
   "ascenderOffset": 0,
   "ascender": 53,
+  "lineHeight": 0,
   "glyphs": {
     "32": {"x":2,"y":2,"w":15,"h":71,"character":32,"shift":15,"offset":0,},
     "33": {"x":166,"y":221,"w":7,"h":71,"character":33,"shift":15,"offset":4,},
@@ -118,7 +122,7 @@
     "124": {"x":159,"y":75,"w":5,"h":71,"character":124,"shift":13,"offset":4,},
     "125": {"x":144,"y":75,"w":13,"h":71,"character":125,"shift":16,"offset":1,},
     "126": {"x":316,"y":294,"w":26,"h":71,"character":126,"shift":36,"offset":5,},
-    "9647": {"x":344,"y":294,"w":31,"h":71,"character":9647,"shift":51,"offset":10,},
+    "9647": {"x":344,"y":294,"w":16,"h":71,"character":9647,"shift":32,"offset":8,},
   },
   "kerningPairs": [
     {"first":34,"second":114,"amount":-1,},
@@ -713,6 +717,9 @@
   ],
   "ranges": [
     {"lower":32,"upper":127,},
+    {"lower":1025,"upper":1025,},
+    {"lower":1040,"upper":1103,},
+    {"lower":1105,"upper":1105,},
     {"lower":9647,"upper":9647,},
   ],
   "regenerateBitmap": false,
@@ -722,8 +729,4 @@
     "name": "fnt_wslui_hires",
     "path": "folders/Fonts/fnt_wslui_hires.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "fnt_wslui_med_hires",
-  "tags": [],
-  "resourceType": "GMFont",
 }

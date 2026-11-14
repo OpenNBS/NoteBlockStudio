@@ -54,7 +54,7 @@ function draw_debug_overlay(){
 	yy = draw_debug_overlay_stack(xx, yy, "Note Block Studio v" + version)
 	yy = draw_debug_overlay_stack(xx, yy, string(fps) + " FPS (" + string_format(fps / game_get_speed(gamespeed_fps) * 100, 1, 0) + "%) ")
 	yy = draw_debug_overlay_stack(xx, yy, "Window: " + string(cwindow))
-	yy = draw_debug_overlay_stack(xx, yy, os_info[? condstr(os_type = os_windows, "video_adapter_description", "gl_renderer_string: GL_RENDERER")])
+	yy = draw_debug_overlay_stack(xx, yy, os_info[? condstr(os_type = os_windows, "video_adapter_description", "gl_renderer_string")])
 	yy = draw_debug_overlay_stack(xx, yy, "Display: " + string(window_width) + "x" + string(window_height))
 	yy = draw_debug_overlay_stack(xx, yy, "Executing in: " + output_format)
 	draw_set_alpha(prevalpha)

@@ -14,7 +14,7 @@ function try_decompress_selection(str){
 		if (decompress_buffer != -1) {
 			ret = buffer_read(decompress_buffer, buffer_string)
 		} else {
-			show_debug_message("Cannot decompress buffer")
+			log("Cannot decompress buffer")
 		}
 		buffer_delete(decompress_buffer)
 		buffer_delete(str_buffer)

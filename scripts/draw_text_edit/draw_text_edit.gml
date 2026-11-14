@@ -90,9 +90,18 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	    deletetext = 0
 	    inserttext = ""
 	    lh = string_height_dynamic(" ")
-	    mouseover = (mouse_x >= xx && mouse_x < xx + w && mouse_y >= yy && mouse_y < yy + h)
+	    mouseover = (nbs_mouse_x() >= xx && nbs_mouse_x() < xx + w && nbs_mouse_y() >= yy && nbs_mouse_y() < yy + h)
+	    if (instance_exists(obj_controller) && obj_controller.window != 0 && text_focus = i) {
+	        obj_controller.window_text_input_active = true
+	    }
+	    if (text_menu_target != -1 && text_menu_target != text_focus) {
+	        text_menu_action = text_cmd_none
+	        text_menu_target = -1
+	    }
     
 	    if (text_focus = i) {
+	        if (text_focus_readonly != readonly && os_type = os_macosx) macos_menu_last_refresh = current_time
+	        text_focus_readonly = readonly
 	        if (text_lastfocus != i || text_mline >= text_lines[i]) {
 	            text_marker = current_time
 	            text_eline = text_lines[i] - 1 text_epos = string_length(text_line[i, text_lines[i] - 1])
@@ -114,13 +123,13 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	        }
         
 	        if (!readonly) deletetext = key_press[vk_backspace] - key_press[vk_delete] // 0 = Do nothing, 1 = Erase to left, -1 = Erase to right, 2 = Delete selected
-	        if (mouse_check_button_pressed(mb_left) && !keyboard_check(vk_shift)) text_focus = -1
-	        if (keyboard_check(vk_anykey) && !readonly) inserttext = keyboard_string
+	        if (nbs_mouse_check_button_pressed(mb_left) && !keyboard_check(vk_shift)) text_focus = -1
+	        if (keyboard_check(vk_anykey) && !readonly && ord(keyboard_string) != 127 && ord(keyboard_string) != 8 && ord(keyboard_string) != 9 && !check_ctrl()) inserttext = keyboard_string
 	        keyboard_string = ""
         
 	        // Controls
 	        if (!singleline) {
-	            text_start[i] += mouse_wheel_down() - mouse_wheel_up()  // Mousewheel to scroll
+	            text_start[i] += mouse_wheel_down_dynamic() - mouse_wheel_up_dynamic()  // Mousewheel to scroll
 	            if (key_press[vk_enter] && !readonly) inserttext = "\n"  // Enter for linebreak
 	        }
 	        if (key_press[vk_right] || key_press[vk_left] || (key_press[vk_up] && text_mline > 0) || (key_press[vk_down] && text_mline < text_lines[i] - 1)) {  // Arrow keys to move marker
@@ -157,11 +166,18 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	            text_marker = current_time
 	        }
 	        menu = -1
-	        if (keyboard_check(vk_control)) {  // Ctrl commands
+	        if (check_ctrl()) {  // Ctrl commands
 	            if (!readonly && keyboard_check_pressed(ord("X"))) menu = 0
 	            if (keyboard_check_pressed(ord("C"))) menu = 1
 	            if (!readonly && key_press[ord("V")]) menu = 2
 	            if (keyboard_check_pressed(ord("A"))) menu = 4
+	        }
+	        // Consume a native macOS Edit command once, and only in the field that owned focus.
+	        if (text_menu_target = i && text_menu_action != text_cmd_none) {
+	            var queued_text_action = text_menu_action
+	            text_menu_action = text_cmd_none
+	            text_menu_target = -1
+	            if (!readonly || queued_text_action = text_cmd_copy || queued_text_action = text_cmd_select_all) menu = queued_text_action
 	        }
 	        if (menu = 0 || menu = 1) {  // Cut / Copy text
 	            str = ""
@@ -175,13 +191,14 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	                    if (!text_line_wrap[i, l + 1] && !text_line_single[i, l]) str += "\n"
 	                }
 	            }
-	            if (str != "") clipboard_set_text(str)
+	            if (str != "") if (os_type = os_windows) clipboard_set_text(str) else text_clipboard = str
 	            if (menu = 0) deletetext = 2
 	        } else if (menu = 2) {  // Paste text
-	            inserttext = clipboard_get_text()
+	            if (os_type = os_windows) inserttext = clipboard_get_text() else inserttext = text_clipboard
 	            inserttext = string_replace_all(inserttext, "\r\n", "\n")
 	        } else if (menu = 3) {  // Delete text
-	            deletetext = 2
+	            if (text_sline != text_eline || text_spos != text_epos) deletetext = 2
+	            else deletetext = 1
 	        } else if (menu = 4) {  // Select all text
 	            text_sline = 0 text_spos = 0
 	            text_eline = text_lines[i] - 1
@@ -330,15 +347,15 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	        }
         
 	        // Handle selecting
-	        if (!mouse_check_button(mb_left)) text_select = -1
+	        if (!nbs_mouse_check_button(mb_left)) text_select = -1
 	        if (text_select = i) {  // Move up/down if dragging outside of box
 	            text_marker = current_time
 	            if (singleline) {
-	                if (mouse_x < xx) text_start[i] -= 1
-	                if (mouse_x > xx + w && text_start[i] < string_length(text_line[i, 0]) - text_chars[i]) text_start[i] += 1
+	                if (nbs_mouse_x() < xx) text_start[i] -= 1
+	                if (nbs_mouse_x() > xx + w && text_start[i] < string_length(text_line[i, 0]) - text_chars[i]) text_start[i] += 1
 	            } else {
-	                if (mouse_y < yy) text_start[i] -= 1
-	                if (mouse_y > yy + h) text_start[i] += 1
+	                if (nbs_mouse_y() < yy) text_start[i] -= 1
+	                if (nbs_mouse_y() > yy + h) text_start[i] += 1
 	            }
 	        }
 	        if (text_click > 0) {
@@ -512,21 +529,21 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	        if (window = 0 || i < 400) && ((mouseover && text_select = -1) || text_select = i) {
 	            if (l = text_lines[i] - 1) hh = h - ly * lh
 	            else hh = lh
-	            if ((mouse_x >= xx || text_select = i) &&
-	                (mouse_x < xx + w || text_select = i) &&
-	                (mouse_y >= yy + ly * lh || (text_select = i && ly = 0)) &&
-	                (mouse_y < yy + ly * lh + hh || (text_select = i && ((ly + 1) * lh > h || l = text_lines[i] - 1)))) {  // Cursor is inside line
-	                if (mouse_check_button(mb_left)) {
+	            if ((nbs_mouse_x() >= xx || text_select = i) &&
+	                (nbs_mouse_x() < xx + w || text_select = i) &&
+	                (nbs_mouse_y() >= yy + ly * lh || (text_select = i && ly = 0)) &&
+	                (nbs_mouse_y() < yy + ly * lh + hh || (text_select = i && ((ly + 1) * lh > h || l = text_lines[i] - 1)))) {  // Cursor is inside line
+	                if (nbs_mouse_check_button(mb_left)) {
 	                    text_select = i
 	                    ww = 0
 	                    for (a = text_start[i] * singleline; a < string_length(text_line[i, l]); a += 1) {  // Find character over mouse
 	                        b = string_width_dynamic(string_char_at(text_line[i, l], a + 1))
 	                        ww += b
-	                        if (mouse_x < xx + ww - b / 2) break
+	                        if (nbs_mouse_x() < xx + ww - b / 2) break
 	                    }
 	                    text_mline = l
 	                    text_mpos = a
-	                    if (mouse_check_button_pressed(mb_left)) {
+	                    if (nbs_mouse_check_button_pressed(mb_left)) {
 	                        if (text_cline = text_mline && text_cpos = text_mpos) {  // Double click, word select
 	                            if (current_time - text_click < 500) {
 	                                text_sline = text_mline text_spos = max(1, text_mpos - 1)
@@ -558,7 +575,7 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	                                text_mline = text_eline
 	                                text_mpos = text_epos
 	                                text_click = 0
-	                                mouse_clear(mb_left)
+	                                nbs_mouse_clear(mb_left)
 	                            } else {  // Remove selection if clicking after word select
 	                                text_click = current_time
 	                                text_sline = text_mline text_spos = text_mpos
@@ -579,6 +596,7 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	                }
 	            }
 	        }
+	        // User-entered names and text need font fallback in every UI language.
 	        if (singleline) {
 	            if (text_focus = i && text_spos != text_epos) {
 	                str[0] = string_copy(string_copy(text_line[i, 0], 1, text_spos), text_start[i] + 1, text_chars[i])
@@ -586,21 +604,21 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	                str[2] = string_copy(string_delete(text_line[i, 0], 1, text_epos), 1, (text_start[i] + text_chars[i]) - text_epos)
 	                if (str[0] != "") {  // Text before or outside selection
 	                    draw_set_color(col_normal)
-	                    draw_text_dynamic(xx, yy, str[0])
+	                    draw_text_dynamic(xx, yy, str[0], true)
 	                }
 	                if (str[1] != "") {  // Selected text
 	                    draw_set_color(col_selection)
 	                    draw_rectangle(min(xx + w, xx + string_width_dynamic(str[0])), yy, min(xx + w, xx + string_width_dynamic(str[0] + str[1])), yy + lh, 0)
 	                    draw_set_color(col_selected)
-	                    draw_text_dynamic(xx + string_width_dynamic(str[0]), yy, str[1])
+	                    draw_text_dynamic(xx + string_width_dynamic(str[0]), yy, str[1], true)
 	                }
 	                if (str[2] != "") {  // Text after selection
 	                    draw_set_color(col_normal)
-	                    draw_text_dynamic(xx + string_width_dynamic(str[0] + str[1]), yy, str[2])
+	                    draw_text_dynamic(xx + string_width_dynamic(str[0] + str[1]), yy, str[2], true)
 	                }
 	            } else { // Unselected
 	                draw_set_color(col_normal)
-	                draw_text_dynamic(xx, yy, string_copy(text_line[i, 0], text_start[i] + 1, text_chars[i]))
+	                draw_text_dynamic(xx, yy, string_copy(text_line[i, 0], text_start[i] + 1, text_chars[i]), true)
 	            }
 	        } else {
 	            if (text_focus = i && (text_sline != text_eline || text_spos != text_epos)) {  // This line is selected
@@ -622,21 +640,21 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
 	                }
 	                if (str[0] != "") {  // Text before or outside selection
 	                    draw_set_color(col_normal)
-	                    draw_text_dynamic(xx, yy + ly * lh, str[0])
+	                    draw_text_dynamic(xx, yy + ly * lh, str[0], true)
 	                }
 	                if (str[1] != "") {  // Selected text
 	                    draw_set_color(col_selection)
 	                    draw_rectangle(min(xx + w, xx + string_width_dynamic(str[0])), yy + ly * lh, min(xx + w, xx + string_width_dynamic(str[0] + str[1])), yy + (ly + 1) * lh, 0)
 	                    draw_set_color(col_selected)
-	                    draw_text_dynamic(xx + string_width_dynamic(str[0]), yy + ly * lh, str[1])
+	                    draw_text_dynamic(xx + string_width_dynamic(str[0]), yy + ly * lh, str[1], true)
 	                }
 	                if (str[2] != "") {  // Text after selection
 	                    draw_set_color(col_normal)
-	                    draw_text_dynamic(xx + string_width_dynamic(str[0] + str[1]), yy + ly * lh, str[2])
+	                    draw_text_dynamic(xx + string_width_dynamic(str[0] + str[1]), yy + ly * lh, str[2], true)
 	                }
 	            } else { // Unselected line
 	                draw_set_color(col_normal)
-	                draw_text_dynamic(xx, yy + ly * lh, text_line[i, l])
+	                draw_text_dynamic(xx, yy + ly * lh, text_line[i, l], true)
 	            }
 	        }
 	    }
@@ -669,6 +687,9 @@ function draw_text_edit(argument0, argument1, argument2, argument3, argument4, a
     
 	    text_lastwidth[i] = w
 	    text_laststr[i] = text_str[i]
+	    if (instance_exists(obj_controller) && obj_controller.window != 0 && text_focus = i) {
+	        obj_controller.window_text_input_active = true
+	    }
 	    draw_set_color(col_normal)
 	    return text_str[i]
 	}
