@@ -15,7 +15,6 @@ function open_midi() {
 		else fn = string(get_open_filename_ext("MIDI Sequences (*.mid)|*.midi;*.mid", "", "", "从 MIDI 导入"))
 	}
 	if (fn = "" || !file_exists_lib(fn)) return 0
-	reset_add()
 	buffer = buffer_import(fn)
 
 	r = buffer_read_string_byte(4)
@@ -36,6 +35,7 @@ function open_midi() {
 	array_push(songs, newsong)
 	song = array_length(songs) - 1
 	for (var a = 0; a < 2000; a += 1) {try{text_exists[a] = songs[song].text_exists_song[a]}catch(ee){}; try{text_str[a] = songs[song].text_str_song[a]}catch(ee){}}
+	reset_add()
 
 	midi_tracks = buffer_read_short_be()
 	newsong.midifile = filename_name(fn)

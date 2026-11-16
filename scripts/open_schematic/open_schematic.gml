@@ -10,10 +10,10 @@ function open_schematic(argument0) {
 	}
 	if (fn = "" || !file_exists_lib(fn)) fn = string(get_open_filename_ext("Minecraft Schematics (*.schematic)|*.schematic", "", "", "Import from Schematic"))
 	if (fn = "" || !file_exists_lib(fn)) return 0
-	reset_add()
 	nbs_io_clear()
 	array_push(songs, create(obj_song))
 	set_song(array_length(songs) - 1)
+	reset_add()
 	var currsong = obj_controller.songs[obj_controller.song]
 	with (create(obj_dummy)) {
 	    window = -1
