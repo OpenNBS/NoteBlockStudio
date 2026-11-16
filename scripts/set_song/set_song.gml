@@ -19,6 +19,11 @@ function set_song(argument0){
 
 	// Piano
 	key_edit = -1
+
+	// Instrument Settings selections belong to the previous tab's list.
+	insselect = -1
+	insedit = -1
+	minecraft_export_mapping_edit_instrument = -1
 	
 	sb_val[0] = songs[song].starta
 	sb_val[1] = songs[song].startb

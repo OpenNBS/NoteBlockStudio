@@ -93,7 +93,7 @@ function draw_window_instruments() {
 	    c = 1
 	}
 	var userselect = -1;
-	if (insselect > -1 && cursong.instrument_list[| insselect].user)
+	if (insselect >= 0 && insselect < ds_list_size(cursong.instrument_list) && cursong.instrument_list[| insselect].user)
 	    userselect = cursong.instrument_list[| insselect]
 
 	// Minecraft sound-event mapping. This is deliberately a resource location,
