@@ -1,4 +1,4 @@
-function change_block_manual(argument0, argument1, argument2, argument3, argument4, argument5, argument6) {
+function change_block_manual(argument0, argument1, argument2, argument3, argument4, argument5, argument6, show_event_dialog = true) {
 	// change_block_manual(x, y, ins, key, vel, pan, pit)
 	var xx, yy, ins, key, vel, pan, pit, pins, pkey, pvel, ppan, ppit, is_event;
 	xx = argument0
@@ -13,34 +13,26 @@ function change_block_manual(argument0, argument1, argument2, argument3, argumen
 	pvel = songs[song].song_vel[xx, yy]
 	ppan = songs[song].song_pan[xx, yy]
 	ppit = songs[song].song_pit[xx, yy]
-	is_event = 0
-	var insname = songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, songs[song].song_ins[xx, yy])].name
-	if (insname = "Tempo Changer" || insname = "Sound Stopper") {
-		is_event = 1
-	} else {
-		songs[song].song_ins[xx, yy] = ins
-		songs[song].song_key[xx, yy] = key
-		songs[song].song_vel[xx, yy] = vel
-		songs[song].song_pan[xx, yy] = pan
-		songs[song].song_pit[xx, yy] = pit
+	var insname = ins.name
+	is_event = pins.name == insname
+	if (show_event_dialog && (insname == "Tempo Changer" || insname == "Sound Stopper")) {
+		// Keep the proposed values in the dialog until the user confirms.
+		tempo_changer_sel_key = is_event ? pkey : key
+		tempo_changer_sel_vel = is_event ? pvel : vel
+		tempo_changer_sel_pan = is_event ? ppan : pan
 	}
 
 	if (ins.loaded) play_sound(ins, key, (songs[song].layervol[yy] / 100 ) * vel, (songs[song].layerstereo[yy] + pan) / 2, pit)
 
-	var insname = songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, ins)].name
-	if (insname = "Tempo Changer") {
+	if (show_event_dialog && insname = "Tempo Changer") {
 		tempo_changer_sel_x = xx
 		tempo_changer_sel_y = yy
 		if (is_event) tempo_changer_set_tempo = songs[song].song_pit[xx, yy]
-		else {
-			tempo_changer_set_tempo = int64(songs[song].tempo * 15)
-			songs[song].song_pit[xx, yy] = int64(songs[song].tempo * 15)
-		}
+		else tempo_changer_set_tempo = int64(songs[song].tempo * 15)
 		tempo_changer_sel_ins = ins
 		text_exists[59] = 0
 		window = w_edit_tempo_changer
-		update_tempo_changes()
-	} else if (insname = "Sound Stopper") {
+	} else if (show_event_dialog && insname = "Sound Stopper") {
 		tempo_changer_sel_x = xx
 		tempo_changer_sel_y = yy
 		if (is_event) {
@@ -49,16 +41,13 @@ function change_block_manual(argument0, argument1, argument2, argument3, argumen
 		} else {
 			sound_stopper_set_start = yy + 1
 			sound_stopper_set_until = yy + 1
-			songs[song].song_pit[xx, yy] = yy + 1
-			var temp_arr = short_to_panning_velocity(yy + 1)
-			songs[song].song_pan[xx, yy] = temp_arr[0]
-			songs[song].song_vel[xx, yy] = temp_arr[1]
 		}
 		tempo_changer_sel_ins = ins
 		text_exists[59] = 0
 		text_exists[60] = 0
 		window = w_edit_sound_stopper
 	} else {
+		change_block(xx, yy, ins, key, vel, pan, pit)
 		history_set(h_changeblock, xx, yy, ins, key, vel, pan, pit, pins, pkey, pvel, ppan, ppit)
 		songs[song].changed = 1
 
@@ -68,6 +57,7 @@ function change_block_manual(argument0, argument1, argument2, argument3, argumen
 		if (key >= 33 && key <= 57 && (pkey < 33 || pkey > 57)) songs[song].block_outside -= 1
 		if (ppit = 0 && pit != 0) songs[song].block_pitched += 1
 		if (ppit != 0 && pit = 0) songs[song].block_pitched -= 1
+		if (insname == "Tempo Changer" || pins.name == "Tempo Changer") update_tempo_changes()
 	}
 	
 

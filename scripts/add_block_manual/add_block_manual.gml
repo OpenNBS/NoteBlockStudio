@@ -72,6 +72,11 @@ function add_block_manual(argument0, argument1, argument2, argument3, argument4,
 	history_set(h_addblock, xx, yy, ins, key, vel, pan, pit)
 	
 	var insname = songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, ins)].name
+	if (insname == "Tempo Changer" || insname == "Sound Stopper") {
+		tempo_changer_sel_key = key
+		tempo_changer_sel_vel = vel
+		tempo_changer_sel_pan = pan
+	}
 	if (insname = "Tempo Changer") {
 		tempo_changer_sel_x = xx
 		tempo_changer_sel_y = yy

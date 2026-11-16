@@ -437,6 +437,9 @@ function control_create() {
 	tempo_changer_sel_y = -1
 	tempo_changer_set_tempo = -1
 	tempo_changer_sel_ins = -1
+	tempo_changer_sel_key = 39
+	tempo_changer_sel_vel = 100
+	tempo_changer_sel_pan = 100
 	
 	sound_stopper_set_start = -1
 	sound_stopper_set_until = -1

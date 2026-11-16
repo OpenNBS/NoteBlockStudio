@@ -1,6 +1,6 @@
 function draw_window_edit_tempo_changer() {
 	// draw_window_setpanning()
-	var x1, y1, a, b, str, total_vals, val, decr, inc, temp_tempo, e, pins, pkey, pvel, ppan, ppit;
+	var x1, y1, a, b, str, total_vals, val, decr, inc, temp_tempo, e;
 	if (tempo_changer_sel_x = -1) {
 		window = 0
 		return 0
@@ -11,11 +11,6 @@ function draw_window_edit_tempo_changer() {
 	text_exists[0] = 0
 	x1 = floor(rw / 2 - 80)
 	y1 = floor(rh / 2 - 80) + windowoffset
-	pins = songs[song].song_ins[tempo_changer_sel_x, tempo_changer_sel_y]
-	pkey = songs[song].song_key[tempo_changer_sel_x, tempo_changer_sel_y]
-	pvel = songs[song].song_vel[tempo_changer_sel_x, tempo_changer_sel_y]
-	ppan = songs[song].song_pan[tempo_changer_sel_x, tempo_changer_sel_y]
-	ppit = songs[song].song_pit[tempo_changer_sel_x, tempo_changer_sel_y]
 	draw_window(x1, y1, x1 + 140, y1 + 130)
 	draw_theme_font(font_main_bold)
 	if (language != 1) draw_text_dynamic(x1 + 8, y1 + 8, "Set Tempo")
@@ -37,8 +32,8 @@ function draw_window_edit_tempo_changer() {
 		try {
 			temp_tempo = int64(tempo_changer_set_tempo)
 			if (temp_tempo > 0 && temp_tempo < 32768) {
-				songs[song].song_pit[@ tempo_changer_sel_x, tempo_changer_sel_y] = temp_tempo
-				history_set(h_changeblock, tempo_changer_sel_x, tempo_changer_sel_y, tempo_changer_sel_ins, songs[song].song_key[tempo_changer_sel_x, tempo_changer_sel_y], songs[song].song_vel[tempo_changer_sel_x, tempo_changer_sel_y], songs[song].song_pan[tempo_changer_sel_x, tempo_changer_sel_y], temp_tempo, pins, pkey, pvel, ppan, ppit)
+				change_block_manual(tempo_changer_sel_x, tempo_changer_sel_y, tempo_changer_sel_ins,
+					tempo_changer_sel_key, tempo_changer_sel_vel, tempo_changer_sel_pan, temp_tempo, false)
 				tempo_changer_sel_x = -1
 				tempo_changer_sel_y = -1
 				tempo_changer_set_tempo = -1
@@ -48,7 +43,6 @@ function draw_window_edit_tempo_changer() {
 				windowopen = 0
 				window = 0
 				windowprogress = 0
-				update_tempo_changes()
 			} else {
 				if (language != 1) message("Invalid value!", "Set Tempo")
 				else message("非法数值！", "设置速度")
