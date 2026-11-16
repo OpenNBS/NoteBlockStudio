@@ -4,7 +4,9 @@ function set_resourcepack(pack_name){
 	var using_directory = sounds_directory
 	var sounds_json = undefined
 	var catalog_sounds_json = undefined
-	if (directory_exists(sounds_directory + "pack_temp")) directory_destroy(sounds_directory + "pack_temp")
+	var pack_temp_root = os_type == os_windows ? game_save_id : sounds_directory
+	var pack_temp_directory = pack_temp_root + "pack_temp"
+	if (directory_exists(pack_temp_directory)) directory_destroy(pack_temp_directory)
 	if (pack_name != "Vanilla") {
 		for (var i = 1; i < array_length(resourcepacks); i++) {
 			if (resourcepacks[i].filename = pack_name) pack_obj = i
@@ -12,15 +14,14 @@ function set_resourcepack(pack_name){
 		}
 		if (pack_obj = -1) {current_resource = "Vanilla"; return set_resourcepack("Vanilla");}
 		if (resourcepacks[pack_obj].type = 1) {
-			//if (directory_exists(sounds_directory + "pack_temp" + condstr(os_type = os_windows, "\\", "/"))) directory_destroy(sounds_directory + "pack_temp" + condstr(os_type = os_windows, "\\", "/"))
-			directory_create(sounds_directory + "pack_temp")
-			if (os_type != os_windows) log("unzip" + string(zip_unzip(resource_directory + pack_name, sounds_directory + "pack_temp" + condstr(os_type = os_windows, "\\", "/"))))
-			else {
-				log("unzip" + string(zip_unzip(resource_directory + pack_name, game_save_id + "pack_temp" + condstr(os_type = os_windows, "\\", "/"))))
-				using_directory = game_save_id
+			if (directory_exists(pack_temp_directory)) {
+				message(condstr(language != 1, "Could not clear the previous resource pack's temporary files. Please try again.", "无法清除上一个资源包的临时文件。请重试。"), condstr(language != 1, "Resource pack", "资源包"))
+				return false
 			}
-			//ExecuteShell("7za e \"" + resource_directory + pack_name + "\" -o \"" + sounds_directory + "pack_temp/\"")
+			using_directory = pack_temp_root
 			dir_no_path = "pack_temp" + condstr(os_type = os_windows, "\\", "/")
+			directory_create(pack_temp_directory)
+			log("unzip" + string(zip_unzip(resource_directory + pack_name, using_directory + dir_no_path)))
 		} else {
 			dir_no_path = "resourcepacks" + condstr(os_type = os_windows, "\\", "/") + pack_name + condstr(os_type = os_windows, "\\", "/")
 		}
