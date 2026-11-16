@@ -89,7 +89,7 @@ function pattern_import() {
 		instrument_map = resolve_result.instrument_map
 		imported_instrument_count = resolve_result.added_count
 	} else if (check_custom_instrument(selection_code) != 0) {
-		message(condstr(language != 1, "This older pattern refers to custom instruments that are not loaded in this song.", "此旧版分段文件使用了当前歌曲中未加载的自定义音色。"), condstr(language != 1, "Error", "错误"))
+		message(condstr(language != 1, "This older pattern cannot safely identify custom instruments. Re-export it from the original song using this version of Note Block Studio.\n\nNo notes were imported.", "此旧版分段文件无法安全识别自定义音色。请使用当前版本的 Note Block Studio 打开原歌曲并重新导出分段。\n\n未导入任何音符。"), condstr(language != 1, "Error", "错误"))
 		return -1
 	}
 

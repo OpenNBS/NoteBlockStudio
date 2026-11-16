@@ -12,7 +12,9 @@ function check_custom_instrument(argument0) {
 			if (at >= total_vals) return -1
 
 			var instrument_index = arr_data[at++]
-			if (instrument_index < 0 || instrument_index >= ds_list_size(songs[song].instrument_list)) return -1
+			// NBP v1 custom IDs started at 16 and contain no instrument definitions.
+			// New built-ins occupying those slots must not make them look valid.
+			if (instrument_index < 0 || instrument_index >= 16 || instrument_index >= ds_list_size(songs[song].instrument_list)) return -1
 			at += 4 // Key, velocity, panning and fine pitch
 		}
 	}
