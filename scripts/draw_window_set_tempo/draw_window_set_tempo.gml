@@ -42,7 +42,7 @@ function draw_window_set_tempo() {
 		songs[song].real_tempo = median(0.25, songs[song].real_tempo, 180)
 			
 		if (songs[song].real_tempo != otempo) {
-			changed = 1
+			songs[song].changed = 1
 		}
 		update_tempo_changes()
 		settempo = 0
