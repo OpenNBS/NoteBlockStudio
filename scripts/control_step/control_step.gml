@@ -32,8 +32,8 @@ function control_step() {
 		keyboard_clear(keyboard_lastkey)
 	}
 
-	// Consume the binding before other shortcuts or piano preview can use it.
-	if (!isplayer && window == 0 && text_focus == -1 && key_edit == -1
+	// Only consume reference bindings when this song has reference audio loaded.
+	if (current_song.reference_audio >= 0 && !isplayer && window == 0 && text_focus == -1 && key_edit == -1
 		&& !check_ctrl() && !keyboard_check(vk_control) && !keyboard_check(vk_shift) && !keyboard_check(vk_alt)) {
 		for (var reference_mode = 0; reference_mode < 3; reference_mode++) {
 			var reference_key = reference_hotkeys[reference_mode]
