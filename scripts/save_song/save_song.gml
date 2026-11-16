@@ -44,7 +44,7 @@ function save_song() {
 		nbsver = argument[3];
 	}
 
-	if (nbsver < 6) has_v6_ins = song_uses_v6_instruments(cursong)
+	if (nbsver > 0 && nbsver < 6) has_v6_ins = song_uses_v6_instruments(cursong)
 	var custom_instrument_max = nbs_custom_instrument_limit(nbsver, has_v6_ins)
 	var instrument_limit_version = nbsver
 	if (nbsver < 6 && has_v6_ins && cursong.user_instruments > custom_instrument_max) instrument_limit_version = nbs_version
@@ -71,6 +71,8 @@ function save_song() {
 		saved_layers = max(saved_layers, selection_y + cursong.selection_h)
 	}
 	var save_succeeded = false
+	var classic_builtin_ids = array_create(first_custom_index, -1)
+	var classic_extra_instruments = []
 	buffer = -1
 	try {
 		buffer = buffer_create(8, buffer_grow, 1)
@@ -87,7 +89,8 @@ function save_song() {
 
 		if (nbsver == 0 || nbsver >= 3) {
 		//song length (ticks)
-		buffer_write_short(saved_end)
+		// Zero is the modern-format marker, so Classic must have a nonzero length.
+		buffer_write_short(nbsver == 0 ? max(1, saved_end) : saved_end)
 		}
 
 		//layer count
@@ -146,7 +149,17 @@ function save_song() {
 					cb = 0
 					var note_instrument = selected_note ? cursong.selection_ins[sx, sy] : cursong.song_ins[a, b]
 					ins = ds_list_find_index(cursong.instrument_list, note_instrument)
-					if (nbsver < 6 && ins >= 20 && !has_v6_ins) ins -= 4
+					if (nbsver == 0) {
+						if (ins >= first_custom_index) ins = 10 + ins - first_custom_index
+						else if (ins >= 10) {
+							// Preserve newer built-ins as definitions after the song's custom instruments.
+							if (classic_builtin_ids[ins] < 0) {
+								classic_builtin_ids[ins] = 10 + cursong.user_instruments + array_length(classic_extra_instruments)
+								array_push(classic_extra_instruments, note_instrument)
+							}
+							ins = classic_builtin_ids[ins]
+						}
+					} else if (nbsver < 6 && ins >= 20 && !has_v6_ins) ins -= 4
 					buffer_write_byte(ins)
 					buffer_write_byte(selected_note ? cursong.selection_key[sx, sy] : cursong.song_key[a, b])
 					if (nbsver >= 4) {
@@ -174,6 +187,18 @@ function save_song() {
 		// Custom instruments
 		var user_ins = cursong.user_instruments
 		if (has_v6_ins) user_ins += 4
+		if (nbsver == 0) {
+			user_ins += array_length(classic_extra_instruments)
+			if (user_ins > nbs_custom_instrument_limit(0)) {
+				buffer_delete(buffer)
+				buffer = -1
+				if (!backup) message(condstr(language != 1,
+					"Classic can store at most 18 custom instruments, including newer built-ins saved as custom sounds. This song needs " + string(user_ins) + ".\n\nChoose a newer save version. The file has not been changed.",
+					"经典格式最多可保存 18 个自定义音色，包括作为自定义音效保存的较新内置音色。此歌曲需要 " + string(user_ins) + " 个。\n\n请选择较新的保存版本。文件未被更改。"),
+					condstr(language != 1, "Save failed", "保存失败"))
+				return false
+			}
+		}
 		buffer_write_byte(user_ins)
 		for (b = 0; b < ds_list_size(cursong.instrument_list); b++) {
 		    var ins = cursong.instrument_list[| b];
@@ -183,6 +208,13 @@ function save_song() {
 		        buffer_write_byte(ins.key)
 		        buffer_write_byte(ins.press)
 		    }
+		}
+		for (b = 0; b < array_length(classic_extra_instruments); b++) {
+			var ins = classic_extra_instruments[b]
+			buffer_write_string_int(ins.name)
+			buffer_write_string_int(ins.filename)
+			buffer_write_byte(ins.key)
+			buffer_write_byte(ins.press)
 		}
 		save_succeeded = buffer_export(buffer, fn)
 	} catch (e) {

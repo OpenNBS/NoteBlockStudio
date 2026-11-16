@@ -130,8 +130,9 @@ function nbs_parse_buffer(source, fn, safeopen = false) {
 		loopstart: 0,
 	}
 	var parsed = {properties: properties, notes: [], layers: [], instruments: []}
-	var song_first_custom_index = 0
-	var custom_index_diff = 0
+	// Classic has ten built-ins and no header field for the custom-ID offset.
+	var song_first_custom_index = 10
+	var custom_index_diff = first_custom_index - song_first_custom_index
 	var format4beta = string_count("format4beta", filename_name(fn)) == 1
 	if (nbs_read_value(source, buffer_s16) == 0) {
 		properties.song_nbs_version = nbs_read_value(source, buffer_u8)
