@@ -19,6 +19,11 @@ function close_song(){
 		backup_delete_own_tab(songs[sid])
 	}
 	for (var a = 0; a < 2000; a += 1) {try{songs[song].text_exists_song[a] = text_exists[a]}catch(ee){}; try{songs[song].text_str_song[a] = text_str[a]}catch(ee){}}
+	// MIDI assignments can outlive their tab, including disconnected device slots.
+	for (var device = 0; device < array_length(mididevice_instrument); device++) {
+		var instrument_index = ds_list_find_index(songs[sid].instrument_list, mididevice_instrument[device])
+		if (instrument_index >= first_custom_index) mididevice_instrument[device] = -1
+	}
 	for (var i = first_custom_index; i < ds_list_size(songs[sid].instrument_list); i++)
 	with (songs[sid].instrument_list[| i]) {instrument_free(); instance_destroy()}
 	reference_audio_free(songs[sid])
