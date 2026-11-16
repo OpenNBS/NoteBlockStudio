@@ -67,6 +67,7 @@ function open_song_nbs(fn, sounds_path = "", safeopen = false, replace = false, 
 		var layer_data = parsed.layers[b]
 		newsong.layername[b] = layer_data.name
 		newsong.layerlock[b] = layer_data.locked
+		if (layer_data.locked == 2) newsong.solostr += "|" + string(b) + "|"
 		newsong.layervol[b] = layer_data.volume
 		newsong.layerstereo[b] = layer_data.stereo
 		text_exists[400 + b] = 1
