@@ -6,7 +6,8 @@ function remove_emitters() {
 	//Removes emitters from memory to prevent memory leaking
 	var pos, arr, emitterid, timetoremove
 
-	for(pos = 0; pos < ds_list_size(emitters_to_remove); pos++){
+	// Deleting backwards keeps every remaining entry at its original index.
+	for(pos = ds_list_size(emitters_to_remove) - 1; pos >= 0; pos--){
 		arr = ds_list_find_value(emitters_to_remove,pos)
 	
 		emitterid = ds_list_find_value(arr,0)
@@ -15,6 +16,7 @@ function remove_emitters() {
 		if(get_timer() >= timetoremove){
 			ds_list_delete(emitters_to_remove,pos)
 			audio_emitter_free(emitterid)
+			ds_list_destroy(arr)
 			//log("freeing emitter with id " + string(emitterid))
 			sounds--
 		}
@@ -57,26 +59,21 @@ function remove_emitters_all() {
 	
 	//if (os_type != os_macosx) {
 	
-		var pos, arr, emitterid, timetoremove
-	
-		for (var i = 0; i < 3; i++) {
+		var pos, arr, emitterid, soundlayer
+		for(pos = ds_list_size(emitters_to_remove) - 1; pos >= 0; pos--){
+			arr = ds_list_find_value(emitters_to_remove,pos)
 
-			for(pos = 0; pos < ds_list_size(emitters_to_remove); pos++){
-				arr = ds_list_find_value(emitters_to_remove,pos)
-	
-				emitterid = ds_list_find_value(arr,0)
-				timetoremove = ds_list_find_value(arr,1)
-				soundlayer = ds_list_find_value(arr, 2)
-	
-				if(layerid = 0 || (soundlayer >= layerid && soundlayer <= layerto)){
-					ds_list_delete(emitters_to_remove,pos)
-					audio_emitter_gain(emitterid, 0)
-					audio_emitter_free(emitterid)
-					//log("freeing emitter with id " + string(emitterid))
-					sounds--
-				}
+			emitterid = ds_list_find_value(arr,0)
+			soundlayer = ds_list_find_value(arr, 2)
+
+			if(layerid = 0 || (soundlayer >= layerid && soundlayer <= layerto)){
+				ds_list_delete(emitters_to_remove,pos)
+				audio_emitter_gain(emitterid, 0)
+				audio_emitter_free(emitterid)
+				ds_list_destroy(arr)
+				//log("freeing emitter with id " + string(emitterid))
+				sounds--
 			}
-	
 		}
 
 	//} else {
