@@ -796,9 +796,7 @@ function control_create() {
 		var temp_url = macos_url_take_pending();
 		if (string_count("nbs://", temp_url) = 0) {
 			var file = string_replace_all(temp_url, "file://", "");
-			if (file != "" && 
-				(string_lower(filename_ext(file)) == ".mid" || string_lower(filename_ext(file)) == ".midi" || string_lower(filename_ext(file)) == ".schematic" ||
-				string_lower(filename_ext(file)) == ".nbs" || string_lower(filename_ext(file)) == ".zip")) {
+			if (is_song_path_arg(file)) {
 				load_song(file, 0, 1, 1);
 			}
 		} else {

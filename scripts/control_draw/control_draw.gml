@@ -1711,7 +1711,7 @@ function control_draw() {
 											inactive(current_song.totalblocks = 0) + "Track schematic...|"+
 											inactive(current_song.totalblocks = 0) + "Data pack...|/|-|" + 
 			                             get_hotkey("exit") + "$Exit")
-				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import from schematic...|Import background image...|-|" + get_hotkey("exit") + "$Exit")
+				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import background image...|-|" + get_hotkey("exit") + "$Exit")
 							
 			}
 			if (!isplayer) if (draw_tab("Edit")) {
@@ -1806,7 +1806,7 @@ function control_draw() {
 											inactive(current_song.totalblocks = 0) + "直轨结构......|"+
 											inactive(current_song.totalblocks = 0) + "数据包......|/|-|" +
 			                             get_hotkey("exit") + "$退出")
-				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|从 Schematic 文件导入......|导入背景图片......|-|" + get_hotkey("exit") + "$退出")
+				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|导入背景图片......|-|" + get_hotkey("exit") + "$退出")
 							
 			}
 			if (!isplayer) if (draw_tab("编辑")) {
@@ -2638,8 +2638,7 @@ function control_draw() {
 			var temp_url = macos_url_take_pending()
 			if (string_count("nbs://", temp_url) = 0) {
 				var file = string_replace_all(temp_url, "file://", "");
-				var file_ext = string_lower(filename_ext(file));
-				if (file != "" && (file_ext == ".mid" || file_ext == ".midi" || file_ext == ".schematic" || file_ext == ".nbs" || file_ext == ".zip")) {
+				if (is_song_path_arg(file)) {
 					load_song(file, 0, isplayer, 0)
 				}
 			} else {

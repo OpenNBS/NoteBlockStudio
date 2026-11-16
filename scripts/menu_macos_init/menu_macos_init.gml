@@ -114,7 +114,7 @@ function menu_macos_init(){
 										inactive(current_song.totalblocks = 0) + "Schematic...|"+
 										inactive(current_song.totalblocks = 0) + "Track schematic...|"+
 										inactive(current_song.totalblocks = 0) + "Data pack...")
-			else macos_create_menu_ext("File", "filep", icon_menubar(icons.OPEN)+get_hotkey_menubar("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import from schematic...|Import background image...|-|" + get_hotkey_menubar("exit") + "$Exit")
+			else macos_create_menu_ext("File", "filep", icon_menubar(icons.OPEN)+get_hotkey_menubar("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import background image...|-|" + get_hotkey_menubar("exit") + "$Exit")
 					
 		} else {
 			macos_create_menu_ext("帮助", "help", icon_menubar(icons.HELP) + "教程视频|\\|第 1 集：编写音符盒乐曲|第 2 集：打开 MIDI 文件|第 3 集：将乐曲导入进 Minecraft|第 4 集：编辑在 Minecraft 中创作的乐曲     |-|F1$观看所有|/|-|" + icon_menubar(icons.INTERNET) + "官方网站......|GitHub......|Discord 服务器......|反馈 bug......|QQ 群......|" + condstr(donate_enabled, "捐赠......|") + "-|更新历史......|关于......")
@@ -218,7 +218,7 @@ function menu_macos_init(){
 										inactive(current_song.totalblocks = 0) + "结构......|"+
 										inactive(current_song.totalblocks = 0) + "直轨结构......|"+
 										inactive(current_song.totalblocks = 0) + "数据包......")
-			else macos_create_menu_ext("文件", "filep", icon_menubar(icons.OPEN)+get_hotkey_menubar("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|从 Schematic 文件导入......|导入背景图片......|-|" + get_hotkey_menubar("exit") + "$退出")
+			else macos_create_menu_ext("文件", "filep", icon_menubar(icons.OPEN)+get_hotkey_menubar("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|导入背景图片......|-|" + get_hotkey_menubar("exit") + "$退出")
 				
 		}
 		// AppKit handles Command-W before the runner's keyboard polling.

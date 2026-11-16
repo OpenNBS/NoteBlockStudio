@@ -21,7 +21,7 @@ function check_args(arg_type = "", do_return_value = false){
 function is_song_path_arg(arg) {
 	if (!is_string(arg)) return false
 	var file_ext = string_lower(filename_ext(arg))
-	return file_ext == ".mid" || file_ext == ".midi" || file_ext == ".schematic" || file_ext == ".nbs" || file_ext == ".zip"
+	return file_ext == ".mid" || file_ext == ".midi" || file_ext == ".nbs" || file_ext == ".zip"
 }
 
 function find_song_path_arg() {

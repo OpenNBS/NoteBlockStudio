@@ -17,7 +17,7 @@ function load_song() {
 	//if (confirm() < 0) return 0
 	if (!backup && fn = "") {
 	    if (!directory_exists_lib(songfolder)) songfolder = songs_directory
-	    fn = string(get_open_filename_ext("Note Block Songs (*.nbs)|*.nbs|MIDI Sequences (*.mid)|*.mid;*.midi|Minecraft Schematics (*.schematic)|*.schematic|ZIP archive (*.zip)|*.zip", "", songfolder, condstr(language != 1, "Load song", "打开歌曲")))
+	    fn = string(get_open_filename_ext("Note Block Songs (*.nbs)|*.nbs|MIDI Sequences (*.mid)|*.mid;*.midi|ZIP archive (*.zip)|*.zip", "", songfolder, condstr(language != 1, "Load song", "打开歌曲")))
 		if (os_type = os_macosx) macos_bookmark_store(fn, fn, 0)
 	} else {
 		if (os_type = os_macosx) macos_bookmark_begin(fn)
@@ -32,10 +32,6 @@ function load_song() {
 	file_ext = string_lower(filename_ext(fn));
 	if (file_ext = ".mid" || file_ext = ".midi") {
 	    return open_midi(fn, replace)
-	}
-	else if (file_ext = ".schematic") {
-	    open_schematic(fn)
-	    return 1
 	}
 	else if (file_ext = ".zip") {
 		try {
