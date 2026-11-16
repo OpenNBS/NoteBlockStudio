@@ -25,6 +25,8 @@ function open_midi() {
 	}
 	buffer_delete(source)
 
+	if (midi_import_song != noone) cancel_midi_import()
+	var previous_song = songs[song]
 	if (replace && !close_song(0, 1)) return 0
 	var newsong = create(obj_song)
 	array_push(songs, newsong)
@@ -32,6 +34,8 @@ function open_midi() {
 	reset_add()
 	newsong.midifile = filename_name(fn)
 	newsong.midiname = filename_name(fn)
+	midi_import_song = newsong
+	midi_import_previous_song = previous_song
 
 	var fields = variable_struct_get_names(parsed)
 	for (var i = 0; i < array_length(fields); i++) {
@@ -62,6 +66,31 @@ function open_midi() {
 	}
 	midi_songlength = midi_duration_cache[w_midi_tempo_changer ? 1 : 0][w_midi_removesilent ? 1 : 0]
 	return 1
+}
+
+function cancel_midi_import() {
+	var pending_song = midi_import_song
+	var previous_song = midi_import_previous_song
+	midi_import_song = noone
+	midi_import_previous_song = noone
+	reset_midi()
+	for (var i = 0; i < array_length(songs); i++) {
+		if (songs[i] != pending_song) continue
+		// Only discard the untouched tab created for this import preview.
+		if (songs[i].totalblocks == 0 && !songs[i].changed && songs[i].midifile != "") close_song(i, 0, true)
+		break
+	}
+	for (var i = 0; i < array_length(songs); i++) {
+		if (songs[i] == previous_song) { set_song(i); break }
+	}
+	w_midi_tab = 0
+	text_focus = -1
+	window = 0
+	windowanim = 0
+	windowopen = 0
+	windowclose = 0
+	windowalpha = 0
+	windowprogress = 0
 }
 
 function midi_require_bytes(reader, count) {

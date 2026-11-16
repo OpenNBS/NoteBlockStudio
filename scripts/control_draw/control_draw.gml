@@ -2580,6 +2580,7 @@ function control_draw() {
 	}
 	if (window = w_releasemouse && !nbs_mouse_check_button(mb_left)) {window = 0 windowopen = 0}
 	draw_windows()
+	current_song = songs[song]
 	if (showmsg) draw_msg()
 	if (rainbowtoggle) draw_accent_rainbow()
 	if (dndfile != "") {

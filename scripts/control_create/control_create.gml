@@ -583,6 +583,8 @@ function control_create() {
 	w_midi_name = 1
 	w_midi_name_patch = 1
 	w_midi_tab = 0
+	midi_import_song = noone
+	midi_import_previous_song = noone
 	w_midi_maxheight = 20
 	w_midi_tempo = 1
 	w_midi_octave = 0

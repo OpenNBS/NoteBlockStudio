@@ -83,9 +83,7 @@ function draw_windows() {
 		text_focus = -1
 		switch (keyboard_window) {
 			case w_midi:
-				songs[song].midifile = ""
-				w_midi_tab = 0
-				windowclose = 1
+				cancel_midi_import()
 			break
 			case w_branch_export:
 				selected_tab_sch = 0
