@@ -887,7 +887,7 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 				} else {
 					var volume = song_instance.layervol[occurrence.layer] / 100 / 100 * song_instance.song_vel[tick, occurrence.layer]
 					var stereo = (song_instance.layerstereo[occurrence.layer] + song_instance.song_pan[tick, occurrence.layer]) / 2
-					var position = abs(stereo - 100) / 100 * 2
+					var position = (100 - stereo) / 100 * 2
 					if (nearby) command = "execute at @s run playsound " + occurrence.event + " " + source + " @a ~ ~ ~ " + string(obj_controller.dat_radiusvalue) + " " + minecraft_export_pitch(occurrence.key)
 					else command = "playsound " + occurrence.event + " " + source + " @s ^" + string(position) + " ^ ^ " + string(volume) + " " + minecraft_export_pitch(occurrence.key) + " 1"
 				}

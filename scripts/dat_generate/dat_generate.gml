@@ -112,7 +112,7 @@ function dat_generate_visualizer(row, tick) {
 	var key = minecraft_export_effective_key(song_instance, tick, layer_index, row.instrument)
 	var blockvolume = song_instance.layervol[layer_index] / 100 / 100 * song_instance.song_vel[tick, layer_index]
 	var stereo = (song_instance.layerstereo[layer_index] + song_instance.song_pan[tick, layer_index]) / 2
-	var blockposition = abs(stereo - 100) / 100
+	var blockposition = (100 - stereo) / 100
 	var team_number = string(row.instrument + 1)
 	var block_id = block_get_namespaced_id(o.sch_exp_ins_block[row.instrument])
 	var prefix = "summon minecraft:falling_block "
