@@ -31,8 +31,7 @@ function load_song() {
 	}
 	file_ext = string_lower(filename_ext(fn));
 	if (file_ext = ".mid" || file_ext = ".midi") {
-	    open_midi(fn)
-	    return 1
+	    return open_midi(fn, replace)
 	}
 	else if (file_ext = ".schematic") {
 	    open_schematic(fn)
