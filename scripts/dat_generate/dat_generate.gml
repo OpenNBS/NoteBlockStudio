@@ -49,9 +49,9 @@ function dat_generate(functionpath, functiondir, objective, plan) {
 		if (tick < song_instance.enda) {
 			text += "scoreboard players set @s " + objective + "_t " + string(tick)
 		} else if (o.dat_enablelooping) {
-			text += "scoreboard players set @s " + objective + " " + string(song_instance.loopstart * 80) + br
-			text += "scoreboard players set @s " + objective + "_t " + string(song_instance.loopstart - 1) + br
-			text += "scoreboard players set @s " + speed_objective + " " + string(minecraft_export_snapped_speed(minecraft_export_tempo_at_tick(song_instance, song_instance.loopstart, o.dat_includelocked)))
+			text += "scoreboard players set @s " + objective + " " + string(plan.loop_start * 80) + br
+			text += "scoreboard players set @s " + objective + "_t " + string(plan.loop_start - 1) + br
+			text += "scoreboard players set @s " + speed_objective + " " + string(minecraft_export_snapped_speed(minecraft_export_tempo_at_tick(song_instance, plan.loop_start, o.dat_includelocked)))
 		} else {
 			text += "function " + functionpath + "stop"
 		}

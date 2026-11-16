@@ -242,7 +242,7 @@ function minecraft_export_datapack_server_grid(song_instance, include_locked, st
 	return result
 }
 
-function minecraft_export_timing(song_instance, mode, include_locked, tempo_grid, direct_tps) {
+function minecraft_export_timing(song_instance, mode, include_locked, tempo_grid, direct_tps, loop_start = 0) {
 	var wall = array_create(song_instance.enda + 2, 0)
 	var grid_ticks = array_create(song_instance.enda + 2, 0)
 	var tempo_speed = minecraft_export_snapped_speed(song_instance.real_tempo)
@@ -260,7 +260,7 @@ function minecraft_export_timing(song_instance, mode, include_locked, tempo_grid
 	var loop_server_ticks = []
 	if (mode == "datapack") {
 		server_ticks = minecraft_export_datapack_server_grid(song_instance, include_locked, 0)
-		loop_server_ticks = minecraft_export_datapack_server_grid(song_instance, include_locked, song_instance.loopstart)
+		loop_server_ticks = minecraft_export_datapack_server_grid(song_instance, include_locked, loop_start)
 	}
 	return { wall: wall, grid: grid_ticks, server: server_ticks, loop_server: loop_server_ticks }
 }
@@ -646,7 +646,10 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 	// controller's scope instead of reading song/lockedlayer from the caller.
 	with (controller) calculate_locked_layers()
 	var palette = minecraft_export_source_palette(preferred_source, allowed_sources)
-	var timing = minecraft_export_timing(song_instance, mode, include_locked, tempo_grid, direct_tps)
+	// A saved loop point can outlive the notes after shortening a song.
+	var loop_start = 0
+	if (mode == "datapack" && looping) loop_start = clamp(floor(song_instance.loopstart), 0, song_instance.enda)
+	var timing = minecraft_export_timing(song_instance, mode, include_locked, tempo_grid, direct_tps, loop_start)
 	var occurrences = []
 	var stoppers = []
 	var play_at = []
@@ -692,7 +695,7 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 	var delay_phase_count = (mode == "datapack" && looping) ? 2 : 1
 	for (var delay_phase = 0; delay_phase < delay_phase_count; delay_phase++) {
 		var delay_grid = (mode == "command") ? timing.grid : ((delay_phase == 0) ? timing.server : timing.loop_server)
-		var delay_start_tick = (mode == "datapack" && delay_phase > 0) ? song_instance.loopstart : 0
+		var delay_start_tick = (mode == "datapack" && delay_phase > 0) ? loop_start : 0
 		var batch = -1
 		var local_active = []
 		for (var occupied_position = 0; occupied_position < array_length(occupied_ticks); occupied_position++) {
@@ -723,8 +726,6 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 
 	var active = []
 	var expiry = array_create(array_length(occurrences), -1)
-	var loop_start = 0
-	if (mode == "datapack") loop_start = song_instance.loopstart
 	var phases = looping ? 3 : 1
 	var wall_span = timing.wall[song_instance.enda + 1] - timing.wall[loop_start]
 	var datapack_pending_snapshots = []
@@ -958,6 +959,7 @@ function minecraft_export_build_plan(mode, preferred_source, allowed_sources, in
 	for (var i = 0; i < array_length(stoppers); i++) ignored_stoppers += array_length(stoppers[i].targets) == 0
 	return {
 		mode: mode, palette: palette, occurrences: occurrences, rows: rows, risks: risks, colors: assignment.colors,
+		loop_start: loop_start,
 		rows_by_tick: rows_by_tick, rows_by_grid: rows_by_grid,
 		slots_by_grid: slots_by_grid, timing: timing,
 		last_grid: timing.grid[song_instance.enda], last_command_grid: last_command_grid, maximum_slots: maximum_slots,
