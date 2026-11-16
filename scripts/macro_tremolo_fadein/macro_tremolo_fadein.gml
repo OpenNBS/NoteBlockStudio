@@ -3,6 +3,7 @@ function macro_tremolo_fadein() {
 	var c, d , e, f, str, total_vals, total_cols, val, replength, colcount, decr, inc, tremolo_duration, prevlength, previous_colsegment, current_colsegment;
 	str = songs[song].selection_code
 	if (songs[song].selected = 0) return 0
+	var event_notes = macro_event_notes_get()
 	var arr_temp = selection_to_array_ext()
 	total_vals = array_length(arr_temp)
 	//show_debug_message("total vals is "+string(total_vals))
@@ -58,18 +59,22 @@ function macro_tremolo_fadein() {
 		inc = decr
 		while (f < tremolo_duration) {
 			f += 4
-			if fade_auto = 1 {
-				if  (0 + decr <= 80) arr_data[f + prevlength] = 0 + decr
-				else arr_data[f + prevlength] = 80
+			if (!macro_is_event_note(arr_data[f + prevlength - 2])) {
+				if fade_auto = 1 {
+					if  (0 + decr <= 80) arr_data[f + prevlength] = 0 + decr
+					else arr_data[f + prevlength] = 80
+				}
+				else if  (0 + decr < leg_sus) arr_data[f + prevlength] = 0 + decr
+				else arr_data[f + prevlength] = leg_sus
 			}
-			else if  (0 + decr < leg_sus) arr_data[f + prevlength] = 0 + decr 
-			else arr_data[f + prevlength] = leg_sus
 			f += 3
 			while arr_data[f + prevlength] != -1 {
 				f += 3
-				if  (0 + decr <= leg_dec) arr_data[f + prevlength] = 0 + decr
-				else if fade_auto = 1 arr_data[f + prevlength] = 80
-				else arr_data[f + prevlength] = leg_sus
+				if (!macro_is_event_note(arr_data[f + prevlength - 2])) {
+					if  (0 + decr <= leg_dec) arr_data[f + prevlength] = 0 + decr
+					else if fade_auto = 1 arr_data[f + prevlength] = 80
+					else arr_data[f + prevlength] = leg_sus
+				}
 				f += 3
 			}
 			decr = decr + inc
@@ -86,7 +91,7 @@ function macro_tremolo_fadein() {
 	var sel_x = songs[song].selection_x
 	var sel_y = songs[song].selection_y
 	selection_delete(true)
-	selection_load_from_array(sel_x, sel_y, arr_data)
+	selection_load_from_array(sel_x, sel_y, arr_data, event_notes)
 	history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
 	songs[song].changed = 1
 	if(!keyboard_check(vk_alt)) selection_place(false)

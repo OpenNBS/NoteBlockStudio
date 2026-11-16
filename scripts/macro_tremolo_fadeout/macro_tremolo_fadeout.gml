@@ -3,6 +3,7 @@ function macro_tremolo_fadeout() {
 	var c, d , e, f, str, total_vals, total_cols, val, replength, colcount, decr, inc, tremolo_duration, prevlength, previous_colsegment, current_colsegment;
 	str = songs[song].selection_code
 	if (songs[song].selected = 0) return 0
+	var event_notes = macro_event_notes_get()
 	var arr_temp = selection_to_array_ext()
 	total_vals = array_length(arr_temp)
 	//show_debug_message("total vals is "+string(total_vals))
@@ -58,15 +59,19 @@ function macro_tremolo_fadeout() {
 		inc = decr
 		while (f < tremolo_duration) {
 			f += 4
-			if  (100 - decr >= 20) arr_data[f + prevlength] = 100 - decr
-			else if fade_auto = 1 arr_data[f + prevlength] = 20
-			else arr_data[f + prevlength] = leg_sus
-			f += 3
-			while arr_data[f + prevlength] != -1 {
-				f += 3
+			if (!macro_is_event_note(arr_data[f + prevlength - 2])) {
 				if  (100 - decr >= 20) arr_data[f + prevlength] = 100 - decr
 				else if fade_auto = 1 arr_data[f + prevlength] = 20
 				else arr_data[f + prevlength] = leg_sus
+			}
+			f += 3
+			while arr_data[f + prevlength] != -1 {
+				f += 3
+				if (!macro_is_event_note(arr_data[f + prevlength - 2])) {
+					if  (100 - decr >= 20) arr_data[f + prevlength] = 100 - decr
+					else if fade_auto = 1 arr_data[f + prevlength] = 20
+					else arr_data[f + prevlength] = leg_sus
+				}
 				f += 3
 			}
 			decr = decr + inc
@@ -83,7 +88,7 @@ function macro_tremolo_fadeout() {
 	var sel_x = songs[song].selection_x
 	var sel_y = songs[song].selection_y
 	selection_delete(true)
-	selection_load_from_array(sel_x, sel_y, arr_data)
+	selection_load_from_array(sel_x, sel_y, arr_data, event_notes)
 	history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, try_compress_selection(songs[song].selection_code), songs[song].selection_x, songs[song].selection_y, try_compress_selection(str))
 	songs[song].changed = 1
 	if(!keyboard_check(vk_alt)) selection_place(false)

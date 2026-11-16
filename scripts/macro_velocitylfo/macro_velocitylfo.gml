@@ -11,17 +11,17 @@ function macro_velocitylfo() {
 	while (val < total_vals) {
 		// First column 100
 		val += 4
-		arr_data[val] = 100
+		if (!macro_is_event_note(arr_data[val - 2])) arr_data[val] = 100
 		val ++
-		if arr_data[val] = 0 {
+		if (!macro_is_event_note(arr_data[val - 3]) && arr_data[val] = 0) {
 			arr_data[val] = 100 // Center Panning if Stereoized
 		}
 		val += 2
 		while arr_data[val] != -1 {
 			val = val + 3
-			arr_data[val] = 100
+			if (!macro_is_event_note(arr_data[val - 2])) arr_data[val] = 100
 			val ++
-			if arr_data[val] = 0 {
+			if (!macro_is_event_note(arr_data[val - 3]) && arr_data[val] = 0) {
 				arr_data[val] = 100 // Center Panning if Stereoized
 			}
 			val += 2
@@ -29,31 +29,31 @@ function macro_velocitylfo() {
 		// Second column 50
 		val += 5
 		if val >= total_vals break
-		arr_data[val] = 50
+		if (!macro_is_event_note(arr_data[val - 2])) arr_data[val] = 50
 		val += 3
 		while arr_data[val] != -1 {
 			val = val + 3
-			arr_data[val] = 50
+			if (!macro_is_event_note(arr_data[val - 2])) arr_data[val] = 50
 			val += 3
 		}
 		// Third column 25
 		val += 5
 		if val >= total_vals break
-		arr_data[val] = 25
+		if (!macro_is_event_note(arr_data[val - 2])) arr_data[val] = 25
 		val += 3
 		while arr_data[val] != -1 {
 			val += 3
-			arr_data[val] = 25
+			if (!macro_is_event_note(arr_data[val - 2])) arr_data[val] = 25
 			val += 3
 		}
 		// Fourth column 10
 		val += 5
 		if val >= total_vals break
-		arr_data[val] = 50
+		if (!macro_is_event_note(arr_data[val - 2])) arr_data[val] = 50
 		val += 3
 		while arr_data[val] != -1 {
 			val += 3
-			arr_data[val] = 50
+			if (!macro_is_event_note(arr_data[val - 2])) arr_data[val] = 50
 			val += 3
 		}
 		val ++

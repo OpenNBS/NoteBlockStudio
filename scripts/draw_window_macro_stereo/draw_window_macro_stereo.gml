@@ -1,6 +1,6 @@
 function draw_window_macro_stereo() {
 	// draw_window_stereo_macro()
-	var x1, y1, a, b, str, total_vals, val;
+	var x1, y1, a, b, str;
 	if (songs[song].selected == 0) {
 		window = 0
 		return 0
@@ -36,41 +36,20 @@ function draw_window_macro_stereo() {
 		windowclose = 0
 		windowopen = 0
 		str = songs[song].selection_code
-		var arr_data = selection_to_array_ext()
 		window = 0
-		total_vals = array_length(arr_data)
-		val = 0
-		while (val < total_vals) {
-			// First column panned left
-			val += 5
-			if stereo_reverse = 1 {
-				arr_data[val] = 0 - (stereo_width-100)
-			} else arr_data[val] = 200 + (stereo_width-100)
-			val += 2
-			while arr_data[val] != -1 {
-				val += 4
-				if stereo_reverse = 1 {
-					arr_data[val] = 0 - (stereo_width-100)
-				} else arr_data[val] = 200 + (stereo_width-100)
-				val += 2
+		var pan = 100 + stereo_width * (stereo_reverse ? -1 : 1)
+		for (a = 0; a < songs[song].selection_l; a++) {
+			if (songs[song].selection_colfirst[a] < 0) continue
+			for (b = songs[song].selection_colfirst[a]; b <= songs[song].selection_collast[a]; b++) {
+				if (!songs[song].selection_exists[a, b]) continue
+				var insname = songs[song].selection_ins[a, b].name
+				if (insname == "Tempo Changer" || insname == "Sound Stopper") continue
+				songs[song].selection_pan[a, b] = pan
 			}
-			// Second column panned right
-			val += 6
-			if val >= total_vals break
-			if stereo_reverse = 1 {
-			arr_data[val] = 200 + (stereo_width-100)
-			} else arr_data[val] = 0 - (stereo_width-100)
-			val += 2
-			while arr_data[val] != -1 {
-				val += 4
-				if stereo_reverse = 1 {
-					arr_data[val] = 200 + (stereo_width-100)
-				} else arr_data[val] = 0 - (stereo_width-100)
-				val += 2
-			}
-			val ++
+			// Preserve the alternation between occupied columns.
+			pan = 200 - pan
 		}
-		selection_load_from_array(songs[song].selection_x, songs[song].selection_y, arr_data)
+		selection_code_update()
 		history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
 		songs[song].changed = 1
 		if(!keyboard_check(vk_alt)) selection_place(false)

@@ -47,6 +47,7 @@ function draw_window_macro_stagger() {
 		windowopen = 0
 		window = 0
 		str = songs[song].selection_code
+		var event_notes = macro_event_notes_get()
 		var arr_data = selection_to_array_ext()
 		total_vals = array_length(arr_data)
 		val = 0
@@ -89,7 +90,7 @@ function draw_window_macro_stagger() {
 		var sel_x = songs[song].selection_x
 		var sel_y = songs[song].selection_y
 		selection_delete(true)
-		selection_load_from_array(sel_x, sel_y, arr_data)
+		selection_load_from_array(sel_x, sel_y, arr_data, event_notes)
 		history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
 		songs[song].changed = 1
 		if(!keyboard_check(vk_alt)) selection_place(false)

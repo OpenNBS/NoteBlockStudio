@@ -11,40 +11,40 @@ function macro_vibrato() {
 	while (val < total_vals) {
 		// First column 100
 		val += 6
-		arr_data[val] = 40
+		if (!macro_is_event_note(arr_data[val - 4])) arr_data[val] = 40
 		val ++
 		while arr_data[val] != -1 {
 			val = val + 5
-			arr_data[val] = 40
+			if (!macro_is_event_note(arr_data[val - 4])) arr_data[val] = 40
 			val ++
 		}
 		// Second column 50
 		val += 7
 		if val >= total_vals break
-		arr_data[val] = 0
+		if (!macro_is_event_note(arr_data[val - 4])) arr_data[val] = 0
 		val ++
 		while arr_data[val] != -1 {
 			val = val + 5
-			arr_data[val] = 0
+			if (!macro_is_event_note(arr_data[val - 4])) arr_data[val] = 0
 			val ++
 		}
 		// Third column 25
 		val += 7
 		if val >= total_vals break
-		arr_data[val] = -40
+		if (!macro_is_event_note(arr_data[val - 4])) arr_data[val] = -40
 		val ++
 		while arr_data[val] != -1 {
 			val = val + 5
-			arr_data[val] = -40
+			if (!macro_is_event_note(arr_data[val - 4])) arr_data[val] = -40
 			val ++
 		}
 		val += 7
 		if val >= total_vals break
-		arr_data[val] = 0
+		if (!macro_is_event_note(arr_data[val - 4])) arr_data[val] = 0
 		val ++
 		while arr_data[val] != -1 {
 			val = val + 5
-			arr_data[val] = 0
+			if (!macro_is_event_note(arr_data[val - 4])) arr_data[val] = 0
 			val ++
 		}
 		val ++

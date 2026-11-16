@@ -50,13 +50,13 @@ function draw_window_macro_arpeggio() {
 		while (val < total_vals) {
 			for (i = 0; i < arplen; i++;) {
 				val += 3
-				if (arr_data[val] + arp[i] > 0 || arr_data[val] + arp[i] < 88) {
+				if (!macro_is_event_note(arr_data[val - 1]) && (arr_data[val] + arp[i] > 0 || arr_data[val] + arp[i] < 88)) {
 					arr_data[val] = arr_data[val] + arp[i]
 				}
 				val += 4
 				while arr_data[val] != -1 {
 					val += 2
-					if (arr_data[val] + arp[i] > 0 || arr_data[val] + arp[i] < 88) {
+					if (!macro_is_event_note(arr_data[val - 1]) && (arr_data[val] + arp[i] > 0 || arr_data[val] + arp[i] < 88)) {
 						arr_data[val] = arr_data[val] + arp[i]
 					}
 					val += 4

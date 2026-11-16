@@ -6,6 +6,8 @@ function macro_reset() {
 	    if (songs[song].selection_colfirst[a] > -1) {
 	        for (b = songs[song].selection_colfirst[a]; b <= songs[song].selection_collast[a]; b += 1) {
 	            if (songs[song].selection_exists[a, b]) {
+					var insname = songs[song].selection_ins[a, b].name
+					if (insname == "Tempo Changer" || insname == "Sound Stopper") continue
 					songs[song].selection_vel[a, b] = 100
 					songs[song].selection_pan[a, b] = 100
 					songs[song].selection_pit[a, b] = 0

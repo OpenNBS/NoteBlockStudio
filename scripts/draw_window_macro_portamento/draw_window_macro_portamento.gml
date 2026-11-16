@@ -34,6 +34,18 @@ function draw_window_macro_portamento() {
 		windowopen = 0
 		window = 0
 		str = songs[song].selection_code
+		// A selection containing only tempo changers can intentionally ramp tempo.
+		var only_tempo_changers = true
+		for (a = 0; a < songs[song].selection_l; a++) {
+			if (songs[song].selection_colfirst[a] < 0) continue
+			for (b = songs[song].selection_colfirst[a]; b <= songs[song].selection_collast[a]; b++) {
+				if (songs[song].selection_exists[a, b] && songs[song].selection_ins[a, b].name != "Tempo Changer") {
+					only_tempo_changers = false
+					break
+				}
+			}
+			if (!only_tempo_changers) break
+		}
 		var arr_data = selection_to_array_ext()
 		total_vals = array_length(arr_data)
 		decr = port_cent / macro_column_count(arr_data)
@@ -41,15 +53,19 @@ function draw_window_macro_portamento() {
 		val = 0
 		while (val < total_vals) {
 			val += 6
-			if porta_reverse = 1 {
-				arr_data[real(val)] = real(port_cent) + real(decr)
-			} else arr_data[real(val)] = arr_data[real(val)] + real(decr)
-			val ++
-			while arr_data[val] != -1 {
-				val += 5
+			if (only_tempo_changers || !macro_is_event_note(arr_data[val - 4])) {
 				if porta_reverse = 1 {
 					arr_data[real(val)] = real(port_cent) + real(decr)
 				} else arr_data[real(val)] = arr_data[real(val)] + real(decr)
+			}
+			val ++
+			while arr_data[val] != -1 {
+				val += 5
+				if (only_tempo_changers || !macro_is_event_note(arr_data[val - 4])) {
+					if porta_reverse = 1 {
+						arr_data[real(val)] = real(port_cent) + real(decr)
+					} else arr_data[real(val)] = arr_data[real(val)] + real(decr)
+				}
 				val ++
 			}
 			if porta_reverse = 1 {

@@ -9,9 +9,9 @@ function macro_chorus() {
 	val = 0
 	while (val < total_vals) {
 		val += 5
-		arr_data[val] = 140
+		if (!macro_is_event_note(arr_data[val - 3])) arr_data[val] = 140
 		val ++
-		arr_data[real(val)] = arr_data[real(val)] + real(5)
+		if (!macro_is_event_note(arr_data[val - 4])) arr_data[real(val)] = arr_data[real(val)] + real(5)
 		val ++
 		if arr_data[val] = -1 {
 			if (language != 1) message("There must be exactly two layers worth of note blocks in every applicable tick!", "Error")
@@ -19,18 +19,18 @@ function macro_chorus() {
 			return 1
 		}
 		val += 4
-		arr_data[val] = 60
+		if (!macro_is_event_note(arr_data[val - 3])) arr_data[val] = 60
 		val++
-		arr_data[real(val)] = arr_data[real(val)] + real(-5)
+		if (!macro_is_event_note(arr_data[val - 4])) arr_data[real(val)] = arr_data[real(val)] + real(-5)
 		val ++
 		if (arr_data[val] = -1) val++
 		else {
 			val--
 			for(var i = 0; i >= 0; i++) { //inf loop
 				val += 5
-				arr_data[val] = 100 + 40 * power(-1, i)
+				if (!macro_is_event_note(arr_data[val - 3])) arr_data[val] = 100 + 40 * power(-1, i)
 				val ++
-				arr_data[real(val)] = arr_data[real(val)] + real(5) * power(-1, i)
+				if (!macro_is_event_note(arr_data[val - 4])) arr_data[real(val)] = arr_data[real(val)] + real(5) * power(-1, i)
 				val ++
 				if arr_data[val] = -1 {
 					val++
