@@ -164,7 +164,20 @@ function load_asset_index(copy = false) {
 	sound_import_asset_index_count = count;
 }
 
+function sound_import_download_failed() {
+	// The file cursor advances when a request starts, so retry that same file.
+	if (sound_import_download_stage == 4 && sound_import_download_files_index > 0) sound_import_download_files_index--
+	sound_import_download_status = pointer_null
+	sound_import_download_stage = 0
+	sound_import_status = 0
+	sound_import_downloaded_size = -1
+	sound_import_total_size = -1
+	if (language != 1) message("The file could not be downloaded! Please try again.", "Note Block Studio")
+	else message("下载失败！请重试。", "Note Block Studio")
+}
+
 function sound_import_download() {
+	if (async_load[? "id"] != sound_import_download_status) return
 	var json = ""
 	if (async_load[? "id"] == sound_import_download_status) {
 		var status = async_load[? "status"];
@@ -174,7 +187,12 @@ function sound_import_download() {
 			sound_import_total_size = async_load[? "contentLength"];
 			return
 		} else if (status == 0) {
+			if (ds_map_exists(async_load, "http_status") && (async_load[? "http_status"] < 200 || async_load[? "http_status"] >= 300)) {
+				sound_import_download_failed()
+				return
+			}
 			sound_import_download_status = pointer_null
+			try {
 			// Download was interrupted, may have been successful or not (if connection was interrupted)
 			log("Download interrupted; may have been successful our not");
 			
@@ -189,7 +207,8 @@ function sound_import_download() {
 				contentDisposition = headers[? "Content-Disposition"];
 				contentType = headers[? "Content-Type"];
 			}
-			if (sound_import_download_stage = 4) var writtenFileSize = file_get_size(sound_import_download_files_list[sound_import_download_files_index - 1, 1]);
+			var writtenFileSize = -1
+			if (sound_import_download_stage = 4) writtenFileSize = file_get_size(sound_import_download_files_list[sound_import_download_files_index - 1, 1]);
 			if (sound_import_download_stage = 4) log("Written file size: " + string(writtenFileSize));
 			
 			// Read file name from Content-Disposition header, if present
@@ -202,14 +221,18 @@ function sound_import_download() {
 			//	override_fn = string_copy(contentDisposition, firstQuotePos, lastQuotePos - firstQuotePos);
 			//}
 			
-			if ((contentType == "application/json" || contentLength > 0 && writtenFileSize == contentLength)) {
+			var metadata_stage = sound_import_download_stage >= 1 && sound_import_download_stage <= 3
+			if ((metadata_stage && contentType == "application/json") ||
+				(sound_import_download_stage == 4 && contentType != "application/json" && contentLength > 0 && writtenFileSize == contentLength)) {
 				log("Download complete!");
 				sound_import_downloaded_size = sound_import_total_size; // prevent freezing under 100%
 				
-				if (contentType == "application/json") {
+				if (metadata_stage) {
 					json = json_parse(async_load[? "result"])
+					if (!is_struct(json)) throw("Invalid asset response")
 					if (sound_import_download_stage = 1) {
 						var versions = json[$ "versions"]
+						if (!is_array(versions)) throw("Invalid version manifest")
 						
 						// Search for .json files in the assets/ folder
 						var assets_dir = get_assets_dir();
@@ -231,14 +254,19 @@ function sound_import_download() {
 						update_asset_index_menu()
 						
 						sound_import_download_stage = 0
+						sound_import_status = 0
 					} else if (sound_import_download_stage = 2) {
 						var assetIndex = json[$ "assetIndex"]
+						if (!is_struct(assetIndex) || !is_string(assetIndex[$ "url"]) || assetIndex[$ "url"] == "") throw("Invalid asset index URL")
 						sound_import_download_stage = 3
 						sound_import_download_status = http_get(assetIndex[$ "url"])
 						log (assetIndex[$ "url"])
 						return
 					} else if (sound_import_download_stage = 3) {
 						var objects = json[$ "objects"]
+						if (!is_struct(objects)) throw("Invalid asset index")
+						sound_import_download_files_list = []
+						sound_import_download_files_index = 0
 						
 						var count = 0;
 						var keys = variable_struct_get_names(objects);
@@ -298,6 +326,8 @@ function sound_import_download() {
 							sound_import_download_files_index += 1
 							return
 						}
+						sound_import_status = 2
+						sound_import_download_stage = 0
 					}
 				} else if (sound_import_download_stage = 4) {
 					if (sound_import_download_files_index < array_length(sound_import_download_files_list)) {
@@ -308,19 +338,19 @@ function sound_import_download() {
 					} else {
 						log("All download complete!");
 						sound_import_status = 2
+						sound_import_download_stage = 0
 						sound_import_download_files_index = 0
 					}
 				}
 			} else {
-				if (language != 1) {
-					message("The file could not be downloaded! Please try again.", "Note Block Studio");
-				} else {
-					message("下载失败！请重试。", "Note Block Studio");
-				}
-				sound_import_download_stage = 0
-				sound_import_status = 0
-				if (sound_import_download_files_index != 0) sound_import_download_files_index -= 1
+				sound_import_download_failed()
 			}
+			} catch (error) {
+				log("Sound import download failed: " + string(error))
+				sound_import_download_failed()
+			}
+		} else {
+			sound_import_download_failed()
 		}
 	}
 	sound_import_download_status = pointer_null

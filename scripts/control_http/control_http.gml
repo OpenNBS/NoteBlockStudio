@@ -6,7 +6,7 @@ function control_http() {
 	// Catalog requests have their own IDs and can run alongside sound imports.
 	if (minecraft_export_sound_catalog_http()) return;
 	
-	if (sound_import_download_status != pointer_null) {
+	if (sound_import_download_status != pointer_null && async_load[? "id"] == sound_import_download_status) {
 		sound_import_download()
 	}
 	
