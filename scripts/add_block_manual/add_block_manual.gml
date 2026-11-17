@@ -44,6 +44,17 @@ function add_block_manual(argument0, argument1, argument2, argument3, argument4,
 		save_settings()
 	}
 
+	// Set event defaults before storing the note, updating counts, or recording undo.
+	var insname = songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, ins)].name
+	if (insname == "Tempo Changer") {
+		pit = int64(songs[song].tempo * 15)
+	} else if (insname == "Sound Stopper") {
+		pit = yy + 1
+		var temp_arr = short_to_panning_velocity(pit)
+		pan = temp_arr[0]
+		vel = temp_arr[1]
+	}
+
 	// Add block
 	songs[song].song_exists[xx, yy] = 1
 	songs[song].song_ins[xx, yy] = ins
@@ -71,7 +82,6 @@ function add_block_manual(argument0, argument1, argument2, argument3, argument4,
 	if (ins.loaded) play_sound(ins, key, (songs[song].layervol[yy] / 100 ) * vel, (songs[song].layerstereo[yy] + pan) / 2, pit)
 	history_set(h_addblock, xx, yy, ins, key, vel, pan, pit)
 	
-	var insname = songs[song].instrument_list[| ds_list_find_index(songs[song].instrument_list, ins)].name
 	if (insname == "Tempo Changer" || insname == "Sound Stopper") {
 		tempo_changer_sel_key = key
 		tempo_changer_sel_vel = vel
@@ -80,22 +90,17 @@ function add_block_manual(argument0, argument1, argument2, argument3, argument4,
 	if (insname = "Tempo Changer") {
 		tempo_changer_sel_x = xx
 		tempo_changer_sel_y = yy
-		tempo_changer_set_tempo = int64(songs[song].tempo * 15)
+		tempo_changer_set_tempo = pit
 		tempo_changer_sel_ins = ins
-		songs[song].song_pit[xx, yy] = int64(songs[song].tempo * 15)
 		text_exists[59] = 0
 		window = w_edit_tempo_changer
 		update_tempo_changes()
 	} else if (insname = "Sound Stopper") {
 		tempo_changer_sel_x = xx
 		tempo_changer_sel_y = yy
-		sound_stopper_set_start = yy + 1
-		sound_stopper_set_until = yy + 1
+		sound_stopper_set_start = pit
+		sound_stopper_set_until = pit
 		tempo_changer_sel_ins = ins
-		songs[song].song_pit[xx, yy] = yy + 1
-		var temp_arr = short_to_panning_velocity(yy + 1)
-		songs[song].song_pan[xx, yy] = temp_arr[0]
-		songs[song].song_vel[xx, yy] = temp_arr[1]
 		text_exists[59] = 0
 		text_exists[60] = 0
 		window = w_edit_sound_stopper
