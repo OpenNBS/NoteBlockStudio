@@ -15,7 +15,8 @@ function midi_input_set_key(argument0, argument1) {
 		                if (ins >= 0) play_sound(ins, key, vel ,100, 0)
 		                if (select_lastpressed) {selected_key = key; selected_vel = 100; selected_pan = 100; selected_pit = 0}
 		                if (playing = 0.25) toggle_playing(totalcols)
-		                if (playing && record) {
+		                // Another tab's custom instruments can be previewed, but cannot be recorded here.
+		                if (playing && record && ds_list_find_index(songs[song].instrument_list, ins) >= 0) {
 		                    b = 0
 		                    while (!add_block_manual(ceil(songs[song].marker_pos), b, ins, key, vel, 100, 0)) b += 1
 		                    songs[song].song_played[round(songs[song].marker_pos), b] = current_time
