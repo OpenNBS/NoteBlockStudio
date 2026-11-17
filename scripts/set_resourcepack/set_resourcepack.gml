@@ -616,8 +616,6 @@ function swap_instrument(index, ins_name, sound_name, vanilla_name, dir_no_path,
 	var sound_file = pack_root + sound_asset_path
 	if (file_exists_lib(sound_file)) {
 		with (original_instruments[index]) {
-			filename = dir_no_path + sound_asset_path
-			resourcepack_pitch = sound_pitch
 			//if (os_type = os_windows) {
 				log("audio_file_decode")
 				if (file_exists(temp_file)) file_delete(temp_file)
@@ -625,15 +623,24 @@ function swap_instrument(index, ins_name, sound_name, vanilla_name, dir_no_path,
 				if (ret < 0) {
 				    if (obj_controller.language != 1) message("Couldn't load the file " + sound_file + "! Error: " + string(ret), "Error")
 				    else message("找不到文件" + sound_file + "！错误代码：" + string(ret), "错误")
+					return false
 				}
 
 				log("buffer_load")
 				sound_buffer_temp = buffer_load(temp_file)
+				if (sound_buffer_temp < 0 || buffer_get_size(sound_buffer_temp) == 0) {
+					if (sound_buffer_temp >= 0) buffer_delete(sound_buffer_temp)
+					if (obj_controller.language != 1) message("Could not read decoded audio for " + sound_file, "Error")
+					else message("无法读取解码后的音频：" + sound_file, "错误")
+					return false
+				}
 				sound_buffer = buffer_create(buffer_get_size(sound_buffer_temp), buffer_fixed, 2)
 				buffer_copy(sound_buffer_temp, 0, buffer_get_size(sound_buffer_temp), sound_buffer, 0)
 				sound = audio_create_buffer_sound(sound_buffer, buffer_s16, 44100, 0, buffer_get_size(sound_buffer), audio_stereo)
 				sound_duration = real(buffer_get_size(sound_buffer)) / (44100 * 4)
 				buffer_delete(sound_buffer_temp)
+				filename = dir_no_path + sound_asset_path
+				resourcepack_pitch = sound_pitch
 			//} else {
 			//	ret = audio_create_stream(bundled_sounds_directory + dir_no_path + "assets/minecraft/sounds/note/" + sound_name + ".ogg")
 			//	if (ret < 0) {
@@ -647,8 +654,6 @@ function swap_instrument(index, ins_name, sound_name, vanilla_name, dir_no_path,
 	} else {
 		log("File " + sound_file + " not found")
 		with (original_instruments[index]) {
-			filename = vanilla_name + ".ogg"
-			resourcepack_pitch = sound_pitch
 			//if (os_type = os_windows) {
 				log("audio_file_decode")
 				if (file_exists(temp_file)) file_delete(temp_file)
@@ -656,15 +661,24 @@ function swap_instrument(index, ins_name, sound_name, vanilla_name, dir_no_path,
 				if (ret < 0) {
 				    if (obj_controller.language != 1) message("Couldn't load the file " + sounds_directory + vanilla_name + ".ogg" + "! Error: " + string(ret), "Error")
 				    else message("找不到文件" + sounds_directory + vanilla_name + ".ogg" + "！错误代码：" + string(ret), "错误")
+					return false
 				}
 
 				log("buffer_load")
 				sound_buffer_temp = buffer_load(temp_file)
+				if (sound_buffer_temp < 0 || buffer_get_size(sound_buffer_temp) == 0) {
+					if (sound_buffer_temp >= 0) buffer_delete(sound_buffer_temp)
+					if (obj_controller.language != 1) message("Could not read decoded audio for " + sounds_directory + vanilla_name + ".ogg", "Error")
+					else message("无法读取解码后的音频：" + sounds_directory + vanilla_name + ".ogg", "错误")
+					return false
+				}
 				sound_buffer = buffer_create(buffer_get_size(sound_buffer_temp), buffer_fixed, 2)
 				buffer_copy(sound_buffer_temp, 0, buffer_get_size(sound_buffer_temp), sound_buffer, 0)
 				sound = audio_create_buffer_sound(sound_buffer, buffer_s16, 44100, 0, buffer_get_size(sound_buffer), audio_stereo)
 				sound_duration = real(buffer_get_size(sound_buffer)) / (44100 * 4)
 				buffer_delete(sound_buffer_temp)
+				filename = vanilla_name + ".ogg"
+				resourcepack_pitch = sound_pitch
 			//} else {
 			//	ret = audio_create_stream(bundled_sounds_directory + vanilla_name + ".ogg")
 			//	if (ret < 0) {
