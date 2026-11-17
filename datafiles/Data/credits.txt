@@ -44,15 +44,9 @@ by Bentroen
 nbswave|https://github.com/OpenNBS/nbswave
 by Bentroen
 
-GMSchematic
-by David Andrei
-
 window-DLL|https://github.com/stuffbydavid/window-DLL/
 (fork)|https://github.com/OctoFlareDev/window-DLL
 originally by David Andrei
-
-Realtime Blur|https://foxyofjungle.itch.io/realtime-blur
-by Foxy Of Jungle
 
 7-Zip|https://www.7-zip.org/
 by Igor Pavlov
