@@ -27,12 +27,12 @@ function draw_dragvalue() {
 	if (lock) return v
 	if (w_isdragging = 0) {
 	    if (m) curs = cr_size_ns
-	    if (m && mouse_check_button_pressed(mb_left)) {
+	    if (m && nbs_mouse_check_button_pressed(mb_left)) {
 	        w_isdragging = i
 	        w_dragvalue = 0
 	    }
 	} else if (w_isdragging = i) {
-	    w_dragvalue += 0.1 * (mouse_yprev - mouse_y) / s
+	    w_dragvalue += 0.1 * (mouse_yprev - nbs_mouse_y()) / s
 	    v += floor(w_dragvalue)
 	    w_dragvalue -= floor(w_dragvalue)
 	    curs = cr_size_ns

@@ -5,7 +5,7 @@ function reset_schematic_export(argument0) {
 	    sch_exp_remember = 1
 		sch_br_remember = 1
 	}
-	for (a = 0; a < ds_list_size(instrument_list) + 240; a += 1) {
+	for (a = 0; a < ds_list_size(songs[song].instrument_list) + 240; a += 1) {
 	    sch_exp_ins_data[a] = 0
 	}
 	sch_exp_ins_block[0] = 3
@@ -24,8 +24,12 @@ function reset_schematic_export(argument0) {
 	sch_exp_ins_block[13] = 133
 	sch_exp_ins_block[14] = 170
 	sch_exp_ins_block[15] = 89
+	sch_exp_ins_block[16] = -344
+	sch_exp_ins_block[17] = -345
+	sch_exp_ins_block[18] = -346
+	sch_exp_ins_block[19] = -446
 	for (var a = 0; a < 240; a++) {
-		sch_exp_ins_block[16 + a] = 1
+		sch_exp_ins_block[20 + a] = 1
 	}
 
 	sch_exp_walkway_block = 1
@@ -35,6 +39,8 @@ function reset_schematic_export(argument0) {
 	sch_exp_ground_block = 1
 	sch_exp_ground_data = 0
 
+	sch_exp_format = 0 // 0 = Structure Block NBT, 1 = Litematica NBT, 2 = 1.11-1.12 Schematic, 3 = pre-1.11 Schematic
+	structure = true
 	sch_exp_minecraft_old = false
 	sch_exp_layout = 1 // 0 = Circular walkway, 1 = Simple walkway, 2 = Classic
 	sch_exp_stereo = 4
@@ -55,6 +61,13 @@ function reset_schematic_export(argument0) {
 	sch_exp_minecart = 0
 	sch_exp_chest = 1
 	sch_exp_minecraft_old = false // For pre 1.11
+
+	// Command-block sound export settings are independent from data packs.
+	sch_command_source = "block"
+	sch_command_allowed_sources = minecraft_export_default_allowed_sources()
+	sch_command_tempo_grid = false
+	sch_command_plan = undefined
+	sch_command_plan_signature = ""
 
 
 

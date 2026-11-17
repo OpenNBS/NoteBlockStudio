@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "fnt_wslui",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
@@ -22,6 +25,7 @@
   },
   "ascenderOffset": 0,
   "ascender": 11,
+  "lineHeight": 0,
   "glyphs": {
     "32": {"x":2,"y":2,"w":3,"h":16,"character":32,"shift":3,"offset":0,},
     "33": {"x":37,"y":38,"w":2,"h":16,"character":33,"shift":3,"offset":1,},
@@ -202,8 +206,4 @@
     "name": "fnt_wslui",
     "path": "folders/Fonts/fnt_wslui.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "fnt_wslui",
-  "tags": [],
-  "resourceType": "GMFont",
 }

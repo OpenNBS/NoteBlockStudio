@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "fnt_wslui_small",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
@@ -21,7 +24,8 @@
     "path": "texturegroups/Fonts",
   },
   "ascenderOffset": 0,
-  "ascender": 0,
+  "ascender": 10,
+  "lineHeight": 0,
   "glyphs": {
     "32": {"x":2,"y":2,"w":3,"h":14,"character":32,"shift":3,"offset":0,},
     "33": {"x":17,"y":66,"w":3,"h":14,"character":33,"shift":3,"offset":0,},
@@ -118,7 +122,7 @@
     "124": {"x":76,"y":18,"w":2,"h":14,"character":124,"shift":3,"offset":0,},
     "125": {"x":71,"y":18,"w":3,"h":14,"character":125,"shift":3,"offset":0,},
     "126": {"x":86,"y":82,"w":6,"h":14,"character":126,"shift":8,"offset":1,},
-    "9647": {"x":94,"y":82,"w":7,"h":14,"character":9647,"shift":11,"offset":2,},
+    "9647": {"x":94,"y":82,"w":4,"h":14,"character":9647,"shift":7,"offset":1,},
   },
   "kerningPairs": [
     {"first":40,"second":106,"amount":1,},
@@ -140,6 +144,9 @@
   ],
   "ranges": [
     {"lower":32,"upper":127,},
+    {"lower":1025,"upper":1025,},
+    {"lower":1040,"upper":1103,},
+    {"lower":1105,"upper":1105,},
     {"lower":9647,"upper":9647,},
   ],
   "regenerateBitmap": false,
@@ -149,8 +156,4 @@
     "name": "fnt_wslui",
     "path": "folders/Fonts/fnt_wslui.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "fnt_wslui_small",
-  "tags": [],
-  "resourceType": "GMFont",
 }

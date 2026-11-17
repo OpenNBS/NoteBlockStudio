@@ -9,7 +9,7 @@ function draw_areaheader(argument0, argument1, argument2, argument3, argument4) 
 	switch (theme) {
 	    case 0:
 	        draw_set_color(make_color_rgb(213, 223, 229))
-			draw_roundrect(xx, yy, xx + w, yy + h, 1)
+			draw_rectircle(xx, yy, xx + w, yy + h, 1)
 			draw_set_color(c_white)
 	        break;
 	    case 1:

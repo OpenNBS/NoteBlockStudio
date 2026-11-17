@@ -18,7 +18,7 @@ function draw_area(argument0, argument1, argument2, argument3) {
 	} else {
 		draw_set_color(10855845)
 		if (fdark) draw_set_color(11974326)
-		draw_roundrect_ext(x1, y1, x2 - 2, y2 - 2, 2, 2, 1)
+		draw_rectircle(x1, y1, x2, y2, true, 8)
 	}
 	draw_set_color(prevcolor)
 

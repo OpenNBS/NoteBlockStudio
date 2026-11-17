@@ -1,7 +1,7 @@
 function register_url_protocol() {
 
 	// We don't want to register the debug executable as a handler
-	if (!RUN_FROM_IDE) return;
+	if (!NOT_RUN_FROM_IDE) return;
 
 	// Get NBS executable filename (first command line argument)
 	var nbs_executable = string_replace_all(parameter_string(0), "/", "\\");
@@ -9,8 +9,8 @@ function register_url_protocol() {
 	// Register URL protocol
 	// see: https://stackoverflow.com/a/38205984/9045426
 	
-	var cmd1 = "reg add \"HKCU\\SOFTWARE\\Classes\\nbs\" /v \"URL Protocol\" /f";
-	var cmd2 = "reg add \"HKCU\\SOFTWARE\\Classes\\nbs\\shell\\open\\command\" /ve /t REG_SZ /d \"\\\"" + nbs_executable + "\\\" \\\"--protocol-launcher\\\" \\\"%1\\\"\" /f";
+	var cmd1 = ["reg", "add \"HKCU\\SOFTWARE\\Classes\\nbs\" /v \"URL Protocol\" /f"];
+	var cmd2 = ["reg", "add \"HKCU\\SOFTWARE\\Classes\\nbs\\shell\\open\\command\" /ve /t REG_SZ /d \"\\\"" + nbs_executable + "\\\" \\\"--protocol-launcher\\\" \\\"%1\\\"\" /f"];
 
 	// To save the headache of parsing this:
 	//
@@ -32,6 +32,6 @@ function register_url_protocol() {
 
 	log("Registering executable as nbs:// protocol handler")
 
-	ExecuteShell(cmd1, true, true);
-	ExecuteShell(cmd2, true, true);	
+	execute_program(cmd1[0], cmd1[1], true);
+	execute_program(cmd2[0], cmd2[1], true);
 }

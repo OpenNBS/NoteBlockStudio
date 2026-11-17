@@ -4,8 +4,7 @@ function directory_exists_lib(argument0) {
 	if (argument0 = "")
 	    return 0
 
-	return external_call(lib_directory_exists, argument0)
-	//return directory_exists(argument0)
+	return directory_exists(argument0)
 
 
 

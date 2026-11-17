@@ -1,0 +1,100 @@
+{
+  "resourceType": "GMExtension",
+  "resourceVersion": "1.2",
+  "name": "NBSQuickLook",
+  "optionsFile": "options.json",
+  "options": [],
+  "exportToGame": true,
+  "supportedTargets": -1,
+  "extensionVersion": "1.0.0",
+  "packageId": "",
+  "productId": "",
+  "author": "",
+  "date": "2026-10-12T00:00:00-05:00",
+  "license": "",
+  "description": "Register the runtime sound library with the bundled Quick Look helper.",
+  "helpfile": "",
+  "iosProps": false,
+  "tvosProps": false,
+  "androidProps": false,
+  "html5Props": false,
+  "installdir": "",
+  "files": [
+    {
+      "resourceType": "GMExtensionFile",
+      "resourceVersion": "1.0",
+      "name": "",
+      "filename": "libNBSQuickLookBridge.dylib",
+      "origname": "",
+      "init": "",
+      "final": "",
+      "kind": 1,
+      "uncompress": false,
+      "functions": [
+        {
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "1.0",
+          "name": "macos_quick_look_register_sounds",
+          "externalName": "nbs_register_sound_library",
+          "kind": 1,
+          "help": "macos_quick_look_register_sounds(sounds_directory): asynchronously register Quick Look sound access at startup.",
+          "hidden": false,
+          "returnType": 2,
+          "argCount": 1,
+          "args": [
+            1
+          ],
+          "documentation": ""
+        }
+      ],
+      "constants": [],
+      "ProxyFiles": [],
+      "copyToTargets": 2,
+      "usesRunnerInterface": false,
+      "order": [
+        {
+          "name": "macos_quick_look_register_sounds",
+          "path": "extensions/NBSQuickLook/NBSQuickLook.yy"
+        }
+      ]
+    }
+  ],
+  "HTML5CodeInjection": "",
+  "classname": "",
+  "tvosclassname": null,
+  "tvosdelegatename": null,
+  "iosdelegatename": "",
+  "androidclassname": "",
+  "sourcedir": "",
+  "androidsourcedir": "",
+  "macsourcedir": "",
+  "maccompilerflags": "",
+  "tvosmaccompilerflags": "",
+  "maclinkerflags": "",
+  "tvosmaclinkerflags": "",
+  "iosplistinject": "",
+  "tvosplistinject": "",
+  "androidinject": "",
+  "androidmanifestinject": "",
+  "androidactivityinject": "",
+  "gradleinject": "",
+  "androidcodeinjection": "",
+  "hasConvertedCodeInjection": true,
+  "ioscodeinjection": "",
+  "tvoscodeinjection": "",
+  "iosSystemFrameworkEntries": [],
+  "tvosSystemFrameworkEntries": [],
+  "iosThirdPartyFrameworkEntries": [],
+  "tvosThirdPartyFrameworkEntries": [],
+  "IncludedResources": [],
+  "androidPermissions": [],
+  "copyToTargets": 2,
+  "iosCocoaPods": "",
+  "tvosCocoaPods": "",
+  "iosCocoaPodDependencies": "",
+  "tvosCocoaPodDependencies": "",
+  "parent": {
+    "name": "Extensions",
+    "path": "folders/Extensions.yy"
+  }
+}

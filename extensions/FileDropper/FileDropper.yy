@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMExtension",
+  "resourceVersion": "1.2",
+  "name": "FileDropper",
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
@@ -14,40 +17,43 @@
   "iosProps": false,
   "tvosProps": false,
   "androidProps": false,
+  "html5Props": false,
   "installdir": "",
   "files": [
-    {"filename":"FileDropper.dll","origname":"extensions\\FileDropper.dll","init":"","final":"","kind":1,"uncompress":false,"functions":[
-        {"externalName":"file_dnd_get_enabled","kind":12,"help":"file_dnd_get_enabled()","hidden":false,"returnType":2,"argCount":-1,"args":[],"resourceVersion":"1.0","name":"file_dnd_get_enabled","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"file_dnd_set_enabled","kind":12,"help":"file_dnd_set_enabled(enable)","hidden":false,"returnType":2,"argCount":1,"args":[
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FileDropper.dll","origname":"extensions\\FileDropper.dll","init":"","final":"","kind":1,"uncompress":false,"functions":[
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"file_dnd_get_enabled","externalName":"file_dnd_get_enabled","kind":12,"help":"file_dnd_get_enabled()","hidden":false,"returnType":2,"argCount":-1,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"file_dnd_set_enabled","externalName":"file_dnd_set_enabled","kind":12,"help":"file_dnd_set_enabled(enable)","hidden":false,"returnType":2,"argCount":1,"args":[
             2,
-          ],"resourceVersion":"1.0","name":"file_dnd_set_enabled","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"file_dnd_get_files","kind":12,"help":"file_dnd_get_files()","hidden":false,"returnType":1,"argCount":-1,"args":[],"resourceVersion":"1.0","name":"file_dnd_get_files","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"file_dnd_set_files","kind":12,"help":"file_dnd_set_files(pattern,allowfiles,allowdirs,allowmulti)","hidden":false,"returnType":2,"argCount":4,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"file_dnd_get_files","externalName":"file_dnd_get_files","kind":12,"help":"file_dnd_get_files()","hidden":false,"returnType":1,"argCount":-1,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"file_dnd_set_files","externalName":"file_dnd_set_files","kind":12,"help":"file_dnd_set_files(pattern,allowfiles,allowdirs,allowmulti)","hidden":false,"returnType":2,"argCount":4,"args":[
             1,
             2,
             2,
             2,
-          ],"resourceVersion":"1.0","name":"file_dnd_set_files","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"file_dnd_get_hwnd","kind":1,"help":"file_dnd_get_hwnd()","hidden":false,"returnType":1,"argCount":0,"args":[],"resourceVersion":"1.0","name":"file_dnd_get_hwnd","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"file_dnd_set_hwnd","kind":1,"help":"file_dnd_set_hwnd(hwnd)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"file_dnd_get_hwnd","externalName":"file_dnd_get_hwnd","kind":1,"help":"file_dnd_get_hwnd()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"file_dnd_set_hwnd","externalName":"file_dnd_set_hwnd","kind":1,"help":"file_dnd_set_hwnd(hwnd)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"file_dnd_set_hwnd","tags":[],"resourceType":"GMExtensionFunction",},
+          ],"documentation":"",},
       ],"constants":[
-        {"value":"window_handle()","hidden":false,"resourceVersion":"1.0","name":"hwnd_main","tags":[],"resourceType":"GMExtensionConstant",},
-        {"value":"pointer_null","hidden":false,"resourceVersion":"1.0","name":"hwnd_default","tags":[],"resourceType":"GMExtensionConstant",},
+        {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"hwnd_main","value":"window_handle()","hidden":false,},
+        {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"hwnd_default","value":"pointer_null","hidden":false,},
       ],"ProxyFiles":[
-        {"TargetMask":1,"resourceVersion":"1.0","name":"FileDropper.dylib","tags":[],"resourceType":"GMProxyFile",},
-      ],"copyToTargets":66,"order":[
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"FileDropper.dylib","TargetMask":1,},
+        {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"FileDropper_x64.dll","TargetMask":6,},
+      ],"copyToTargets":66,"usesRunnerInterface":false,"order":[
         {"name":"file_dnd_get_enabled","path":"extensions/FileDropper/FileDropper.yy",},
         {"name":"file_dnd_set_enabled","path":"extensions/FileDropper/FileDropper.yy",},
         {"name":"file_dnd_get_files","path":"extensions/FileDropper/FileDropper.yy",},
         {"name":"file_dnd_set_files","path":"extensions/FileDropper/FileDropper.yy",},
         {"name":"file_dnd_get_hwnd","path":"extensions/FileDropper/FileDropper.yy",},
         {"name":"file_dnd_set_hwnd","path":"extensions/FileDropper/FileDropper.yy",},
-      ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
-    {"filename":"FileDropper.dll.zip","origname":"extensions\\FileDropper.dll.zip","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":0,"order":[],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
-    {"filename":"FileDropper.dylib.zip","origname":"extensions\\FileDropper.dylib.zip","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":0,"order":[],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
+      ],},
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FileDropper.dll.zip","origname":"extensions\\FileDropper.dll.zip","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":0,"usesRunnerInterface":false,"order":[],},
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FileDropper.dylib.zip","origname":"extensions\\FileDropper.dylib.zip","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":0,"usesRunnerInterface":false,"order":[],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "",
   "tvosclassname": "",
   "tvosdelegatename": "",
@@ -66,6 +72,10 @@
   "androidmanifestinject": "",
   "androidactivityinject": "",
   "gradleinject": "",
+  "androidcodeinjection": "",
+  "hasConvertedCodeInjection": true,
+  "ioscodeinjection": "",
+  "tvoscodeinjection": "",
   "iosSystemFrameworkEntries": [],
   "tvosSystemFrameworkEntries": [],
   "iosThirdPartyFrameworkEntries": [],
@@ -81,8 +91,4 @@
     "name": "Extensions",
     "path": "folders/Extensions.yy",
   },
-  "resourceVersion": "1.2",
-  "name": "FileDropper",
-  "tags": [],
-  "resourceType": "GMExtension",
 }

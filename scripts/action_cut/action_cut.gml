@@ -1,8 +1,7 @@
 function action_cut() {
 	// action_cut()
-	selection_copied = selection_code
+	action_copy()
 	selection_delete(false)
-	clipboard = selection_copied
-	changed = 1
+	songs[song].changed = 1
 
 }

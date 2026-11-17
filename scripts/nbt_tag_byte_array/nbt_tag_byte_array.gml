@@ -14,9 +14,9 @@ function nbt_tag_byte_array(argument0, argument1, argument2) {
 	name = argument1;
 	len = argument2;
 
-	external_call(global.dll_WriteByte, file, 7);
+	buffer_write(file, buffer_s8, 7);
 	nbt_string_write(file, name);
-	external_call(global.dll_WriteInt, file, len);
+	buffer_write_int_be_ext(file, len);
 
 
 }

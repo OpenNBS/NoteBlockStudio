@@ -14,9 +14,9 @@ function nbt_tag_int(argument0, argument1, argument2) {
 	name = argument1;
 	val = argument2;
 
-	external_call(global.dll_WriteByte, file, 3);
+	buffer_write(file, buffer_s8, 3);
 	nbt_string_write(file, name);
-	external_call(global.dll_WriteInt, file, val);
+	buffer_write_int_be_ext(file, val);
 
 
 }

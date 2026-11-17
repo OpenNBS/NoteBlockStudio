@@ -1,10 +1,13 @@
 function draw_text_dynamic(x, y, string, force = false){
 	// draw_text_dynamic()
+	var text_entry = text_dynamic_text_get(string)
+	var draw_string = text_entry.text
 
 	// Skip drawing dynamic text when using English
-	if (!force && obj_controller.language != 1) {
-		if (!obj_controller.hires || obj_controller.theme != 3) draw_text(x, y, string);
-		else draw_text_transformed(x, y, string, 0.25, 0.25, 0);
+	var o = obj_controller
+	if (!force && o.language != 1) {
+		if (!o.hires || o.theme != 3) draw_text(x, y, draw_string);
+		else draw_text_transformed(x, y, draw_string, 0.25, 0.25, 0);
 		return;
 	}
 	
@@ -20,55 +23,55 @@ function draw_text_dynamic(x, y, string, force = false){
 	var width = 0;
 	var lines = 0;
 	var linewidth = [0];
-	var totalwidth = 0;
-	var longline = 0;
 	var halign = draw_get_halign();
-	var char, char_code, is_ascii, y_offset, font_changed;
-	var is_ascii_prev = -1
-	draw_set_halign(fa_left)
+	var currentfont = o.currentfont
+	var is_hires_theme = o.hires && o.theme = 3
+	var align_layout = undefined
+	if (halign != fa_left) draw_set_halign(fa_left)
 	if (halign != fa_left) {
-		for (var i = 1; i <= string_length(string); i += 1) {
-			char = string_char_at(string, i)
-			char_code = ord(char)
-			is_ascii = char_code <= 127
-			font_changed = is_ascii != is_ascii_prev
-			if (font_changed) {
-				draw_theme_font(obj_controller.currentfont, !is_ascii, true)
-			}
-			linewidth[lines] += string_width(char)
-			if (char = "\n") {lines += 1 array_push(linewidth, 0)}
-			is_ascii_prev = is_ascii
-		}
-		for (var i = 0; i <= lines; i += 1) {
-			if (linewidth[i] >= linewidth[longline]) longline = i
-		}
-		totalwidth = linewidth[longline]
-		lines = 0
-		is_ascii_prev = -1
+		align_layout = text_dynamic_layout_get(text_entry, currentfont, true)
+		linewidth = align_layout.line_widths
 	}
-	for(var i = 1; i <= string_length(string); i += 1) {
-		char = string_char_at(string, i)
-		char_code = ord(char)
-		is_ascii = char_code <= 127
-		font_changed = is_ascii != is_ascii_prev
-		if (font_changed) {
-			draw_theme_font(obj_controller.currentfont, !is_ascii)
+	var layout = text_dynamic_layout_get(text_entry, currentfont)
+	var length = layout.length
+	var line_x = x
+	if (halign = fa_center) line_x = x - floor(linewidth[0] / 2)
+	else if (halign = fa_right) line_x = x - linewidth[0]
+	var line_y = y
+	var selected_font = draw_get_font()
+	for(var i = 0; i < length; i += 1) {
+		var char = text_entry.chars[i]
+		var is_not_ascii = text_entry.categories[i]
+		var font = layout.fonts[i]
+		if (selected_font != font) {
+			draw_set_font(font)
+			selected_font = font
 		}
-		y_offset = lines * 16
+		// Runtime font_add() rasterizes Source Han one logical pixel lower than
+		// the equivalent baked fnt_src_* asset in this GameMaker runtime.
+		var draw_y = line_y - 1 * !(!is_not_ascii) - layout.dynamic_fonts[i]
 		
-		if (!obj_controller.hires || obj_controller.theme != 3) {
-			if (halign = fa_left) draw_text (x + width, y - 1 * !is_ascii + y_offset, char)
-			else if (halign = fa_center) draw_text (x - floor(linewidth[lines] / 2) + width, y - 1 * !is_ascii + y_offset, char)
-			else if (halign = fa_right) draw_text (x - linewidth[lines] + width, y - 1 * !is_ascii + y_offset, char)
+		if (!is_hires_theme) {
+			draw_text(line_x + width, draw_y, char)
 		} else {
-			if (halign = fa_left) draw_text_transformed (x + width, y - 1 * !is_ascii + y_offset, char, 0.5 - 0.25 * is_ascii, 0.5 - 0.25 * is_ascii, 0)
-			else if (halign = fa_center) draw_text_transformed (x - floor(linewidth[lines] / 2) + width, y - 1 * !is_ascii + y_offset, char, 0.5 - 0.25 * is_ascii, 0.5 - 0.25 * is_ascii, 0)
-			else if (halign = fa_right) draw_text_transformed (x - linewidth[lines] + width, y - 1 * !is_ascii + y_offset, char, 0.5 - 0.25 * is_ascii, 0.5 - 0.25 * is_ascii, 0)
+			var scale = 0.5 - 0.25 * (is_not_ascii != 1)
+			draw_text_transformed(line_x + width, draw_y, char, scale, scale, 0)
 		}
-		width += string_width(char) / (1 + (obj_controller.hires || obj_controller.theme != 3) * (obj_controller.theme = 3) + 2 * ((obj_controller.hires || obj_controller.theme != 3) && is_ascii) * (obj_controller.theme = 3))
-		if (char = "\n") {lines += 1 width = 0}
-		is_ascii_prev = is_ascii
+		width += layout.widths[i] / (1 + is_hires_theme + 2 * (is_hires_theme && is_not_ascii != 1))
+		if (char = "\n") {
+			lines += 1
+			width = 0
+			line_y += 16
+			if (halign = fa_center) line_x = x - floor(linewidth[lines] / 2)
+			else if (halign = fa_right) line_x = x - linewidth[lines]
+		}
 	}
-	draw_set_halign(halign)
-	draw_theme_font(obj_controller.currentfont)
+	if (halign != fa_left) draw_set_halign(halign)
+	draw_theme_font(currentfont, 0)
+}
+
+function is_nonascii(char_code){
+	var code = !(char_code <= 127 || char_code = 1025 || (char_code >= 1040 && char_code <= 1103) || char_code = 1105)
+	if (char_code = 8679 || char_code = 8682 || char_code = 8963 || char_code = 8984 || char_code = 8997 || char_code = 9003 || char_code = 11014) code = -1
+	return code
 }

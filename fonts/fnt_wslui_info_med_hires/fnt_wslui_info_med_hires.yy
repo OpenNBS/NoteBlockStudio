@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "fnt_wslui_info_med_hires",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
@@ -22,6 +25,7 @@
   },
   "ascenderOffset": 0,
   "ascender": 59,
+  "lineHeight": 0,
   "glyphs": {
     "32": {"x":2,"y":2,"w":16,"h":78,"character":32,"shift":16,"offset":0,},
     "33": {"x":366,"y":242,"w":7,"h":78,"character":33,"shift":17,"offset":5,},
@@ -964,8 +968,4 @@
     "name": "fnt_wslui_hires",
     "path": "folders/Fonts/fnt_wslui_hires.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "fnt_wslui_info_med_hires",
-  "tags": [],
-  "resourceType": "GMFont",
 }

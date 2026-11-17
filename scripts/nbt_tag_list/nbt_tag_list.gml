@@ -16,10 +16,10 @@ function nbt_tag_list(argument0, argument1, argument2, argument3) {
 	type = argument2;
 	len = argument3;
 
-	external_call(global.dll_WriteByte, file, 9);
+	buffer_write(file, buffer_s8, 9);
 	nbt_string_write(file, name);
-	external_call(global.dll_WriteByte, file, type);
-	external_call(global.dll_WriteInt, file, len);
+	buffer_write(file, buffer_s8, type);
+	buffer_write_int_be_ext(file, len);
 
 
 }

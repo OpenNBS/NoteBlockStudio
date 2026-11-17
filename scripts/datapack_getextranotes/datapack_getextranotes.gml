@@ -6,8 +6,9 @@ function datapack_getextranotes() {
 	if (language != 1) fn = string(get_save_filename_ext("Resource pack (*.zip)|*.zip", "Extra Note Blocks", "", "Save extra notes for data pack"))
 	else fn = string(get_save_filename_ext("Resource pack (*.zip)|*.zip", "更多音符盒", "", "为数据包保存音符盒资源包"))
 	if (fn = "") return 0
+	fn = enforce_extension(fn, ".zip")
 
-	src = data_directory + "extranotes.zip"
+	src = bundled_data_directory + "extranotes.zip"
 
 	if file_exists(src) {
 		file_copy(src, fn)
