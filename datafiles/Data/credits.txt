@@ -2,7 +2,7 @@
 *---
 
 *Lead developer
-Bentroen
+OctoFlare
 
 *Project managers
 Bentroen
