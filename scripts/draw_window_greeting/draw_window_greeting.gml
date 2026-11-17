@@ -288,7 +288,7 @@ function draw_window_greeting() {
 	draw_theme_color();
 	if (a = 2 && nbs_mouse_check_button_released(mb_left)) {
 		if (windowsound && theme = 3) play_sound(soundinvoke, 45, 100, 50, 0)
-		open_url("https://noteblock.world/");
+		open_url(link_nbw);
 	    return 1;
 	}
 	c += 44;

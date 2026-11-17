@@ -7,12 +7,13 @@ function macros() {
 #macro nbs_version 6
 #macro pat_version 2
 
-#macro link_github "https://github.com/OpenNBS/OpenNoteBlockStudio"
-#macro link_report "https://github.com/OpenNBS/OpenNoteBlockStudio/issues/new/choose"
+#macro link_github "https://github.com/OpenNBS/NoteBlockStudio"
+#macro link_report "https://github.com/OpenNBS/NoteBlockStudio/issues/new/choose"
 #macro link_releases "https://api.github.com/repos/OpenNBS/NoteBlockStudio/releases"
 #macro link_latest "https://api.github.com/repos/OpenNBS/NoteBlockStudio/releases/latest"
-#macro link_changelog "https://opennbs.org/changelog"
-#macro link_website "https://opennbs.org/"
+#macro link_changelog "https://noteblock.studio/changelog"
+#macro link_website "https://noteblock.studio/"
+#macro link_nbw "https://noteblock.world/"
 #macro link_discord "https://discord.gg/sKPGjyVcyy"
 #macro link_twitter "https://twitter.com/OpenNBS"
 #macro link_github_org "https://github.com/OpenNBS"
