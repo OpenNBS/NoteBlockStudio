@@ -178,9 +178,9 @@ function midi_parse_buffer(source) {
 				midi_skip_bytes(reader, chunk_length)
 				continue
 			}
-			if (chunk_length == 0) throw("Empty MIDI track")
 			reader.limit = buffer_tell(source) + chunk_length
 			var pos = 0
+			// Match older imports: retain channel status across meta/SysEx events.
 			var running_status = -1
 			while (buffer_tell(source) < reader.limit) {
 				pos += midi_read_varlen(reader)
@@ -191,7 +191,6 @@ function midi_parse_buffer(source) {
 					buffer_seek(source, buffer_seek_relative, -1)
 				}
 				if (event == $FF) {
-					running_status = -1
 					var meta = midi_read_byte(reader)
 					if (meta >= $80) throw("Invalid MIDI meta event")
 					var length = midi_read_varlen(reader)
@@ -215,7 +214,6 @@ function midi_parse_buffer(source) {
 						break
 					}
 				} else if (event == $F0 || event == $F7) {
-					running_status = -1
 					midi_skip_bytes(reader, midi_read_varlen(reader))
 				} else if (event == $F8 || event == $FA || event == $FB || event == $FC) {
 					// Preserve support for standalone real-time events in older files.
