@@ -203,7 +203,8 @@ function control_step() {
 	if (!isplayer) {
 	// Autosave
 	if (autosave && string_lower(filename_ext(current_song.filename)) == ".nbs") {
-	    tonextsave -= 1 / room_speed / 60 * (1 / currspeed)
+	    // Clamp at 0 so the status bar doesn't count into negatives while playback defers the save
+	    tonextsave = max(0, tonextsave - 1 / room_speed / 60 * (1 / currspeed))
 	    if (tonextsave <= 0 && playing == 0) {
 			tonextsave = autosavemins
 			log("Auto saving song", current_song.filename)
