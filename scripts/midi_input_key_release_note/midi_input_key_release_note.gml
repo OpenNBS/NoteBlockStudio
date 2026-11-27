@@ -11,7 +11,7 @@ function midi_input_key_release_note(argument0, argument1) {
 
 	//  By David "Davve" Norgren for MIDI input - www.stuffbydavid.com
 
-	return external_call(lib_midi_input_key_release_note, argument0, argument1);
+	return midi_keyreleases[| argument1]
 
 
 

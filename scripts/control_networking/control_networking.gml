@@ -3,7 +3,7 @@ function control_networking(){
 		var temp_buffer = async_load[? "buffer"];
 		var type = buffer_read(temp_buffer, buffer_u8)
 		if (type = 10) {
-			load_song(buffer_read(temp_buffer, buffer_string)) // reserved for open song request from another instance
+			load_song(buffer_read(temp_buffer, buffer_string))
 		}
 		buffer_delete(temp_buffer)
 	}

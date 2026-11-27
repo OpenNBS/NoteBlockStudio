@@ -1,6 +1,6 @@
 function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, argument5, argument6, argument7) {
-	// draw_scrollbar(id, x, y, slotwh, slots, maxslots, cantscroll, window)
-	var i, xx, yy, swh, s, ms, mwh, bwh, bpos, ind, locked, cantscroll, win;
+	// draw_scrollbar(id, x, y, slotwh, slots, maxslots, cantscroll, window[, wheel_speed])
+	var i, xx, yy, swh, s, ms, mwh, bwh, bpos, ind, locked, cantscroll, win, wheel_speed;
 	i = argument0
 	xx = argument1
 	yy = argument2
@@ -9,6 +9,8 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	ms = argument5
 	cantscroll = argument6
 	win = argument7
+	wheel_speed = 1
+	if (argument_count > 8) wheel_speed = argument[8]
 	mwh = swh * s
 	bwh = max(10, (s / ms) * (s * swh))
 	bpos = (sb_val[i] / ms) * (s * swh)
@@ -18,22 +20,22 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	//Horizontal scrollbar
 	if (sb_dir[i] = 0) {
 	    if (sb_sel = i && sb_drag = -1 && (window = 0 || win = 1) && cantscroll = 0) {
-	        sb_val[i] += (mouse_wheel_down() - mouse_wheel_up()) * (!volume_scroll)
+	        sb_val[i] += (mouse_wheel_down_dynamic() - mouse_wheel_up_dynamic()) * (!volume_scroll) * wheel_speed
 	        sb_val[i] = median(0, sb_val[i], ms - s)
 	        bpos = (sb_val[i] / ms) * (s * swh)
 	    }
-	    if (!mouse_check_button(mb_left)) {
+	    if (!nbs_mouse_check_button(mb_left)) {
 	        sb_press[i] = 0
 	    }
 	    if (sb_drag = i) {
-	        if (!mouse_check_button(mb_left)) {
+	        if (!nbs_mouse_check_button(mb_left)) {
 	            if (win = 0) window = 0
 	            sb_drag = -1
 	            sb_val[i] = round(sb_val[i])
 	        } else {
-	            sb_val[i] += (mouse_x - sb_mprev) / (mwh / ms)
+	            sb_val[i] += (nbs_mouse_x() - sb_mprev) / (mwh / ms)
 	            sb_val[i] = median(0, sb_val[i], ms - s)
-	            sb_mprev = mouse_x
+	            sb_mprev = nbs_mouse_x()
 	            bpos = (sb_val[i] / ms) * (s * swh)
 	        }
 	    }
@@ -48,11 +50,11 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	        ind = 0
 	        if (mouse_rectangle(xx + 16 + bpos, yy, bwh, 16) && sb_drag = -1 && (window = 0 || win = 1)) {
 	            ind += 1
-	            if (mouse_check_button_pressed(mb_left)) {
+	            if (nbs_mouse_check_button_pressed(mb_left)) {
 	                sb_sel = i
 	                sb_drag = i
 	                if (win = 0) window = w_drag
-	                sb_mprev = mouse_x
+	                sb_mprev = nbs_mouse_x()
 	            }
 	        }
 	        if (sb_drag = i) ind = 2
@@ -74,7 +76,7 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 		
 	    }
 	    if (mouse_rectangle(xx + 16, yy, bpos, 16) && locked = 0 && (window = 0 || win = 1) && sb_drag = -1) {
-	        if (mouse_check_button(mb_left))  {
+	        if (nbs_mouse_check_button(mb_left))  {
 	            sb_press[i] -= 1
 	            sb_sel = i
 	            if (sb_press[i] = -1) {
@@ -89,7 +91,7 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	        }
 	    }
 	    if (mouse_rectangle(xx + 16 + bpos + bwh, yy, mwh - (bpos + bwh), 16) && locked = 0 && (window = 0 || win = 1) && sb_drag = -1) {
-	        if (mouse_check_button(mb_left))  {
+	        if (nbs_mouse_check_button(mb_left))  {
 	            sb_press[i] -= 1
 	            sb_sel = i
 	            if (sb_press[i] = -1) {
@@ -109,7 +111,7 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	        ind += 1
 	        if (mouse_rectangle(xx, yy, 16, 16) && sb_drag = -1) {
 	            ind += 1
-	            if (mouse_check_button(mb_left))  {
+	            if (nbs_mouse_check_button(mb_left))  {
 	                ind += 1
 	                sb_press[i] -= 1
 	                sb_sel = i
@@ -134,7 +136,7 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	        ind += 1
 	        if (mouse_rectangle(xx + mwh + 16, yy, 16, 16) && sb_drag = -1) {
 	            ind += 1
-	            if (mouse_check_button(mb_left))  {
+	            if (nbs_mouse_check_button(mb_left))  {
 	                ind += 1
 	                sb_press[i] -= 1
 	                sb_sel = i
@@ -157,22 +159,22 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	//Vertical scrollbar
 	else {
 	    if (sb_sel = i && sb_drag = -1 && (window = 0 || win = 1) && cantscroll = 0) {
-	        sb_val[i] += (mouse_wheel_down() - mouse_wheel_up()) * (!volume_scroll)
+	        sb_val[i] += (mouse_wheel_down_dynamic() - mouse_wheel_up_dynamic()) * (!volume_scroll) * wheel_speed
 	        sb_val[i] = median(0, sb_val[i], ms - s)
 	        bpos = (sb_val[i] / ms) * (s * swh)
 	    }
-	    if (!mouse_check_button(mb_left)) {
+	    if (!nbs_mouse_check_button(mb_left)) {
 	        sb_press[i] = 0
 	    }
 	    if (sb_drag = i) {
-	        if (!mouse_check_button(mb_left)) {
+	        if (!nbs_mouse_check_button(mb_left)) {
 	            if (win = 0) window = 0
 	            sb_drag = -1
 	            sb_val[i] = round(sb_val[i])
 	        } else {
-	            sb_val[i] += (mouse_y - sb_mprev) / (mwh / ms)
+	            sb_val[i] += (nbs_mouse_y() - sb_mprev) / (mwh / ms)
 	            sb_val[i] = median(0, sb_val[i], ms - s)
-	            sb_mprev = mouse_y
+	            sb_mprev = nbs_mouse_y()
 	            bpos = (sb_val[i] / ms) * (s * swh)
 	        }
 	    }
@@ -185,11 +187,11 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	        ind = 0
 	        if (mouse_rectangle(xx, yy + 16 + bpos, 16, bwh) && sb_drag = -1 && (window = 0 || win = 1)) {
 	            ind += 1
-	            if (mouse_check_button_pressed(mb_left)) {
+	            if (nbs_mouse_check_button_pressed(mb_left)) {
 	                sb_sel = i
 	                sb_drag = i
 	                if (win = 0) window = w_drag
-	                sb_mprev = mouse_y
+	                sb_mprev = nbs_mouse_y()
 	            }
 	        }
 	        if (sb_drag = i) ind = 2
@@ -211,7 +213,7 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 		
 	    }
 	    if (mouse_rectangle(xx, yy + 16, 16, bpos) && locked = 0 && (window = 0 || win = 1) && sb_drag = -1) {
-	        if (mouse_check_button(mb_left))  {
+	        if (nbs_mouse_check_button(mb_left))  {
 	            sb_press[i] -= 1
 	            sb_sel = i
 	            if (sb_press[i] = -1) {
@@ -226,7 +228,7 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	        }
 	    }
 	    if (mouse_rectangle(xx, yy + 16 + bpos + bwh, 16, mwh - (bpos + bwh)) && locked = 0 && (window = 0 || win = 1) && sb_drag = -1) {
-	        if (mouse_check_button(mb_left))  {
+	        if (nbs_mouse_check_button(mb_left))  {
 	            sb_press[i] -= 1
 	            sb_sel = i
 	            if (sb_press[i] = -1) {
@@ -246,7 +248,7 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	        ind += 1
 	        if (mouse_rectangle(xx, yy, 16, 16) && sb_drag = -1) {
 				ind += 1
-	            if (mouse_check_button(mb_left))  {
+	            if (nbs_mouse_check_button(mb_left))  {
 	                ind += 1
 	                sb_press[i] -= 1
 	                sb_sel = i
@@ -270,7 +272,7 @@ function draw_scrollbar(argument0, argument1, argument2, argument3, argument4, a
 	        ind += 1
 	        if (mouse_rectangle(xx, yy + mwh + 16, 16, 16) && sb_drag = -1) {
 				ind += 1
-	            if (mouse_check_button(mb_left))  {
+	            if (nbs_mouse_check_button(mb_left))  {
 	                ind += 1
 	                sb_press[i] -= 1
 	                sb_sel = i

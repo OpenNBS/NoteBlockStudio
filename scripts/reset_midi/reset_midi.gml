@@ -6,17 +6,24 @@ function reset_midi() {
 	midi_micsecqn = 0
 	midi_minpos = -1
 	midi_maxpos = 0
+	midi_songlength = 0
+	midi_duration_cache = [[0, 0], [0, 0]]
 	for (a = 0; a < midi_tracks; a += 1) {
 	    for (b = 0; b < midi_trackamount[a]; b += 1) {
 	        midi_eventx[a, b] = 0
 	        midi_eventnote[a, b] = 0
 	        midi_eventchannel[a, b] = 0
+	        midi_eventpatch[a, b] = 0
+	        midi_eventpart[a, b] = -1
+			midi_eventuntil[a, b] = -1
 	    }
 	    midi_trackname[a] = ""
 	    midi_trackamount[a] = 0
 	    midi_tracklength[a] = 0
 	}
 	midi_channels = 0
+	midi_parts = []
+	midi_part_lookup = {}
 	for (a = 0; a < 16; a += 1) {
 	    midi_channelpatch[a] = 0
 	    midi_channelins[a] = 0

@@ -1,38 +1,72 @@
+function datapack_runtime_objective(pack_name, functionpath) {
+	// Scoreboard objective names, including the _t/_s suffixes, must stay at or
+	// below 16 characters. Include a compact hash of the full resource path so
+	// two enabled exports with the same song name cannot drive the same scores.
+	var identity = string_lower(functionpath + pack_name)
+	var hash_value = 0
+	for (var i = 1; i <= string_length(identity); i++) hash_value = (hash_value * 131 + ord(string_char_at(identity, i))) mod 1679616
+	var digits = "0123456789abcdefghijklmnopqrstuvwxyz"
+	var hash_text = ""
+	for (var i = 0; i < 4; i++) {
+		hash_text = string_char_at(digits, (hash_value mod 36) + 1) + hash_text
+		hash_value = floor(hash_value / 36)
+	}
+	return "nbs_" + string_copy(string_lettersdigits(pack_name), 1, 5) + "_" + hash_text
+}
+
 function datapack_export() {
 	// datapack_export()
 	var fn, o
 	o = obj_controller
 
-	if (language != 1) {
-	if (o.dat_usezip) fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", dat_name + ".zip", "", "Data Pack Export"))
-	else fn = string(get_save_filename_ext("Data Pack Folder", dat_name, "", "Data Pack Export"))
+	var title = condstr(language != 1, "Data Pack Export", "导出数据包")
+	if (o.dat_usezip) {
+		fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", dat_name + ".zip", "", title))
+		if (fn == "") return false
+		fn = enforce_extension(fn, ".zip")
 	} else {
-	if (o.dat_usezip) fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", dat_name + ".zip", "", "导出数据包"))
-	if (o.dat_usezip) fn = fn + condstr(filename_ext(fn) != ".zip", ".zip")
-	else fn = string(get_save_filename_ext("数据包目录", dat_name, "", "导出数据包"))
+		// A folder picker grants access to the directory and its children.
+		var folder_title = condstr(language != 1,
+			"Choose where to create the data pack folder", "选择数据包文件夹的保存位置")
+		var parent = string(os_type == os_macosx
+			? macos_choose_directory(folder_title) : get_directory_alt(folder_title, ""))
+		if (parent == "") return false
+		var folder_name = filename_name(string_replace_all(dat_name, "\\", "/"))
+		fn = parent + "/" + folder_name
+		if (directory_exists_lib(fn) && !question(condstr(language != 1,
+			"Replace matching files in this data pack folder? Other files will be kept.\n\n" + fn,
+			"替换此数据包文件夹中的同名文件？其他文件将保留。\n\n" + fn), title)) return false
 	}
-	if (fn = "") return 0
+	var tempdir = ""
+	var archive_path = ""
+	var functionpath = ""
+	var export_succeeded = false
+	var export_error = ""
 
 	window = -1
 	calculate_locked_layers()
 
 	with (create(obj_dummy2)) {
+	try {
 		// Initialize variables
 		var name = string_path(o.dat_name)
 		var namespace = string_path(o.dat_namespace)
 		var path = dat_getpath(o.dat_path)
-		var objective = "nbs_" + string_copy(string_lettersdigits(o.dat_name), 1, 10)
-		var tag = objective
+		var objective
+		var tag
 		
 		// https://minecraft.wiki/w/Pack_format
 		var pack_format = (o.dat_mcversion == 0) ? 41 : 48
 		// https://minecraft.wiki/w/Java_Edition_1.21#Command_format_2
 		var function_registry = (o.dat_mcversion == 0) ? "functions" : "function";
 
-		var playspeed = min(round(o.tempo * 4), 120)
-		var rootfunction = "0_" + string(power(2, floor(log2(o.enda))+1)-1)
-		var tempdir
-		var functionpath
+		var sound_plan = minecraft_export_build_plan(
+			"datapack", o.dat_source, o.dat_allowed_sources, o.dat_includelocked,
+			o.dat_includeoutofrange, o.dat_enableradius, false, 10,
+			o.dat_enablelooping, true
+		)
+		var playspeed = minecraft_export_snapped_speed(minecraft_export_tempo_at_tick(o.songs[o.song], 0, o.dat_includelocked))
+		var rootfunction = "0_" + string(power(2, floor(log2(max(1, o.songs[o.song].enda)))+1)-1)
 		var functiondir
 		var inputString
 		var add_teams = (o.dat_visualizer && o.dat_glow)
@@ -48,45 +82,51 @@ function datapack_export() {
 			path += "/" + name
 			functionpath = namespace+":"+path+"/"
 		}
+		objective = datapack_runtime_objective(o.dat_name, functionpath)
+		tag = objective
 	
-		// Create folder structure
-		tempdir = data_directory + "TempDatapack\\"
-		if (directory_exists_lib(tempdir)) {
-			directory_delete_lib(tempdir)
-		}
-		functiondir = dat_makefolders(path, namespace, function_registry)
+		// Use a fresh folder so cleanup cannot remove the chosen destination.
+		python_initialize_for_exports()
+		var staging_path = python_call_function("datapack_export", "create_staging_directory", [game_save_id], {})
+		if (!is_string(staging_path) || staging_path == "") throw "Could not create the temporary data pack folder"
+		tempdir = staging_path + "/"
+		archive_path = tempdir + "export.zip"
+		functiondir = dat_makefolders(tempdir, path, namespace, function_registry)
 	
 		//pack.mcmeta
-		inputString = "{\n\t\"pack\": {\n\t\t\"pack_format\": " + string(pack_format) + ",\n\t\t\"description\": \"" + o.dat_name + "\\nMade with Note Block Studio\"\n\t}\n}"
+		inputString = json_stringify({pack: {pack_format: pack_format, description: o.dat_name + "\nMade with Note Block Studio"}})
 		dat_writefile(inputString, tempdir + "pack.mcmeta")
 	
 		//Minecraft folder:
 	
 		//load.json
 		inputString = "{\"values\": [\"" + functionpath + "load\"]}"
-		dat_writefile(inputString, tempdir + "data\\minecraft\\tags\\" + function_registry + "\\load.json")
+		dat_writefile(inputString, tempdir + "data/minecraft/tags/" + function_registry + "/load.json")
 	
 		//tick.json
 		inputString = "{\"values\": [\"" + functionpath + "tick\"]}"
-		dat_writefile(inputString, tempdir + "data\\minecraft\\tags\\" + function_registry + "\\tick.json")
+		dat_writefile(inputString, tempdir + "data/minecraft/tags/" + function_registry + "/tick.json")
 	
 		//Song folder:
 	
 		//load.mcfunction
 		inputString = "scoreboard objectives add " + objective + " dummy" + br
 		inputString += "scoreboard objectives add " + objective + "_t dummy" + br
-		inputString += "scoreboard players set speed " + objective + " " + string(playspeed)
+		inputString += "scoreboard objectives add " + objective + "_s dummy"
 		dat_writefile(inputString, functiondir + "load.mcfunction")
 	
 		//tick.mcfunction
-		inputString = "execute as @a[tag=" + tag + "] run scoreboard players operation @s " + objective + " += speed " + objective + br
+		inputString = "execute as @a[tag=" + tag + "] run scoreboard players operation @s " + objective + " += @s " + objective + "_s" + br
 		if(o.dat_enableradius) inputString += "execute as @a[tag=" + tag + "] run function " + functionpath + "tree/" + rootfunction
 		else inputString += "execute as @a[tag=" + tag + "] at @s run function " + functionpath + "tree/" + rootfunction
 		dat_writefile(inputString, functiondir + "tick.mcfunction")
 	
 		//play.mcfunction
 		inputString = "tag @s add " + tag + br
-		inputString += "scoreboard players set @s " + objective + "_t -1" + br
+		inputString += "scoreboard players add @s " + objective + " 0" + br
+		inputString += "execute unless score @s " + objective + "_t matches -2147483648..2147483647 run scoreboard players set @s " + objective + "_t -1" + br
+		inputString += "scoreboard players add @s " + objective + "_s 0" + br
+		inputString += "execute if score @s " + objective + "_s matches ..0 run scoreboard players set @s " + objective + "_s " + string(playspeed) + br
 		if (add_teams) {
 			inputString += "function " + functionpath + "add_teams"
 		}
@@ -99,16 +139,23 @@ function datapack_export() {
 		//stop.mcfunction
 		inputString = "tag @s remove " + tag + br
 		inputString += "scoreboard players reset @s " + objective + br
-		inputString += "scoreboard players reset @s " + objective + "_t"
+		inputString += "scoreboard players reset @s " + objective + "_t" + br
+		inputString += "scoreboard players reset @s " + objective + "_s"
 		if (add_teams) {
 			inputString += br + "function " + functionpath + "remove_teams"
 		}
 		dat_writefile(inputString, functiondir + "stop.mcfunction")
+
+		//restart.mcfunction
+		inputString = "function " + functionpath + "stop" + br
+		inputString += "function " + functionpath + "play"
+		dat_writefile(inputString, functiondir + "restart.mcfunction")
 	
 		//uninstall.mcfunction
 		inputString = "tag @e remove " + tag + br
 		inputString += "scoreboard objectives remove " + objective + br
 		inputString += "scoreboard objectives remove " + objective + "_t" + br
+		inputString += "scoreboard objectives remove " + objective + "_s" + br
 		if (add_teams) {
 			inputString += "kill @e[type=falling_block,tag=nbs]" + br
 			inputString += "function " + functionpath + "remove_teams" + br
@@ -181,22 +228,54 @@ function datapack_export() {
 		}
 	
 		//Generate binary tree and notes
-		dat_generate(functionpath, functiondir, objective)
+		dat_generate(functionpath, functiondir, objective, sound_plan)
+		minecraft_export_log_report(sound_plan, o.dat_source, "Data pack")
 	
-		// Execute shell command to create ZIP, or to move temp folder to location
+		// Package in-process so errors reach GML and paths need no shell quoting.
 		if (o.dat_usezip) {
-			ExecuteShell("7za a -tzip \"" + fn + "\" \"" + data_directory + "TempDatapack\\*\"", true, true)
+			if (python_call_function("datapack_export", "create_zip", [tempdir, archive_path], {}) != true)
+				throw "Could not create the data-pack archive"
+			var zip_buffer = buffer_load(archive_path)
+			if (zip_buffer < 0) throw "Could not read the data-pack archive"
+			try {
+				buffer_seek(zip_buffer, buffer_seek_start, buffer_get_size(zip_buffer))
+				export_succeeded = buffer_export(zip_buffer, fn)
+			} catch (e) {
+				buffer_delete(zip_buffer)
+				throw e
+			}
+			buffer_delete(zip_buffer)
 		} else {
-			ExecuteShell("\"" + data_directory + "move.bat\" \"" + fn + "\\\"", true, true)
+			export_succeeded = python_call_function("datapack_export", "copy_folder", [tempdir, fn], {}) == true
 		}
-	
-		directory_delete_lib(tempdir)
+		if (!export_succeeded) throw "Could not write the data pack to its destination"
+	} catch (e) {
+		export_error = string(e)
+		export_succeeded = false
+	}
 		instance_destroy()
 	}
 
-	if (language != 1) message("Data pack saved!" + br + br + br + "To play the song in-game, use:" + br + br + "/function " + functionpath + "play" + br + "/function " + functionpath + "pause" + br + "/function " + functionpath + "stop" + br + br + br + "To play the song using a command block or function, use:" + br + br + "/execute as @p at @s run function " + functionpath + "play" + br + br + "(Replace @p with the player(s) you want to play the song to.)" + br + br + br + "If you wish to uninstall it from your world, run:" + br + br + "/function " + functionpath + "uninstall" + br + br + "and then remove it from the 'datapacks' folder.","Data Pack Export")
-	else message("数据包已保存！" + br + br + "如想在游戏内播放，使用命令：" + br + br + "/function " + functionpath + "play" + br + "/function " + functionpath + "pause" + br + "/function " + functionpath + "stop" + br + br + "如果你想从你的世界中卸载它，" + br + "使用命令：" + br + br + "/function " + functionpath + "uninstall" + br + br + "然后从“datapacks”文件夹" + br + "取出就行了。","导出数据包")
+	// Cleanup is limited to our staging files. A cleanup error does not invalidate
+	// an export that has already been verified at the chosen destination.
+	try {
+		if (tempdir != "" && python_call_function("datapack_export", "clear_staging_directory", [tempdir], {}) != true)
+			throw "Could not clear the temporary data pack folder"
+	} catch (e) {
+		show_debug_message("Could not remove data-pack staging files: " + string(e))
+	}
 	window = w_datapack_export
+	if (!export_succeeded) {
+		show_debug_message("Data-pack export failed: " + export_error)
+		widget_set_caption(title)
+		show_message(condstr(language != 1,
+			"The data pack could not be exported.\n\nCheck that the destination is writable and has enough free space, then try again.",
+			"无法导出数据包。\n\n请确认保存位置可写且有足够的可用空间，然后重试。"))
+		return false
+	}
 
+	if (language != 1) message("Data pack saved!" + br + fn + br + br + "To play the song in-game, use:" + br + br + "/function " + functionpath + "play" + br + "/function " + functionpath + "pause" + br + "/function " + functionpath + "stop" + br + br + br + "To play the song using a command block or function, use:" + br + br + "/execute as @p at @s run function " + functionpath + "play" + br + br + "(Replace @p with the player(s) you want to play the song to.)" + br + br + br + "If you wish to uninstall it from your world, run:" + br + br + "/function " + functionpath + "uninstall" + br + br + "and then remove it from the 'datapacks' folder.","Data Pack Export")
+	else message("数据包已保存！" + br + fn + br + br + "如想在游戏内播放，使用命令：" + br + br + "/function " + functionpath + "play" + br + "/function " + functionpath + "pause" + br + "/function " + functionpath + "stop" + br + br + "如果你想从你的世界中卸载它，" + br + "使用命令：" + br + br + "/function " + functionpath + "uninstall" + br + br + "然后从“datapacks”文件夹" + br + "取出就行了。","导出数据包")
+	return true
 
 }

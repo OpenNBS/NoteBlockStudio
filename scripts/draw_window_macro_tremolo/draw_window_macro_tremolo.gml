@@ -1,7 +1,7 @@
 function draw_window_macro_tremolo() {
 	// draw_window_macro_tremolo()
 	var x1, y1;
-	if (selected == 0) {
+	if (songs[song].selected == 0) {
 		window = 0
 		return 0
 	}
@@ -70,12 +70,13 @@ function draw_window_macro_tremolo() {
 		if tremolotype = 0 macro_tremolo()
 		else if tremolotype = 1 macro_tremolo_fadein()
 		else if tremolotype = 2 macro_tremolo_fadeout()
+		songs[song].changed = 1
 		windowalpha = 0
 		windowclose = 0
 		windowopen = 0
 		window = 0
 	}
-	if (draw_button2(x1 + 80, y1 + 215, 60, condstr(language != 1, "Cancel", "取消")) && (windowopen = 1 || theme != 3)) {windowclose = 1}
+	if (draw_button2(x1 + 80, y1 + 215, 60, condstr(language != 1, "Cancel", "取消"), false, true) && (windowopen = 1 || theme != 3)) {windowclose = 1}
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) {
 		window_set_cursor(curs)
 		if (array_length(text_mouseover) = 0) window_set_cursor(cr_default)

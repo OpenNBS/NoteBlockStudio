@@ -1,7 +1,7 @@
 function draw_window_macro_setpanning() {
 	// draw_window_setpanning()
 	var x1, y1, a, b, str, total_vals, val, decr, inc;
-	if (selected == 0) {
+	if (songs[song].selected == 0) {
 		window = 0
 		return 0
 	}
@@ -34,9 +34,10 @@ function draw_window_macro_setpanning() {
 		windowopen = 0
 		window = 0
 		selection_change(m_pan, setpan + 100, false)
+		songs[song].changed = 1
 		if(!keyboard_check(vk_alt)) selection_place(false)
 	}
-	if (draw_button2(x1 + 70, y1 + 98, 60, condstr(language !=1, "Cancel", "取消")) && (windowopen = 1 || theme != 3)) {windowclose = 1}
+	if (draw_button2(x1 + 70, y1 + 98, 60, condstr(language !=1, "Cancel", "取消"), false, true) && (windowopen = 1 || theme != 3)) {windowclose = 1}
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) {
 		window_set_cursor(curs)
 		if (array_length(text_mouseover) = 0) window_set_cursor(cr_default)

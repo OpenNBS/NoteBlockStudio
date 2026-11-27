@@ -5,7 +5,7 @@ function schematic_end() {
 
 	// By David "Davve" Norgren for GMschematic - www.stuffbydavid.com
 
-	external_free(global.path_gmbinfile);
+	if (os_type = os_windows) external_free(global.path_gmbinfile);
 
 
 }

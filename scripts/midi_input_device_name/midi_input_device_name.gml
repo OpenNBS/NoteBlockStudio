@@ -6,7 +6,7 @@ function midi_input_device_name(argument0) {
 
 	//  By David "Davve" Norgren for MIDI input - www.stuffbydavid.com
 
-	return external_call(lib_midi_input_device_name, argument0);
+	return rtmidi_name_in(argument0)
 
 
 

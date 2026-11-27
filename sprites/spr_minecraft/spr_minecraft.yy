@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "spr_minecraft",
   "bboxMode": 0,
   "collisionKind": 1,
   "type": 0,
@@ -14,6 +17,7 @@
   "HTile": false,
   "VTile": false,
   "For3D": false,
+  "DynamicTexturePage": false,
   "width": 20,
   "height": 20,
   "textureGroupId": {
@@ -24,18 +28,14 @@
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"compositeImage":{"FrameId":{"name":"61867e0e-1cda-4186-b7c2-31e9ac65f8e1","path":"sprites/spr_minecraft/spr_minecraft.yy",},"LayerId":null,"resourceVersion":"1.0","name":"composite","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"61867e0e-1cda-4186-b7c2-31e9ac65f8e1","path":"sprites/spr_minecraft/spr_minecraft.yy",},"LayerId":{"name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","path":"sprites/spr_minecraft/spr_minecraft.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_minecraft","path":"sprites/spr_minecraft/spr_minecraft.yy",},"resourceVersion":"1.0","name":"61867e0e-1cda-4186-b7c2-31e9ac65f8e1","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"b75fa22e-07bf-4f57-ac9a-7fc38ba57651","path":"sprites/spr_minecraft/spr_minecraft.yy",},"LayerId":null,"resourceVersion":"1.0","name":"composite","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"b75fa22e-07bf-4f57-ac9a-7fc38ba57651","path":"sprites/spr_minecraft/spr_minecraft.yy",},"LayerId":{"name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","path":"sprites/spr_minecraft/spr_minecraft.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_minecraft","path":"sprites/spr_minecraft/spr_minecraft.yy",},"resourceVersion":"1.0","name":"b75fa22e-07bf-4f57-ac9a-7fc38ba57651","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"d93f5da1-5486-4262-91d0-07513e6a9408","path":"sprites/spr_minecraft/spr_minecraft.yy",},"LayerId":null,"resourceVersion":"1.0","name":"composite","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"d93f5da1-5486-4262-91d0-07513e6a9408","path":"sprites/spr_minecraft/spr_minecraft.yy",},"LayerId":{"name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","path":"sprites/spr_minecraft/spr_minecraft.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_minecraft","path":"sprites/spr_minecraft/spr_minecraft.yy",},"resourceVersion":"1.0","name":"d93f5da1-5486-4262-91d0-07513e6a9408","tags":[],"resourceType":"GMSpriteFrame",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"61867e0e-1cda-4186-b7c2-31e9ac65f8e1",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"b75fa22e-07bf-4f57-ac9a-7fc38ba57651",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"d93f5da1-5486-4262-91d0-07513e6a9408",},
   ],
   "sequence": {
-    "spriteId": {"name":"spr_minecraft","path":"sprites/spr_minecraft/spr_minecraft.yy",},
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "spr_minecraft",
     "timeUnits": 1,
     "playback": 1,
     "playbackSpeed": 1.0,
@@ -46,11 +46,11 @@
     "events": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MessageEventKeyframe>",},
     "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MomentsEventKeyframe>",},
     "tracks": [
-      {"name":"frames","spriteId":null,"keyframes":{"Keyframes":[
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","spriteId":null,"keyframes":{"Keyframes":[
             {"id":"737c71c2-d0c0-4fc6-958c-01cb31827349","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"61867e0e-1cda-4186-b7c2-31e9ac65f8e1","path":"sprites/spr_minecraft/spr_minecraft.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"00e89e15-5aaf-450d-aa80-e5166a2d5bbb","Key":1.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"b75fa22e-07bf-4f57-ac9a-7fc38ba57651","path":"sprites/spr_minecraft/spr_minecraft.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"e5d21065-538d-450e-96b7-c6989d89f60f","Key":2.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"d93f5da1-5486-4262-91d0-07513e6a9408","path":"sprites/spr_minecraft/spr_minecraft.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
-          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
+          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"modifiers":[],},
     ],
     "visibleRange": null,
     "lockOrigin": false,
@@ -66,22 +66,13 @@
     "yorigin": 0,
     "eventToFunction": {},
     "eventStubScript": null,
-    "parent": {"name":"spr_minecraft","path":"sprites/spr_minecraft/spr_minecraft.yy",},
-    "resourceVersion": "1.4",
-    "name": "spr_minecraft",
-    "tags": [],
-    "resourceType": "GMSequence",
   },
   "layers": [
-    {"visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default","resourceVersion":"1.0","name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","tags":[],"resourceType":"GMImageLayer",},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"fb02363e-9d7e-4951-9f98-0eb91274e7c7","visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default",},
   ],
   "nineSlice": null,
   "parent": {
     "name": "Other",
     "path": "folders/Sprites/Other.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "spr_minecraft",
-  "tags": [],
-  "resourceType": "GMSprite",
 }

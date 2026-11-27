@@ -1,6 +1,6 @@
 function draw_window_preferences() {
 	// draw_window_preferences()
-	var x1, y1, a, b, c, as, stabx, stabw, nsel, str, accentclick;
+	var x1, y1, a, b, c, as, stabx, stabw, nsel, str, strw, accentclick;
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
@@ -40,41 +40,24 @@ function draw_window_preferences() {
 	str[4] = "播放"
 	}
 	}
-	if (theme = 3) {
-		c = (mouse_check_button(mb_left))
-		if (mouse_rectangle(x1, y1 + 30, 40, 40)) {
-			draw_set_color(15395562)
-			if (fdark) draw_set_color(4539717)
-			if (c) {
-				draw_set_color(15658734)
-				if (fdark) draw_set_color(5789784)
-			}
-			draw_roundrect(x1 + 1, y1 + 31, x1 + 41, y1 + 67, 0)
-			if (mouse_check_button_released(mb_left) && windowopen = 1) {
-				if (windowsound && theme = 3) play_sound(soundgoback, 45, 100, 100, 0)
-				windowclose = 1
-			}
-		}
-		if (!hires) draw_sprite(spr_back, fdark + 2 * (c && mouse_rectangle(x1, y1 + 30, 40, 40)), x1 + 14, y1 + 30 + 12)
-		else draw_sprite_ext(spr_back_hires, fdark + 2 * (c && mouse_rectangle(x1, y1 + 30, 40, 40)), x1 + 14, y1 + 30 + 12, 0.25, 0.25, 0, -1, draw_get_alpha())
-	}
 	if (theme = 1) {
 	    draw_window(x1 + 4, y1 + 45, x1 + 496, y1 + 474 - isplayer * 100)
 	}
 	if (theme != 3) {
 	for (a = 0; a < array_length(str); a += 1) {
-	    c = mouse_rectangle(x1 + b, y1 + 28, string_width_dynamic(str[a]) + 12, 18)
+		strw = string_width_dynamic(str[a])
+	    c = mouse_rectangle(x1 + b, y1 + 28, strw + 12, 18)
 	    if (selected_tab = a) {
 	        stabx = b - 2
-	        stabw = string_width_dynamic(str[a]) + 15
+	        stabw = strw + 15
 	    } else {
 			draw_sprite(spr_tabbuttons, 0 + 3 * c + 6 * theme, x1 + b, y1 + 28)
-			draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme, x1 + b + 2, y1 + 28, string_width_dynamic(str[a]) / 2 + 4, 1, 0, -1, draw_get_alpha())
-			draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme, x1 + b + string_width_dynamic(str[a]) + 10, y1 + 28)	
+			draw_sprite_ext(spr_tabbuttons, 1 + 3 * c + 6 * theme, x1 + b + 2, y1 + 28, strw / 2 + 4, 1, 0, -1, draw_get_alpha())
+			draw_sprite(spr_tabbuttons, 2 + 3 * c + 6 * theme, x1 + b + strw + 10, y1 + 28)
 	        draw_text_dynamic(x1 + b + 6, y1 + 30, str[a])
 	    }
-	    if (mouse_check_button_pressed(mb_left) && c) nsel = a
-	    b += string_width_dynamic(str[a]) + 12
+	    if (nbs_mouse_check_button_pressed(mb_left) && c) nsel = a
+	    b += strw + 12
 	}
 	if (theme = 0 || theme = 2 || theme = 3) {
 	    draw_set_color(c_white)
@@ -85,7 +68,7 @@ function draw_window_preferences() {
 	    draw_set_color(c_white)
 		if(theme = 2 || (fdark && theme = 3)) draw_set_color(c_dark)
 	    if (theme = 3) {
-			draw_roundrect(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 25, 0)
+			draw_rectircle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 25, 0)
 		} else {
 			draw_rectangle(x1 + stabx, y1 + 26, x1 + stabx + stabw, y1 + 26 + 20, 0)
 		}
@@ -97,7 +80,7 @@ function draw_window_preferences() {
 	    draw_theme_color()
 	    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab])
 	    draw_set_color(make_color_rgb(213, 223, 229))
-	    if(theme = 0) draw_roundrect(x1 + 10, y1 + 50, x1 + 490, y1 + 468 - isplayer * 100, 1)
+	    if(theme = 0) draw_rectircle(x1 + 10, y1 + 50, x1 + 490, y1 + 468 - isplayer * 100, 1)
 	}else{
 	    draw_sprite(spr_tabbuttons, 24, x1 + stabx - 1, y1 + 26)
 	    draw_sprite_ext(spr_tabbuttons, 25, x1 + stabx + 1, y1 + 26, stabw / 2 - 1, 1, 0, -1, 1)
@@ -105,53 +88,13 @@ function draw_window_preferences() {
 	    draw_text_dynamic(x1 + stabx + 8, y1 + 28, str[selected_tab])
 	}
 	} else {
-	draw_theme_font(font_med)
-	for (a = 0; a < array_length(str); a += 1) {
-		draw_set_color(c_black)
-		if (fdark) draw_set_color(c_white)
-	    c = mouse_rectangle(x1 + b, y1 + 28 + 21 - 19, string_width_dynamic(str[a]) + 12, 18 + 21)
-	    if (selected_tab = a) {
-			//draw_set_color(accent[7])
-			//if (fdark) draw_set_color(accent[8])
-	        //draw_line(x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 8, y1 + 30 + 21 + 18 - 6, x1 + b + 5 + string_width_dynamic(str[a]) / 2 + 8, y1 + 30 + 21 + 18 - 6)
-	        //draw_line(x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 8, y1 + 30 + 21 + 20 - 6, x1 + b + 5 + string_width_dynamic(str[a]) / 2 + 8, y1 + 30 + 21 + 20 - 6)
-			//draw_set_color(accent[6])
-			//if (fdark) draw_set_color(accent[2])
-	        //draw_line(x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 7, y1 + 30 + 21 + 18 - 6, x1 + b + 5 + string_width_dynamic(str[a]) / 2 + 7, y1 + 30 + 21 + 18 - 6)
-	        //draw_line(x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 8, y1 + 30 + 21 + 19 - 6, x1 + b + 5 + string_width_dynamic(str[a]) / 2 + 8, y1 + 30 + 21 + 19 - 6)
-	        //draw_line(x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 7, y1 + 30 + 21 + 20 - 6, x1 + b + 5 + string_width_dynamic(str[a]) / 2 + 7, y1 + 30 + 21 + 20 - 6)
-			//draw_set_color(accent[4])
-	        //draw_line(x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 6, y1 + 30 + 21 + 18 - 6, x1 + b + 5 + string_width_dynamic(str[a]) / 2 + 6, y1 + 30 + 21 + 18 - 6)
-	        //draw_line(x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 7, y1 + 30 + 21 + 19 - 6, x1 + b + 5 + string_width_dynamic(str[a]) / 2 + 7, y1 + 30 + 21 + 19 - 6)
-	        //draw_line(x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 6, y1 + 30 + 21 + 20 - 6, x1 + b + 5 + string_width_dynamic(str[a]) / 2 + 6, y1 + 30 + 21 + 20 - 6)
-			draw_sprite_ext(spr_tabsel, 2 * hires, x1 + b + 5 + string_width_dynamic(str[a]) / 2 - 6, y1 + 30 + 21 + 18 - 6, 1 - 0.75 * hires, 1 - 0.75 * hires, 0, accent[4], draw_get_alpha())
-			draw_set_color(c_black)
-			if (fdark) draw_set_color(c_white)
-	    }
-		if (mouse_check_button(mb_left) && c) {
-			// draw_sprite(spr_tabbuttons_f, 6 + 9 * fdark, x1 + b, y1 + 28 + 21 - 19)
-			// draw_sprite_ext(spr_tabbuttons_f, 7 + 9 * fdark, x1 + b + 2, y1 + 28 + 21 - 19, string_width_dynamic(str[a]) / 2 + 4, 1, 0, -1, 1)
-			// draw_sprite(spr_tabbuttons_f, 8 + 9 * fdark, x1 + b + string_width_dynamic(str[a]) + 10, y1 + 28 + 21 - 19)	
-			draw_set_color(7631988)
-			if (fdark) draw_set_color(11579568)
-			if (selected_tab = a) draw_set_color(10000536)
-			if (selected_tab = a && fdark) draw_set_color(10724259)
-		} else if (c) {
-			// draw_sprite(spr_tabbuttons_f, 0 + 3 * c + 9 * fdark, x1 + b, y1 + 28 + 21 - 19)
-			// draw_sprite_ext(spr_tabbuttons_f, 1 + 3 * c + 9 * fdark, x1 + b + 2, y1 + 28 + 21 - 19, string_width_dynamic(str[a]) / 2 + 4, 1, 0, -1, 1)
-			// draw_sprite(spr_tabbuttons_f, 2 + 3 * c + 9 * fdark, x1 + b + string_width_dynamic(str[a]) + 10, y1 + 28 + 21 - 19)	
-			if (selected_tab = a) draw_set_color(7631988)
-			if (selected_tab = a && fdark) draw_set_color(11579568)
-		}
-	    draw_text_dynamic(x1 + b + 6, y1 + 30 + 21 - 8, str[a])
-	    if (mouse_check_button_released(mb_left) && c) nsel = a
-	    b += string_width_dynamic(str[a]) + 12
-	}
+		draw_theme_font(font_med)
+		nsel = draw_navigationview(x1, y1 + 30, str, selected_tab)
 	}
 	if (nsel > -1) selected_tab = nsel
 	selected_tab += keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left)
-	if (selected_tab < 0) selected_tab = 4
-	if (selected_tab > 4) selected_tab = 0
+	if (selected_tab < 0) selected_tab = array_length(str) - 1
+	if (selected_tab >= array_length(str)) selected_tab = 0
 	draw_theme_color()
 	if (selected_tab = 0) {
 		if (theme = 3) draw_theme_font(font_info_med)
@@ -163,36 +106,38 @@ function draw_window_preferences() {
 		} else { 
 			if (draw_checkbox(x1 + 40, y1 + 90 + (theme = 3) * 22, show_welcome, "显示欢迎界面", "打开软件时是否显示欢迎界面。", false, true)) show_welcome=!show_welcome
 		}
-		if (language != 1) {
-			if (draw_checkbox(x1 + 40, y1 + 110 + (theme = 3) * 22, check_update, "Check for updates", "Whether to check for any updates\nwhen the program is opened.", false, true)) check_update=!check_update
-			if (draw_checkbox(x1 + 60, y1 + 130 + (theme = 3) * 22, check_prerelease, "Check for development versions", "Whether to check for development versions in addition to stable releases.\nDevelopment versions contain the latest improvements, but may be potentially unstable.", !check_update, false)) {
-				check_prerelease = !check_prerelease
-				if (!is_prerelease && check_prerelease) {
-					if (!message_yesnocancel("Development versions are experimental and may be unstable. To avoid data corruption, it's highly recommended that you install Note Block Studio to a separate directory before enabling this option.\n\nProceed?", "Warning")) {
-						check_prerelease = !check_prerelease // undo button check
-					}
-				} else if (is_prerelease && !check_prerelease) {
-					if (!message_yesnocancel("You're currently running a development version of Note Block Studio. By disabling this option, you will be prompted to downgrade to the latest stable version the next time you open the program.\n\nProceed?", "Warning")) {
-						check_prerelease = !check_prerelease // undo button uncheck
+		if (os_type != os_macosx || macos_install_channel == "direct") {
+			if (language != 1) {
+				if (draw_checkbox(x1 + 40, y1 + 110 + (theme = 3) * 22, check_update, "Check for updates", "Whether to check for any updates\nwhen the program is opened.", false, true)) check_update=!check_update
+				if (draw_checkbox(x1 + 60, y1 + 130 + (theme = 3) * 22, check_prerelease, "Check for development versions", "Whether to check for development versions in addition to stable releases.\nDevelopment versions contain the latest improvements, but may be potentially unstable.", !check_update, false)) {
+					check_prerelease = !check_prerelease
+					if (!is_prerelease && check_prerelease) {
+						if (!message_yesnocancel("Development versions are experimental and may be unstable. To avoid data corruption, it's highly recommended that you install Note Block Studio to a separate directory before enabling this option.\n\nProceed?", "Warning")) {
+							check_prerelease = !check_prerelease // undo button check
+						}
+					} else if (is_prerelease && !check_prerelease) {
+						if (!message_yesnocancel("You're currently running a development version of Note Block Studio. By disabling this option, you will be prompted to downgrade to the latest stable version the next time you open the program.\n\nProceed?", "Warning")) {
+							check_prerelease = !check_prerelease // undo button uncheck
+						}
 					}
 				}
-			}
-		} else {
-			if (draw_checkbox(x1 + 40, y1 + 110 + (theme = 3) * 22, check_update, "检查更新", "打开软件时是否检查更新。", false, true)) check_update=!check_update
-			if (draw_checkbox(x1 + 60, y1 + 130 + (theme = 3) * 22, check_prerelease, "检查开发版本", "是否在稳定版之外额外检测开发版。\n开发版本包含最新的内容，但可能不稳定。", !check_update, false)) {
-				check_prerelease = !check_prerelease
-				if (!is_prerelease && check_prerelease) {
-					if (!message_yesnocancel("开发版本仍在测试中，可能会不稳定。为了防止数据损坏，强烈建议您在开启该选项前将 Note Block Studio 安装到一个单独的目录。\n\n继续吗？", "警告")) {
-						check_prerelease = !check_prerelease // undo button check
-					}
-				} else if (is_prerelease && !check_prerelease) {
-					if (!message_yesnocancel("您正在运行一个 Note Block Studio 的开发版本。关闭这个选项后，在下次开启此程序时您将会被提示降级至最新的稳定版。\n\n继续吗？", "警告")) {
-						check_prerelease = !check_prerelease // undo button uncheck
+			} else {
+				if (draw_checkbox(x1 + 40, y1 + 110 + (theme = 3) * 22, check_update, "检查更新", "打开软件时是否检查更新。", false, true)) check_update=!check_update
+				if (draw_checkbox(x1 + 60, y1 + 130 + (theme = 3) * 22, check_prerelease, "检查开发版本", "是否在稳定版之外额外检测开发版。\n开发版本包含最新的内容，但可能不稳定。", !check_update, false)) {
+					check_prerelease = !check_prerelease
+					if (!is_prerelease && check_prerelease) {
+						if (!message_yesnocancel("开发版本仍在测试中，可能会不稳定。为了防止数据损坏，强烈建议您在开启该选项前将 Note Block Studio 安装到一个单独的目录。\n\n继续吗？", "警告")) {
+							check_prerelease = !check_prerelease // undo button check
+						}
+					} else if (is_prerelease && !check_prerelease) {
+						if (!message_yesnocancel("您正在运行一个 Note Block Studio 的开发版本。关闭这个选项后，在下次开启此程序时您将会被提示降级至最新的稳定版。\n\n继续吗？", "警告")) {
+							check_prerelease = !check_prerelease // undo button uncheck
+						}
 					}
 				}
 			}
 		}
-		if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+		if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 		// Auto-saving
 		if (!isplayer) {
 		if (theme = 3) draw_theme_font(font_info_med)
@@ -217,7 +162,7 @@ function draw_window_preferences() {
 		    else draw_text_dynamic(x1 + 326, y1 + 110 + (theme = 3) * 22, "间隔:            分钟")
 			as = autosavemins
 			autosavemins = median(1, draw_dragvalue(2, x1 + 375, y1 + 110 + (theme = 3) * 22, autosavemins, 1), 60)
-			if (autosavemins != a) {tonextsave = autosavemins}
+			if (autosavemins != as) {tonextsave = autosavemins}
 		}
 		if (language != 1) popup_set_window(x1 + 326, y1 + 110 + (theme = 3) * 22, 180, 16, "The amount of minutes between each auto-save.")
 		else popup_set_window(x1 + 326, y1 + 110 + (theme = 3) * 22, 180, 16, "自动保存中间的间隔。")
@@ -231,7 +176,7 @@ function draw_window_preferences() {
 		if (theme = 3) draw_theme_font(font_main)
 		if (language != 1) {
 		if (draw_checkbox(x1 + 40, y1 + 200 + (theme = 3) * 22, show_oldwarning, "Show warning when opening older songs", "Whether to show a warning when opening a song\nsaved in an older version of Note Block Studio.", false, true)) show_oldwarning = !show_oldwarning
-		draw_text_dynamic(x1 + 40, y1 + 230 + (theme = 3) * 22, "Song folder: " + string_truncate(songfolder, 340), true)
+		draw_text_dynamic(x1 + 40, y1 + 230 + (theme = 3) * 22, "Song folder: " + string_truncate(string_replace(songfolder, "/Library/Containers/org.opennbs.onbs/Data", ""), 340), true)
 	    popup_set_window(x1 + 40, y1 + 230 + (theme = 3) * 22, 430, 18, songfolder)
 	    if (draw_button2(x1 + 40, y1 + 246 + (theme = 3) * 22, 76, "Open", 0, 1)) {
 	        if (!directory_exists_lib(songfolder)) {
@@ -247,7 +192,7 @@ function draw_window_preferences() {
 	    }
 	    if (draw_button2(x1 + 40 + 84 + 84, y1 + 246 + (theme = 3) * 22, 96, "Use default", 0, 1)) songfolder = songs_directory
 	
-		draw_text_dynamic(x1 + 40, y1 + 280 + (theme = 3) * 22, "Pattern folder: " + string_truncate(patternfolder, 340), true)
+		draw_text_dynamic(x1 + 40, y1 + 280 + (theme = 3) * 22, "Pattern folder: " + string_truncate(string_replace(patternfolder, "/Library/Containers/org.opennbs.onbs/Data", ""), 340), true)
 	    popup_set_window(x1 + 40, y1 + 280 + (theme = 3) * 22, 430, 18, patternfolder)
 	    if (draw_button2(x1 + 40, y1 + 296 + (theme = 3) * 22, 76, "Open", 0, 1)) {
 	        if (!directory_exists_lib(patternfolder)) {
@@ -264,7 +209,7 @@ function draw_window_preferences() {
 	    if (draw_button2(x1 + 40 + 84 + 84, y1 + 296 + (theme = 3) * 22, 96, "Use default", 0, 1)) patternfolder = pattern_directory
 		} else {
 		if (draw_checkbox(x1 + 40, y1 + 200 + (theme = 3) * 22, show_oldwarning, "打开旧版格式时提示", "打开在旧版 Note Block Studio 中保存的文件时是否显示警告。", false, true)) show_oldwarning = !show_oldwarning
-		draw_text_dynamic(x1 + 40, y1 + 230 + (theme = 3) * 22, "歌曲路径: " + string_truncate(songfolder, 340))
+		draw_text_dynamic(x1 + 40, y1 + 230 + (theme = 3) * 22, "歌曲路径: " + string_truncate(string_replace(songfolder, "/Library/Containers/org.opennbs.onbs/Data", ""), 340))
 	    popup_set_window(x1 + 40, y1 + 230 + (theme = 3) * 22, 430, 18, songfolder)
 	    if (draw_button2(x1 + 40, y1 + 246 + (theme = 3) * 22, 76, "打开", 0, 1)) {
 	        if (!directory_exists_lib(songfolder)) {
@@ -280,7 +225,7 @@ function draw_window_preferences() {
 	    }
 	    if (draw_button2(x1 + 40 + 84 + 84, y1 + 246 + (theme = 3) * 22, 96, "还原默认", 0, 1)) songfolder = songs_directory
 	
-		draw_text_dynamic(x1 + 40, y1 + 280 + (theme = 3) * 22, "片段路径: " + string_truncate(patternfolder, 340))
+		draw_text_dynamic(x1 + 40, y1 + 280 + (theme = 3) * 22, "片段路径: " + string_truncate(string_replace(patternfolder, "/Library/Containers/org.opennbs.onbs/Data", ""), 340))
 	    popup_set_window(x1 + 40, y1 + 280 + (theme = 3) * 22, 430, 18, patternfolder)
 	    if (draw_button2(x1 + 40, y1 + 296 + (theme = 3) * 22, 76, "打开", 0, 1)) {
 	        if (!directory_exists_lib(patternfolder)) {
@@ -297,28 +242,30 @@ function draw_window_preferences() {
 	    if (draw_button2(x1 + 40 + 84 + 84, y1 + 296 + (theme = 3) * 22, 96, "还原默认", 0, 1)) patternfolder = pattern_directory
 		}
 		}
-		if (theme = 3) draw_theme_font(font_info_med)
-		draw_areaheader(x1 + 22, y1 + 354 + (theme = 3) * 22 - 170 * isplayer, 456, 45, "Discord")
-		if (theme = 3) draw_theme_font(font_main)
-		if (language != 1) {
-		if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "Enable Discord Rich Presence", "Whether to display info about your current\nsong in your Discord status activity.", 0, 1)) {
-		    presence = !presence
-			if (presence = 1) {
-				np_setpresence_timestamps(date_current_datetime(), 0, false);
+		if (os_type != os_macosx) {
+			if (theme = 3) draw_theme_font(font_info_med)
+			draw_areaheader(x1 + 22, y1 + 354 + (theme = 3) * 22 - 170 * isplayer, 456, 45, "Discord")
+			if (theme = 3) draw_theme_font(font_main)
+			if (language != 1) {
+				if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "Enable Discord Rich Presence", "Whether to display info about your current\nsong in your Discord status activity.", 0, 1)) {
+				    presence = !presence
+					if (presence = 1) {
+						np_setpresence_timestamps(date_current_datetime(), 0, false);
+					}
+				}
+			} else {
+				if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "启用 Discord Rich Presence", "是否在 Discord 个人状态中显示当前歌曲信息。", 0, 1)) {
+				    presence = !presence
+					if (presence = 1) {
+						np_setpresence_timestamps(date_current_datetime(), 0, false);
+					}
+				}
 			}
-		}
-		} else {
-		if (draw_checkbox(x1 + 40, y1 + 354 + 16 + (theme = 3) * 22 - 170 * isplayer, presence, "启用 Discord Rich Presence", "是否在 Discord 个人状态中显示当前歌曲信息。", 0, 1)) {
-		    presence = !presence
-			if (presence = 1) {
-				np_setpresence_timestamps(date_current_datetime(), 0, false);
-			}
-		}
 		}
 	} else if (selected_tab = 1) {
 		if (theme = 3) draw_theme_font(font_info_med)
-	    if (language != 1) draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 218, 140, "Theme")
-	    else draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 218, 140, "主题")
+	    if (language != 1) draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 218, 160, "Theme")
+	    else draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 218, 160, "主题")
 		if (theme = 3) draw_theme_font(font_main)
 		draw_area(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 5, x1 + 140, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 5)
 		if (draw_abutton(x1 + 140 - 17, y1 + 74 + 17 + (theme = 3) * 22 + 5) && wmenu = 0) {
@@ -332,17 +279,23 @@ function draw_window_preferences() {
 	    //if (draw_radiobox(x1 + 40, y1 + (theme = 3) * 22 + 164 + 16 + 20 + 20, theme == 1, "90s", "Use the 90s theme.")) {theme = 1 change_theme()}
 	    //if (draw_radiobox(x1 + 40, y1 + (theme = 3) * 22 + 164 + 16 + 20 + 20 + 20, theme == 3, "Fluent", "Use the fluent theme.")) {theme = 3 change_theme()}
 		if (language != 1) {
-		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 20 + 25, blackout, "Blackout mode", "Makes the workspace background solid black, so you can\nremove in your video editor when recording the screen.", false, true)) blackout = !blackout
+		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 20 + 20 + 25, blackout, "Blackout mode", "Makes the workspace background solid black, so you can\nremove in your video editor when recording the screen.", false, true)) blackout = !blackout
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 25, windowsound, "Navigation sound", "Whether to play sound effects when navigating the interface.\n(Only applies to the Fluent theme.)", (theme != 3), true)) windowsound = !windowsound
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 25, fdark, "Dark mode", "Whether to use darker colors on the interface.\n(Only applies to the Fluent theme.)", (theme != 3), true)) {fdark = !fdark if (fdark) window_set_darkmode() else window_unset_darkmode()}
-		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "Transparency effects", "Whether to show transparency effects on the interface.\n(Only applies to the Fluent theme.)", (theme != 3), true)) {acrylic = !acrylic change_theme()}
+		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "Transparency effects", "Whether to show transparency effects on the interface.\n(Only applies to the Fluent theme.)", theme != 3, true)) {acrylic = !acrylic change_theme()}
 		} else {
-		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 20 + 25, blackout, "全黑模式", "使背景变为纯黑色，可以用于剪辑时扣掉。", false, true)) blackout = !blackout
+		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 20 + 20 + 25, blackout, "全黑模式", "使背景变为纯黑色，可以用于剪辑时扣掉。", false, true)) blackout = !blackout
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 25, windowsound, "界面音效", "是否在浏览时播放音效。\n（仅限 Fluent 主题）", (theme != 3), true)) windowsound = !windowsound
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 25, fdark, "暗色模式", "是否在界面上使用暗色调。\n（仅限 Fluent 主题）", (theme != 3), true)) {fdark = !fdark if (fdark) window_set_darkmode() else window_unset_darkmode()}
-		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "透明效果", "是否在界面上显示透明效果。\n（仅限 Fluent 主题）", (theme != 3), true)) {acrylic = !acrylic change_theme()}
+		//if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "透明效果", condstr(os_type = os_windows, "是否在界面上显示透明效果。\n（仅限 Fluent 主题）", "该功能在非Windows平台不可用。"), (theme != 3 || os_type != os_windows), true)) {acrylic = !acrylic change_theme()}
+		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "透明效果", "是否在界面上显示透明效果。\n（仅限 Fluent 主题）", theme != 3, true)) {acrylic = !acrylic change_theme()}
 		}
 		
+		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 195, liquid_glass,
+			condstr(language != 1, "Liquid Glass", "液态玻璃"),
+			condstr(language != 1, "[Experimental] Use glass refraction on context menus, tooltips, and messages.\nTurn off to use the original acrylic style.", "[实验性] 在右键菜单、工具提示和提示消息上显示玻璃折射效果。\n关闭后使用原有的亚克力样式。"),
+			theme != 3 || !acrylic, true)) liquid_glass = !liquid_glass
+
 		// Accent color picker
 		if (theme == 3) {
 			var xx = x1 + 160
@@ -352,15 +305,17 @@ function draw_window_preferences() {
 			if (theme = 3) draw_set_color(15987699)
 			if (theme = 3 && fdark) draw_set_color(2105376)
 			accentclick = mouse_rectangle(xx - 2, yy - 2, 17, 17)
-			if (accentclick = 1) accentclick += mouse_check_button(mb_left)
-			draw_roundrect_ext(xx - 2, yy - 2, xx + 15, yy + 15, 4, 4, false)
+			if (accentclick = 1) accentclick += (nbs_mouse_check_button(mb_left) && mouse_press_in_rectangle(xx - 2, yy - 2, 17, 17))
+			var rectircle_shader = __rectircle_begin()
+			draw_rectircle(xx - 2, yy - 2, xx + 15, yy + 15, false, 4)
 			draw_theme_color()
-			draw_roundrect_ext(xx - 2, yy - 2, xx + 15, yy + 15, 4, 4, true)
+			draw_rectircle(xx - 2, yy - 2, xx + 15, yy + 15, true, 4)
 			draw_set_color(accent[3 + (accentclick = 1) * 3 - (accentclick = 2) * 3])
-			draw_roundrect_ext(xx, yy, xx + 13, yy + 13, 4, 4, false)
+			draw_rectircle(xx, yy, xx + 13, yy + 13, false, 4)
+			__rectircle_end(rectircle_shader)
 			if (language != 1) popup_set_window(xx - 2, yy - 2, 17, 17, "Click to change the theme's accent color.")
 			else popup_set_window(xx - 2, yy - 2, 17, 17, "点击更改此主题的主题色。")
-			if (mouse_check_button_released(mb_left) && accentclick) {
+			if (mouse_rectangle_click(xx - 2, yy - 2, 17, 17)) {
 				window = w_setaccent
 				resetcolor = true
 				if (windowsound) play_sound(soundinvoke, 45, 100, 50, 0)
@@ -383,7 +338,7 @@ function draw_window_preferences() {
 	    }
 	    if (language != 1) draw_text_dynamic(x1 + 277, y1 + 74 + 19 + (theme = 3) * 22 + 5, condstr(refreshrate = 0, "30FPS") + condstr(refreshrate = 1, "60FPS") + condstr(refreshrate = 2, "120FPS") + condstr(refreshrate = 3, "144FPS") + condstr(refreshrate = 4, "240FPS"))
 	    else draw_text_dynamic(x1 + 277, y1 + 74 + 19 + (theme = 3) * 22 + 5, condstr(refreshrate = 0, "30帧") + condstr(refreshrate = 1, "60帧") + condstr(refreshrate = 2, "120帧") + condstr(refreshrate = 3, "144帧") + condstr(refreshrate = 4, "240帧"))
-		if (wmenu = 1 && !mouse_check_button(mb_left)) wmenu = 0
+		if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
 	    //if (draw_radiobox(x1+274,y1+164+16 + (theme = 3) * 22,refreshrate == 0,"30FPS","Run the program at 30FPS.")) {
 	    //    game_set_speed(30,gamespeed_fps)
 		//	refreshrate=0
@@ -409,19 +364,49 @@ function draw_window_preferences() {
 		if (language != 1) draw_areaheader(x1 + 258, y1 + 150 + (theme = 3) * 22, 220, 64, "Window")
 		else draw_areaheader(x1 + 258, y1 + 150 + (theme = 3) * 22, 220, 64, "窗口")
 		if (theme = 3) draw_theme_font(font_main)
-		if (language != 1) draw_text_dynamic(x1 + 276, y1 + 166 + (theme = 3) * 22, "Scale:             %")
-		else draw_text_dynamic(x1 + 276, y1 + 166 + (theme = 3) * 22, "缩放:              %")
-		window_scale = median(50, draw_dragvalue(19, x1 + 322, y1 + 166 + (theme = 3) * 22, window_scale * 100, (1/power(window_scale, 2)) ), 400) / 100
+		if (language != 1) draw_text_dynamic(x1 + 276, y1 + 166 + (theme = 3) * 22, "Scale:               %")
+		else draw_text_dynamic(x1 + 276, y1 + 166 + (theme = 3) * 22, "缩放:                %")
+		window_scale = median(50, draw_dragvalue(19, x1 + 332, y1 + 166 + (theme = 3) * 22, window_scale * 100, (1/power(window_scale, 2)) ), 400) / 100
+		if (draw_button2(x1 + 308, y1 + 161 + (theme = 3) * 22, 20, "-", false, true)) {
+			if (window_scale <= 4 && window_scale > 3.5) {window_scale = 3.5}
+			else if (window_scale > 3) {window_scale = 3}
+			else if (window_scale > 2.5) {window_scale = 2.5}
+			else if (window_scale > 2) {window_scale = 2}
+			else if (window_scale > 1.75) {window_scale = 1.75}
+			else if (window_scale > 1.5) {window_scale = 1.5}
+			else if (window_scale > 1.25) {window_scale = 1.25}
+			else if (window_scale > 1) {window_scale = 1}
+			else if (window_scale > 0.9) {window_scale = 0.9}
+			else if (window_scale > 0.8) {window_scale = 0.8}
+			else if (window_scale > 0.75) {window_scale = 0.75}
+			else if (window_scale > 0.67) {window_scale = 0.67}
+			else if (window_scale > 0.5) {window_scale = 0.5}
+		}
+		if (draw_button2(x1 + 366, y1 + 161 + (theme = 3) * 22, 20, "+", false, true)) {
+			if (window_scale >= 0.5 && window_scale < 0.67) {window_scale = 0.67}
+			else if (window_scale < 0.75) {window_scale = 0.75}
+			else if (window_scale < 0.8) {window_scale = 0.8}
+			else if (window_scale < 0.9) {window_scale = 0.9}
+			else if (window_scale < 1) {window_scale = 1}
+			else if (window_scale < 1.25) {window_scale = 1.25}
+			else if (window_scale < 1.5) {window_scale = 1.5}
+			else if (window_scale < 1.75) {window_scale = 1.75}
+			else if (window_scale < 2) {window_scale = 2}
+			else if (window_scale < 2.5) {window_scale = 2.5}
+			else if (window_scale < 3) {window_scale = 3}
+			else if (window_scale < 3.5) {window_scale = 3.5}
+			else if (window_scale < 4) {window_scale = 4}
+		}
 		if (language != 1) {
-		if (draw_button2(x1 + 394, y1 + 161 + (theme = 3) * 22, 72, "Reset", (window_scale == get_default_window_scale()))) {
+		if (draw_button2(x1 + 394, y1 + 161 + (theme = 3) * 22, 72, "Reset", (window_scale == get_default_window_scale()), true)) {
 			window_scale = get_default_window_scale()
 		}
 		if (draw_checkbox(x1 + 276, y1 + 195 + (theme = 3) * 22, hires, "Optimize for high resolutions", "Whether to use higher resolution textures on the interface.\n" + condstr(theme = 3, "(May reduce performance and reduce readability at lower resolutions.)", "(Only applies to the Fluent theme.)"), (theme != 3), true)) hires = !hires
 		} else {
-		if (draw_button2(x1 + 394, y1 + 161 + (theme = 3) * 22, 72, "重置", (window_scale == get_default_window_scale()))) {
+		if (draw_button2(x1 + 394, y1 + 161 + (theme = 3) * 22, 72, "重置", (window_scale == get_default_window_scale()), true)) {
 			window_scale = get_default_window_scale()
 		}
-		if (draw_checkbox(x1 + 276, y1 + 195 + (theme = 3) * 22, hires, "为高分辨率优化", "是否在界面上使用更高分辨率的纹理。\n" + condstr(theme = 3, "（可能减弱性能并在低分辨率下减小可读性）", "（仅限 Fluent 主题）"), (theme != 3), true)) hires = !hires
+		if (draw_checkbox(x1 + 276, y1 + 195 + (theme = 3) * 22, hires, "为高分辨率优化", "是否在界面上使用更高分辨率的纹理。\n" + condstr(theme = 3, "（可能减弱性能并在低分辨率下减小可读性）", "（仅限 Fluent 主题）"), theme != 3, true)) hires = !hires
 		}
 		if (theme != 3 || (theme != 2 && !fdark)) draw_set_color(c_black)
 		else draw_set_color(c_white)
@@ -438,11 +423,26 @@ function draw_window_preferences() {
 		if (language != 1) draw_areaheader(x1 + 258, y1 + 239 + (theme = 3) * 22, 220, 65, "Icon")
 		else draw_areaheader(x1 + 258, y1 + 239 + (theme = 3) * 22, 220, 65, "图标")
 		if (theme = 3) draw_theme_font(font_main)
-		if (draw_checkbox(x1 + 276, y1 + (theme = 3) * 22 + 239 + 16 + 5 + 4, window_icon, condstr(language != 1, "Old icon", "旧图标"), condstr(language != 1, "Whether to use the old icon instead of the new icon.", "使用旧图标替换新图标。"), false, true)) window_icon = !window_icon
+		if (draw_checkbox(x1 + 276, y1 + (theme = 3) * 22 + 239 + 16 + 5 + 4, window_icon, condstr(language != 1, "Fruity icon", "macOS样式图标"), condstr(language != 1, "Whether to use the a fruity themed icon instead of the regular icon.", "使用macOS风格图标替换普通图标。"), false, true)) window_icon = !window_icon
+		if (theme = 3) {
+			if (draw_checkbox(x1 + 420 - 100, y1 + 478 - isplayer * 100 + 5, advancedinterface, condstr(language != 1, "Advanced", "高级设置"), condstr(language != 1, "Whether to show the advanced interfaces settings.", "显示高级界面设置选项。"), false, true)) advancedinterface = !advancedinterface
+			if (advancedinterface) {
+				draw_theme_font(font_info_med)
+				if (language != 1) draw_areaheader(x1 + 22, y1 + 239 + 22 + 65, 456, 65, "Advanced")
+				else draw_areaheader(x1 + 22, y1 + 239 + 22 + 65, 456, 65, "高级")
+				draw_theme_font(font_main)
+				if (draw_checkbox(x1 + 40, y1 + 239 + 22 + 65 + 21, wpapernoblur, condstr(language != 1, "Turn off background blurring", "关闭背景虚化"), condstr(language != 1, "Whether to turn off the blurring effect on the background image.", "关闭背景图片虚化效果。"), false, true)) wpapernoblur = !wpapernoblur
+				if (draw_checkbox(x1 + 40, y1 + 239 + 22 + 65 + 21 + 20, wpapernodim, condstr(language != 1, "Turn off background dimming", "关闭背景暗化"), condstr(language != 1, "Whether to turn off the dimming effect on the background image.", "关闭背景图片变暗效果。"), false, true)) wpapernodim = !wpapernodim
+				if (draw_checkbox(x1 + 276, y1 + 239 + 22 + 65 + 21, backgroundrainbow, condstr(language != 1, "Rainbow mode affects background", "炫彩模式对背景生效"), condstr(language != 1, "Whether to make rainbow mode affect background too.", "使炫彩模式对背景生效。"), false, true)) backgroundrainbow = !backgroundrainbow
+				if (!isplayer) {
+					if (draw_checkbox(x1 + 40, y1 + 239 + 22 + 65 + 21 + 20 + 20, noeditingbackground, condstr(language != 1, "Turn off editing area background", "关闭编辑区域背景"), condstr(language != 1, "Whether to turn off the background of the editing area.", "关闭编辑区域背景。"), false, true)) noeditingbackground = !noeditingbackground
+				}
+			}
+		}
 	} else if (selected_tab = 2) {
 		if (language != 1) {
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 196, "Note blocks")
+	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 208, "Note blocks")
 		if (theme = 3) draw_theme_font(font_main)
 	    if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 90, use_colors, "Use colored note blocks", "If the instruments should be identified with\ndifferent colors.")) use_colors=!use_colors
 	    if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 110, use_icons, "Show instrument icons", "If the instruments should be identified with\ntheir respective icons.")) use_icons=!use_icons
@@ -453,6 +453,9 @@ function draw_window_preferences() {
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 210, fade, "No fading", "Disables transparency animations on note block sprites")) fade = !fade
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 230, show_layers, "Show layer boxes", "Whether the layer boxes should be shown\non the left side of the workspace.")) show_layers = !show_layers
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 250, remove_effect, "Show effect on removal", "Whether to show a fading border\nwhen removing a note block.")) remove_effect = !remove_effect
+		draw_text_dynamic(x1 + 60, y1 + 268 + (theme = 3) * 22, "Selection highlight intensity:         %")
+		selection_alpha = median(10, draw_dragvalue(21, x1 + 218, y1 + 268 + (theme = 3) * 22, selection_alpha * 100, 2), 80) / 100
+
 		if (theme = 3) draw_theme_font(font_info_med)
 	    draw_areaheader(x1 + 22, y1 + 294 + (theme = 3) * 22, 456, 171, "Piano")
 		if (theme = 3) draw_theme_font(font_main)
@@ -474,7 +477,7 @@ function draw_window_preferences() {
 	    popup_set_window(x1 + 70, y1 + 328 + (theme = 3) * 22, 150, 21, "The amount of keys to show. A high number may\nslow down the program on old computers.")
 		} else {
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 196, "音符盒")
+	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 208, "音符盒")
 		if (theme = 3) draw_theme_font(font_main)
 	    if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 90, use_colors, "彩色音符盒", "用音符盒颜色区分音色。")) use_colors=!use_colors
 	    if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 110, use_icons, "显示音色图标", "用音色图标区分音色。")) use_icons=!use_icons
@@ -485,6 +488,9 @@ function draw_window_preferences() {
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 210, fade, "音符盒不透明", "关闭音符盒上的透明效果。")) fade = !fade
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 230, show_layers, "显示每层操作区", "显示在界面左侧操作每层设定的区域。")) show_layers = !show_layers
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 250, remove_effect, "显示删除效果", "删除音符时显示淡出边框效果。")) remove_effect = !remove_effect
+		draw_text_dynamic(x1 + 60, y1 + 268 + (theme = 3) * 22, "选择高亮显示强度：        %")
+		selection_alpha = median(10, draw_dragvalue(21, x1 + 172, y1 + 268 + (theme = 3) * 22, selection_alpha * 100, 2), 80) / 100
+		
 		if (theme = 3) draw_theme_font(font_info_med)
 	    draw_areaheader(x1 + 22, y1 + 294 + (theme = 3) * 22, 456, 171, "琴键")
 		if (theme = 3) draw_theme_font(font_main)
@@ -508,38 +514,79 @@ function draw_window_preferences() {
 	} else if (selected_tab = 3) {
 		if (language != 1) {
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 120, "Mouse wheel")
+	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 140, "Mouse wheel")
 		if (theme = 3) draw_theme_font(font_main)
 	    if (draw_radiobox(x1 + 40, y1 + 90 + (theme = 3) * 22, mousewheel = 0, "Use mouse wheel to scroll through the song", "Use the mouse wheel to scroll through\nthe song horizontally or vertically.")) mousewheel = 0
 	    if (draw_radiobox(x1 + 40, y1 + 110 + (theme = 3) * 22, mousewheel = 1, "Use mouse wheel to change instrument", "Use the mouse wheel to toggle between\nthe available instruments.")) mousewheel = 1
 	    if (draw_radiobox(x1 + 40, y1 + 130 + (theme = 3) * 22, mousewheel = 2, "Use mouse wheel to change key", "Use the mouse wheel to toggle\nbetween the keys on the piano.")) mousewheel = 2
-	    if (draw_checkbox(x1 + 40, y1 + 158 + (theme = 3) * 22, changepitch, "Change note properties when scrolling over notes", "Whether scrolling when hovering over a note should change its key,\nvelocity, panning or pitch, according to the currently selected edit mode.")) changepitch=!changepitch
+		if (mousewheel != 0) draw_set_color(c_gray)
+		draw_text_dynamic(x1 + 70, y1 + 150 + (theme = 3) * 22, "Scroll speed:")
+		if (mousewheel = 0) mousewheel_scroll_speed = median(1, draw_dragvalue(22, x1 + 150, y1 + 150 + (theme = 3) * 22, mousewheel_scroll_speed, 1), 10)
+		else draw_text_dynamic(x1 + 150, y1 + 150 + (theme = 3) * 22, mousewheel_scroll_speed)
+		draw_theme_color()
+		popup_set_window(x1 + 70, y1 + 150 + (theme = 3) * 22, 180, 16, "The number of ticks or layers scrolled with each mouse wheel step.\nThis setting does not affect macOS trackpads.")
+	    if (draw_checkbox(x1 + 40, y1 + 178 + (theme = 3) * 22, changepitch, "Change note properties when scrolling over notes", "Whether scrolling when hovering over a note should change its key,\nvelocity, panning or pitch, according to the currently selected edit mode.")) changepitch=!changepitch
+		if (draw_checkbox(x1 + 40, y1 + 198 + (theme = 3) * 22, layerhov_vppreview , "Apply hovered layer's volume and panning to note preview sounds", "Whether the preview sound's volume and panning should be\nrelative to the layer the mouse is hovering over.")) layerhov_vppreview =!layerhov_vppreview
 		//draw_text_dynamic(x1 + 40, y1 + 178, "Tip: Hold Shift while scrolling over a note to change a whole octave,\nor fine-tune its velocity, panning or pitch.")
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 220 + (theme = 3) * 22, 456, 105, "Piano")
+	    draw_areaheader(x1 + 22, y1 + 240 + (theme = 3) * 22, 456, 105, "Piano and layers")
 		if (theme = 3) draw_theme_font(font_main)
-	    if (draw_checkbox(x1 + 40, y1 + 236 + (theme = 3) * 22, select_lastpressed, "Set selected key to pressed one", "If the selected key should be set\nto the one pressed using the keyboard.")) select_lastpressed=!select_lastpressed
-	    draw_text_dynamic(x1 + 40, y1 + 270 + (theme = 3) * 22, "Right-click on keys to change their shortcuts.")
-	    if (draw_button2(x1 + 40, y1 + 290 + (theme = 3) * 22, 160, "Reset key shortcuts")) {
+	    if (draw_checkbox(x1 + 40, y1 + 256 + (theme = 3) * 22, select_lastpressed, "Set selected key to pressed one", "If the selected key should be set\nto the one pressed using the keyboard.")) select_lastpressed=!select_lastpressed
+	    draw_text_dynamic(x1 + 40, y1 + 296 + (theme = 3) * 22, "Right-click on keys to change their shortcuts.")
+	    if (draw_button2(x1 + 40, y1 + 316 + (theme = 3) * 22, 160, "Reset key shortcuts", false, true)) {
 	        if (question("Are you sure?", "Confirm")) init_keys()
 	    }
 		} else {
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 120, "鼠标滚轮")
+	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 140, "鼠标滚轮")
 		if (theme = 3) draw_theme_font(font_main)
 	    if (draw_radiobox(x1 + 40, y1 + 90 + (theme = 3) * 22, mousewheel = 0, "使用鼠标滚轮移动位置", "使用鼠标滚轮横向或竖向移动编辑区域位置。")) mousewheel = 0
 	    if (draw_radiobox(x1 + 40, y1 + 110 + (theme = 3) * 22, mousewheel = 1, "使用鼠标滚轮改变音色", "使用鼠标滚轮切换可用音色。")) mousewheel = 1
 	    if (draw_radiobox(x1 + 40, y1 + 130 + (theme = 3) * 22, mousewheel = 2, "使用鼠标滚轮改变音调", "使用鼠标滚轮改变目前使用的音调。")) mousewheel = 2
-	    if (draw_checkbox(x1 + 40, y1 + 158 + (theme = 3) * 22, changepitch, "当在音符上使用鼠标滚轮改变音符属性", "在音符上使用鼠标滚轮时是否根据目前模式改变其音调、音量、声道或音高。")) changepitch=!changepitch
+		if (mousewheel != 0) draw_set_color(c_gray)
+		draw_text_dynamic(x1 + 70, y1 + 150 + (theme = 3) * 22, "滚动速度：")
+		if (mousewheel = 0) mousewheel_scroll_speed = median(1, draw_dragvalue(22, x1 + 150, y1 + 150 + (theme = 3) * 22, mousewheel_scroll_speed, 1), 10)
+		else draw_text_dynamic(x1 + 150, y1 + 150 + (theme = 3) * 22, mousewheel_scroll_speed)
+		draw_theme_color()
+		popup_set_window(x1 + 70, y1 + 150 + (theme = 3) * 22, 180, 16, "每滚动一次鼠标滚轮所移动的刻或层数。\n此设置不影响 macOS 触控板。")
+	    if (draw_checkbox(x1 + 40, y1 + 178 + (theme = 3) * 22, changepitch, "当在音符上使用鼠标滚轮改变音符属性", "在音符上使用鼠标滚轮时是否根据目前模式改变其音调、音量、声道或音高。")) changepitch=!changepitch
+		if (draw_checkbox(x1 + 40, y1 + 198 + (theme = 3) * 22, layerhov_vppreview , "将悬停层的音量和声道调整应用于音符预览声音", "预览声音的音量和声道是否应与鼠标悬停的层相关。")) layerhov_vppreview =!layerhov_vppreview
 		//draw_text_dynamic(x1 + 40, y1 + 178, "Tip: Hold Shift while scrolling over a note to change a whole octave,\nor fine-tune its velocity, panning or pitch.")
 		if (theme = 3) draw_theme_font(font_info_med)
-	    draw_areaheader(x1 + 22, y1 + 220 + (theme = 3) * 22, 456, 105, "琴键")
+	    draw_areaheader(x1 + 22, y1 + 240 + (theme = 3) * 22, 456, 105, "琴键与层")
 		if (theme = 3) draw_theme_font(font_main)
-	    if (draw_checkbox(x1 + 40, y1 + 236 + (theme = 3) * 22, select_lastpressed, "选择按下的键", "是否选择按下的键所对应的音。")) select_lastpressed=!select_lastpressed
-	    draw_text_dynamic(x1 + 40, y1 + 270 + (theme = 3) * 22, "对琴键右键可更改键位。")
-	    if (draw_button2(x1 + 40, y1 + 290 + (theme = 3) * 22, 160, "重置键位")) {
+	    if (draw_checkbox(x1 + 40, y1 + 256 + (theme = 3) * 22, select_lastpressed, "选择按下的键", "是否选择按下的键所对应的音。")) select_lastpressed=!select_lastpressed
+	    draw_text_dynamic(x1 + 40, y1 + 296 + (theme = 3) * 22, "对琴键右键可更改键位。")
+	    if (draw_button2(x1 + 40, y1 + 316 + (theme = 3) * 22, 160, "重置键位", false, true)) {
 	        if (question("你确定吗？", "确认")) init_keys()
 	    }
+		}
+		if (draw_checkbox(x1 + 40, y1 + 276 + (theme = 3) * 22, sound_stopper_follow_layers,
+			condstr(language != 1, "Automatically adjust sound stopper ranges", "自动调整声音抑制器范围"),
+			condstr(language != 1, "Move ranges with their stopper's layer; update ranges when layers are added or removed.\nGlobal stoppers are unchanged. Removing the last target disables the stopper.", "移动声音抑制器所在层时移动其范围；添加或删除层时调整范围。\n全局声音抑制器不受影响。删除最后一个目标层后将停用该抑制器。"))) sound_stopper_follow_layers = !sound_stopper_follow_layers
+		if (theme = 3) draw_theme_font(font_info_med)
+		draw_areaheader(x1 + 22, y1 + 358 + (theme = 3) * 22, 456, 100, condstr(language != 1, "Reference audio hotkeys", "参考音频快捷键"))
+		if (theme = 3) draw_theme_font(font_main)
+		var reference_labels = language != 1 ? ["Mute", "Solo", "Mix"] : ["静音", "独奏", "混音"]
+		for (var reference_mode = 0; reference_mode < 3; reference_mode++) {
+			var reference_key = reference_hotkeys[reference_mode]
+			var reference_label = condstr(language != 1, "None", "无")
+			if (reference_key >= vk_numpad0 && reference_key <= vk_numpad9) reference_label = "Num " + string(reference_key - vk_numpad0)
+			else if (reference_key >= vk_f1 && reference_key <= vk_f12) reference_label = "F" + string(reference_key - vk_f1 + 1)
+			else if ((reference_key >= ord("A") && reference_key <= ord("Z")) || (reference_key >= ord("0") && reference_key <= ord("9"))) reference_label = chr(reference_key)
+			else if (reference_key > vk_anykey) reference_label = condstr(language != 1, "Key ", "键 ") + string(reference_key)
+			if (reference_hotkey_edit == reference_mode) reference_label = condstr(language != 1, "Press a key...", "请按键……")
+			draw_text_dynamic(x1 + 40 + reference_mode * 140, y1 + 374 + (theme = 3) * 22, reference_labels[reference_mode])
+			if (draw_button2(x1 + 40 + reference_mode * 140, y1 + 394 + (theme = 3) * 22, 130, reference_label, false, true)) {
+				reference_hotkey_edit = reference_mode
+				key_edit = -1
+			}
+		}
+		draw_text_dynamic(x1 + 40, y1 + 432 + (theme = 3) * 22, condstr(language != 1, "Esc: cancel; Backspace: clear", "Esc：取消；退格：清除"))
+		if (draw_button2(x1 + 320, y1 + 427 + (theme = 3) * 22, 130, condstr(language != 1, "Reset hotkeys", "重置快捷键"), false, true)) {
+			reference_hotkeys = [vk_numpad1, vk_numpad2, vk_numpad3]
+			reference_hotkey_edit = -1
+			save_settings()
 		}
 	} else if (selected_tab = 4) {
 		if (language != 1) {
@@ -558,14 +605,42 @@ function draw_window_preferences() {
 	    if (draw_checkbox(x1 + 32, y1 + 244 + 16 + (theme = 3) * 22, realvolume, "Show layer volumes", "Whether to show the volume of layers.")) realvolume=!realvolume
 		if (draw_checkbox(x1 + 32, y1 + 264 + 16 + (theme = 3) * 22, realstereo, "Disable stereo", "Disables stereo playback.")) realstereo = !realstereo
 		//if (draw_checkbox(x1 + 32, y1 + 284 + 16 + (theme = 3) * 22, looptobarend, "Loop to bar end", "Loops to the end of the bar/measure.")) looptobarend = !looptobarend
-		if (draw_checkbox(x1 + 32, y1 + 284 + 16 + (theme = 3) * 22, show_soundcount, "Show number of active sounds", "Displays the number of sounds that are\ncurrently playing in the status bar.")) show_soundcount = !show_soundcount
-		if (draw_checkbox(x1 + 32, y1 + 304 + 16 + (theme = 3) * 22, channelstoggle, "Use more audio channels", "Whether to increase the number\nof sounds that can play at once.")) channelstoggle = !channelstoggle
-		if (draw_checkbox(x1 + 32, y1 + 324 + 16 + (theme = 3) * 22, taskbar, "Enable taskbar indicator", "Whether to display the song\nprogress on the taskbar.")) taskbar = !taskbar
+		if (draw_checkbox(x1 + 32, y1 + 284 + 16 + (theme = 3) * 22, autoplay, "Auto-play downloaded songs", "Whether to start playing downloaded songs\nautomatically after opening them.")) autoplay = !autoplay
+		if (draw_checkbox(x1 + 32, y1 + 304 + 16 + (theme = 3) * 22, show_soundcount, "Show number of active sounds", "Displays the number of sounds that are\ncurrently playing in the status bar.")) show_soundcount = !show_soundcount
+		if (draw_checkbox(x1 + 32, y1 + 324 + 16 + (theme = 3) * 22, channelstoggle, "Use more audio channels", "Whether to increase the number\nof sounds that can play at once.")) channelstoggle = !channelstoggle
+		//if (draw_checkbox(x1 + 32, y1 + 344 + 16 + (theme = 3) * 22, taskbar, "Enable taskbar indicator", "Whether to display the song\nprogress on the taskbar.")) taskbar = !taskbar
 		if (theme = 3) draw_theme_font(font_info_med)
 		draw_areaheader(x1 + 233 + 22, y1 + 244 + (theme = 3) * 22, 223, 60, "Tempo unit")
 		if (theme = 3) draw_theme_font(font_main)
 		if (draw_radiobox(x1 + 233 + 32, y1 + 244 + 16 + (theme = 3) * 22, !use_bpm, "Ticks per second (t/s)", "Display song tempos in ticks per second.")) use_bpm = 0
 		if (draw_radiobox(x1 + 233 + 32, y1 + 264 + 16 + (theme = 3) * 22, use_bpm, "Beats per minute (BPM)", "Display song tempos in beats per minute.")) use_bpm = 1
+		if (theme = 3) draw_theme_font(font_info_med)
+		draw_areaheader(x1 + 233 + 22, y1 + 329 + (theme = 3) * 22, 223, 55 + 23 + 20, "Resource pack")
+		if (theme = 3) draw_theme_font(font_main)
+		draw_area(x1 + 233 + 22 + 18, y1 + 329 + (theme = 3) * 22 + 16 + 5, x1 + 233 + 22 + 18 + 100, y1 + 329 + (theme = 3) * 22 + 16 + 5 + 20)
+		var rp_str = ""
+		var display_resource = current_resource
+		if (string_width_dynamic(display_resource) > 82) {
+			while (display_resource != "" && string_width_dynamic(display_resource) > 82 - string_width_dynamic("...")) {
+				display_resource = string_delete(display_resource, string_length(display_resource), 1)
+			}
+			display_resource += "..."
+		}
+		for (var l = 0; l < array_length(resourcepacks); l++) {
+			rp_str += check(current_resource = resourcepacks[l].filename)
+			rp_str += resourcepacks[l].filename
+			if (l != array_length(resourcepacks) - 1) rp_str += "|"
+		}
+		if (draw_abutton(x1 + 233 + 22 + 18 + 100 - 17, y1 + 329 + (theme = 3) * 22 + 17 + 5) && wmenu = 0) {
+			menu = show_menu_ext("resourcepack", x1 + 233 + 22 + 18, y1 + 329 + (theme = 3) * 22 + 16 + 5 + 21, rp_str)
+		}
+		draw_text_dynamic(x1 + 233 + 22 + 18 + 3, y1 + 329 + (theme = 3) * 22 + 19 + 5, display_resource)
+		if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
+		if (draw_checkbox(x1 + 233 + 22 + 18, y1 + 359 + (theme = 3) * 22 + 19 + 5, resourcepack_sounds_json, "Use sounds.json", "Load note block sound paths and pitch shifts defined by the selected resource pack.")) {
+			resourcepack_sounds_json = !resourcepack_sounds_json
+			set_resourcepack(current_resource)
+		}
+		if (draw_button2(x1 + 233 + 22 + 18, y1 + 379 + (theme = 3) * 22 + 19 + 5, 150, "Refresh Resource Packs", 0, 1)) refresh_resourcepacks()
 		} else {
 		if (theme = 3) draw_theme_font(font_info_med)
 	    draw_areaheader(x1 + 22, y1 + 74 + (theme = 3) * 22, 456, 145, "进度条")
@@ -582,18 +657,46 @@ function draw_window_preferences() {
 	    if (draw_checkbox(x1 + 32, y1 + 244 + 16 + (theme = 3) * 22, realvolume, "显示每层音量", "是否显示每层的音量。")) realvolume=!realvolume
 		if (draw_checkbox(x1 + 32, y1 + 264 + 16 + (theme = 3) * 22, realstereo, "关闭立体声", "关闭立体声音效。")) realstereo = !realstereo
 		//if (draw_checkbox(x1 + 32, y1 + 284 + 16 + (theme = 3) * 22, looptobarend, "循环至小节尾", "到小节尾再循环。")) looptobarend = !looptobarend
-		if (draw_checkbox(x1 + 32, y1 + 284 + 16 + (theme = 3) * 22, show_soundcount, "显示正在播放的声音数", "在状态栏里显示正在播放的声音数。")) show_soundcount = !show_soundcount
-		if (draw_checkbox(x1 + 32, y1 + 304 + 16 + (theme = 3) * 22, channelstoggle, "提升声音限制", "提升可同时播放的声音数。")) channelstoggle = !channelstoggle
-		if (draw_checkbox(x1 + 32, y1 + 324 + 16 + (theme = 3) * 22, taskbar, "启用任务栏进度", "是否在任务栏显示当前歌曲的进度。")) taskbar = !taskbar
+		if (draw_checkbox(x1 + 32, y1 + 284 + 16 + (theme = 3) * 22, autoplay, "自动播放下载的歌曲", "是否在打开下载好的歌曲后自动播放。")) autoplay = !autoplay
+		if (draw_checkbox(x1 + 32, y1 + 304 + 16 + (theme = 3) * 22, show_soundcount, "显示正在播放的声音数", "在状态栏里显示正在播放的声音数。")) show_soundcount = !show_soundcount
+		if (draw_checkbox(x1 + 32, y1 + 324 + 16 + (theme = 3) * 22, channelstoggle, "提升声音限制", "提升可同时播放的声音数。")) channelstoggle = !channelstoggle
+		//if (draw_checkbox(x1 + 32, y1 + 344 + 16 + (theme = 3) * 22, taskbar, "启用任务栏进度", "是否在任务栏显示当前歌曲的进度。")) taskbar = !taskbar
 		if (theme = 3) draw_theme_font(font_info_med)
 		draw_areaheader(x1 + 233 + 22, y1 + 244 + (theme = 3) * 22, 223, 60, "速度单位")
 		if (theme = 3) draw_theme_font(font_main)
 		if (draw_radiobox(x1 + 233 + 32, y1 + 244 + 16 + (theme = 3) * 22, !use_bpm, "红石刻 / 秒 (t/s)", "使用每秒几刻显示速度。")) use_bpm = 0
 		if (draw_radiobox(x1 + 233 + 32, y1 + 264 + 16 + (theme = 3) * 22, use_bpm, "拍数 / 分钟 (BPM)", "使用每分钟多少拍显示速度。")) use_bpm = 1
+		if (theme = 3) draw_theme_font(font_info_med)
+		draw_areaheader(x1 + 233 + 22, y1 + 329 + (theme = 3) * 22, 223, 55 + 23 + 20, "资源包")
+		if (theme = 3) draw_theme_font(font_main)
+		draw_area(x1 + 233 + 22 + 18, y1 + 329 + (theme = 3) * 22 + 16 + 5, x1 + 233 + 22 + 18 + 100, y1 + 329 + (theme = 3) * 22 + 16 + 5 + 20)
+		var rp_str = ""
+		var display_resource = current_resource
+		if (string_width_dynamic(display_resource) > 82) {
+			while (display_resource != "" && string_width_dynamic(display_resource) > 82 - string_width_dynamic("...")) {
+				display_resource = string_delete(display_resource, string_length(display_resource), 1)
+			}
+			display_resource += "..."
+		}
+		for (var l = 0; l < array_length(resourcepacks); l++) {
+			rp_str += check(current_resource = resourcepacks[l].filename)
+			rp_str += resourcepacks[l].filename
+			if (l != array_length(resourcepacks) - 1) rp_str += "|"
+		}
+		if (draw_abutton(x1 + 233 + 22 + 18 + 100 - 17, y1 + 329 + (theme = 3) * 22 + 17 + 5) && wmenu = 0) {
+			menu = show_menu_ext("resourcepack", x1 + 233 + 22 + 18, y1 + 329 + (theme = 3) * 22 + 16 + 5 + 21, rp_str)
+		}
+		draw_text_dynamic(x1 + 233 + 22 + 18 + 3, y1 + 329 + (theme = 3) * 22 + 19 + 5, display_resource)
+		if (wmenu = 1 && !nbs_mouse_check_button(mb_left)) wmenu = 0
+		if (draw_checkbox(x1 + 233 + 22 + 18, y1 + 359 + (theme = 3) * 22 + 19 + 5, resourcepack_sounds_json, "使用 sounds.json", "根据所选资源包的 sounds.json 定义加载音符盒声音路径和音高偏移。")) {
+			resourcepack_sounds_json = !resourcepack_sounds_json
+			set_resourcepack(current_resource)
+		}
+		if (draw_button2(x1 + 233 + 22 + 18, y1 + 379 + (theme = 3) * 22 + 19 + 5, 150, "刷新资源包列表", 0, 1)) refresh_resourcepacks()
 		}
 	}
 	
-	if (draw_button2(x1 + 420, y1 + 478 - isplayer * 100, 72, condstr(language != 1, "OK", "确定")) || keyboard_check_released(vk_escape) || (prevwindow == window && keyboard_check(vk_control) && keyboard_check_pressed(ord("P")))) {
+	if (draw_button2(x1 + 420, y1 + 478 - isplayer * 100, 72, condstr(language != 1, "OK", "确定")) || (prevwindow == window && check_ctrl() && keyboard_check_pressed(ord("P")) || (keyboard_check_pressed(188) && os_type = os_macosx))) {
 		if (theme != 3) {
 			window = 0
 			window_set_cursor(curs)

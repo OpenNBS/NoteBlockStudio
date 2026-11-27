@@ -1,4 +1,6 @@
 extensions/pygml/*.dll filter=lfs diff=lfs merge=lfs -text
 extensions/pygml/*.zip filter=lfs diff=lfs merge=lfs -text
+extensions/pygml/ffmpeg filter=lfs diff=lfs merge=lfs -text
+extensions/pygml/ffprobe filter=lfs diff=lfs merge=lfs -text
 datafiles/ffmpeg.exe filter=lfs diff=lfs merge=lfs -text
 datafiles/ffprobe.exe filter=lfs diff=lfs merge=lfs -text
